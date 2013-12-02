@@ -32,6 +32,7 @@ group :test do
   gem 'wdm'
   gem 'selenium-webdriver'
   gem 'capybara'
+  gem 'factory_girl_rails'
 end
 gem 'jquery-rails'
 
@@ -49,3 +50,8 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
+gem "haml-rails"
+group :production do
+  gem 'pg', '0.15.1'
+  gem 'rails_12factor', '0.0.2'
+end
