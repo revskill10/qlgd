@@ -8,4 +8,11 @@ describe "StaticPages" do
       expect(page).to have_content('About Us')
     end
   end
+
+  describe "Home page" do 
+  	it "should have the content 'QLGD'" do 
+  		visit '/'
+  		expect(page).to have_content('QLGD')
+  	end
+  end
 end

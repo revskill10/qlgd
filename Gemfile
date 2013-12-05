@@ -25,6 +25,9 @@ group :development, :test do
   gem 'spork-rails'
   gem 'guard-spork'
   gem 'childprocess'
+  gem "teaspoon"
+  gem 'guard-brakeman'
+  gem 'forgery'
 end
 group :test do
   gem 'rb-notifu'
@@ -33,9 +36,11 @@ group :test do
   gem 'selenium-webdriver'
   gem 'capybara'
   gem 'factory_girl_rails'
+  gem 'timecop'
 end
 gem 'jquery-rails'
-
+gem 'state_machine'
+#gem 'bootstrap-sass'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -50,7 +55,10 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
-gem "haml-rails"
+gem "slim-rails"
+gem "thin"
+gem 'devise'
+gem 'devise_cas_authenticatable'
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
