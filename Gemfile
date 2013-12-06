@@ -28,6 +28,7 @@ group :development, :test do
   gem "teaspoon"
   gem 'guard-brakeman'
   gem 'forgery'
+  gem 'database_cleaner'
 end
 group :test do
   gem 'rb-notifu'

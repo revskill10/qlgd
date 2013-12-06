@@ -11,7 +11,28 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131203084217) do
+ActiveRecord::Schema.define(:version => 20131206035916) do
+
+  create_table "giang_viens", :force => true do |t|
+    t.string   "ho"
+    t.string   "dem"
+    t.string   "ten"
+    t.string   "code"
+    t.string   "ten_khoa"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "sinh_viens", :force => true do |t|
+    t.string   "ho"
+    t.string   "dem"
+    t.string   "ten"
+    t.datetime "ngay_sinh"
+    t.string   "code"
+    t.string   "ma_lop_hanh_chinh"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -27,6 +48,8 @@ ActiveRecord::Schema.define(:version => 20131203084217) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "username"
+    t.integer  "imageable_id"
+    t.string   "imageable_type"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
