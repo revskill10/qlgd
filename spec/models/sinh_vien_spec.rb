@@ -1,5 +1,10 @@
 require 'spec_helper'
 
-describe SinhVien do
-  pending "add some examples to (or delete) #{__FILE__}"
+describe SinhVien do  
+  it "should have a user" do
+  	us = FactoryGirl.create(:sinhvien) 
+  	sv = FactoryGirl.create(:sinh_vien)
+  	sv.user = us
+  	sv.user.should be_an(User)
+  end
 end

@@ -3,6 +3,11 @@ Qlgd::Application.routes.draw do
   get "dashboard" => "dashboard#index", :as => :dashboard
   get "about" => "static_pages#about"
   get '/' => 'static_pages#home'
+  resources :tenants do 
+    resources :giang_viens
+    resources :sinh_viens
+    resources :users
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
