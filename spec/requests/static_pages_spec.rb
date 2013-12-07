@@ -22,6 +22,16 @@ describe "StaticPages" do
       login_giangvien
       it "should have the content 'Sign out'" do 
         visit '/'
+        expect(page).to have_content('Teacher')
+        expect(page).to have_content('Sign out')
+      end
+    end
+
+    context "As a student" do 
+      login_sinhvien
+      it "should have the content 'Sign out'" do 
+        visit '/'
+        expect(page).to have_content('Student')
         expect(page).to have_content('Sign out')
       end
     end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131206052820) do
+ActiveRecord::Schema.define(:version => 20131207073730) do
 
   create_table "giang_viens", :force => true do |t|
     t.string   "ho"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(:version => 20131206052820) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  create_table "lop_mon_hocs", :force => true do |t|
+    t.string   "ma_lop"
+    t.string   "ma_mon_hoc"
+    t.string   "ma_giang_vien"
+    t.hstore   "settings"
+    t.string   "state"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
+
+  add_index "lop_mon_hocs", ["settings"], :name => "index_lop_mon_hocs_on_settings"
 
   create_table "sinh_viens", :force => true do |t|
     t.string   "ho"
