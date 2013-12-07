@@ -10,7 +10,8 @@
       .collapse.navbar-collapse
         ul.nav.navbar-nav
           li.active= link_to "Home", '/'
-          li= link_to "About", '/about'
+          li= link_to "About", '/about'          
+          li= link_to "Sign out", destroy_user_session_path
 
 .container
   h1 Home            

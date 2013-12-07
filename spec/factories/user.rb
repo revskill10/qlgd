@@ -1,21 +1,18 @@
 FactoryGirl.define do
   factory :user do
-    email "revskill09@gmail.com"
-    password "12345678"
+    email "revskill09@gmail.com"    
     username "revskill09@gmail.com"  
   end
 
   factory :sinhvien, class: User do
-    email "sinhvien1@gmail.com"    
-    password "12345678"
+    email "sinhvien1@gmail.com"        
     username "sinhvien1@gmail.com"    
     association :imageable, factory: :sinh_vien
   end
 
   factory :giangvien, class: User do
-    email "giangvien@hpu.edu.vn"    
-    password "12345678"
-    username "giangvien@hpu.edu.vn"    
+    email "trungth@hpu.edu.vn"        
+    username "trungth@hpu.edu.vn"    
     association :imageable, factory: :giang_vien
   end
   
