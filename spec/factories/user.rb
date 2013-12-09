@@ -26,13 +26,13 @@ FactoryGirl.define do
     dem "dem1"
     ten "ten1"
     code "sv1"  
-    #user
+    user
   end
   factory :giang_vien do    
     code "gv1"        
     ho "hogv1"
     dem "demgv1"
     ten "tengv1"    
-    #user
+    user
   end
 end

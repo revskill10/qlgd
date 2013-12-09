@@ -1,6 +1,7 @@
 Qlgd::Application.routes.draw do
   devise_for :users
   get "dashboard" => "dashboard#index", :as => :dashboard
+  get "calendar" => "dashboard#calendar", :as => :calendar
   get "about" => "static_pages#about"
   get '/' => 'static_pages#home'
   resources :tenants do 

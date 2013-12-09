@@ -11,7 +11,20 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131207073730) do
+ActiveRecord::Schema.define(:version => 20131209041604) do
+
+  create_table "calendars", :force => true do |t|
+    t.integer  "so_tiet"
+    t.integer  "so_tuan"
+    t.integer  "thu"
+    t.integer  "tiet_bat_dau"
+    t.integer  "tuan_hoc_bat_dau"
+    t.integer  "lop_mon_hoc_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "calendars", ["lop_mon_hoc_id"], :name => "index_calendars_on_lop_mon_hoc_id"
 
   create_table "giang_viens", :force => true do |t|
     t.string   "ho"
@@ -31,8 +44,10 @@ ActiveRecord::Schema.define(:version => 20131207073730) do
     t.string   "state"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "giang_vien_id"
   end
 
+  add_index "lop_mon_hocs", ["giang_vien_id"], :name => "index_lop_mon_hocs_on_giang_vien_id"
   add_index "lop_mon_hocs", ["settings"], :name => "index_lop_mon_hocs_on_settings"
 
   create_table "sinh_viens", :force => true do |t|
