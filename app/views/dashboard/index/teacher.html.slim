@@ -16,5 +16,16 @@
             = link_to "Sign Out", destroy_user_session_path      
 
   .container
-    h1 GiangVien          
+    h1 GiangVien
+
+    table.table
+      thead
+        td Mã lớp
+        td Mã môn
+      tbody
+        - @dslops.each do |lop|
+          tr
+            td= lop.ma_lop
+            td= lop.ma_mon_hoc
+
   

@@ -1,18 +1,15 @@
 require 'spec_helper'
 
 describe User do
-  it "should have an imageable sinhvien" do   	
-  	sv = FactoryGirl.create(:sinh_vien)
-  	us = FactoryGirl.create(:sinhvien)
-  	sv.user = us
-  	#sv.user.username.should == "sinhvien1@gmail.com" 
-  	us.imageable.should be_an(SinhVien)  	
-  end 
-  it "should have an imageable giangvien" do   	
-  	sv = FactoryGirl.create(:giang_vien)
-  	us = FactoryGirl.create(:giangvien)
-  	sv.user = us
-  	#sv.user.username.should == "sinhvien1@gmail.com" 
-  	us.imageable.code.should == "gv1"
+ 
+
+  it "should have many lop mon hoc" do 
+    
+    gv = FactoryGirl.create(:giang_vien, :user => nil)
+    us = FactoryGirl.create(:giangvien, :imageable => gv)
+    
+    lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien => gv)
+    lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2", :giang_vien => gv)
+    us.imageable.lop_mon_hocs.count.should == 2
   end
 end

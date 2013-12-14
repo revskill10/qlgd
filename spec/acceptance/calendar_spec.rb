@@ -15,8 +15,16 @@ feature "Thoi khoa bieu", %q{
 		Warden.test_reset! 
 	end
 	scenario "I can see calendar page" do 
-		login_giangvien
-		visit '/calendar'
-		page.should have_content("Thời khóa biểu")
+		gv = FactoryGirl.create(:giang_vien, :user => nil)
+	    us = FactoryGirl.create(:giangvien, :imageable => gv)
+	    gv.lop_mon_hocs.create(:ma_lop => "ml1")
+	    gv.lop_mon_hocs.create(:ma_lop => "ml2")	    
+	    ApplicationController.any_instance.stub(:current_image).and_return(gv)
+	    login_as(us, :scope => :user) 
+		visit '/'
+		#visit '/calendar'
+		page.should have_content("ml2")
+		#us.imageable.should == gv
+		#us.imageable.lop_mon_hocs.count.should == 2
 	end
 end

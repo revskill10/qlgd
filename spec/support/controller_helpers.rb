@@ -19,9 +19,12 @@ module ControllerMacros
   end
 
   def login_giangvien    
-    user = FactoryGirl.create(:giangvien)
-    gv = FactoryGirl.create(:giang_vien, :user => user)      
-    login_as(user, :scope => :user)    
+    gv = FactoryGirl.create(:giang_vien, :user => nil)
+    us = FactoryGirl.create(:giangvien, :imageable => gv)
+    
+    lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien => gv)
+    lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2", :giang_vien => gv)  
+    login_as(us, :scope => :user)    
   end
 end
 
