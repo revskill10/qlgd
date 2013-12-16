@@ -4,7 +4,6 @@ FactoryGirl.define do
   	so_tuan 8
   	thu 2
   	tiet_bat_dau 1
-  	tuan_hoc_bat_dau 1
-    lop_mon_hoc
+  	tuan_hoc_bat_dau 1    
   end
 end

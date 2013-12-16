@@ -24,4 +24,12 @@ class User < ActiveRecord::Base
         end
     end    
   end
+
+  def hovaten
+    if imageable != nil
+      return imageable.hovaten    
+    else
+      return ho_dem + " " + ten
+    end
+  end
 end

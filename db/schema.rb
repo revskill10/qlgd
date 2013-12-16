@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(:version => 20131209041604) do
     t.string   "ma_lop"
     t.string   "ma_mon_hoc"
     t.string   "ma_giang_vien"
-    t.hstore   "settings"
+    t.text     "settings"
     t.string   "state"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
@@ -48,7 +48,6 @@ ActiveRecord::Schema.define(:version => 20131209041604) do
   end
 
   add_index "lop_mon_hocs", ["giang_vien_id"], :name => "index_lop_mon_hocs_on_giang_vien_id"
-  add_index "lop_mon_hocs", ["settings"], :name => "index_lop_mon_hocs_on_settings"
 
   create_table "sinh_viens", :force => true do |t|
     t.string   "ho"

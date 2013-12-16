@@ -1,6 +1,5 @@
 class CreateTenants < ActiveRecord::Migration
-  def change
-    return if PgTools.private_search_path?
+  def change    
     create_table :tenants do |t|
       t.string :hoc_ky
       t.string :nam_hoc

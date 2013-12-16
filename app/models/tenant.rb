@@ -1,7 +1,7 @@
 class Tenant < ActiveRecord::Base
   attr_accessible :hoc_ky, :nam_hoc, :name, :ngay_bat_dau, :ngay_ket_thuc
   after_create :prepare_tenant
-  SHARED_TABLES = [:tenants]
+  
   private
 
   def prepare_tenant
@@ -13,11 +13,9 @@ class Tenant < ActiveRecord::Base
     PgTools.create_schema name unless PgTools.schemas.include? name
   end
 
-  def load_tables
-    #return if Rails.env.test?
+  def load_tables    
     PgTools.set_search_path name, false
-    load "#{Rails.root}/db/schema.rb"
-    Tenant::SHARED_TABLES.each {|name| connection.execute %{drop table "#{name}" } }
+    load "#{Rails.root}/db/schema.rb"    
     PgTools.restore_default_search_path
   end
 end

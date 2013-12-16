@@ -1,5 +1,5 @@
 class DashboardController < ApplicationController
-
+  
   def index    
   	respond_to do |format|
       if guest?
@@ -13,9 +13,6 @@ class DashboardController < ApplicationController
   	end
   end
 
-  private
-  def current_image
-    current_user.imageable
-  end
   
+
 end

@@ -7,13 +7,13 @@ FactoryGirl.define do
   factory :sinhvien, class: User do
     email "sinhvien1@gmail.com"        
     username "sinhvien1@gmail.com"    
-    association :imageable, factory: :sinh_vien
+    #association :imageable, factory: :sinh_vien
   end
 
   factory :giangvien, class: User do
     email "trungth@hpu.edu.vn"        
     username "trungth@hpu.edu.vn"    
-    association :imageable, factory: :giang_vien
+    #association :imageable, factory: :giang_vien
   end
   
   factory :admin, class: User do
@@ -26,13 +26,13 @@ FactoryGirl.define do
     dem "dem1"
     ten "ten1"
     code "sv1"  
-    user
+    #user
   end
   factory :giang_vien do    
     code "gv1"        
     ho "hogv1"
     dem "demgv1"
     ten "tengv1"    
-    user
+    #user
   end
 end

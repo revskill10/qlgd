@@ -3,7 +3,7 @@ require 'spec_helper'
 describe LopMonHoc do
     
   it "should belongs to a teacher" do         
-    lop = FactoryGirl.create(:lop_mon_hoc)
+    lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien => FactoryGirl.create(:giang_vien))    
     lop.giang_vien.should be_a(GiangVien)
   end
 
