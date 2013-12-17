@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131209041604) do
+ActiveRecord::Schema.define(:version => 20131217010357) do
 
   create_table "calendars", :force => true do |t|
     t.integer  "so_tiet"
@@ -34,6 +34,23 @@ ActiveRecord::Schema.define(:version => 20131209041604) do
     t.string   "ten_khoa"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "lich_trinh_giang_days", :force => true do |t|
+    t.datetime "thoi_gian"
+    t.integer  "tuan"
+    t.text     "noi_dung"
+    t.integer  "so_tiet"
+    t.string   "tiet_nghi"
+    t.integer  "tiet_bat_dau"
+    t.string   "phong"
+    t.integer  "lop_mon_hoc_id"
+    t.boolean  "thuc_hanh"
+    t.string   "type"
+    t.string   "state"
+    t.integer  "moderator_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "lop_mon_hocs", :force => true do |t|
@@ -68,6 +85,14 @@ ActiveRecord::Schema.define(:version => 20131209041604) do
     t.string   "name"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+  end
+
+  create_table "tuans", :force => true do |t|
+    t.integer  "stt"
+    t.date     "tu_ngay"
+    t.date     "den_ngay"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|

@@ -26,5 +26,8 @@ describe LopMonHoc do
     lop.state.should == "completed"
   end
 
-  
+  it "should have many lich_trinh_giang_days" do 
+    lop = FactoryGirl.create(:lop_mon_hoc)
+    lop.should respond_to(:lich_trinh_giang_days)
+  end
 end
