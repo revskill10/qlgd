@@ -5,23 +5,21 @@ class LopMonHoc < ActiveRecord::Base
 
 
   validates :ma_lop, :ma_mon_hoc, :presence => true
-  belongs_to :giang_vien
+  
   has_many :calendars, :dependent => :destroy
   has_many :lich_trinh_giang_days, :dependent => :destroy
-  state_machine :state, :initial => :pending do
-    event :start do
-      transition :pending => :started
-    end
-    before_transition :on => :start, :do => :create_lichs
+  has_many :giang_viens, :through => :calendars, :uniq => true
+
+  state_machine :state, :initial => :pending do   
     event :complete do 
-      transition :started => :completed
+      transition :pending => :completed
     end
     event :remove do 
-      transition :started => :removed
+      transition all => :removed
     end
   end
 
-   
+
 
   def generate_calendars
     if calendars.count > 0 

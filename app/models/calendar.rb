@@ -3,7 +3,7 @@ class Calendar < ActiveRecord::Base
   include IceCube
   attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau
   belongs_to :lop_mon_hoc
-
+  belongs_to :giang_vien
   TIET = {1 => [6,30], 2 => [7,20], 3 => [8,10],
           4 => [9,5], 5 => [9,55], 6 => [10, 45],
           7 => [12,30], 8 => [13,20], 9 => [14,10],
@@ -20,7 +20,7 @@ class Calendar < ActiveRecord::Base
 
 
   def generate
-    return nil if lop_mon_hoc.state == 'started'
+    #return nil if lop_mon_hoc.state == 'started'
     if lop_mon_hoc
       #schedule.all.each do 
       #lop_mon_hoc.lich_trinh_giang_days.first_or_create(thoi_gian: , so_tiet: )    

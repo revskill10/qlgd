@@ -2,7 +2,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :type
   
   belongs_to :lop_mon_hoc
-
+  belongs_to :giang_vien
   validates :thoi_gian, :so_tiet, :presence => true
   validates :thoi_gian, :so_tiet, :uniqueness => true
   

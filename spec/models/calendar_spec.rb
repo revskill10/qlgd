@@ -7,10 +7,14 @@ describe Calendar do
   	calendar.so_tiet.should == 3
   end
 
-  it "should generate lich trinh giang day" do 
-  	lop = FactoryGirl.create(:lop_mon_hoc)
-  	calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop)
-  	calendar.generate
-  	lop.lich_trinh_giang_days.count.should > 0
+  
+
+  it "should belongs to a GiangVien" do 
+    lop = FactoryGirl.create(:lop_mon_hoc)
+    calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop)
+    gv = FactoryGirl.create(:giang_vien)
+    calendar.should respond_to(:giang_vien)
+    calendar.giang_vien = gv
+    calendar.giang_vien.should_not be_nil
   end
 end

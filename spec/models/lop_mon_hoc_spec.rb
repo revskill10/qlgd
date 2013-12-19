@@ -2,14 +2,14 @@ require 'spec_helper'
 
 describe LopMonHoc do
     
-  it "should belongs to a teacher" do         
-    lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien => FactoryGirl.create(:giang_vien))    
-    lop.giang_vien.should be_a(GiangVien)
+  it "should have many teachers" do         
+    lop = FactoryGirl.create(:lop_mon_hoc)    
+    lop.should respond_to(:giang_viens)
   end
 
   
 
-  it "should have settings with hstore" do 
+  it "should have settings" do 
   	lop = FactoryGirl.create(:lop_mon_hoc, settings: {'language' => 'chinese'})
   	lop.language.should == "chinese"  	
     lop.language = 'vietnamese'
@@ -19,9 +19,7 @@ describe LopMonHoc do
 
   it "should change state" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
-    lop.state.should == "pending"
-    lop.start!
-    lop.state.should == "started"
+    lop.state.should == "pending"    
     lop.complete!
     lop.state.should == "completed"
   end
@@ -30,4 +28,5 @@ describe LopMonHoc do
     lop = FactoryGirl.create(:lop_mon_hoc)
     lop.should respond_to(:lich_trinh_giang_days)
   end
+
 end
