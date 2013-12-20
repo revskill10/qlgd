@@ -4,8 +4,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
+  has_many :attendances, :dependent => :destroy
+
   validates :thoi_gian, :so_tiet, :giang_vien, :presence => true
   validate :check_thoi_gian, on: :create
+  
   
 
   
@@ -21,19 +24,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
     10 => [15, 5], 11 => [15, 55], 12 => [16, 45],
     13 => [18, 0], 14 => [18, 50], 15 => [19,40], 16 => [20,30]}
   CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
-  def get_tiet_bat_dau
-  	hour = thoi_gian.hour
-    minute = thoi_gian.minute
-    return TIET[[hour, minute]]
-  end
   
-  def load_tuan
-  	Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.to_date and t.den_ngay >= thoi_gian.to_date }.stt    
-  end
   
   state_machine :state, :initial => :pending do  
-    event :complete do 
-      transition :pending => :completed # da hoan thanh gio hoc
+    event :start do 
+      transition :pending => :started # da hoan thanh gio hoc
     end
     event :nghiday do 
       transition :pending => :nghiday # nghi day
@@ -61,11 +56,29 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end    
   end
 
-  private
+
+  def start
+    self.tuan = self.load_tuan
+    self.tiet_bat_dau = self.get_tiet_bat_dau
+    super
+  end
+
+  
+  def get_tiet_bat_dau
+    hour = thoi_gian.hour
+    minute = thoi_gian.minute
+    return TIET[[hour, minute]]
+  end
+  
+  def load_tuan
+    Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.to_date and t.den_ngay >= thoi_gian.to_date }.stt    
+  end
   def check_thoi_gian    
     t = lop_mon_hoc.lich_trinh_giang_days.where("thoi_gian = timestamp ?", thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
     unless t.nil?
       errors[:name] << 'duplicates thoi_gian'
     end
   end
+  
+
 end

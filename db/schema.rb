@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131220020036) do
+ActiveRecord::Schema.define(:version => 20131220041836) do
+
+  create_table "attendances", :force => true do |t|
+    t.integer  "lich_trinh_giang_day_id"
+    t.integer  "so_tiet_vang"
+    t.boolean  "phep"
+    t.string   "state"
+    t.integer  "sinh_vien_id"
+    t.text     "note"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
 
   create_table "calendars", :force => true do |t|
     t.integer  "so_tiet"
