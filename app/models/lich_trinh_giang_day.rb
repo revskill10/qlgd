@@ -32,27 +32,33 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
   
   state_machine :state, :initial => :pending do  
-    event :start do 
-      transition :pending => :started
+    event :complete do 
+      transition :pending => :completed # da hoan thanh gio hoc
     end
     event :nghiday do 
-      transition :pending => :nghiday
+      transition :pending => :nghiday # nghi day
+    end
+    event :nghile do 
+      transition :pending => :nghile  # nghile
     end
     event :bosung do 
-      transition :pending => :bosung
+      transition :pending => :bosung  # day bo sung
     end
     event :remove do 
-      transition :pending => :removed
+      transition :pending => :removed # xoa buoi hoc
     end
   end
 
   state_machine :status, :initial => :waiting do     
     event :accept do 
-      transition :waiting => :accepted
+      transition all => :accepted # duoc chap nhan thuc hien
+    end
+    event :queue do 
+      transition all => :queued # dang cho xet duyet
     end
     event :drop do 
-      transition :waiting => :dropped
-    end
+      transition :queued => :dropped # khong duoc xet duyet
+    end    
   end
 
   private

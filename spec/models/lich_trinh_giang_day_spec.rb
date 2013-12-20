@@ -12,6 +12,12 @@ describe LichTrinhGiangDay do
   	
   end
 
+  it "should require giang vien" do 
+    lop = FactoryGirl.create(:lop_mon_hoc)    
+    lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id => nil)
+    lich.valid?.should be_false
+  end
+
   it "should belongs to lopmonhoc and giangvien" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
@@ -67,7 +73,7 @@ describe LichTrinhGiangDay do
     lich.state.should == "pending"
     lich.accept!
     lich.status.should == "accepted"
-    lich.start!
-    lich.state.should == "started"
+    lich.complete!
+    lich.state.should == "completed"
   end
 end

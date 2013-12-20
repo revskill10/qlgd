@@ -12,10 +12,10 @@ class LopMonHoc < ActiveRecord::Base
 
   state_machine :state, :initial => :pending do  
     event :start do 
-      transition :pending => :started
+      transition :pending => :started # da thiet lap thong so
     end 
     event :complete do 
-      transition :started => :completed
+      transition :started => :completed # da ket thuc mon
     end
     event :remove do 
       transition :pending => :removed
