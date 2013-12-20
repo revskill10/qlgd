@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131220041836) do
+ActiveRecord::Schema.define(:version => 20131220073518) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "lich_trinh_giang_day_id"
@@ -34,6 +34,7 @@ ActiveRecord::Schema.define(:version => 20131220041836) do
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
     t.integer  "giang_vien_id"
+    t.string   "state"
   end
 
   add_index "calendars", ["lop_mon_hoc_id"], :name => "index_calendars_on_lop_mon_hoc_id"

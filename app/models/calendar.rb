@@ -22,20 +22,29 @@ class Calendar < ActiveRecord::Base
     new_schedule.all_occurrences.to_a
   end
 
+  state_machine :state, :initial => :pending do  
+    event :generate do 
+      transition :pending => :generated # da hoan thanh gio hoc
+    end    
+  end
 
-  def generate
-    #return nil if lop_mon_hoc.state == 'started'
-    if lop_mon_hoc
-      sch = schedule
+  def generate    
+    if self.lop_mon_hoc
+      sch = self.schedule
       if sch.count > 0
         sch.each do |s|
-          lich = lop_mon_hoc.lich_trinh_giang_days.where(thoi_gian: s.to_datetime, so_tiet: so_tiet, :giang_vien_id => giang_vien.id).first_or_create!
-          lich.tuan = lich.load_tuan
-          lich.tiet_bat_dau = lich.get_tiet_bat_dau
-          lich.save!
+          begin
+            lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_datetime)
+            lich.giang_vien = self.giang_vien
+            lich.so_tiet = self.so_tiet
+            lich.start!          
+          rescue
+
+          end
         end
       end
     end
+    super
   end
   def ngay_bat_dau
     t1 = Tuan.where(stt: tuan_hoc_bat_dau).first
