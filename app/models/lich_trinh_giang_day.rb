@@ -71,7 +71,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
   
   def load_tuan
-    Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.to_date and t.den_ngay >= thoi_gian.to_date }.stt    
+    Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.localtime.to_date and t.den_ngay >= thoi_gian.localtime.to_date }.stt    
   end
   def check_thoi_gian    
     t = lop_mon_hoc.lich_trinh_giang_days.where("thoi_gian = timestamp ?", thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
