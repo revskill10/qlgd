@@ -27,14 +27,25 @@ describe Calendar do
     calendar.giang_vien.should_not be_nil
   end
 
-  it "should generate lich trinh giang days" do 
-    t1 = FactoryGirl.create(:tuan)
-    t2 = FactoryGirl.create(:tuan, :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24)))
+  it "should have ngay_bat_dau and ngay_ket_thuc" do 
+    t1 = FactoryGirl.create(:tuan, :stt => 1, :tu_ngay => Date.new(2013, 8, 12).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 18).change(:offset => Rational(7,24)))
+    t2 = FactoryGirl.create(:tuan, :stt => 2,  :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24)))
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop, :giang_vien => gv)        
     calendar.ngay_bat_dau.to_date.should == t1.tu_ngay.to_date
     calendar.ngay_ket_thuc.to_date.should == t2.den_ngay.to_date
+  end
+
+  it "should generate many lich trinh giang days" do 
+    t1 = FactoryGirl.create(:tuan, :stt => 1, :tu_ngay => Date.new(2013, 8, 12).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 18).change(:offset => Rational(7,24)))
+    t2 = FactoryGirl.create(:tuan, :stt => 2,  :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24)))
+    lop = FactoryGirl.create(:lop_mon_hoc)
+    gv = FactoryGirl.create(:giang_vien)
+    calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop, :giang_vien => gv)        
+    calendar.schedule.count.should > 0    
+    calendar.generate
+    lop.lich_trinh_giang_days.count.should > 0
   end
 
 end

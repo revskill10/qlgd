@@ -26,13 +26,20 @@ class Calendar < ActiveRecord::Base
   def generate
     #return nil if lop_mon_hoc.state == 'started'
     if lop_mon_hoc
-      #schedule.all.each do 
-      #lop_mon_hoc.lich_trinh_giang_days.first_or_create(thoi_gian: , so_tiet: )    
+      sch = schedule
+      if sch.count > 0
+        sch.each do |s|
+          lich = lop_mon_hoc.lich_trinh_giang_days.where(thoi_gian: s.to_datetime, so_tiet: so_tiet, :giang_vien_id => giang_vien.id).first_or_create!
+          lich.tuan = lich.load_tuan
+          lich.tiet_bat_dau = lich.get_tiet_bat_dau
+          lich.save!
+        end
+      end
     end
   end
   def ngay_bat_dau
     t1 = Tuan.where(stt: tuan_hoc_bat_dau).first
-    day = t1.tu_ngay + (thu - 1).days
+    day = t1.tu_ngay + (thu - 2).days
     return DateTime.new(day.year, day.month, day.day).change(:offset => Rational(7,24))
   end
   def ngay_ket_thuc
