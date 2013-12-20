@@ -41,8 +41,7 @@ describe LichTrinhGiangDay do
   it "should check uniqueness of thoi_gian" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
-    lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30))
-    lich.giang_vien = gv
+    lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id => gv.id)
     lich.save!
     t = LichTrinhGiangDay.where(thoi_gian: lich.thoi_gian).first
     t.should_not be_nil
@@ -57,5 +56,18 @@ describe LichTrinhGiangDay do
     lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30))
     lich.giang_vien = gv
     lich.load_tuan.should == 1
+    lich.state.should == "pending"
+  end
+
+  it "has states" do 
+    lop = FactoryGirl.create(:lop_mon_hoc)
+    gv = FactoryGirl.create(:giang_vien)
+    lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id  => gv.id)
+    lich.status.should == "waiting"
+    lich.state.should == "pending"
+    lich.accept!
+    lich.status.should == "accepted"
+    lich.start!
+    lich.state.should == "started"
   end
 end

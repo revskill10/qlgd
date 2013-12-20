@@ -1,19 +1,11 @@
-class ThoigianValidator < ActiveModel::Validator
-  def validate(record)
-    l = record.lop_mon_hoc
-    t = l.lich_trinh_giang_days.where('thoi_gian = timestamp ?', record.thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
-    unless t.nil?
-      record.errors[:name] << 'duplicates thoi_gian'
-    end
-  end
-end
+
 class LichTrinhGiangDay < ActiveRecord::Base
-  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :type
+  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
   validates :thoi_gian, :so_tiet, :giang_vien, :presence => true
-  validates_with ThoigianValidator
+  validate :check_thoi_gian, on: :create
   
 
   
@@ -39,4 +31,35 @@ class LichTrinhGiangDay < ActiveRecord::Base
   	Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.to_date and t.den_ngay >= thoi_gian.to_date }.stt    
   end
   
+  state_machine :state, :initial => :pending do  
+    event :start do 
+      transition :pending => :started
+    end
+    event :nghiday do 
+      transition :pending => :nghiday
+    end
+    event :bosung do 
+      transition :pending => :bosung
+    end
+    event :remove do 
+      transition :pending => :removed
+    end
+  end
+
+  state_machine :status, :initial => :waiting do     
+    event :accept do 
+      transition :waiting => :accepted
+    end
+    event :drop do 
+      transition :waiting => :dropped
+    end
+  end
+
+  private
+  def check_thoi_gian    
+    t = lop_mon_hoc.lich_trinh_giang_days.where("thoi_gian = timestamp ?", thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
+    unless t.nil?
+      errors[:name] << 'duplicates thoi_gian'
+    end
+  end
 end

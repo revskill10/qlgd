@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(:version => 20131220020036) do
     t.string   "phong"
     t.integer  "lop_mon_hoc_id"
     t.boolean  "thuc_hanh"
-    t.string   "type"
+    t.string   "status"
     t.string   "state"
     t.integer  "moderator_id"
     t.datetime "created_at",     :null => false

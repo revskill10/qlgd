@@ -10,7 +10,7 @@ class CreateLichTrinhGiangDays < ActiveRecord::Migration
       t.string :phong
       t.integer :lop_mon_hoc_id
       t.boolean :thuc_hanh
-      t.string :type
+      t.string :status
       t.string :state
       t.integer :moderator_id
 
