@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131219093041) do
+ActiveRecord::Schema.define(:version => 20131220020036) do
 
   create_table "calendars", :force => true do |t|
     t.integer  "so_tiet"
@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(:version => 20131219093041) do
     t.integer  "moderator_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "giang_vien_id"
   end
 
   create_table "lop_mon_hocs", :force => true do |t|

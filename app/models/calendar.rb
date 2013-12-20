@@ -2,8 +2,12 @@
 class Calendar < ActiveRecord::Base
   include IceCube
   attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau
+
+
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
+
+  validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :lop_mon_hoc, :giang_vien, :presence => true
   TIET = {1 => [6,30], 2 => [7,20], 3 => [8,10],
           4 => [9,5], 5 => [9,55], 6 => [10, 45],
           7 => [12,30], 8 => [13,20], 9 => [14,10],
@@ -26,5 +30,18 @@ class Calendar < ActiveRecord::Base
       #lop_mon_hoc.lich_trinh_giang_days.first_or_create(thoi_gian: , so_tiet: )    
     end
   end
-
+  def ngay_bat_dau
+    t1 = Tuan.where(stt: tuan_hoc_bat_dau).first
+    day = t1.tu_ngay + (thu - 1).days
+    return DateTime.new(day.year, day.month, day.day).change(:offset => Rational(7,24))
+  end
+  def ngay_ket_thuc
+    t2 = Tuan.where(stt: tuan_hoc_bat_dau + so_tuan - 1).first    
+    if t2
+      day = t2.den_ngay
+      return DateTime.new(day.year, day.month, day.day).change(:offset => Rational(7,24))
+    else
+      return nil
+    end
+  end
 end

@@ -10,12 +10,15 @@ class LopMonHoc < ActiveRecord::Base
   has_many :lich_trinh_giang_days, :dependent => :destroy
   has_many :giang_viens, :through => :calendars, :uniq => true
 
-  state_machine :state, :initial => :pending do   
+  state_machine :state, :initial => :pending do  
+    event :start do 
+      transition :pending => :started
+    end 
     event :complete do 
-      transition :pending => :completed
+      transition :started => :completed
     end
     event :remove do 
-      transition all => :removed
+      transition :pending => :removed
     end
   end
 
@@ -28,8 +31,5 @@ class LopMonHoc < ActiveRecord::Base
       end
     end
   end
-  private
-  def create_lichs
-    generate_calendars
-  end
+    
 end
