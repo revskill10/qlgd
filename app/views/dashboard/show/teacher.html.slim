@@ -15,7 +15,7 @@
 
   .container
     
-    h3 Thông số lớp học
+    h3 Thông tin lớp học
     table.table
       thead
         td Mã lớp
@@ -42,11 +42,11 @@
         td Vắng
         
       tbody
-        - if @svs and @svs.count > 0
-          - @svs.each_with_index do |sv, index|
+        - if @enrollments and @enrollments.count > 0
+          - @enrollments.each_with_index do |enrollment, index|
             tr
-              td= index + 1
-              td= sv.sinh_vien.hovaten
-              td= sv.code
-              td= link_to "Vắng", diemdanh_path(:lop => @lich.lop_mon_hoc.id, :giangvien => @lich.giang_vien.id), :remote => true, :method => :post, :id => "vang-#{sv.id}"
+              td= "#{index + 1}"
+              td= enrollment.name
+              td= enrollment.code
+              td= link_to enrollment.status(@lich), diemdanh_path(:lop => @lich.lop_mon_hoc.id, :giangvien => @lich.giang_vien.id, :sv => enrollment.sinh_vien.id), :remote => true, :id => "vang-#{enrollment.id}", :class => "btn btn-success"
               

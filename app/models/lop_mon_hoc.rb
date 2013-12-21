@@ -9,6 +9,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :calendars, :dependent => :destroy
   has_many :lich_trinh_giang_days, :dependent => :destroy
   has_many :giang_viens, :through => :calendars, :uniq => true
+  has_many :enrollments, :dependent => :destroy
 
   state_machine :state, :initial => :pending do  
     event :start do 

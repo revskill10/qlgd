@@ -10,8 +10,6 @@ describe Attendance do
     at = lich.attendances.where(sinh_vien_id: sv.id).first_or_create!
     at.lich_trinh_giang_day.so_tiet.should == 2
     at.mark(1, false, false)
-    at.state.should == 'absent'    
-    
-    
+    at.late?.should be_true
   end
 end
