@@ -1,7 +1,7 @@
 require 'pg_tools'
 class ApplicationController < ActionController::Base
   protect_from_forgery  
-  before_filter :load_tenant
+  #before_filter :load_tenant
   private
   def guest?
   	(current_user.nil?) or (current_user and !user_signed_in?)
@@ -24,4 +24,5 @@ class ApplicationController < ActionController::Base
   def load_tenant
     PgTools.set_search_path current_tenant.name, false
   end
+  helper_method :current_image
 end

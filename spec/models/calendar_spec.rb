@@ -44,7 +44,6 @@ describe Calendar do
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop, :giang_vien => gv)        
-    calendar.ngay_bat_dau    
     calendar.generate!
     lop.lich_trinh_giang_days.count.should == 2
     lop.lich_trinh_giang_days[0].thoi_gian.localtime.strftime("%Y-%m-%d %H:%M:00").should == "2013-08-12 06:30:00"

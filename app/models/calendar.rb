@@ -1,7 +1,7 @@
 #encoding: utf-8
 class Calendar < ActiveRecord::Base
   include IceCube
-  attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau
+  attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id
 
 
   belongs_to :lop_mon_hoc

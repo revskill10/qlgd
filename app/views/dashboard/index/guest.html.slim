@@ -16,5 +16,14 @@
             = link_to "Sign in", new_user_session_path      
 
   .container
-    h1 Guest         
+    h1 Guest #{@x}
+    table.table
+      thead
+        td Mã lớp
+        td Mã môn
+      tbody
+        - LopMonHoc.all.each do |lop|
+          tr
+            td= lop.ma_lop
+            td= lop.ma_mon_hoc   
   

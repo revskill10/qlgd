@@ -11,24 +11,21 @@
         ul.nav.navbar-nav
           li
             = link_to "Home", '/'
-            
           li
             = link_to "About", '/about'    
             = link_to "Sign Out", destroy_user_session_path      
 
   .container
-    
+    h1 Giảng viên
 
     table.table
       thead
-        td Tuần
-        td Thời gian
+        td Mã lớp
+        td Mã môn
       tbody
-        - LichTrinhGiangDay.all.each do |lich|
+        - @dslops.each do |lop|
           tr
-            td= "Tuần #{lich.tuan}"
-            td= lich.thoi_gian.localtime.strftime("%Y-%m-%d")
-
-                
+            td= lop.ma_lop
+            td= lop.ma_mon_hoc
 
   
