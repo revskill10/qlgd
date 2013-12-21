@@ -3,6 +3,7 @@ Qlgd::Application.routes.draw do
   get "/" => "dashboard#index"
   get "calendar" => "dashboard#calendar", :as => :calendar
   get "about" => "static_pages#about"
+  get "/lich/:id" => "dashboard#show", :as => :lich
   #get '/' => 'static_pages#home'
   resources :tenants do 
     resources :giang_viens

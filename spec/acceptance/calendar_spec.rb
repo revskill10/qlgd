@@ -56,9 +56,10 @@ feature "Thoi khoa bieu", %q{
 								
 		LichTrinhGiangDay.all.count.should == 4
 		page.should have_content("Tuần 1")
-		page.should have_content("2013-08-12")
-		page.should have_content("2013-08-13")
-		
+		page.should have_content("06h30 ngày 12/08/2013")
+		page.should have_content("06h30 ngày 13/08/2013")
+		page.should have_content("06h30 ngày 19/08/2013")
+		page.should have_content("06h30 ngày 20/08/2013")
 		#us.imageable.should == gv
 		#us.imageable.lop_mon_hocs.count.should == 2
 	end

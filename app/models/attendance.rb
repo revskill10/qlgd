@@ -22,7 +22,12 @@ class Attendance < ActiveRecord::Base
       transition all => :idle # khong phai di hoc
     end
   end
-  
+  def vang?
+    state == :absent or state == :late
+  end
+  def tre?
+
+  end
   def mark_idle
     self.phep = nil
     self.so_tiet_vang = 0
@@ -36,18 +41,25 @@ class Attendance < ActiveRecord::Base
     super
   end
 
-  def mark_absent(phep = false)
-    self.phep = phep
-    self.so_tiet_vang = self.lich_trinh_giang_day.so_tiet
-    #self.save!
-    #save!
-    super
-  end
 
-  def mark_late(stv, phep)
+  def mark_absent(stv, phep)    
     self.phep = phep
     self.so_tiet_vang = stv
     #self.save!
     super
+  end
+
+  def mark(stv, phep, idle)
+    return nil if stv.nil? or stv > lich_trinh_giang_day.so_tiet
+    if idle == true
+      mark_idle      
+    end
+    if stv == 0
+      mark_attendant
+    end
+    if stv > 0 and stv < lich_trinh_giang_day.so_tiet
+      mark_absent(stv, phep)
+    end
+    return true
   end
 end

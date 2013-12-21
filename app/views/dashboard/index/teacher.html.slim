@@ -9,25 +9,27 @@
         = link_to "QLGD", '/', {class:"navbar-brand"}
       .collapse.navbar-collapse
         ul.nav.navbar-nav
-          li
-            = link_to "Home", '/'
-            
-          li
-            = link_to "About", '/about'    
-            = link_to "Sign Out", destroy_user_session_path      
+          li= link_to "Home", '/'            
+          li= link_to "About", '/about'    
+          li= link_to "Sign Out", destroy_user_session_path      
 
   .container
     
-
+    
+    
+      
     table.table
       thead
         td Tuần
         td Thời gian
       tbody
-        - LichTrinhGiangDay.all.each do |lich|
+        - @lichs.all.each do |lich|
           tr
             td= "Tuần #{lich.tuan}"
-            td= lich.thoi_gian.localtime.strftime("%Y-%m-%d")
+            td= link_to lich.thoi_gian.localtime.strftime("%Hh%M ngày %d/%m/%Y"), "/lich/#{lich.id}"
+
+
+
 
                 
 
