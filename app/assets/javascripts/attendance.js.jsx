@@ -10,10 +10,13 @@ var Enrollment = React.createClass({
     return (
       
       <tr>
-        <td>{this.props.key}</td>
+        <td>{this.props.stt}</td>
         <td>{this.props.name}</td>
         <td>{this.props.code}</td>
-        <td><button class={css[this.props.status]}>{this.props.status}</button></td>
+        <td><button onClick={this.props.on_vang} class={css[this.props.status]}>{this.props.status}</button></td>        
+        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm">+</button>{'   '}{this.props.so_tiet_vang}{'   '}
+        <button onClick={this.props.on_minus} class="btn btn-default btn-sm">-</button></td>
+        <td>{this.props.phep}</td>
       </tr>
     );
   }
@@ -33,9 +36,25 @@ var Enrollments = React.createClass({
   getInitialState: function() {
     return {data: []};
   },
+  handleVang: function(enrollment, lich_id){
+    //alert(comment.id + " - " + lich_id);
+    var d = {      
+      lich_id: lich_id,
+      enrollment: enrollment
+    };
+    $.ajax({
+      url: this.props.url,
+      type: 'POST',
+      data: d,
+      success: function(data) {
+        this.setState({data: data});
+      }.bind(this)
+    });
+  },
   render: function(){  
-    var enrollments = this.state.data.map(function (enrollment) {
-      return <Enrollment key={enrollment.id} name={enrollment.name} code={enrollment.code} status={enrollment.status}/>;
+    var self = this;
+    var enrollments = this.state.data.map(function (enrollment, i) {
+      return <Enrollment on_vang={self.handleVang.bind(self, enrollment, self.props.lich)} stt={i} so_tiet_vang={enrollment.so_tiet_vang} phep={enrollment.phep} key={enrollment.id} name={enrollment.name} code={enrollment.code} status={enrollment.status}/>;
     }); 
     return (
       <div>        
@@ -45,7 +64,9 @@ var Enrollments = React.createClass({
             <td>Stt</td>
             <td>Họ tên</td>
             <td>Mã sinh viên</td>
-            <td>Vắng</td>          
+            <td>Vắng</td>        
+            <td>Số tiết vắng</td>
+            <td>Phép</td>  
           </thead>
           <tbody>
             {enrollments}
@@ -123,6 +144,7 @@ var Lich = React.createClass({
               <td>{this.state.data.thuc_hanh}</td>
               <td>{this.state.data.sv_co_mat}</td>
               <td>{this.state.data.sv_vang_mat}</td>
+              <td>TT</td>
             </tr>
           </tbody>
         </table>
@@ -131,14 +153,14 @@ var Lich = React.createClass({
   }
 });
 React.renderComponent(  
-  <Lop url={"/lop/" + ENV.lop_id + "/info"} />,
+  <Lop url={"/lop/" + ENV.lop_id + "/info"} lop={ENV.lop_id}/>,
   document.getElementById('lop')
 );
 React.renderComponent(  
-  <Lich url={"/lich/" + ENV.lich_id + "/info"} />,
+  <Lich url={"/lich/" + ENV.lich_id + "/info"} lich={ENV.lich_id} />,
   document.getElementById('lich')
 );
 React.renderComponent(  
-  <Enrollments url= {"/lich/" + ENV.lich_id + "/enrollments.json"}/>,
+  <Enrollments url= {"/lich/" + ENV.lich_id + "/enrollments.json"} lich={ENV.lich_id}/>,
   document.getElementById('main')
 );

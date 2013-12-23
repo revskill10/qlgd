@@ -7,6 +7,7 @@ Qlgd::Application.routes.draw do
   get "/diemdanh" => "dashboard#diemdanh", :as => :diemdanh
   #get '/' => 'static_pages#home'
   get "lich/:lich_id/enrollments" => "enrollments#index"
+  post "lich/:lich_id/enrollments" => "enrollments#update"
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
   resources :tenants do 

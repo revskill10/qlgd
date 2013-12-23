@@ -14,14 +14,22 @@ class EnrollmentDecorator < Draper::Decorator
   def initialize(obj,lich)    
     @object = obj
     @lich = lich
+    @at = @object.attendances.with_lich(@lich)
   end
   def id
     @object.id
   end
-  def status
-  	at = @object.attendances.with_lich(@lich)
-  	return "Không vắng" unless at
-  	return at.status if at
+  def so_tiet_vang
+    return 0 unless @at
+    return @at.so_tiet_vang if @at
+  end
+  def phep
+    return false unless @at
+    return @at.phep if @at
+  end
+  def status  	
+  	return "Không vắng" unless @at
+  	return @at.decorate.status if @at
   end
   def name
     @object.sinh_vien.hovaten
