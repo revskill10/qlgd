@@ -1,10 +1,10 @@
 class LopMonHoc < ActiveRecord::Base  
   serialize :settings
-  attr_accessible :ma_lop, :ma_mon_hoc
+  attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc
   hstore_accessor :settings, :language
 
 
-  validates :ma_lop, :ma_mon_hoc, :presence => true
+  validates :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :presence => true
   
   has_many :calendars, :dependent => :destroy
   has_many :lich_trinh_giang_days, :dependent => :destroy

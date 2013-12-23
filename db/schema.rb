@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131221065303) do
+ActiveRecord::Schema.define(:version => 20131223075259) do
 
   create_table "attendances", :force => true do |t|
     t.integer  "lich_trinh_giang_day_id"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(:version => 20131221065303) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "giang_vien_id"
+    t.string   "ten_mon_hoc"
   end
 
   add_index "lop_mon_hocs", ["giang_vien_id"], :name => "index_lop_mon_hocs_on_giang_vien_id"

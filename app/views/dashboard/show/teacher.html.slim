@@ -14,28 +14,10 @@
           li= link_to "Sign Out", destroy_user_session_path      
 
   .container
-    
-    h3 Thông tin lớp học
-    table.table
-      thead
-        td Mã lớp
-        td Tên môn học
-        td Giảng viên
-      tbody
-    
-    h3 Thông số buổi dạy
-    table.table
-      thead
-        td Phòng
-        td Thực hành
-        td Số sinh viên có mặt
-        td Số sinh viên vắng
-        td Trạng thái
-      tbody
-
-    h3 Thông tin điểm danh 
-    #mainapp             
+    #lop
+    #lich
+    #main             
     
 javascript:
-  var ENV = {lich_id: #{raw @lich.id}};  
+  var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lich.lop_mon_hoc.id}};  
 = javascript_include_tag asset_path("attendance")

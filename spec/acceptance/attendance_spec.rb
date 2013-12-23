@@ -11,6 +11,14 @@ class ActiveRecord::Base
     @@shared_connection || retrieve_connection
   end
 end
+def wait_for_ajax
+  Timeout.timeout(Capybara.default_wait_time) do
+    active = page.evaluate_script('jQuery.active')
+    until active == 0
+      active = page.evaluate_script('jQuery.active')
+    end
+  end
+end
 ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
 feature "Thoi khoa bieu", %q{
 	As a teacher, i can visit home page,
@@ -19,12 +27,12 @@ feature "Thoi khoa bieu", %q{
 	background do
 		Capybara.register_driver :selenium do |app|
 		  require 'selenium/webdriver'
-		  Selenium::WebDriver::Firefox::Binary.path = 'E:/firefox25/firefox.exe'
-		  Capybara::Selenium::Driver.new(app, :browser => :firefox)
+		  #Selenium::WebDriver::Firefox::Binary.path = 'E:/firefox25/firefox.exe'
+		  Capybara::Selenium::Driver.new(app, :browser => :chrome)
 		end
 		Capybara.current_driver = :selenium
 		Warden.test_mode!    
-
+		Capybara.default_wait_time = 5
 		#tenant = FactoryGirl.create(:tenant, :name => "public")
 		
 	end
@@ -34,7 +42,7 @@ feature "Thoi khoa bieu", %q{
 	end
 
 	
-	scenario "I can see calendar page" do 
+	scenario "I can see calendar page", js: true do 
 		sv = FactoryGirl.create(:sinh_vien)
 		gv = FactoryGirl.create(:giang_vien)
 	    us = FactoryGirl.create(:giangvien)
@@ -57,8 +65,11 @@ feature "Thoi khoa bieu", %q{
 		visit '/'
 												
 		click_link "06h30 ngày 12/08/2013"
-		page.should have_content("Thông tin lớp học")
-		page.should have_content("ho1")
+		wait_for_ajax
+		page.document.synchronize do
+			page.should have_content("Thông tin lớp học")
+			page.should have_content("ho1")
+		end		
 		#us.imageable.should == gv
 		#us.imageable.lop_mon_hocs.count.should == 2
 	end

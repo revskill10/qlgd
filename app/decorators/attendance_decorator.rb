@@ -1,3 +1,4 @@
+#encoding: utf-8
 class AttendanceDecorator < Draper::Decorator
   delegate_all
 
@@ -13,6 +14,6 @@ class AttendanceDecorator < Draper::Decorator
   	return "Trễ" if object.late?
   	return "Vắng" if object.absent?
   	return "Không vắng" if object.present?
-  	return "Không vắng" if object.idle?
+  	return "Không học" if object.idle?
   end
 end
