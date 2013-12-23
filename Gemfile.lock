@@ -14,6 +14,8 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_model_serializers (0.8.1)
+      activemodel (>= 3.0)
     activemodel (3.2.13)
       activesupport (= 3.2.13)
       builder (~> 3.0.0)
@@ -174,6 +176,11 @@ GEM
     rb-notifu (0.0.4)
     rdoc (3.12.2)
       json (~> 1.4)
+    react-rails (0.4.1.1)
+      execjs
+      rails (>= 3.1)
+      react-source (= 0.4.1)
+    react-source (0.4.1)
     request_store (1.0.5)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -263,6 +270,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  active_model_serializers
   capybara
   childprocess
   coffee-rails (~> 3.2.1)
@@ -282,6 +290,7 @@ DEPENDENCIES
   rails (= 3.2.13)
   rails_12factor (= 0.0.2)
   rb-notifu
+  react-rails
   rspec-rails
   sass-rails (~> 3.2.3)
   selenium-webdriver

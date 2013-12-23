@@ -64,6 +64,8 @@ gem 'state_machine'
 gem "ice_cube"
 gem 'draper', '~> 1.3'
 gem "pundit"
+gem 'react-rails'
+gem "active_model_serializers"
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'

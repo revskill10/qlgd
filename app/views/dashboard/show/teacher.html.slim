@@ -33,20 +33,9 @@
         td Trạng thái
       tbody
 
-    h3 Thông tin điểm danh              
-    table.table
-      thead
-        td Stt
-        td Họ tên
-        td Mã sinh viên        
-        td Vắng
-        
-      tbody
-        - if @enrollments and @enrollments.count > 0
-          - @enrollments.each_with_index do |enrollment, index|
-            tr
-              td= "#{index + 1}"
-              td= enrollment.name
-              td= enrollment.code
-              td= link_to enrollment.status(@lich), diemdanh_path(:lop => @lich.lop_mon_hoc.id, :giangvien => @lich.giang_vien.id, :sv => enrollment.sinh_vien.id), :remote => true, :id => "vang-#{enrollment.id}", :class => "btn btn-success"
-              
+    h3 Thông tin điểm danh 
+    #mainapp             
+    
+javascript:
+  var ENV = {lich_id: #{raw @lich.id}};  
+= javascript_include_tag asset_path("attendance")
