@@ -13,7 +13,7 @@ var Enrollment = React.createClass({
         <td>{this.props.stt}</td>
         <td>{this.props.name}</td>
         <td>{this.props.code}</td>
-        <td><button onClick={this.props.on_vang} class={css[this.props.status]}>{this.props.status}</button></td>        
+        <td><button onClick={this.props.on_vang} class={css[this.props.status]}>{'v'}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm">+</button>{'   '}{this.props.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus} class="btn btn-default btn-sm">-</button></td>
         <td>{this.props.phep}</td>
