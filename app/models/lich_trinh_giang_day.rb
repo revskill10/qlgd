@@ -1,6 +1,6 @@
 
 class LichTrinhGiangDay < ActiveRecord::Base
-  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id
+  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
@@ -60,6 +60,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   def start
     self.tuan = self.load_tuan
     self.tiet_bat_dau = self.get_tiet_bat_dau
+    self.so_tiet_moi = self.so_tiet
     super
   end
 

@@ -14,10 +14,9 @@
           li= link_to "Sign Out", destroy_user_session_path      
 
   .container
-    #lop
-    #lich
+    
     #main             
     
 javascript:
   var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lich.lop_mon_hoc.id}};  
-= javascript_include_tag asset_path("attendance")
+= javascript_include_tag asset_path("lich")

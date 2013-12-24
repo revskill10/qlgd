@@ -9,10 +9,26 @@ class EnrollmentsController < ApplicationController
   def update  	
   	lich = LichTrinhGiangDay.find(params[:lich_id])
   	attendance = lich.attendances.where(sinh_vien_id: params[:enrollment][:id]).first_or_create!
-  	attendance.turn(params[:enrollment][:phep])
-    enrollment = lich.lop_mon_hoc.enrollments.where(sinh_vien_id: attendance.sinh_vien.id).first
-    #results = enrollments.map {|en| EnrollmentDecorator.new(en,lich) }.map {|e| EnrollmentSerializer.new(e)}
-    #render json: results.to_json
-    render json: EnrollmentSerializer.new(EnrollmentDecorator.new(enrollment, lich)).to_json
+    if params[:stat] == 'vang'
+  	  attendance.turn(params[:enrollment][:phep])    
+    elsif params[:stat] == 'plus'
+      attendance.plus
+    elsif params[:stat] == 'minus'
+      attendance.minus
+    end
+    #attendance.save!  
+    #attendance.mark_absent(false)
+    #lich = LichTrinhGiangDay.find(params[:lich_id])
+    enrollments = lich.lop_mon_hoc.enrollments    
+    results = enrollments.map {|en| EnrollmentDecorator.new(en,lich) }.map {|e| EnrollmentSerializer.new(e)}
+    render json: results.to_json
+    #render json: attendance.to_json
+  end
+  def test
+    
+    attendance = Attendance.find(1)    
+    attendance.turn(false)
+    attendance.save!
+    render json: {res: attendance.so_tiet_vang, state: attendance.state, lich: attendance.lich_trinh_giang_day.so_tiet_moi}
   end
 end  

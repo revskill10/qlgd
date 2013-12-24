@@ -14,7 +14,7 @@ class EnrollmentDecorator < Draper::Decorator
   def initialize(obj,lich)    
     @object = obj
     @lich = lich
-    @at = @object.attendances.with_lich(@lich)
+    @at = @object.attendances.where(lich_trinh_giang_day_id: @lich.id).first
   end
   def id
     @object.id
@@ -36,5 +36,8 @@ class EnrollmentDecorator < Draper::Decorator
   end
   def code
     @object.sinh_vien.code
+  end
+  def max
+    @lich.so_tiet_moi
   end
 end

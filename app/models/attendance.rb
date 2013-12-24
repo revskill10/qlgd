@@ -9,11 +9,11 @@ class Attendance < ActiveRecord::Base
     #before_transition any => :absent, :do => :do_absent
 
     event :mark_absent do 
-      transition :attendant => :absent # vang ca buoi hoc
+      transition all => :absent # vang ca buoi hoc
     end
     
     event :mark_late do 
-      transition :absent => :late # di tre, vang 1 so buoi hoc
+      transition all => :late # di tre, vang 1 so buoi hoc
     end
     
     event :mark_attendant do 
@@ -41,7 +41,7 @@ class Attendance < ActiveRecord::Base
 
   def mark_absent(phep)    
     self.phep = phep
-    self.so_tiet_vang = self.lich_trinh_giang_day.so_tiet
+    self.so_tiet_vang = self.lich_trinh_giang_day.so_tiet_moi
     #self.save!
     super
   end
@@ -54,28 +54,33 @@ class Attendance < ActiveRecord::Base
   end
 
   def mark(stv, phep, idle)
-    return nil if stv.nil? or stv > lich_trinh_giang_day.so_tiet
+    return nil if stv.nil? or stv > lich_trinh_giang_day.so_tiet_moi
     if idle == true
       mark_idle      
     else
       if stv == 0
         mark_attendant
       end
-      if stv > 0 and stv < lich_trinh_giang_day.so_tiet
+      if stv > 0 and stv < lich_trinh_giang_day.so_tiet_moi
         mark_late(stv, phep)
       end
-      if stv > 0 and stv == lich_trinh_giang_day.so_tiet
+      if stv > 0 and stv == lich_trinh_giang_day.so_tiet_moi
         mark_absent(phep)
       end
-    end
-    return true
+    end    
   end
 
   def turn(phep)
-    if self.absent?
+    if self.state == 'absent'
       self.mark_attendant
-    elsif self.attendant?
+    elsif self.state == 'attendant'
       self.mark_absent(phep)
     end
+  end
+  def plus
+    self.mark(self.so_tiet_vang+1, self.phep, self.idle?)
+  end
+  def minus
+    self.mark(self.so_tiet_vang-1, self.phep, self.idle?)
   end
 end

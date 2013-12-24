@@ -21,4 +21,6 @@ calendar1 = lop1.calendars.create(:so_tiet => 3, :so_tuan => 2, :thu => 2, :tiet
 calendar2 = lop2.calendars.create(:so_tiet => 3, :so_tuan => 2, :thu => 3, :tiet_bat_dau => 1, :tuan_hoc_bat_dau => 1, :giang_vien_id => gv.id)
 calendar1.generate!	    
 calendar2.generate!
+sv = FactoryGirl.create(:sinh_vien)  	
+en = FactoryGirl.create(:enrollment, :sinh_vien => sv, :lop_mon_hoc => lop)
 =end
