@@ -47,7 +47,15 @@ var Enrollments = React.createClass({
       type: 'POST',
       data: d,
       success: function(data) {
-        this.setState({data: data});
+        //var olddata = this.state;
+        var r = this.state.data.filter(function(v){return v.id===data.id;})[0];
+        r.name = data.name;
+        r.code = data.code;
+        r.so_tiet_vang = data.so_tiet_vang;
+        r.phep = data.phep;
+        r.status = data.status;
+        //this.setState({data: olddata});
+        this.forceUpdate();
       }.bind(this)
     });
   },
