@@ -58,7 +58,7 @@ var Lich = React.createClass({
     $.ajax({
       url: "/lich/1/enrollments.json" ,
       success: function(data) {                      
-        this.setState({data: data});               
+        this.setState({data : data.enrollments, lich: data.lich}); 
       }.bind(this)
     });    
   },
@@ -66,20 +66,20 @@ var Lich = React.createClass({
     this.loadEnrollmentsFromServer();  
   },
   getInitialState: function() {
-    return {data: []};
+    return {data: [], lich: this.props.lich };
   },    
   handleVang: function(enrollment, stat){    
     var d = {            
       stat: stat,
-      lich_id: this.props.lich.id,
+      lich_id: this.state.lich.id,
       enrollment: enrollment
     };    
     $.ajax({
       url: "/lich/1/enrollments",
       type: 'POST',
       data: d,
-      success: function(data) {        
-        this.setState({data: data});
+      success: function(data) {             
+        this.setState({data : data.enrollments, lich: data.lich}); 
         //alert(data.so_tiet_vang);
       }.bind(this)
     });
@@ -99,11 +99,11 @@ var Lich = React.createClass({
           </thead>
           <tbody>
             <tr>
-              <td>{this.props.lich.phong}</td>
-              <td>{this.props.lich.thuc_hanh}</td>
-              <td>{this.props.lich.sv_co_mat}</td>
-              <td>{this.props.lich.sv_vang_mat}</td>
-              <td>{this.props.lich.state}</td>
+              <td>{this.state.lich.id}</td>
+              <td>{this.state.lich.thuc_hanh}</td>
+              <td>{this.state.lich.sv_co_mat}</td>
+              <td>{this.state.lich.sv_vang_mat}</td>
+              <td>{this.state.lich.state}</td>
             </tr>
           </tbody>
         </table>
@@ -114,9 +114,9 @@ var Lich = React.createClass({
 });
 
 //var init = {"lich":{"id":1,"phong":null,"noi_dung":null,"state":"started","sv_co_mat":0,"sv_vang_mat":0,"so_tiet":3,"so_tiet_moi":3,"thuc_hanh":null},"enrollments":[{"id":1,"name":"ho1 dem1 ten1","code":"sv1","status":"Vắng","so_tiet_vang":3,"phep":null,"max":3},{"id":2,"name":"ho2 dem2 ten2","code":"sv2","status":"Vắng","so_tiet_vang":3,"phep":null,"max":3}]}
-
+/*
 $.ajax({
-      url: "/lich/1/info.json" ,
+      url: "/lich/1/enrollments.json" ,
       success: function(data) {                      
         React.renderComponent(  
           <Lich lich={ENV.lich_id} lich={data} />,
@@ -124,5 +124,9 @@ $.ajax({
         );           
       }
 });    
-
-
+*/
+React.renderComponent(  
+          <Lich lich={ENV.lich_id} />,
+          document.getElementById('main')
+        );  
+   

@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
    	lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: results.to_json
+    render json: {lich: LichTrinhGiangDaySerializer.new(lich.decorate), enrollments: results}.to_json
   end
   def update  	
   	lich = LichTrinhGiangDay.find(params[:lich_id])
@@ -21,8 +21,7 @@ class EnrollmentsController < ApplicationController
     #lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: results.to_json
-    #render json: attendance.to_json
+    render json: {lich: LichTrinhGiangDaySerializer.new(lich.decorate), enrollments: results}.to_json
   end
   def test
     
