@@ -16,11 +16,15 @@ class EnrollmentDecorator < Draper::Decorator
     @lich = lich
     @at = @object.attendances.where(lich_trinh_giang_day_id: @lich.id).first
   end
+  def sinh_vien_id
+    @object.sinh_vien.id
+  end
   def id
     @object.id
   end
   def so_tiet_vang
     return 0 unless @at
+    return 0 unless @at.so_tiet_vang
     return @at.so_tiet_vang if @at
   end
   def phep_status

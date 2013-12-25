@@ -1,10 +1,10 @@
 class Attendance < ActiveRecord::Base
-  attr_accessible :note, :phep, :so_tiet_vang, :state
+  attr_accessible :note, :phep, :so_tiet_vang, :state, :sinh_vien_id
 
   belongs_to :lich_trinh_giang_day
   belongs_to :sinh_vien
-
-  validates :lich_trinh_giang_day, :sinh_vien, :presence => true
+  before_create :set_init_data
+  validates :lich_trinh_giang_day, :sinh_vien_id, :presence => true
   state_machine :state, :initial => :attendant do  
     #before_transition any => :absent, :do => :do_absent
 
@@ -86,9 +86,14 @@ class Attendance < ActiveRecord::Base
     self.save!
   end
   def plus
-    self.mark(self.so_tiet_vang+1, self.phep, self.idle?)
+    self.mark((self.so_tiet_vang || 0) +1, self.phep, self.idle?)
   end
   def minus
-    self.mark(self.so_tiet_vang-1, self.phep, self.idle?)
+    self.mark((self.so_tiet_vang || 0) -1, self.phep, self.idle?)
+  end
+
+  private
+  def set_init_data
+    self.so_tiet_vang = 0
   end
 end
