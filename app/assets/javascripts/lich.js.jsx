@@ -6,6 +6,9 @@ var Enrollment = React.createClass({
               "Vắng": "btn btn-danger btn-sm",
               "Trễ": "btn btn-warning btn-sm",
               "Không học": "btn btn-primary btn-sm"};
+    var phep = {"Có phép": "btn btn-success btn-sm",
+    "Không phép": "btn btn-danger btn-sm",
+    "x" : "btn btn-default btn-sm"};
     var plus = 'disabled';
     var minus = 'disabled';
     if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) ) {plus = '';}
@@ -15,10 +18,10 @@ var Enrollment = React.createClass({
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name}</td>
         <td>{this.props.enrollment.code}</td>
-        <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{'v'}</button></td>        
-        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" >+</button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
-        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm"  >-</button></td>
-        <td>{this.props.enrollment.phep === true ? 'Có phép' : 'Không phép'}</td>
+        <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
+        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}>+</button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
+        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} >-</button></td>
+        <td><button disabled={this.props.enrollment.so_tiet_vang === 0 ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
       </tr>
     );
   }
@@ -30,7 +33,7 @@ var Enrollments = React.createClass({
   render: function(){      
     var self = this;
     var enrollments = this.props.data.map(function (enrollment, i) {
-      return <Enrollment stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_minus={self.handleVang.bind(self,enrollment,'minus')} />;
+      return <Enrollment stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')}  />;
     }); 
     return (
       <div>          
@@ -99,7 +102,7 @@ var Lich = React.createClass({
           </thead>
           <tbody>
             <tr>
-              <td>{this.state.lich.id}</td>
+              <td>{this.state.lich.phong}</td>
               <td>{this.state.lich.thuc_hanh}</td>
               <td>{this.state.lich.sv_co_mat}</td>
               <td>{this.state.lich.sv_vang_mat}</td>

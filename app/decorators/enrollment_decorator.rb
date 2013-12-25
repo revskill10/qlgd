@@ -23,6 +23,10 @@ class EnrollmentDecorator < Draper::Decorator
     return 0 unless @at
     return @at.so_tiet_vang if @at
   end
+  def phep_status
+    return "Không phép" unless @at
+    return @at.decorate.phep_status
+  end
   def phep
     return false unless @at
     return @at.phep if @at

@@ -69,7 +69,11 @@ class Attendance < ActiveRecord::Base
       end
     end    
   end
-
+  def turn_phep
+    return nil if self.idle? or self.attendant?
+    self.phep = !self.phep
+    self.save!
+  end
   def turn(phep)
     if self.state == 'absent'
       self.mark_attendant
