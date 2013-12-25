@@ -28,10 +28,16 @@ describe Enrollment do
   	sv = FactoryGirl.create(:sinh_vien)  	
   	en = FactoryGirl.create(:enrollment, :sinh_vien => sv, :lop_mon_hoc => lop)
   	lich = lop.lich_trinh_giang_days.order('thoi_gian').first
-  	lich.should_not be_nil
-  	en.attendances.with_lich(lich).should be_nil
-  	at = lich.attendances.where(sinh_vien_id: en.sinh_vien.id).first_or_create!
-  	at.mark(1, false, false)
-  	en.attendances.with_lich(lich).should == at
+  	lich.so_tiet_moi.should == 3
+  	at = lich.attendances.where(sinh_vien_id: sv.id).first_or_create!
+  	at.turn(false)    
+    at.save!
+    at.so_tiet_vang.should == 3
+    en = lop.enrollments.where(sinh_vien_id: sv.id).first    
+  	en.lop_mon_hoc_id.should == lop.id
+    en.sinh_vien_id.should == sv.id
+    en.attendances.count.should == 1
+    en.attendances.first.id.should == at.id
+    en.tong_vang.should == 3
   end
 end

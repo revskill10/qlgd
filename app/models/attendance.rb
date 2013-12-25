@@ -90,8 +90,7 @@ class Attendance < ActiveRecord::Base
   end
   def minus
     self.mark((self.so_tiet_vang || 0) -1, self.phep, self.idle?)
-  end
-
+  end  
   private
   def set_init_data
     self.so_tiet_vang = 0

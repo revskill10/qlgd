@@ -40,6 +40,7 @@ var Enrollment = React.createClass({
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name}</td>
         <td>{this.props.enrollment.code}</td>
+        <td>{this.props.enrollment.tong_vang}</td>
         <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}>+</button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} >-</button></td>
@@ -66,6 +67,7 @@ var Enrollments = React.createClass({
             <td>Stt</td>
             <td>Họ tên</td>
             <td>Mã sinh viên</td>
+            <td>Tình hình đi học</td>
             <td>Vắng</td>        
             <td>Số tiết vắng</td>
             <td>Phép</td>  
@@ -83,7 +85,7 @@ var Enrollments = React.createClass({
 var Lich = React.createClass({    
   loadEnrollmentsFromServer: function(){    
     $.ajax({
-      url: "/lich/1/enrollments.json" ,
+      url: "/lich/"+this.props.lich+"/enrollments.json" ,
       success: function(data) {                      
         this.setState({data : data.enrollments, lich: data.lich, loading: false}); 
       }.bind(this)
@@ -102,7 +104,7 @@ var Lich = React.createClass({
       enrollment: enrollment
     };    
     $.ajax({
-      url: "/lich/1/enrollments",
+      url: "/lich/"+this.props.lich+"/enrollments",
       type: 'POST',
       data: d,
       success: function(data) {             

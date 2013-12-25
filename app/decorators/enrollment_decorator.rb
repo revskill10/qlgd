@@ -23,8 +23,7 @@ class EnrollmentDecorator < Draper::Decorator
     @object.id
   end
   def so_tiet_vang
-    return 0 unless @at
-    return 0 unless @at.so_tiet_vang
+    return 0 unless @at    
     return @at.so_tiet_vang if @at
   end
   def phep_status

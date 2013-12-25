@@ -5,7 +5,7 @@ class EnrollmentsController < ApplicationController
    	@lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: {lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
+    render json: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
   end
   def update  	
   	@lich = LichTrinhGiangDay.find(params[:lich_id])
@@ -30,7 +30,7 @@ class EnrollmentsController < ApplicationController
     #lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: {lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
+    render json: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
   end
   def test
     
