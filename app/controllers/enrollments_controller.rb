@@ -5,7 +5,20 @@ class EnrollmentsController < ApplicationController
    	@lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
+    render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
+  end
+  def settinglop
+    @lich = LichTrinhGiangDay.find(params[:lich_id])
+    render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
+    @lop = @lich.lop_mon_hoc
+    @lop.settings ||= {}
+    @lop.settings["so_tiet_ly_thuyet"] = params[:lop][:so_tiet_ly_thuyet].to_i
+    @lop.settings["so_tiet_thuc_hanh"] = params[:lop][:so_tiet_thuc_hanh].to_i
+    @lop.start!
+    @lop.save!
+    enrollments = @lich.lop_mon_hoc.enrollments    
+    results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
+    render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
   end
   def update  	
   	@lich = LichTrinhGiangDay.find(params[:lich_id])
@@ -25,12 +38,12 @@ class EnrollmentsController < ApplicationController
     elsif params[:stat] == 'note'
       @attendance.set_note(params[:enrollment][:note])
     end
-    #attendance.save!  
+    @attendance.save!  
     #attendance.mark_absent(false)
     #lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
-    render json: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),lich: LichTrinhGiangDaySerializer.new(@lich.decorate), enrollments: results}.to_json
+    render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
   end
   def test
     

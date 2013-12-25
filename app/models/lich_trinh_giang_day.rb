@@ -6,7 +6,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   belongs_to :giang_vien
   has_many :attendances, :dependent => :destroy
   has_many :enrollments, :through => :lop_mon_hoc
-  validates :thoi_gian, :so_tiet, :giang_vien, :presence => true
+  validates :thoi_gian, :so_tiet, :giang_vien_id, :presence => true
   validate :check_thoi_gian, on: :create
   
   
