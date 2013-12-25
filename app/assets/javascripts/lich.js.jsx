@@ -1,6 +1,24 @@
 /** @jsx React.DOM */
 
-var Enrollment = React.createClass({    
+var Enrollment = React.createClass({   
+  getInitialState: function(){
+    return {value: this.props.enrollment.note};
+  } , 
+  handleChange: function(event){
+    this.setState({value: event.target.value});
+  },
+  onmsubmit: function(event){     
+    var self = this;      
+    this.props.ajax.loading = true;
+    this.props.enrollment.note = this.state.value;
+    this.forceUpdate();    
+    setTimeout(function(){      
+      self.props.on_note(self.props.enrollment, 'note');   
+      this.forceUpdate();         
+    }
+      , 1200);    
+
+  },  
   render: function() {
     var css = {"Không vắng": "btn btn-success btn-sm",
               "Vắng": "btn btn-danger btn-sm",
@@ -9,6 +27,10 @@ var Enrollment = React.createClass({
     var phep = {"Có phép": "btn btn-success btn-sm",
     "Không phép": "btn btn-danger btn-sm",
     "x" : "btn btn-default btn-sm"};
+    var value = this.state.value;
+    var ud = "Cập nhật";
+    if (this.props.ajax.loading == true) {ud = "loading...";}
+    if (this.props.ajax.loading == false) {ud = "Cập nhật";}
     var plus = 'disabled';
     var minus = 'disabled';
     if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) ) {plus = '';}
@@ -22,6 +44,7 @@ var Enrollment = React.createClass({
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}>+</button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} >-</button></td>
         <td><button disabled={this.props.enrollment.so_tiet_vang === 0 ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
+        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={this.props.ajax.loading === true ? 'disabled' : ''} >{ud}</button></td>
       </tr>
     );
   }
@@ -29,11 +52,11 @@ var Enrollment = React.createClass({
 var Enrollments = React.createClass({  
   handleVang: function(e,s){    
     this.props.on_vang(e,s);
-  },
+  },  
   render: function(){      
     var self = this;
     var enrollments = this.props.data.map(function (enrollment, i) {
-      return <Enrollment stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')}  />;
+      return <Enrollment stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')} on_note={self.handleVang.bind(self,enrollment,'note')} ajax={ {loading: self.props.loading} } />;
     }); 
     return (
       <div>          
@@ -46,6 +69,7 @@ var Enrollments = React.createClass({
             <td>Vắng</td>        
             <td>Số tiết vắng</td>
             <td>Phép</td>  
+            <td>Ghi chú</td>
           </thead>
           <tbody>
             {enrollments}
@@ -61,7 +85,7 @@ var Lich = React.createClass({
     $.ajax({
       url: "/lich/1/enrollments.json" ,
       success: function(data) {                      
-        this.setState({data : data.enrollments, lich: data.lich}); 
+        this.setState({data : data.enrollments, lich: data.lich, loading: false}); 
       }.bind(this)
     });    
   },
@@ -69,7 +93,7 @@ var Lich = React.createClass({
     this.loadEnrollmentsFromServer();  
   },
   getInitialState: function() {
-    return {data: [], lich: this.props.lich };
+    return {data: [], lich: this.props.lich, loading: false };
   },    
   handleVang: function(enrollment, stat){    
     var d = {            
@@ -82,7 +106,7 @@ var Lich = React.createClass({
       type: 'POST',
       data: d,
       success: function(data) {             
-        this.setState({data : data.enrollments, lich: data.lich}); 
+        this.setState({data : data.enrollments, lich: data.lich, loading: false}); 
         //alert(data.so_tiet_vang);
       }.bind(this)
     });
@@ -110,7 +134,7 @@ var Lich = React.createClass({
             </tr>
           </tbody>
         </table>
-        <Enrollments data={this.state.data} on_vang={this.handleVang}/>
+        <Enrollments data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
       </div>
     );    
   }

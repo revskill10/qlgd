@@ -38,6 +38,10 @@ class EnrollmentDecorator < Draper::Decorator
   def name
     @object.sinh_vien.hovaten
   end
+  def note
+    return "" unless @at
+    return @at.note if @at
+  end
   def code
     @object.sinh_vien.code
   end

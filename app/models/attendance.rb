@@ -81,6 +81,10 @@ class Attendance < ActiveRecord::Base
       self.mark_absent(phep)
     end
   end
+  def set_note(note)
+    self.note = note
+    self.save!
+  end
   def plus
     self.mark(self.so_tiet_vang+1, self.phep, self.idle?)
   end

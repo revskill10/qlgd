@@ -17,6 +17,8 @@ class EnrollmentsController < ApplicationController
       attendance.minus
     elsif params[:stat] == 'phep'
       attendance.turn_phep
+    elsif params[:stat] == 'note'
+      attendance.set_note(params[:enrollment][:note])
     end
     #attendance.save!  
     #attendance.mark_absent(false)
