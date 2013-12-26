@@ -39,8 +39,7 @@ var Enrollment = React.createClass({
     return (
       <tr>
         <td>{this.props.stt}</td>
-        <td>{this.props.enrollment.name}</td>
-        <td>{this.props.enrollment.code}</td>
+        <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>        
         <td>{this.props.enrollment.tong_vang}</td>
         <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
@@ -67,8 +66,7 @@ var Enrollments = React.createClass({
         <table class="table table-bordered table-condensed">
           <thead>
             <td>Stt</td>
-            <td>Họ tên</td>
-            <td>Mã sinh viên</td>
+            <td>Sinh viên</td>            
             <td>Tình hình đi học</td>
             <td>Vắng</td>        
             <td>Số tiết vắng</td>
@@ -112,7 +110,7 @@ var Lop = React.createClass({
             <td>Cập nhật</td>                  
           </thead>
           <tbody>
-              <td>{this.props.lop.ma_lop}</td>
+              <td><a href={"/lop/"+this.props.lop.id}>{this.props.lop.ma_lop}</a></td>
               <td>{this.props.lop.ten_mon_hoc}</td>
               <td>{this.props.lop.si_so}</td>
               <td><input type="text"  ref="lt" placeholder={this.props.lop.so_tiet_ly_thuyet}  /></td>
@@ -126,6 +124,45 @@ var Lop = React.createClass({
       );
   }
 });
+
+var NoiDung = React.createClass({  
+  getInitialState: function(){
+    return {noi_dung: this.props.lich.content};
+  },
+  handleChange: function(event){
+    var text = this.refs.noidung.getDOMNode().value; 
+    this.props.lich.content = text;
+  },
+  handleND: function(event){
+    var text = this.refs.noidung.getDOMNode().value; 
+    if (!text ) {
+      return false;
+    }
+    this.props.lich.content = text;
+    this.props.onNoidung(this.props.lich);
+    return false;
+  }, 
+  componentDidMount: function(){
+    var editor = this.refs.noidung;
+    editor.getDOMNode().focus();
+  },
+  render: function(){        
+    return (
+      <div class="row">
+        <div class="col-sm-6">
+          <form onSubmit={this.handleND}>
+            <textarea onChange={this.handleChange}  ref="noidung" style={{minHeight: 100}}></textarea><br />
+            <input class="btn btn-primary btn-sm" type="submit" value="Cập nhật" />
+          </form>
+        </div>
+        <div class="col-sm-6">
+          <span dangerouslySetInnerHTML={{__html: this.props.lich.content}} />
+        </div>
+      </div>
+    );
+  }
+});
+
 var Lich = React.createClass({    
   loadEnrollmentsFromServer: function(){    
     $.ajax({
@@ -141,6 +178,18 @@ var Lich = React.createClass({
   getInitialState: function() {
     return {data: [], lich: {}, lop: {}, loading: false };
   },    
+  handleNoiDung: function(lich){
+    $.ajax({
+      url: "/lich/noidung",
+      type: 'POST',
+      data: lich,
+      success: function(data2) {             
+        this.setState({data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+        //alert(data.so_tiet_vang);
+      }.bind(this)
+    });
+    return false;
+  },
   handleSettingLop: function(lop){
     var d = {                  
       lich_id: this.state.lich.id,
@@ -177,8 +226,31 @@ var Lich = React.createClass({
   render: function(){      
     
     return (      
-      <div>
+      <div class="panel-group" id="accordion">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+        Thông tin lớp học
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
         <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
+        </div>
+    </div>
+  </div>
+        <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Thông tin buổi học
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body">
         <h6>Thông tin buổi học</h6>
         <table class="table table-bordered">
           <thead>
@@ -198,8 +270,42 @@ var Lich = React.createClass({
             </tr>
           </tbody>
         </table>
-        <Enrollments state={this.state.lich.updated===true && this.state.lop.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
-      </div>
+        </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Điểm danh
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body">
+        <ul class="nav nav-tabs">
+          <li class="active">
+            <a href="#home" data-toggle="tab">Điểm danh</a>
+          </li>
+          <li>
+            <a href="#noidung" data-toggle="tab">Nội dung giảng dạy</a>
+          </li>
+        </ul>
+    
+        <div class="tab-content">
+          <div class="tab-pane active" id="home">
+            <br />
+            <Enrollments state={this.state.lich.updated===true && this.state.lop.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
+          </div>                  
+          <div class="tab-pane" id="noidung">
+            <br />
+            <NoiDung lich={this.state.lich} onNoidung={this.handleNoiDung} />
+          </div>
+        </div>
+       </div>
+    </div>
+  </div>
+  </div>
     );    
   }
 });
@@ -217,7 +323,7 @@ $.ajax({
 });    
 */
 React.renderComponent(  
-          <Lich lich={ENV.lich_id} />,
-          document.getElementById('main')
-        );  
+  <Lich lich={ENV.lich_id} />,
+  document.getElementById('main')
+);  
    

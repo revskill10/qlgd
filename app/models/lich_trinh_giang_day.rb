@@ -25,28 +25,14 @@ class LichTrinhGiangDay < ActiveRecord::Base
     13 => [18, 0], 14 => [18, 50], 15 => [19,40], 16 => [20,30]}
   CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
   
-  
-  state_machine :state, :initial => :pending do  
-    event :start do 
-      transition :pending => :started # da hoan thanh gio hoc
-    end
-    event :nghiday do 
-      transition :pending => :nghiday # nghi day
-    end
-    event :nghile do 
-      transition :pending => :nghile  # nghile
-    end
-    event :bosung do 
-      transition :pending => :bosung  # day bo sung
-    end
-    event :remove do 
-      transition :pending => :removed # xoa buoi hoc
-    end
-  end
+  # state [normal, nghiday, nghile, bosung]  
 
   state_machine :status, :initial => :waiting do     
     event :accept do 
       transition all => :accepted # duoc chap nhan thuc hien
+    end
+    event :complete do 
+      transition :accepted => :completed
     end
     event :queue do 
       transition all => :queued # dang cho xet duyet
@@ -57,7 +43,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
 
-  def start
+  def accept
+    self.state ||= :normal
     self.tuan = self.load_tuan
     self.tiet_bat_dau = self.get_tiet_bat_dau
     self.so_tiet_moi = self.so_tiet

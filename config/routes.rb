@@ -4,14 +4,17 @@ Qlgd::Application.routes.draw do
   get "calendar" => "dashboard#calendar", :as => :calendar
   get "about" => "static_pages#about"
   get "/lich/:id" => "dashboard#show", :as => :lich
-  get "/diemdanh" => "dashboard#diemdanh", :as => :diemdanh
+  get "/lop/:id" => "dashboard#lop"  
   #get '/' => 'static_pages#home'
   get "lich/:lich_id/enrollments" => "enrollments#index"
   post "lich/:lich_id/enrollments" => "enrollments#update"
+  post "lich/noidung" => "enrollments#noidung"
   post "lich/:lich_id/settinglop" => "enrollments#settinglop"
   get "/test" => "enrollments#test"
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
+  get "lop/:id/show" => "lop_mon_hocs#show"
+  post "lop/:id/update" => "lop_mon_hocs#update"
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

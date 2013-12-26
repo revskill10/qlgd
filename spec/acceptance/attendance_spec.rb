@@ -63,9 +63,9 @@ feature "Thoi khoa bieu", %q{
 		login_as(us, :scope => :user) 
 	    
 		visit '/'
-												
+		page.should have_content("06h30 ngày 12/08/2013")										
 		click_link "06h30 ngày 12/08/2013"
-		wait_for_ajax
+		#wait_for_ajax
 		page.document.synchronize do
 			page.should have_content("Thông tin lớp học")
 			page.should have_content("ho1")

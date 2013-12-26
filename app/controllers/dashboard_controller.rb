@@ -16,7 +16,7 @@ class DashboardController < ApplicationController
   def show
     @lich = LichTrinhGiangDay.find(params[:id])
     svs = @lich.enrollments
-    @enrollments = EnrollmentDecorator.decorate_collection(svs)
+    @enrollments = LichEnrollmentDecorator.decorate_collection(svs)
     respond_to do |format|
       if guest?        
         format.html {render "dashboard/show/guest"} 
@@ -26,13 +26,17 @@ class DashboardController < ApplicationController
         format.html {render "dashboard/show/student"}
       end
     end
-  end
+  end  
 
-  def diemdanh
-    @sv = SinhVien.find(params[:sv])
+  def lop
+    @lop = LopMonHoc.find(params[:id])
     respond_to do |format|
-      if teacher?                    
-        format.js {render "dashboard/attendances/teacher"}      
+      if guest?        
+        format.html {render "dashboard/lop/guest"} 
+      elsif teacher?                    
+        format.html {render "dashboard/lop/teacher"}
+      elsif student?        
+        format.html {render "dashboard/lop/student"}
       end
     end
   end

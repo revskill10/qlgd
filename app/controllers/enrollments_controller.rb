@@ -4,7 +4,7 @@ class EnrollmentsController < ApplicationController
   def index       	
    	@lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
-    results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
+    results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
     render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
   end
   def settinglop
@@ -17,7 +17,7 @@ class EnrollmentsController < ApplicationController
     @lop.start!
     @lop.save!
     enrollments = @lich.lop_mon_hoc.enrollments    
-    results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
+    results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
     render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
   end
   def update  	
@@ -42,14 +42,16 @@ class EnrollmentsController < ApplicationController
     #attendance.mark_absent(false)
     #lich = LichTrinhGiangDay.find(params[:lich_id])
     enrollments = @lich.lop_mon_hoc.enrollments    
-    results = enrollments.map {|en| EnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
+    results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
     render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
-  end
-  def test
-    
-    attendance = Attendance.find(1)    
-    attendance.turn(false)
-    attendance.save!
-    render json: {res: attendance.so_tiet_vang, state: attendance.state, lich: attendance.lich_trinh_giang_day.so_tiet_moi}
-  end
+  end 
+  def noidung
+    @lich = LichTrinhGiangDay.find(params[:id])
+    render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
+    @lich.noi_dung = params[:content]
+    @lich.save!
+    enrollments = @lich.lop_mon_hoc.enrollments    
+    results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
+    render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
+  end 
 end  

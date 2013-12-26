@@ -1,8 +1,12 @@
 class LichTrinhGiangDayDecorator < Draper::Decorator
   delegate_all
   
+  def content
+    return nil unless object.noi_dung
+    object.noi_dung.gsub(/\r?\n/, '<br/>')
+  end
   def updated
-  	!object.nghile? and !object.nghiday? and !object.removed?
+  	object.state != :nghile and object.state != :nghiday
   end
   def sv_co_mat
   	object.attendances.where("state = 'attendant' or state = 'late'").count

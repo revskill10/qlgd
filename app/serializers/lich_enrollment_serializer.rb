@@ -1,4 +1,4 @@
-class EnrollmentSerializer < ActiveModel::Serializer
+class LichEnrollmentSerializer < ActiveModel::Serializer
   self.root = false
   attributes :id, :sinh_vien_id, :name, :code, :status, :so_tiet_vang, :phep, :max, :phep_status, :note, :tong_vang
 

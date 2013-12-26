@@ -1,5 +1,5 @@
 #encoding: utf-8
-class EnrollmentDecorator < Draper::Decorator
+class LichEnrollmentDecorator < Draper::Decorator
   delegate_all
 
   # Define presentation-specific methods here. Helpers are accessed through

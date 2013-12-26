@@ -1,0 +1,37 @@
+
+.navbar.navbar-default.navbar-static-top role="navigation"
+  .container
+    .navbar-header
+      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar            
+        span.icon-bar
+      = link_to "QLGD", '/', {class:"navbar-brand"}
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li= link_to "Home", '/'            
+        li= link_to "About", '/about' 
+      ul.nav.navbar-nav.navbar-right   
+        li= link_to "Sign Out    <span class='glyphicon glyphicon-log-out'></span>".html_safe, destroy_user_session_path
+                
+
+.container   
+  ul.nav.nav-tabs
+    li.active
+      a href="#home" data-toggle="tab" Thông tin chung
+    li
+      a href="#thongso" data-toggle="tab" Thiết lập thông số
+    li
+      a href="#bosung" data-toggle="tab" Đăng ký bổ sung
+  div.tab-content
+    div.tab-pane.active#home
+      #main
+    div.tab-pane#thongso
+      #setting
+    div.tab-pane#bosung
+      #dkbs
+    
+javascript:
+  var ENV = {lop_id: #{raw @lop.id}};  
+= javascript_include_tag asset_path("lop")

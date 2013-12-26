@@ -1,7 +1,13 @@
 class LopMonHocSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :si_so, :so_tiet_ly_thuyet, :so_tiet_thuc_hanh, :updated
+  attributes :id, :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :si_so, :so_tiet_ly_thuyet, :so_tiet_thuc_hanh, :updated, :de_cuong_du_kien, :language
 
+  def language
+    object.decorate.language
+  end
+  def de_cuong_du_kien
+    object.decorate.de_cuong_du_kien
+  end
   def updated
     object.decorate.updated
   end

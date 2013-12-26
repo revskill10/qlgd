@@ -59,10 +59,9 @@ describe LichTrinhGiangDay do
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     lich = lop.lich_trinh_giang_days.create(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id => gv.id)    
-    lich.state.should == "pending"
-    lich.start!
+    lich.accept!
+    lich.state.should == :normal
     lich.tuan.should == 1
-
   end
 
   it "has states" do
@@ -71,12 +70,10 @@ describe LichTrinhGiangDay do
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id  => gv.id)
-    lich.status.should == "waiting"
-    lich.state.should == "pending"
+    lich.status.should == "waiting"    
     lich.accept!
     lich.status.should == "accepted"
-    lich.start!
-    lich.state.should == "started"
+    lich.state.should == :normal
   end
 
   it "has many attendances" do 
