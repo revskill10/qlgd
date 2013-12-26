@@ -34,8 +34,8 @@ var Enrollment = React.createClass({
     if (this.props.ajax.loading == false) {ud = "Cập nhật";}
     var plus = 'disabled';
     var minus = 'disabled';
-    if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max && this.props.state ) ) {plus = '';}
-    if (parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state ) {minus = '';}
+    if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true ) {plus = '';}
+    if (parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true) {minus = '';}
     return (
       <tr>
         <td>{this.props.stt}</td>
@@ -45,8 +45,8 @@ var Enrollment = React.createClass({
         <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
-        <td><button disabled={(this.props.enrollment.so_tiet_vang === 0 && this.props.state) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
-        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state ) ? 'disabled' : ''} >{ud}</button></td>
+        <td><button disabled={(this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
+        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >{ud}</button></td>
       </tr>
     );
   }
@@ -198,7 +198,7 @@ var Lich = React.createClass({
             </tr>
           </tbody>
         </table>
-        <Enrollments state={this.state.lich.updated && this.state.lop.updated} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
+        <Enrollments state={this.state.lich.updated===true && this.state.lop.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
       </div>
     );    
   }

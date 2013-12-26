@@ -10,5 +10,8 @@
  *
  *= require_self
  *= require bootstrap
- *= require_tree .
  */
+.navbar-static-top {
+	 margin-top: 1px;
+  margin-bottom: 1px;
+}
