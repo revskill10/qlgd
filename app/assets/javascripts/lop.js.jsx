@@ -43,7 +43,7 @@ var Setting = React.createClass({
 	render: function(){
 		return (
 			<div>          
-	        <h6>Thông tin lớp học:</h6>        
+	        <h6>Thông tin lớp học:</h6>        	        
 	        <table class="table table-bordered table-condensed">
 	          <thead>
 	            <td>Mã lớp</td>
@@ -86,26 +86,63 @@ var ThongSo = React.createClass({
 	getInitialState: function(){
 		return {data: this.props.data}
 	},
+	handleSubmit: function(){
+		var lt = this.refs.lt.getDOMNode().value.trim();
+    	var th = this.refs.th.getDOMNode().value.trim();
+    	var lang = this.refs.lang.getDOMNode().value;
+    	var decuong = this.refs.dcdk.getDOMNode().value.trim();
+    	if  (!lt || !th) {
+    	  alert("Bạn cần nhập số tiết lý thuyết và số tiết thực hành");
+	      return false;
+	    }
+    	var data = {
+    		id: this.state.data.id,
+    		lt: lt,
+    		th: th,
+    		lang: lang,
+    		decuong: decuong
+    	}
+    	$.ajax({
+	      url: "/lop/settinglop",
+	      type: 'POST',
+	      data: data,
+	      success: function(data2) {             
+	        this.setState({data : data2.lop});	        
+	      }.bind(this)
+	    });
+	    return false;
+	},
 	render: function(){
 		return (
 			<div>
 			<br />
-			<table class="table table-bordered table-condensed">
-	          <thead>
-	            <td>Thông số</td>
-	            <td>Giá trị</td>
-	          </thead>
-	          <tbody>
-	          	<tr><td>Mã lớp:</td><td>{this.state.data.ma_lop}</td></tr>
-	            <tr><td>Tên môn học</td><td>{this.state.data.ten_mon_hoc}</td></tr>
-	            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td></tr>
-	            <tr><td>Số tiết lý thuyết</td><td>{this.state.data.so_tiet_ly_thuyet}</td></tr>
-	            <tr><td>Số tiết thực hành</td><td>{this.state.data.so_tiet_thuc_hanh}</td></tr>
-	            <tr><td>Ngôn ngữ</td><td>{this.state.data.language}</td></tr>
-	            <tr><td>Đề cương dự kiến</td><td>{this.state.data.de_cuong_du_kien}</td></tr>
-	            <tr><td>Tình trạng</td><td>{this.state.data.updated === true ? 'Đã cấu hình' : 'Chưa cấu hình'}</td></tr>
-	          </tbody>           
-	        </table> 
+			<form onSubmit={this.handleSubmit}>
+				<input type="submit" value="Cập nhật" class="btn btn-primary"/>
+				<table class="table table-bordered table-condensed">
+		          <thead>
+		            <td>Thông số</td>
+		            <td>Giá trị cũ</td>
+		            <td>Giá trị mới</td>
+		          </thead>
+		          <tbody>
+		          	<tr><td>Mã lớp:</td><td>{this.state.data.ma_lop}</td><td>{this.state.data.ma_lop}</td></tr>
+		            <tr><td>Tên môn học</td><td>{this.state.data.ten_mon_hoc}</td><td>{this.state.data.ten_mon_hoc}</td></tr>
+		            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td><td>{this.state.data.si_so}</td></tr>
+		            <tr><td>Số tiết lý thuyết</td><td>{this.state.data.so_tiet_ly_thuyet}</td><td><input type="text" ref="lt" /></td></tr>
+		            <tr><td>Số tiết thực hành</td><td>{this.state.data.so_tiet_thuc_hanh}</td><td><input type="text" ref="th" /></td></tr>
+		            <tr><td>Ngôn ngữ</td><td>{this.state.data.language}</td><td>
+		            	  <select ref="lang" value="vietnamse">
+						    <option value="vietnamse">Tiếng Việt</option>
+						    <option value="chinense">Tiếng Trung Quốc</option>
+						    <option value="japanese">Tiếng Nhật</option>
+						  </select>
+
+		            </td></tr>
+		            <tr><td>Đề cương dự kiến</td><td>{this.state.data.de_cuong_du_kien}</td><td><textarea ref="dcdk" style={{minHeight: 300}} /></td></tr>		            
+		          </tbody>           
+		        </table> 
+		        
+		    </form>
 	        </div>
 		);
 	}

@@ -149,13 +149,13 @@ var NoiDung = React.createClass({
   render: function(){        
     return (
       <div class="row">
-        <div class="col-sm-6">
+        <div class="col-sm-8">
           <form onSubmit={this.handleND}>
-            <textarea onChange={this.handleChange}  ref="noidung" style={{minHeight: 100}}></textarea><br />
+            <textarea onChange={this.handleChange}  ref="noidung" style={{minHeight: 200, minWidth: 300}}></textarea><br />
             <input class="btn btn-primary btn-sm" type="submit" value="Cập nhật" />
           </form>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <span dangerouslySetInnerHTML={{__html: this.props.lich.content}} />
         </div>
       </div>
@@ -238,19 +238,6 @@ var Lich = React.createClass({
     <div id="collapseOne" class="panel-collapse collapse in">
       <div class="panel-body">
         <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
-        </div>
-    </div>
-  </div>
-        <div class="panel panel-default">
-    <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-          Thông tin buổi học
-        </a>
-      </h4>
-    </div>
-    <div id="collapseTwo" class="panel-collapse collapse">
-      <div class="panel-body">
         <h6>Thông tin buổi học</h6>
         <table class="table table-bordered">
           <thead>
@@ -270,9 +257,9 @@ var Lich = React.createClass({
             </tr>
           </tbody>
         </table>
-        </div>
+      </div>
     </div>
-  </div>
+  </div>      
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
@@ -290,6 +277,9 @@ var Lich = React.createClass({
           <li>
             <a href="#noidung" data-toggle="tab">Nội dung giảng dạy</a>
           </li>
+          <li>
+            <a href="#lichdukien" data-toggle="tab">Lịch trình dự kiến</a>
+          </li>
         </ul>
     
         <div class="tab-content">
@@ -300,6 +290,10 @@ var Lich = React.createClass({
           <div class="tab-pane" id="noidung">
             <br />
             <NoiDung lich={this.state.lich} onNoidung={this.handleNoiDung} />
+          </div>
+          <div class="tab-pane" id="lichdukien">
+            <br />
+            <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
           </div>
         </div>
        </div>

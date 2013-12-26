@@ -10,6 +10,7 @@
  *
  *= require_self
  *= require bootstrap
+ *= require sticky_footer
  */
 .navbar-static-top {
 	 margin-top: 1px;

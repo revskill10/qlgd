@@ -23,7 +23,7 @@ class LopMonHoc < ActiveRecord::Base
     end
   end
 
-
+  
 
   def generate_calendars
     if calendars.count > 0 
@@ -32,5 +32,14 @@ class LopMonHoc < ActiveRecord::Base
       end
     end
   end
-    
+  
+  def config(so_tiet_ly_thuyet, so_tiet_thuc_hanh, language, de_cuong_du_kien)
+    settings ||= {}
+    settings["so_tiet_ly_thuyet"] = so_tiet_ly_thuyet
+    settings["so_tiet_thuc_hanh"] = so_tiet_thuc_hanh
+    settings["language"] = language
+    settings["de_cuong_du_kien"] = de_cuong_du_kien
+    save!
+  end 
+
 end
