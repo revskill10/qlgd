@@ -40,7 +40,14 @@ var Enrollment = React.createClass({
       <tr>
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>        
-        <td>{this.props.enrollment.tong_vang}</td>
+        <td><div class="progress">
+        <div class="progress-bar progress-bar-success" style={{width: (100 - this.props.enrollment.tinhhinh) +"%"}}>
+          <span>{(100 - this.props.enrollment.tinhhinh) +"%"}</span>
+        </div>        
+        <div class="progress-bar progress-bar-danger" style={{width: this.props.enrollment.tinhhinh + "%"}}>
+          <span>{this.props.enrollment.tinhhinh +"%"}</span>
+        </div>
+      </div></td>
         <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
@@ -64,6 +71,15 @@ var Enrollments = React.createClass({
       <div>          
         <h6>Thông tin điểm danh:</h6>
         <table class="table table-bordered table-condensed">
+          <colgroup>
+            <col style={{width: "3%"}} />
+            <col style={{width: "12%"}} />
+            <col style={{width: "20%"}} />
+            <col style={{width: "15%"}} />
+            <col style={{width: "15%"}} />
+            <col style={{width: "10%"}} />
+            <col style={{width: "10%"}} />
+          </colgroup>
           <thead>
             <td>Stt</td>
             <td>Sinh viên</td>            

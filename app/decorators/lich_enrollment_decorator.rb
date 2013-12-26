@@ -51,4 +51,7 @@ class LichEnrollmentDecorator < Draper::Decorator
   def max
     @lich.so_tiet_moi
   end
+  def tinhhinh
+    (@object.tong_vang * 100.0 / @lich.lop_mon_hoc.tong_so_tiet).round(2)
+  end
 end
