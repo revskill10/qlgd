@@ -59,5 +59,10 @@ module Qlgd
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.precompile << Proc.new { |path|
+      if path =~ /\.(eot|svg|ttf|woff)\z/
+        true
+      end
+    }
   end
 end

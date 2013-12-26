@@ -43,8 +43,8 @@ var Enrollment = React.createClass({
         <td>{this.props.enrollment.code}</td>
         <td>{this.props.enrollment.tong_vang}</td>
         <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
-        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}>+</button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
-        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} >-</button></td>
+        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
+        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
         <td><button disabled={(this.props.enrollment.so_tiet_vang === 0 && this.props.state) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
         <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state ) ? 'disabled' : ''} >{ud}</button></td>
       </tr>
