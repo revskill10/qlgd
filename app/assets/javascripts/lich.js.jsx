@@ -15,27 +15,24 @@ var Enrollment = React.createClass({
     this.forceUpdate();    
     setTimeout(function(){      
       self.props.on_note(self.props.enrollment, 'note');   
-      this.forceUpdate();         
+      self.forceUpdate();         
     }
       , 1200);    
     return false;
   },  
   render: function() {
-    var css = {"Không vắng": "btn btn-success btn-sm",
-              "Vắng": "btn btn-danger btn-sm",
-              "Trễ": "btn btn-warning btn-sm",
-              "Không học": "btn btn-primary btn-sm"};
-    var phep = {"Có phép": "btn btn-success btn-sm",
-    "Không phép": "btn btn-danger btn-sm",
-    "x" : "btn btn-default btn-sm"};
-    var value = this.state.value;
-    var ud = "Cập nhật";
-    if (this.props.ajax.loading == true) {ud = "loading...";}
-    if (this.props.ajax.loading == false) {ud = "Cập nhật";}
+    var css = {"Không vắng": "btn btn-success btn-sm btn-block",
+              "Vắng": "btn btn-danger btn-sm btn-block",
+              "Trễ": "btn btn-warning btn-sm btn-block",
+              "Không học": "btn btn-primary btn-sm btn-block"};
+    var phep = {"Có phép": "btn btn-success btn-sm btn-block",
+    "Không phép": "btn btn-danger btn-sm btn-block",
+    "x" : "btn btn-default btn-sm btn-block"};
+    var value = this.state.value;    
     var plus = 'disabled';
     var minus = 'disabled';
-    if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true ) {plus = '';}
-    if (parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true) {minus = '';}
+    if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true && this.props.ajax.loading === false ) {plus = '';}
+    if (parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true && this.props.ajax.loading === false) {minus = '';}
     return (
       <tr>
         <td>{this.props.stt}</td>
@@ -48,18 +45,23 @@ var Enrollment = React.createClass({
           <span>{this.props.enrollment.tinhhinh +"%"}</span>
         </div>
       </div></td>
-        <td><button onClick={this.props.on_absent}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
+        <td><button onClick={this.props.on_absent} disabled={this.props.ajax.loading === true}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
-        <td><button disabled={(this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
-        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >{ud}</button></td>
+        <td><button disabled={( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
+        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật</button></td>
       </tr>
     );
   }
 });
 var Enrollments = React.createClass({  
-  handleVang: function(e,s){    
-    this.props.on_vang(e,s);
+  handleVang: function(e,s){
+    var self = this;
+    this.props.loading = true;
+    this.forceUpdate();
+    setTimeout(function(){
+      self.props.on_vang(e,s);  
+    }, 1000);    
     return false;
   },  
   render: function(){      
@@ -72,13 +74,13 @@ var Enrollments = React.createClass({
         <h6>Thông tin điểm danh:</h6>
         <table class="table table-bordered table-condensed">
           <colgroup>
-            <col style={{width: "3%"}} />
-            <col style={{width: "12%"}} />
+            <col style={{width: "5%"}} />
+            <col style={{width: "15%"}} />
             <col style={{width: "20%"}} />
-            <col style={{width: "15%"}} />
-            <col style={{width: "15%"}} />
             <col style={{width: "10%"}} />
             <col style={{width: "10%"}} />
+            <col style={{width: "10%"}} />
+            <col style={{width: "30%"}} />
           </colgroup>
           <thead>
             <td>Stt</td>
