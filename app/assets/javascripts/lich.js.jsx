@@ -14,8 +14,7 @@ var Enrollment = React.createClass({
     this.props.enrollment.note = this.state.value;
     this.forceUpdate();    
     setTimeout(function(){      
-      self.props.on_note(self.props.enrollment, 'note');   
-      self.forceUpdate();         
+      self.props.on_note(self.props.enrollment, 'note');         
     }
       , 1200);    
     return false;
@@ -143,40 +142,30 @@ var Lop = React.createClass({
   }
 });
 
-var NoiDung = React.createClass({  
-  getInitialState: function(){
-    return {noi_dung: this.props.lich.content};
+var Editor = React.createClass({
+  getInitialState: function(){      
+      return {content: this.props.content};
   },
-  handleChange: function(event){
-    var text = this.refs.noidung.getDOMNode().value; 
-    this.props.lich.content = text;
+  handleChange: function(e){
+      this.setState({content: e.target.value});
   },
-  handleND: function(event){
-    var text = this.refs.noidung.getDOMNode().value; 
-    if (!text ) {
+  handleSubmit: function(){
+
       return false;
-    }
-    this.props.lich.content = text;
-    this.props.onNoidung(this.props.lich);
-    return false;
-  }, 
-  componentDidMount: function(){
-    var editor = this.refs.noidung;
-    editor.getDOMNode().focus();
   },
-  render: function(){        
+  componentWillMount: function(){
+    console.log(this.state.content);
+    return false;
+  },
+  render: function() {
     return (
-      <div class="row">
-        <div class="col-sm-8">
-          <form onSubmit={this.handleND}>
-            <textarea onChange={this.handleChange}  ref="noidung" style={{minHeight: 200, minWidth: 300}}></textarea><br />
-            <input class="btn btn-primary btn-sm" type="submit" value="Cập nhật" />
-          </form>
-        </div>
-        <div class="col-sm-4">
-          <span dangerouslySetInnerHTML={{__html: this.props.lich.content}} />
-        </div>
+        <form onSubmit={this.handleSubmit}>
+      <div id='content-header'>
+        <textarea value={this.state.content} onChange={this.handleChange} ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100}}>
+        </textarea>
       </div>
+      <input type="submit" value="Post" />
+      </form>
     );
   }
 });
@@ -186,7 +175,7 @@ var Lich = React.createClass({
     $.ajax({
       url: "/lich/"+this.props.lich+"/enrollments.json" ,
       success: function(data2) {                      
-        this.setState({data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+        this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false});         
       }.bind(this)
     });    
   },
@@ -196,13 +185,13 @@ var Lich = React.createClass({
   getInitialState: function() {
     return {data: [], lich: {}, lop: {}, loading: false };
   },    
-  handleNoiDung: function(lich){
+  handleNoiDung: function(){    
     $.ajax({
       url: "/lich/noidung",
       type: 'POST',
-      data: lich,
+      data: this.state.lich,
       success: function(data2) {             
-        this.setState({data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+        this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
         //alert(data.so_tiet_vang);
       }.bind(this)
     });
@@ -218,7 +207,7 @@ var Lich = React.createClass({
       type: 'POST',
       data: d,
       success: function(data2) {             
-        this.setState({data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+        this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
         //alert(data.so_tiet_vang);
       }.bind(this)
     });
@@ -235,11 +224,15 @@ var Lich = React.createClass({
       type: 'POST',
       data: d,
       success: function(data2) {             
-        this.setState({data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+        this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
         //alert(data.so_tiet_vang);
       }.bind(this)
     });
     return false;
+  },  
+  handleChangeContent: function(e){
+    this.setState({noidung: e.target.value});
+    this.state.lich.content = this.state.noidung;
   },
   render: function(){      
     
@@ -253,7 +246,7 @@ var Lich = React.createClass({
         </a>
       </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse in">
+    <div id="collapseOne" class="panel-collapse collapse">
       <div class="panel-body">
         <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
         <h6>Thông tin buổi học</h6>
@@ -286,7 +279,7 @@ var Lich = React.createClass({
         </a>
       </h4>
     </div>
-    <div id="collapseThree" class="panel-collapse collapse">
+    <div id="collapseThree" class="panel-collapse collapse in">
       <div class="panel-body">
         <ul class="nav nav-tabs">
           <li class="active">
@@ -294,10 +287,7 @@ var Lich = React.createClass({
           </li>
           <li>
             <a href="#noidung" data-toggle="tab">Nội dung giảng dạy</a>
-          </li>
-          <li>
-            <a href="#lichdukien" data-toggle="tab">Lịch trình dự kiến</a>
-          </li>
+          </li>          
         </ul>
     
         <div class="tab-content">
@@ -307,11 +297,20 @@ var Lich = React.createClass({
           </div>                  
           <div class="tab-pane" id="noidung">
             <br />
-            <NoiDung lich={this.state.lich} onNoidung={this.handleNoiDung} />
-          </div>
-          <div class="tab-pane" id="lichdukien">
-            <br />
-            <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
+            <div class="row">
+              <div class="col-sm-6">
+                <form onSubmit={this.handleNoiDung}>
+                <div id='content-header'>
+                  <textarea value={this.state.noidung} onChange={this.handleChangeContent} ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100, minWidth: 500}}>
+                  </textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" value="Post" />
+                </form>
+              </div>
+              <div class="col-sm-6">
+                <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
+              </div>
+            </div>
           </div>
         </div>
        </div>

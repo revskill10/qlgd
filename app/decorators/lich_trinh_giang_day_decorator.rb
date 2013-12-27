@@ -3,7 +3,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
   
   def content
     return nil unless object.noi_dung
-    object.noi_dung.gsub(/\r?\n/, '<br/>')
+    object.noi_dung
   end
   def updated
   	object.state != :nghile and object.state != :nghiday
