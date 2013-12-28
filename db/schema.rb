@@ -11,7 +11,16 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131224025938) do
+ActiveRecord::Schema.define(:version => 20131228074030) do
+
+  create_table "assignment_groups", :force => true do |t|
+    t.string   "name"
+    t.integer  "weight"
+    t.integer  "lop_mon_hoc_id"
+    t.string   "state"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
+  end
 
   create_table "attendances", :force => true do |t|
     t.integer  "lich_trinh_giang_day_id"
