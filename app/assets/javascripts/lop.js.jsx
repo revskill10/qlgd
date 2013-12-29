@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
-
+//= require assignments
+//= require grade
 var Enrollment = React.createClass({
 
 	render: function(){
@@ -155,11 +156,17 @@ $.ajax({
 		success: function(data) {                      
 			React.renderComponent(
 				<Lop data={data} />
-				,document.getElementById('main')
+				, document.getElementById('main')
 			);
 			React.renderComponent(
 				<ThongSo data={data.lop} />
-				,document.getElementById('thongso')
+				, document.getElementById('thongso')
+			);
+			React.renderComponent(<Assignments data={DATA} />
+				, document.getElementById('assignment'))
+			React.renderComponent(
+				<Grade data={GRADE.data} />
+				, document.getElementById('grade')
 			);
 	}.bind(this)
 });

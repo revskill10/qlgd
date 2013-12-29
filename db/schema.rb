@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131228074030) do
+ActiveRecord::Schema.define(:version => 20131229064054) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,18 @@ ActiveRecord::Schema.define(:version => 20131228074030) do
     t.string   "state"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.integer  "giang_vien_id"
+  end
+
+  create_table "assignments", :force => true do |t|
+    t.integer  "assignment_group_id"
+    t.integer  "lop_mon_hoc_id"
+    t.integer  "points"
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.integer  "giang_vien_id"
   end
 
   create_table "attendances", :force => true do |t|
@@ -106,6 +118,14 @@ ActiveRecord::Schema.define(:version => 20131228074030) do
     t.string   "ma_lop_hanh_chinh"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+  end
+
+  create_table "submissions", :force => true do |t|
+    t.integer  "assignment_id"
+    t.integer  "sinh_vien_id"
+    t.decimal  "grade"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "tenants", :force => true do |t|

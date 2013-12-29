@@ -23,14 +23,18 @@
     li
       a href="#thongso" data-toggle="tab" Thiết lập thông số
     li
-      a href="#bosung" data-toggle="tab" Đăng ký bổ sung
+      a href="#assignments" data-toggle="tab" Assignments
+    li
+      a href="#grades" data-toggle="tab" Grades
   div.tab-content
     div.tab-pane.active#home
       #main
     div.tab-pane#thongso
       #setting
-    div.tab-pane#bosung
-      #dkbs
+    div.tab-pane#assignments
+      #assignment
+    div.tab-pane#grades
+      #grade
     
 javascript:
   var ENV = {lop_id: #{raw @lop.id}};  
