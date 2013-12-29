@@ -33,7 +33,8 @@ class DashboardController < ApplicationController
     respond_to do |format|
       if guest?        
         format.html {render "dashboard/lop/guest"} 
-      elsif teacher?                    
+      elsif teacher?
+        @giang_vien = current_user.imageable         
         format.html {render "dashboard/lop/teacher"}
       elsif student?        
         format.html {render "dashboard/lop/student"}

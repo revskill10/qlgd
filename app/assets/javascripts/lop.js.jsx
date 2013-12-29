@@ -162,10 +162,17 @@ $.ajax({
 				<ThongSo data={data.lop} />
 				, document.getElementById('thongso')
 			);
-			React.renderComponent(<Assignments data={DATA} />
-				, document.getElementById('assignment'))
-			React.renderComponent(
-				<Grade data={GRADE.data} />
+			
+	}.bind(this)
+});
+
+React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
+				, document.getElementById('assignment'));
+
+$.ajax({url: "/lop/" + ENV.lop_id + "/grades.json",
+	success: function(data){
+		React.renderComponent(
+				<Grade data={data} />
 				, document.getElementById('grade')
 			);
 	}.bind(this)

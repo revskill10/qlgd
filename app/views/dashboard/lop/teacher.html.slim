@@ -37,5 +37,5 @@
       #grade
     
 javascript:
-  var ENV = {lop_id: #{raw @lop.id}};  
+  var ENV = {lop_id: #{raw @lop.id}, giang_vien_id: #{raw @giang_vien.id} };  
 = javascript_include_tag asset_path("lop")

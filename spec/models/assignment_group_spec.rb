@@ -1,5 +1,12 @@
 require 'spec_helper'
 
 describe AssignmentGroup do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  it "should require name, weight, giang_vien_id" do
+    gv = FactoryGirl.create(:giang_vien)
+    lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien_id => gv.id) 
+  	ag = lop.assignment_groups.create(name: "Thuc Hanh", weight: 50, giang_vien_id: gv.id)
+  	ag.valid?.should be_true
+  	ag.name.should == "Thuc Hanh"
+  end
 end

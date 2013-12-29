@@ -15,6 +15,9 @@ Qlgd::Application.routes.draw do
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
   get "lop/:id/show" => "lop_mon_hocs#show"  
+  get 'lop/:id/assignments' => "lop_mon_hocs#assignments"
+  post 'lop/:id/assignments' => "lop_mon_hocs#update_assignments"
+  get 'lop/:id/grades' => "lop_mon_hocs#grades"
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

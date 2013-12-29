@@ -11,8 +11,8 @@ describe LopMonHoc do
 
   it "should have settings" do 
   	lop = FactoryGirl.create(:lop_mon_hoc, settings: {'language' => 'chinese'})
-  	lop.language.should == "chinese"  	
-    lop.language = 'vietnamese'
+  	lop.settings['language'].should == "chinese"  	
+    lop.settings['language'] = 'vietnamese'
     lop.settings["language"].should == 'vietnamese'
   end
   

@@ -1,3 +1,4 @@
+require 'lop_assignment_group_serializer'
 class LopMonHocsController < ApplicationController
 	def show
 		@lop = LopMonHoc.find(params[:id])
@@ -21,4 +22,22 @@ class LopMonHocsController < ApplicationController
     	results = enrollments.map {|e| LopEnrollmentSerializer.new(e)}
     	render json: {:lop => LopMonHocSerializer.new(@lop), :enrollments => results}
 	end
+	# get assignments
+	def assignments		
+		@lop = LopMonHoc.find(params[:id])
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json
+	end
+	# post
+	def update_assignments
+		@lop = LopMonHoc.find(params[:id])
+		@lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json
+	end
+	# get grades
+	def grades
+		render json: [[{}]].to_json
+	end
+
 end
