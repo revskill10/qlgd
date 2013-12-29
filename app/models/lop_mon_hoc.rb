@@ -1,7 +1,6 @@
 class LopMonHoc < ActiveRecord::Base  
   serialize :settings
   attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc
-  hstore_accessor :settings, :language
 
 
   validates :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :presence => true
@@ -23,7 +22,10 @@ class LopMonHoc < ActiveRecord::Base
     end
   end
 
-  
+  def start
+    self.settings ||= {}
+    super
+  end
 
   def generate_calendars
     if calendars.count > 0 

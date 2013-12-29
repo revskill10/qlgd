@@ -10,7 +10,8 @@ class LopMonHocsController < ApplicationController
 		render json: LopMonHocSerializer.new(@lop)
 	end
 	def update
-		@lop = LopMonHoc.find(params[:id])		
+		@lop = LopMonHoc.find(params[:id])	
+		@lop.settings ||= {}	
 		@lop.settings["so_tiet_ly_thuyet"] = params[:lt].to_i
     	@lop.settings["so_tiet_thuc_hanh"] = params[:th].to_i
     	@lop.settings["language"] = params[:lang]

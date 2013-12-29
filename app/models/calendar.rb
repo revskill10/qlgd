@@ -34,10 +34,8 @@ class Calendar < ActiveRecord::Base
       if sch.count > 0
         sch.each do |s|
           begin
-            lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_datetime)
-            lich.giang_vien = self.giang_vien
-            lich.so_tiet = self.so_tiet
-            lich.start!          
+            lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_datetime, giang_vien_id: self.giang_vien.id, so_tiet: self.so_tiet)
+            lich.accepts!          
           rescue
 
           end

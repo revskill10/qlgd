@@ -53,8 +53,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
 
   
   def get_tiet_bat_dau
-    hour = thoi_gian.hour
-    minute = thoi_gian.minute
+    hour = thoi_gian.localtime.hour
+    minute = thoi_gian.localtime.min
     return TIET[[hour, minute]]
   end
   

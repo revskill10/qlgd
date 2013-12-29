@@ -60,7 +60,6 @@ gem "slim-rails"
 gem "thin"
 gem 'devise'
 gem 'devise_cas_authenticatable'
-gem 'state_machine'
 gem "ice_cube"
 gem 'draper', '~> 1.3'
 gem "pundit"
