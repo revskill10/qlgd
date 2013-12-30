@@ -20,5 +20,5 @@
                
     
 javascript:
-  var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lich.lop_mon_hoc.id}};  
+  var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lich.lop_mon_hoc.id}, giang_vien_id: #{raw @giang_vien.id}};  
 = javascript_include_tag asset_path("lich")
