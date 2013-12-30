@@ -13,6 +13,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :assignment_groups, :dependent => :destroy
   has_many :assignments, :dependent => :destroy
   
+  
   state_machine :state, :initial => :pending do  
     event :start do 
       transition all => :started # da thiet lap thong so

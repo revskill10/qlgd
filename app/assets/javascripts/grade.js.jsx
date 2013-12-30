@@ -49,7 +49,7 @@ var Row = React.createClass({
     render: function(){
         var self = this;
                 var x = this.props.data.map(function(d){                        
-                        return <td><Cell onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
+                        return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
                 });
         return (
             <tr>{x}</tr>                        
@@ -108,7 +108,7 @@ var Grade = React.createClass({
                         });
                 });                
                 var x = y.map(function(d){                        
-                        return <Row handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter} handleChange={self.handleChange} handleInput={self.handleInput} handleBlur={self.handleBlur} data={d} />
+                        return <Row key={d.sinh_vien_id} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter} handleChange={self.handleChange} handleInput={self.handleInput} handleBlur={self.handleBlur} data={d} />
                 });
                 return (
                         <table>

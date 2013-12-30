@@ -157,10 +157,10 @@
                         return false;
                 },
                 handleDelete: function(assignment_group){
-                    var d = {assignment_group_id: assignment_group.assignment_group_id};
+                    var d = {assignment_group_id: assignment_group.assignment_group_id, "_method":"delete"};
                     $.ajax({
                       url: "/lop/" + this.props.lop + "/assignment_groups",
-                      type: 'DELETE',
+                      type: 'POST',
                       data: d,
                       success: function(data) {             
                             data.forEach(function(d){
@@ -176,10 +176,10 @@
                     });
                 },
                 handleAssignmentDelete: function(assignment){
-                    var d = {assignment_id: assignment.assignment_id};
+                    var d = {assignment_id: assignment.assignment_id, "_method":"delete"};
                     $.ajax({
                       url: "/lop/" + this.props.lop + "/assignments",
-                      type: 'DELETE',
+                      type: 'POST',
                       data: d,
                       success: function(data) {             
                             data.forEach(function(d){
@@ -222,7 +222,7 @@
                 render: function(){
                     var self = this;
                     var x = this.state.data.map(function(d){
-                        return <AssignmentGroup onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} onChange={self.handleChange} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
+                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} onChange={self.handleChange} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
                     });
                     if (this.state.add === 0) {
                             return (
@@ -284,7 +284,7 @@
                     var x = <li></li>;
                     if (this.props.data != null){
                            x = this.props.data.map(function(d){
-                                    return <Assignment data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
+                                    return <Assignment key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
                             });  
                     }                                 
                     if (this.state.add === 0){
@@ -293,7 +293,7 @@
                                 <li>
                                     <span onClick={this.handleUpdateName}>{this.props.group_name}</span>
                                     <span onClick={this.handleWeight}>{this.props.weight}</span>
-                                    <button onClick={this.handleDelete}>x</button>
+                                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
                                     <div>
                                         <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Add</button>
                                         <ul>{x}</ul>
@@ -324,7 +324,7 @@
                                     <li>
                                         <span onClick={this.handleUpdateName}>{this.props.group_name}</span>
                                         <span onClick={this.handleWeight}>{this.props.weight}</span>
-                                        <button onClick={this.handleDelete}>x</button>
+                                        <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
                                         <div>
                                             <input  ref="name" type="text" placeholder="Name" />
                                             <input  ref="points" type="text" placeholder="points" />
@@ -394,7 +394,8 @@
                         </li>
                     )
                 } else {
-                    return <li><div onClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span><button onClick={this.handleDelete}>x</button></div></li>                                                
+                    return <li><div onClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span>
+                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button></div></li>                                                
                         
                 }                                
             }                
