@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230062436) do
+ActiveRecord::Schema.define(:version => 20131230101452) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -59,6 +59,16 @@ ActiveRecord::Schema.define(:version => 20131230062436) do
   end
 
   add_index "calendars", ["lop_mon_hoc_id"], :name => "index_calendars_on_lop_mon_hoc_id"
+
+  create_table "du_gios", :force => true do |t|
+    t.integer  "lich_trinh_giang_day_id"
+    t.integer  "user_id"
+    t.string   "state"
+    t.text     "settings"
+    t.text     "danh_gia"
+    t.datetime "created_at",              :null => false
+    t.datetime "updated_at",              :null => false
+  end
 
   create_table "enrollments", :force => true do |t|
     t.integer  "lop_mon_hoc_id"
@@ -109,6 +119,21 @@ ActiveRecord::Schema.define(:version => 20131230062436) do
 
   add_index "lop_mon_hocs", ["giang_vien_id"], :name => "index_lop_mon_hocs_on_giang_vien_id"
 
+  create_table "questions", :force => true do |t|
+    t.integer  "survey_id"
+    t.string   "name"
+    t.text     "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "results", :force => true do |t|
+    t.integer  "question_id"
+    t.text     "data"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
   create_table "sinh_viens", :force => true do |t|
     t.string   "ho"
     t.string   "dem"
@@ -127,6 +152,12 @@ ActiveRecord::Schema.define(:version => 20131230062436) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
     t.integer  "giang_vien_id"
+  end
+
+  create_table "surveys", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "tenants", :force => true do |t|

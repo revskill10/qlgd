@@ -9,7 +9,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   validates :thoi_gian, :so_tiet, :giang_vien_id, :presence => true
   validate :check_thoi_gian, on: :create
   
-  
+  has_many :du_gios, :dependent => :destroy
 
   
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,

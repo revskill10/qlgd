@@ -9,7 +9,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :lich_trinh_giang_days, :dependent => :destroy
   has_many :giang_viens, :through => :calendars, :uniq => true
   has_many :enrollments, :dependent => :destroy
-
+  has_many :results, :dependent => :destroy
   has_many :assignment_groups, :dependent => :destroy
   has_many :assignments, :dependent => :destroy
   has_many :submissions, :through => :assignments
