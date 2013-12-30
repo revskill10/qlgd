@@ -15,108 +15,76 @@
                 ];
         var Assignments = React.createClass({
                 getInitialState: function(){
-                        return {data: [], add: 0};                        
-                },                
-                findGroup: function(assignment_group_id){
-                        var x = this.state.data.filter(function(t){
-                                return t.assignment_group_id === assignment_group_id;
-                        });
-                        if (x.length > 0) {
-                                return x[0];
-                        }
-                        return null;
-                },
-                findAssignment: function(assignment_group_id, assignment_id){
-                        var x = this.state.data.filter(function(t){
-                                return t.assignment_group_id === assignment_group_id;
-                        });
-                        
-                        if (x.length > 0) {
-                                var z = x.assignments.filter(function(t){
-                                        return t.assignment_id === assignment_id;
-                                });
-                                var y = z[0];
-                                if (y != null) {
-                                        return y;
-                                }
-                        }                                
-                        return null;
-                },
+                    return {data: [], add: 0};                        
+                },                                
                 loadData: function(){
-                        $.ajax({
-                            url: "/lop/" + this.props.lop + "/assignments.json",
-                            success: function(data) {
-                                data.forEach(function(d){
-                                    if (d.assignments != null && d.assignments.length > 0) {
-                                        d.assignments.map(function(d2){
-                                            d2.edit = 0;
-                                            return d2;
-                                        });                                
-                                    }
-                                });        
-                                this.setState({data: data, add: 0});
-                                React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                React.renderComponent(<Grade lop={this.props.lop} />,
-                                    document.getElementById("grades"));
-                            }.bind(this)
-                        });             
+                    $.ajax({
+                        url: "/lop/" + this.props.lop + "/assignments.json",
+                        success: function(data) {
+                            data.forEach(function(d){
+                                if (d.assignments != null && d.assignments.length > 0) {
+                                    d.assignments.map(function(d2){
+                                        d2.edit = 0;
+                                        return d2;
+                                    });                                
+                                }
+                            });        
+                            this.setState({data: data, add: 0});
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                                document.getElementById("grades"));
+                        }.bind(this)
+                    });             
                 },
                 componentWillMount: function(){
-                        this.loadData();
+                    this.loadData();
                 },
                 
-                handleEdit: function(obj){
-                    var group = this.findGroup(obj.id);
-                    if (group != null) {
-                        group.name = obj.name;
-                        group.weight = obj.weight;
-                        $.ajax({
-                            url: "/lop/" + this.props.lop + "/assignment_groups",
-                            type: 'PUT',
-                            data: group,
-                            success: function(data) {
-                                data.forEach(function(d){
-                                    if (d.assignments != null && d.assignments.length > 0) {
-                                        d.assignments.map(function(d2){
-                                            d2.edit = 0;
-                                            return d2;
-                                        });                                
-                                    }
-                                });        
-                                this.setState({data: data, add: 0});
-                                React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                React.renderComponent(<Grade lop={this.props.lop} />,
-                                    document.getElementById("grades"));
-                            }.bind(this)
-                        });       
-                    }
+                handleEdit: function(obj){                    
+                    obj._method = "put"
+                    $.ajax({
+                        url: "/lop/" + this.props.lop + "/assignment_groups",
+                        type: 'POST',
+                        data: obj,
+                        success: function(data) {
+                            data.forEach(function(d){
+                                if (d.assignments != null && d.assignments.length > 0) {
+                                    d.assignments.map(function(d2){
+                                        d2.edit = 0;
+                                        return d2;
+                                    });                                
+                                }
+                            });        
+                            this.setState({data: data, add: 0});
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                                document.getElementById("grades"));
+                        }.bind(this)
+                    });       
+                    
                 },
-                handleUpdate: function(d){
-                        var a = this.findAssignment(d.assignment_group_id, d.assignment_id);
-                        if (a != null) {
-                                a.name = d.name;
-                                a.points = d.points;                                                                
-                                $.ajax({
-                                  url: "/lop/" + this.props.lop + "/assignment",
-                                  type: 'PUT',
-                                  data: a,
-                                  success: function(data) {             
-                                        data.forEach(function(d){
-                                            if (d.assignments != null && d.assignments.length > 0) {
-                                                d.assignments.map(function(d2){
-                                                    d2.edit = 0;
-                                                    return d2;
-                                                });                                
-                                            }
-                                        });        
-                                        this.setState({data: data, add: 0}); 
-                                        React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                        React.renderComponent(<Grade lop={this.props.lop} />,
-                                    document.getElementById("grades"));
-                                  }.bind(this)
-                                });
-                        }
-                        return false;
+                handleUpdate: function(d){                        
+                    d._method = "put";
+                    $.ajax({
+                      url: "/lop/" + this.props.lop + "/assignments",
+                      type: 'POST',
+                      data: d,
+                      success: function(data) {             
+                            data.forEach(function(d){
+                                if (d.assignments != null && d.assignments.length > 0) {
+                                    d.assignments.map(function(d2){
+                                        d2.edit = 0;
+                                        return d2;
+                                    });                                
+                                }
+                            });        
+                            this.setState({data: data, add: 0}); 
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                        document.getElementById("grades"));
+                      }.bind(this)
+                    });    
+                    return false;
                 },
                 enableAdd: function(e){
                         this.state.add = 1;
@@ -282,8 +250,8 @@
                 handleEdit: function(){
                     var x = this.refs.name.getDOMNode().value;
                     var y = this.refs.weight.getDOMNode().value;
-                    this.props.onEdit({id: this.props.group, name: x, weight: y});
                     this.setState({edit: 0, add: 0});
+                    this.props.onEdit({assignment_group_id: this.props.group, name: x, weight: y});                    
                 },
                 handleDelete: function(e){
                     this.props.onDelete({assignment_group_id: this.props.group});
@@ -293,7 +261,7 @@
                     var x = <li></li>;
                     if (this.props.data != null){
                            x = this.props.data.map(function(d){
-                                    return <Assignment key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
+                                    return <Assignment group={self.props.group} key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
                             });  
                     }                                 
                     if (this.state.add === 0){
@@ -379,10 +347,11 @@
             },
             handleUpdate: function(e){
                 if (this.state.edit === 1) {
-                    this.props.data.name = this.refs.mname.getDOMNode().value;
-                    this.props.data.points = this.refs.mpoints.getDOMNode().value;                        
+                    var name = this.refs.mname.getDOMNode().value;
+                    var points = this.refs.mpoints.getDOMNode().value;
+                    var d ={assignment_group_id: this.props.group, assignment_id : this.props.data.assignment_id, name: name, points: points};                                        
                     this.setState({edit: 0});
-                    this.props.onUpdate(this.props.data);
+                    this.props.onUpdate(d);
                 }                        
             },
             handleDelete: function(e){
