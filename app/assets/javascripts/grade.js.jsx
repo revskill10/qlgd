@@ -113,7 +113,7 @@ var Grade = React.createClass({
     render: function(){
             var self = this;
             var headers = this.state.names.map(function(d){
-                return <th>{d.name}</th>;
+                return <th>{d.name} ( {d.points} điểm, nhóm {d.group_name}, {d.group_weight} % )</th>;
             });
             var y = this.state.data.map(function(d){
                     d.assignments.map(function(d2){

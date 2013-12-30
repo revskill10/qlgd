@@ -89,7 +89,7 @@ class LopMonHocsController < ApplicationController
 		assignments = @lop.assignments
 		count = 0
 		names = [{:name => "Họ và tên"}]
-		names += assignments.map {|a| {:name => a.name}}
+		names += assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
 			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
