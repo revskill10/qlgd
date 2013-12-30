@@ -1,44 +1,41 @@
  /** @jsx React.DOM */
 
-var Cell = React.createClass({
-        getInitialState: function(){
-                return {v: this.props.data.grade};
-        },
+var Cell = React.createClass({        
         handleInput: function(e){
-                this.props.onInput1(this.props.data.index);
+            this.props.onInput1(this.props.data.index);
         },
         handleBlur: function(e){
-            this.props.onBlur1();
-        },        
-        handleChange: function(e){
-            this.setState({v: this.refs.v.getDOMNode().grade});
-            this.props.data.grade = this.refs.v.getDOMNode().grade;
-            this.props.onChange1(this.props.data);
+            var grade = this.refs.grade.getDOMNode().value;
+            this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);            
         },        
         handleKey: function(e){
             if (e.keyCode == 37) {// left
-                    this.props.onKeyPress(this.props.data.index, 'left');        
+                this.props.onKeyPress(this.props.data.index, 'left');        
             } else if (e.keyCode == 38) {
-                    this.props.onKeyPress(this.props.data.index, 'up');                
+                this.props.onKeyPress(this.props.data.index, 'up');                
             } else if (e.keyCode == 39) {
-                    this.props.onKeyPress(this.props.data.index, 'right');        
+                this.props.onKeyPress(this.props.data.index, 'right');        
             } else if (e.keyCode == 40) {
-                    this.props.onKeyPress(this.props.data.index, 'down');
+                this.props.onKeyPress(this.props.data.index, 'down');
             } else if (e.keyCode == 13) {
-                    this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, e.target.grade);
+                var grade = this.refs.grade.getDOMNode().value;
+                this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);
             }
         },        
         componentDidUpdate: function(){
-                $('#mi').focus();
+            if (this.props.data.edit === 1){
+                $('#mi').val(this.props.data.grade);
+                $('#mi').focus();                    
+            }            
         },
     render: function() {
                 if (this.props.data.edit === 0) {
                  return (
-                 <div ref="t" onClick={this.handleInput}>{' ' + this.props.data.grade}</div>
+                 <div ref="t" onClick={this.handleInput}>{this.props.data.grade}</div>
                  );
                 } else {
                         return (
-                                <input id="mi" ref="v" onKeyPress={this.handleKey} onFocus={this.handleInput} onChange={this.handleChange} onBlur={this.handleBlur} type="text" grade={this.state.v} />
+                                <input id="mi" ref="grade" onKeyPress={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur} type="text"  />
                         );
                 }
     }
@@ -83,19 +80,29 @@ var Grade = React.createClass({
             return 0;
         }
     },
-    handleEnter: function(a, b, c){
-            this.setState({active: -1});
-            return false;
+    handleEnter: function(assignment_id, sinh_vien_id, grade){
+        var d = {
+            giang_vien_id: this.props.giang_vien,
+            assignment_id: assignment_id,
+            sinh_vien_id: sinh_vien_id,
+            grade: grade
+        }
+        $.ajax({
+            url: "/lop/" + this.props.lop + "/submissions",
+            type: 'POST',
+            data: d,
+            success: function(data) {             
+                this.setState({names: data.names, data: data.results, active: -1});  
+            }.bind(this)           
+        });
+        return false;
     },
     handleInput: function(obj){                 
         this.setState({active: obj});
     },
     handleBlur: function(){
         this.setState({active: -1});
-    },
-    handleChange: function(d){
-            return false;
-    },
+    },    
     handleKeyPress: function(index, stat){
             if (stat == 'left'){
                     this.setState({active: index - 1});
@@ -123,7 +130,7 @@ var Grade = React.createClass({
                     return d;
                 });                
             var x = y.map(function(d){                        
-                    return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter} handleChange={self.handleChange} handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+                    return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });            
             return (
                     <table class="table table-bordered"><thead>           

@@ -31,7 +31,7 @@
                             });        
                             this.setState({data: data, add: 0});
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                 document.getElementById("grades"));
                         }.bind(this)
                     });             
@@ -57,7 +57,7 @@
                             });        
                             this.setState({data: data, add: 0});
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                 document.getElementById("grades"));
                         }.bind(this)
                     });       
@@ -80,7 +80,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                         document.getElementById("grades"));
                       }.bind(this)
                     });    
@@ -118,7 +118,7 @@
                                 });        
                                 this.setState({data: data, add: 0}); 
                                 React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                React.renderComponent(<Grade lop={this.props.lop} />,
+                                React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                     document.getElementById("grades"));
                           }.bind(this)
                         });
@@ -141,7 +141,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });
@@ -163,7 +163,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });
@@ -190,7 +190,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade lop={this.props.lop} />,
+                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });

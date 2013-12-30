@@ -12,7 +12,7 @@ class LopMonHoc < ActiveRecord::Base
 
   has_many :assignment_groups, :dependent => :destroy
   has_many :assignments, :dependent => :destroy
-  
+  has_many :submissions, :through => :assignments
   
   state_machine :state, :initial => :pending do  
     event :start do 
