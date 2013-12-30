@@ -16,19 +16,7 @@
         var Assignments = React.createClass({
                 getInitialState: function(){
                         return {data: [], add: 0};                        
-                },
-                handleChange: function(obj){
-                        var x = this.state.data.filter(function(t){
-                                return t.assignment_group_id === obj.assignment_group_id;
-                        });
-                        if (x.length > 0) {
-                                var y = x[0];
-                                if (y != null) {
-                                        y.assignments.push({name: obj.name, points: obj.points});
-                                        this.forceUpdate();        
-                                }
-                        }
-                },
+                },                
                 findGroup: function(assignment_group_id){
                         var x = this.state.data.filter(function(t){
                                 return t.assignment_group_id === assignment_group_id;
@@ -66,7 +54,10 @@
                                         });                                
                                     }
                                 });        
-                                this.setState({data: data, add: 0});   
+                                this.setState({data: data, add: 0});
+                                React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                             }.bind(this)
                         });             
                 },
@@ -92,7 +83,10 @@
                                         });                                
                                     }
                                 });        
-                                this.setState({data: data, add: 0});   
+                                this.setState({data: data, add: 0});
+                                React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                             }.bind(this)
                         });       
                     }
@@ -116,6 +110,9 @@
                                             }
                                         });        
                                         this.setState({data: data, add: 0}); 
+                                        React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                        React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                                   }.bind(this)
                                 });
                         }
@@ -152,6 +149,9 @@
                                     }
                                 });        
                                 this.setState({data: data, add: 0}); 
+                                React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                           }.bind(this)
                         });
                         return false;
@@ -172,6 +172,9 @@
                                 }
                             });        
                             this.setState({data: data, add: 0}); 
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                       }.bind(this)
                     });
                 },
@@ -191,6 +194,9 @@
                                 }
                             });        
                             this.setState({data: data, add: 0}); 
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                       }.bind(this)
                     });
                 },
@@ -215,6 +221,9 @@
                                 }
                             });        
                             this.setState({data: data, add: 0}); 
+                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                            React.renderComponent(<Grade lop={this.props.lop} />,
+                                    document.getElementById("grades"));
                       }.bind(this)
                     });
                     return false;
@@ -222,7 +231,7 @@
                 render: function(){
                     var self = this;
                     var x = this.state.data.map(function(d){
-                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} onChange={self.handleChange} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
+                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
                     });
                     if (this.state.add === 0) {
                             return (

@@ -3,6 +3,7 @@ class SinhVien < ActiveRecord::Base
 
   has_one :user, :as => :imageable
   has_many :attendances, :dependent => :destroy
+  has_many :submissions, :dependent => :destroy
   def hovaten
   	return trans(ho) + trans(dem) + ten
   end

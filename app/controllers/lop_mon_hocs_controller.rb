@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'lop_assignment_group_serializer'
 class LopMonHocsController < ApplicationController
 	def show
@@ -83,8 +84,21 @@ class LopMonHocsController < ApplicationController
 	end
 
 	# get grades
-	def grades
-		render json: [[{}]].to_json
+	def submissions
+		@lop = LopMonHoc.find(params[:id])
+		assignments = @lop.assignments
+		names = [{:name => "Họ và tên"}]
+		names += assignments.map {|a| {:name => a.name}}
+		enrollments = @lop.enrollments
+		results = enrollments.map do |en|
+			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}
+			assignments.each do |as|				
+				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as))				
+			end
+			tmp
+		end
+	    
+	    render json: {:names => names, :results => results}.to_json		
 	end
 
 end

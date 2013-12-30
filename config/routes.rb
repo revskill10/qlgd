@@ -21,8 +21,8 @@ Qlgd::Application.routes.draw do
   delete 'lop/:id/assignments' => "lop_mon_hocs#delete_assignment"
   post 'lop/:id/assignment_groups' => "lop_mon_hocs#create_assignment_group"
   delete 'lop/:id/assignment_groups' => "lop_mon_hocs#delete_assignment_group"
-  put 'lop/:id/assignment_groups' => 'lop_mon_hocs#update_assignment_group'
-  get 'lop/:id/grades' => "lop_mon_hocs#grades"
+  put 'lop/:id/assignment_groups' => 'lop_mon_hocs#update_assignment_group'  
+  get '/lop/:id/submissions' => 'lop_mon_hocs#submissions'
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens
