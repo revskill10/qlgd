@@ -37,8 +37,8 @@ var Enrollment = React.createClass({
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>        
         <td><div class="progress">
-        <div class="progress-bar progress-bar-success" style={{width: (100 - this.props.enrollment.tinhhinh) +"%"}}>
-          <span>{(100 - this.props.enrollment.tinhhinh) +"%"}</span>
+        <div class="progress-bar progress-bar-success" style={{width: this.props.enrollment.dihoc_tinhhinh +"%"}}>
+          <span>{this.props.enrollment.dihoc_tinhhinh +"%"}</span>
         </div>        
         <div class="progress-bar progress-bar-danger" style={{width: this.props.enrollment.tinhhinh + "%"}}>
           <span>{this.props.enrollment.tinhhinh +"%"}</span>
@@ -240,46 +240,44 @@ var Lich = React.createClass({
       <div class="panel-group" id="accordion">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-        Thông tin lớp học
-        </a>
+      <h4 class="panel-title">        
+        Thông tin lớp học        
       </h4>
     </div>
-    <div id="collapseOne" class="panel-collapse collapse">
-      <div class="panel-body">
-        <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
-        <h6>Thông tin buổi học</h6>
-        <table class="table table-bordered">
-          <thead>
-            <td>Phòng</td>
-            <td>Thực hành</td>
-            <td>Số sinh viên có mặt</td>
-            <td>Số sinh viên vắng</td>
+    
+    <div class="panel-body">
+      <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
+      <h6>Thông tin buổi học</h6>
+      <table class="table table-bordered">
+        <thead>
+          <td>Phòng</td>
+          <td>Thực hành</td>
+          <td>Số sinh viên có mặt</td>
+          <td>Số sinh viên vắng</td>
+          <td>Cập nhật</td>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{this.state.lich.phong}</td>
+            <td>{this.state.lich.thuc_hanh}</td>
+            <td>{this.state.lich.sv_co_mat}</td>
+            <td>{this.state.lich.sv_vang_mat}</td>
             <td>Cập nhật</td>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{this.state.lich.phong}</td>
-              <td>{this.state.lich.thuc_hanh}</td>
-              <td>{this.state.lich.sv_co_mat}</td>
-              <td>{this.state.lich.sv_vang_mat}</td>
-              <td>Cập nhật</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          </tr>
+        </tbody>
+      </table>
     </div>
+    
   </div>      
   <div class="panel panel-default">
     <div class="panel-heading">
       <h4 class="panel-title">
-        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+        
           Điểm danh
-        </a>
+        
       </h4>
     </div>
-    <div id="collapseThree" class="panel-collapse collapse in">
+    
       <div class="panel-body">
         <ul class="nav nav-tabs">
           <li class="active">
@@ -314,7 +312,7 @@ var Lich = React.createClass({
           </div>
         </div>
        </div>
-    </div>
+    
   </div>
   </div>
     );    

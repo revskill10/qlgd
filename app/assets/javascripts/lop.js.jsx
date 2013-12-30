@@ -69,15 +69,12 @@ var Setting = React.createClass({
 		);
 	}
 });
-var Lop = React.createClass({   
-	getInitialState: function(){
-		return {data: this.props.data.enrollments, lop: this.props.data.lop}; 
-	},	
+var Lop = React.createClass({   	
 	render: function(){
 		return (
 			<div>
-				<Setting lop={this.state.lop} />
-				<Enrollments enrollments={this.state.data} />	
+				<Setting lop={this.props.data.lop} />
+				<Enrollments enrollments={this.props.data.enrollments} />	
 			</div>
 		);
 	}
@@ -85,7 +82,7 @@ var Lop = React.createClass({
 
 var ThongSo = React.createClass({
 	getInitialState: function(){
-		return {data: this.props.data}
+		return {data: {}}
 	},
 	handleSubmit: function(){
 		var lt = this.refs.lt.getDOMNode().value.trim();
@@ -108,10 +105,33 @@ var ThongSo = React.createClass({
 	      type: 'POST',
 	      data: data,
 	      success: function(data2) {             
-	        this.setState({data : data2.lop});	        
+	        this.setState({data : data2.lop});	 
+	        React.unmountAndReleaseReactRootNode('main');
+			React.renderComponent(
+				<Lop data={data2} />
+				, document.getElementById('main')
+			);       
 	      }.bind(this)
 	    });
 	    return false;
+	},
+	componentWillMount: function(){
+		$.ajax({
+			url: "/lop/"+this.props.lop+ "/show.json" ,
+			success: function(data) {                      			
+				this.setState({data: data.lop});					
+				React.renderComponent(
+					<Lop data={data} />
+					, document.getElementById('main')
+				);
+			}.bind(this)
+		});
+	},
+	componentDidUpdate: function(){		
+		$('#lang').val(this.state.data.language);
+		$('#lt').val(this.state.data.so_tiet_ly_thuyet);
+		$('#th').val(this.state.data.so_tiet_thuc_hanh);
+		$('#dcdk').val(this.state.data.de_cuong_du_kien);
 	},
 	render: function(){
 		return (
@@ -121,25 +141,24 @@ var ThongSo = React.createClass({
 				<input type="submit" value="Cập nhật" class="btn btn-primary"/>
 				<table class="table table-bordered table-condensed">
 		          <thead>
-		            <td>Thông số</td>
-		            <td>Giá trị cũ</td>
-		            <td>Giá trị mới</td>
+		            <td>Thông số</td>		            
+		            <td>Giá trị</td>
 		          </thead>
 		          <tbody>
-		          	<tr><td>Mã lớp:</td><td>{this.state.data.ma_lop}</td><td>{this.state.data.ma_lop}</td></tr>
-		            <tr><td>Tên môn học</td><td>{this.state.data.ten_mon_hoc}</td><td>{this.state.data.ten_mon_hoc}</td></tr>
-		            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td><td>{this.state.data.si_so}</td></tr>
-		            <tr><td>Số tiết lý thuyết</td><td>{this.state.data.so_tiet_ly_thuyet}</td><td><input type="text" ref="lt" /></td></tr>
-		            <tr><td>Số tiết thực hành</td><td>{this.state.data.so_tiet_thuc_hanh}</td><td><input type="text" ref="th" /></td></tr>
-		            <tr><td>Ngôn ngữ</td><td>{this.state.data.language}</td><td>
-		            	  <select ref="lang" value="vietnamse">
+		          	<tr><td>Mã lớp:</td><td>{this.state.data.ma_lop}</td></tr>
+		            <tr><td>Tên môn học</td><td>{this.state.data.ten_mon_hoc}</td></tr>
+		            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td></tr>
+		            <tr><td>Số tiết lý thuyết</td><td><input id="lt" type="text" ref="lt" /></td></tr>
+		            <tr><td>Số tiết thực hành</td><td><input id="th" type="text" ref="th" /></td></tr>
+		            <tr><td>Ngôn ngữ</td><td>
+		            	  <select id="lang" ref="lang">
 						    <option value="vietnamse">Tiếng Việt</option>
 						    <option value="chinense">Tiếng Trung Quốc</option>
 						    <option value="japanese">Tiếng Nhật</option>
 						  </select>
 
 		            </td></tr>
-		            <tr><td>Đề cương dự kiến</td><td>{this.state.data.de_cuong_du_kien}</td><td><textarea ref="dcdk" style={{minHeight: 300}} /></td></tr>		            
+		            <tr><td>Đề cương dự kiến</td><td><textarea id="dcdk" ref="dcdk" style={{minHeight: 300}} /></td></tr>		            
 		          </tbody>           
 		        </table> 
 		        
@@ -151,20 +170,12 @@ var ThongSo = React.createClass({
 var data = {};
 
 
-$.ajax({
-		url: "/lop/"+ENV.lop_id+"/show.json" ,
-		success: function(data) {                      
-			React.renderComponent(
-				<Lop data={data} />
-				, document.getElementById('main')
-			);
-			React.renderComponent(
-				<ThongSo data={data.lop} />
-				, document.getElementById('thongso')
-			);
+
+React.renderComponent(
+	<ThongSo lop={ENV.lop_id} />
+	, document.getElementById('thongso')
+);
 			
-	}.bind(this)
-});
 
 React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
 				, document.getElementById('assignment'));

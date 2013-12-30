@@ -1,6 +1,10 @@
 class LichTrinhGiangDayDecorator < Draper::Decorator
   delegate_all
   
+  def phong
+    return '' unless object.phong
+    return object.phong
+  end
   def content
     return nil unless object.noi_dung
     object.noi_dung

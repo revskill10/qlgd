@@ -27,22 +27,24 @@ class LichEnrollmentDecorator < Draper::Decorator
     return @at.so_tiet_vang if @at
   end
   def phep_status
-    return "Không phép" unless @at
+    return 'Không phép' unless @at
     return @at.decorate.phep_status
   end
+
   def phep
     return false unless @at
-    return @at.phep if @at
+    return false unless @at.phep    
+    return @at.phep
   end
   def status  	
-  	return "Không vắng" unless @at
+  	return 'Không vắng' unless @at
   	return @at.decorate.status if @at
   end
   def name
     @object.sinh_vien.hovaten
   end
   def note
-    return "" unless @at
+    return '' unless @at
     return @at.note if @at
   end
   def code
@@ -52,6 +54,10 @@ class LichEnrollmentDecorator < Draper::Decorator
     @lich.so_tiet_moi
   end
   def tinhhinh
+    return 0 if (@lich.lop_mon_hoc.tong_so_tiet == 0)
     (@object.tong_vang * 100.0 / @lich.lop_mon_hoc.tong_so_tiet).round(2)
+  end
+  def dihoc_tinhhinh
+    return (100 - tinhhinh).round(2)
   end
 end
