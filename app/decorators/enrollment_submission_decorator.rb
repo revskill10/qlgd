@@ -11,10 +11,14 @@ class EnrollmentSubmissionDecorator < Draper::Decorator
   #     end
   #   end
   
-  def initialize(obj, assignment)    
+  def initialize(obj, assignment, index)    
     @object = obj
     @assignment = assignment
     @submission = @object.submissions.where(assignment_id: @assignment.id).first
+    @index = index
+  end
+  def index
+    @index
   end
   def sinh_vien_id
     @object.sinh_vien.id

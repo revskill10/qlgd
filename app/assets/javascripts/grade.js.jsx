@@ -5,28 +5,28 @@ var Cell = React.createClass({
                 return {v: this.props.data.grade};
         },
         handleInput: function(e){
-                this.props.onInput1(this.props.data.assignment_id, this.props.data.sinh_vien_id);
+                this.props.onInput1(this.props.data.index);
         },
         handleBlur: function(e){
-                this.props.onBlur1();
+            this.props.onBlur1();
         },        
         handleChange: function(e){
-                this.setState({v: this.refs.v.getDOMNode().grade});
-                this.props.data.grade = this.refs.v.getDOMNode().grade;
-                this.props.onChange1(this.props.data);
+            this.setState({v: this.refs.v.getDOMNode().grade});
+            this.props.data.grade = this.refs.v.getDOMNode().grade;
+            this.props.onChange1(this.props.data);
         },        
         handleKey: function(e){
-                if (e.keyCode == 37) {// left
-                        this.props.onKeyPress(this.props.data.assignment_id, this.props.data.sinh_vien_id, 'left');        
-                } else if (e.keyCode == 38) {
-                        this.props.onKeyPress(this.props.data.assignment_id, this.props.data.sinh_vien_id, 'up');                
-                } else if (e.keyCode == 39) {
-                        this.props.onKeyPress(this.props.data.assignment_id, this.props.data.sinh_vien_id, 'right');        
-                } else if (e.keyCode == 40) {
-                        this.props.onKeyPress(this.props.data.assignment_id, this.props.data.sinh_vien_id, 'down');
-                } else if (e.keyCode == 13) {
-                        this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, e.target.grade);
-                }
+            if (e.keyCode == 37) {// left
+                    this.props.onKeyPress(this.props.data.index, 'left');        
+            } else if (e.keyCode == 38) {
+                    this.props.onKeyPress(this.props.data.index, 'up');                
+            } else if (e.keyCode == 39) {
+                    this.props.onKeyPress(this.props.data.index, 'right');        
+            } else if (e.keyCode == 40) {
+                    this.props.onKeyPress(this.props.data.index, 'down');
+            } else if (e.keyCode == 13) {
+                    this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, e.target.grade);
+            }
         },        
         componentDidUpdate: function(){
                 $('#mi').focus();
@@ -49,7 +49,7 @@ var Row = React.createClass({
     render: function(){
         var self = this;
                 var x = this.props.data.map(function(d){                        
-                        return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
+                        return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
                 });
         return (
             <tr><td>{this.props.name}</td>{x}</tr>                        
@@ -76,35 +76,35 @@ var Grade = React.createClass({
           }.bind(this)
         });  
     },
-    getStatus: function(id, id2){
-        if (this.state.active === id && this.state.active2 === id2) {
+    getStatus: function(d){
+        if (this.state.active === d.index) {
             return 1;
         } else {
             return 0;
         }
     },
     handleEnter: function(a, b, c){
-            this.setState({active: -1, active2: -1});
+            this.setState({active: -1});
             return false;
     },
-    handleInput: function(obj, obj2){                 
-        this.setState({active: obj, active2: obj2});
+    handleInput: function(obj){                 
+        this.setState({active: obj});
     },
     handleBlur: function(){
-        this.setState({active: -1, active2: -1});
+        this.setState({active: -1});
     },
     handleChange: function(d){
             return false;
     },
-    handleKeyPress: function(obj, obj2, stat){
+    handleKeyPress: function(index, stat){
             if (stat == 'left'){
-                    this.setState({active: obj - 1, active2: obj2});
+                    this.setState({active: index - 1});
             } else if (stat == 'up') {
-                    this.setState({active: obj, active2: obj2 - 1});
+                    this.setState({active: index - this.state.names.length + 1});
             } else if (stat == 'down') {
-                    this.setState({active: obj, active2: obj2 + 1});
+                    this.setState({active: index + this.state.names.length - 1});
             } else if (stat == 'right') {
-                    this.setState({active: obj + 1, active2: obj2});
+                    this.setState({active: index + 1});
             }
     },
     componentWillMount: function(){
@@ -113,21 +113,21 @@ var Grade = React.createClass({
     render: function(){
             var self = this;
             var headers = this.state.names.map(function(d){
-                return <td>{d.name}</td>;
+                return <th>{d.name}</th>;
             });
             var y = this.state.data.map(function(d){
                     d.assignments.map(function(d2){
-                            d2.edit = self.getStatus(d2.assignment_id, d2.sinh_vien_id);
+                            d2.edit = self.getStatus(d2);
                             return d2;
                     });
                     return d;
                 });                
             var x = y.map(function(d){                        
-                    return <Row name={d.name} key={d.sinh_vien_id} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter} handleChange={self.handleChange} handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+                    return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter} handleChange={self.handleChange} handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });            
             return (
                     <table class="table table-bordered"><thead>           
-                    {headers}
+                    <tr>{headers}</tr>
                     </thead>
         <tbody>
         {x}</tbody>
