@@ -6,7 +6,10 @@ class LichTrinhGiangDayPolicy
     @lich_trinh_giang_day = lich_trinh_giang_day
   end
 
-  def marked?
-    (not lich_trinh_giang_day.nghile? and not lich_trinh_giang_day.nghiday?) and lich_trinh_giang_day.accepted?
+  def update?
+  	!(lich_trinh_giang_day.state == :nghile) and !(lich_trinh_giang_day.state == :nghiday) and lich_trinh_giang_day.accepted? and user.imageable.is_a?(GiangVien) and user.imageable.lich_trinh_giang_days.include?(lich_trinh_giang_day) and lich_trinh_giang_day.thoi_gian.localtime >= Time.now
   end
+  
+
+
 end

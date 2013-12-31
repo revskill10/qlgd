@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131230101452) do
+ActiveRecord::Schema.define(:version => 20131231014814) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -85,6 +85,13 @@ ActiveRecord::Schema.define(:version => 20131230101452) do
     t.string   "ten_khoa"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "groups", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "lich_trinh_giang_days", :force => true do |t|
@@ -174,6 +181,13 @@ ActiveRecord::Schema.define(:version => 20131230101452) do
     t.integer  "stt"
     t.date     "tu_ngay"
     t.date     "den_ngay"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "user_groups", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

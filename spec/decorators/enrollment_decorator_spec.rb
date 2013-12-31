@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe EnrollmentDecorator do
+describe LichEnrollmentDecorator do
 end

@@ -35,9 +35,9 @@ class Calendar < ActiveRecord::Base
         sch.each do |s|
           begin
             lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_datetime, giang_vien_id: self.giang_vien.id, so_tiet: self.so_tiet)
-            lich.accepts!          
-          rescue
-
+            lich.accept!          
+          rescue Exception => e
+            puts e
           end
         end
       end

@@ -3,5 +3,5 @@ class Question < ActiveRecord::Base
 
   belongs_to :survey
 
-  has_many :du_gios, :dependent => :destroy
+  has_many :results, :dependent => :destroy
 end

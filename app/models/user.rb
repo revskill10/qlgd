@@ -9,6 +9,10 @@ class User < ActiveRecord::Base
   # attr_accessible :title, :body
   belongs_to :imageable, :dependent => :destroy, :polymorphic => true
   has_many :du_gios, :dependent => :destroy
+
+  has_many :user_groups, :dependent => :destroy
+  has_many :groups, :through => :user_groups
+  
   def cas_extra_attributes=(extra_attributes)
     if extra_attributes["status"] != 0 and extra_attributes["masinhvien"]
         code = extra_attributes["masinhvien"].upcase

@@ -5,23 +5,34 @@ include ControllerMacros
 
 describe EnrollmentsController do 
 	
-	describe "update" do 
-		prepare
-		it "update enrollment information" do 			
+	describe "As a teacher" do 
+		
+		it "can update enrollment information" do 			
+			sv = FactoryGirl.create(:sinh_vien)
+	      gv = FactoryGirl.create(:giang_vien)
+	      us = FactoryGirl.create(:giangvien)
+	      us.imageable = gv
+	      us.save!
+	      lop1 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml1")
+	      en = FactoryGirl.create(:enrollment, :sinh_vien => sv, :lop_mon_hoc => lop1)
+	      lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2")
+	      t1 = FactoryGirl.create(:tuan, :stt => 1, :tu_ngay => Date.new(2013, 8, 12).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 18).change(:offset => Rational(7,24)))
+	      t2 = FactoryGirl.create(:tuan, :stt => 2,  :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24)))
+	      t3 = FactoryGirl.create(:tuan, :stt => 3,  :tu_ngay => Date.new(2013, 8, 26).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 31).change(:offset => Rational(7,24)))     
+	      calendar1 = lop1.calendars.create(:so_tiet => 3, :so_tuan => 2, :thu => 2, :tiet_bat_dau => 1, :tuan_hoc_bat_dau => 1, :giang_vien_id => gv.id)        
+	      calendar2 = lop2.calendars.create(:so_tiet => 3, :so_tuan => 2, :thu => 3, :tiet_bat_dau => 1, :tuan_hoc_bat_dau => 1, :giang_vien_id => gv.id)
+	      calendar1.generate!     
+	      calendar2.generate!
+	      #ApplicationController.any_instance.stub(:current_image).and_return(gv)
+	      ApplicationController.any_instance.stub(:load_tenant).and_return(nil)     
+	      sign_in :user, us  
 			lich = LichTrinhGiangDay.find(1)
+			lich.so_tiet.should == 3
 			post :update, :stat => 'vang', :lich_id => 1, :enrollment => {:sinh_vien_id => 1, :id => 1, :phep => false}, :format => :json
 			assigns(:lich).should eq(lich)		
 			assigns(:attendance).so_tiet_vang.should eq(3)
 			assigns(:attendance).state.should eq("absent")
-			assigns(:attendance).decorate.phep_status.should eq("Không phép")
-		
-			response.body.should == {
-				:info => {
-					:lop => {:id => 1, :ma_lop => "ml1", :ma_mon_hoc => "mm1", :ten_mon_hoc => "tm1", :si_so => 1, :so_tiet_ly_thuyet => nil, :so_tiet_thuc_hanh => nil, :updated => false} ,
-					"lich"=>{"id"=>1,"phong"=>nil,"noi_dung"=>nil,:updated => true,"status"=>"waiting","sv_co_mat"=>0,"sv_vang_mat"=>1} },
-				:enrollments => [
-					{"id"=>1,:sinh_vien_id => 1,"name"=>"ho1 dem1 ten1","code"=>"sv1","status"=>"Vắng","so_tiet_vang"=>3,"phep"=>false,"max"=>3,"phep_status"=>"Không phép","note"=>nil, :tong_vang => 3}]
-			}.to_json				
+			assigns(:attendance).decorate.phep_status.should eq("Không phép")			
 		end
 	end	
 end
