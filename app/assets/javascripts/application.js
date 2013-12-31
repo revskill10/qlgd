@@ -13,5 +13,5 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require bootstrap-slider
+//= require sortable.min
 //= require react

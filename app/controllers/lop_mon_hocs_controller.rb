@@ -28,45 +28,21 @@ class LopMonHocsController < ApplicationController
 	    	render json: {:lop => LopMonHocSerializer.new(@lop), :enrollments => results}
 	    
 	end
-	# get assignments
-	def assignments		
-		
-			@lop = LopMonHoc.find(params[:id])
-			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
-			render json: results.to_json
-		
-	end
-	def create_assignment
-		
-			@lop = LopMonHoc.find(params[:id])
-			@lop.assignments.create(assignment_group_id: params[:assignment_group_id], giang_vien_id: params[:giang_vien_id], name: params[:name], points: params[:points])
-			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
-			render json: results.to_json
-		
+	
+	def reorder_assignment_group
+		@lop = LopMonHoc.find(params[:id].to_i)
+		@assignment_group = @lop.assignment_groups.find(params[:assignment_group_id].to_i);
+		@assignment_group.insert_at(params[:position].to_i+1)
+		render json: {:result => "OK"}
 	end
 	# post
 	def create_assignment_group
-		
-			@lop = LopMonHoc.find(params[:id])
-			@lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
-			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
-			render json: results.to_json
-		
+		@lop = LopMonHoc.find(params[:id])
+		@lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json
 	end
-	# update assignment
-	def update_assignment
-		
-			@lop = LopMonHoc.find(params[:id])
-			@a = @lop.assignments.find(params[:assignment_id]);
-			if @a
-				@a.name = params[:name]
-				@a.points = params[:points]
-				@a.save!
-			end
-			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
-			render json: results.to_json
-		
-	end
+	
 	# delete assignment group
 	def delete_assignment_group
 		
@@ -86,6 +62,39 @@ class LopMonHocsController < ApplicationController
 				@as.name = params[:name]
 				@as.weight = params[:weight]
 				@as.save!
+			end
+			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+			render json: results.to_json
+	end
+	# get assignments
+	def assignments		
+		@lop = LopMonHoc.find(params[:id])
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json		
+	end
+	def create_assignment
+		@lop = LopMonHoc.find(params[:id])
+		@lop.assignments.create(assignment_group_id: params[:assignment_group_id], giang_vien_id: params[:giang_vien_id], name: params[:name], points: params[:points])
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json
+		
+	end
+	def reorder_assignment
+		@lop = LopMonHoc.find(params[:id])
+		@assignment_group = @lop.assignment_groups.find(params[:assignment_group_id])
+		@assignment = @assignment_group.assignments.find(params[:assignment_id])
+		@assignment.insert_at(params[:position].to_i + 1);
+		render json: {:result => "OK"}
+	end
+	# update assignment
+	def update_assignment
+		
+			@lop = LopMonHoc.find(params[:id])
+			@a = @lop.assignments.find(params[:assignment_id]);
+			if @a
+				@a.name = params[:name]
+				@a.points = params[:points]
+				@a.save!
 			end
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json

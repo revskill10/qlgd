@@ -17,11 +17,13 @@ Qlgd::Application.routes.draw do
   get "lop/:id/show" => "lop_mon_hocs#show"  
   get 'lop/:id/assignments' => "lop_mon_hocs#assignments"
   post 'lop/:id/assignments' => "lop_mon_hocs#create_assignment"
+  post 'lop/:id/reorder_assignments' => "lop_mon_hocs#reorder_assignment"
   put 'lop/:id/assignments' => 'lop_mon_hocs#update_assignment'
   delete 'lop/:id/assignments' => "lop_mon_hocs#delete_assignment"
   post 'lop/:id/assignment_groups' => "lop_mon_hocs#create_assignment_group"
   delete 'lop/:id/assignment_groups' => "lop_mon_hocs#delete_assignment_group"
   put 'lop/:id/assignment_groups' => 'lop_mon_hocs#update_assignment_group'  
+  post 'lop/:id/reorder_assignment_groups' => 'lop_mon_hocs#reorder_assignment_group'
   get '/lop/:id/submissions' => 'lop_mon_hocs#submissions'
   post '/lop/:id/submissions' => 'lop_mon_hocs#update_submissions'
   resources :tenants do 

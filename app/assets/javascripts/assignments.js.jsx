@@ -196,6 +196,55 @@
                     });
                     return false;
                 },
+                componentDidUpdate: function(){
+                    var self = this;
+                    new Sortable(multi, {
+                        draggable: '.tile',
+                        handle: '.tile__name',
+                        onUpdate: function(evt){
+                            var type = $('#'+evt.item.id).data('type');
+                            if (type === 'assignment_group'){
+                               var data = {
+                                assignment_group_id: $('#'+evt.item.id).data('group'),
+                                position: $("li.layer.tile").index(evt.item)
+                                };
+                                $.ajax({
+                                  url: "/lop/" + self.props.lop + "/reorder_assignment_groups",
+                                  type: 'POST',
+                                  data: data,
+                                  success: function(data) {             
+                                        console.log(data);
+                                  }.bind(self)
+                                });      
+                            }                            
+                        }
+                    });
+
+
+                    [].forEach.call(multi.getElementsByClassName('tile__list'), function (el){
+                        new Sortable(el, { group: 'photo',
+                            onAdd: function (evt){ console.log('onAdd.'+el.id+':'+ $('li.foo'+el.id).index(evt.item)); },
+                            onUpdate: function (evt){
+                                var assignment_group_id = $('#'+evt.item.id).data('group');
+                                var assignment_id = $('#'+evt.item.id).data('assignment');
+                                var position = $('li.group'+assignment_group_id).index(evt.item);
+                                var data = {
+                                    assignment_group_id: assignment_group_id,
+                                    assignment_id: assignment_id,
+                                    position: position
+                                };
+                                $.ajax({
+                                  url: "/lop/" + self.props.lop + "/reorder_assignments",
+                                  type: 'POST',
+                                  data: data,
+                                  success: function(data) {             
+                                        console.log(data);
+                                  }.bind(self)
+                                }); 
+                            },
+                            onRemove: function (evt){ console.log('onRemove.'+el.id+':'+ $('li.foo'+el.id).index(evt.item) ); } });
+                    });
+                },
                 render: function(){
                     var self = this;
                     var x = this.state.data.map(function(d){
@@ -203,9 +252,9 @@
                     });
                     if (this.state.add === 0) {
                             return (
-                                    <div>
+                                    <div >
                                     <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Add</button>
-                                    <ul>{x}</ul>       
+                                    <ul id="multi">{x}</ul>       
                                     </div>                         
                             );        
                     } else {
@@ -243,10 +292,6 @@
                 handleUpdateName: function(){                        
                     this.setState({add: 0, edit: 1});
                 },
-                componentDidUpdate: function(){
-                    $('#group' + this.props.group).val(this.props.group_name);
-                    $('#weight' + this.props.group).val(this.props.weight);
-                },
                 handleEdit: function(){
                     var x = this.refs.name.getDOMNode().value;
                     var y = this.refs.weight.getDOMNode().value;
@@ -267,13 +312,13 @@
                     if (this.state.add === 0){
                         if (this.state.edit === 0){
                             return ( 
-                                <li>
-                                    <span onClick={this.handleUpdateName}>{this.props.group_name}</span>
+                                <li id={'group'+this.props.group} data-type="assignment_group" data-group={this.props.group} class="layer tile">
+                                    <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
                                     <span onClick={this.handleWeight}>{this.props.weight}</span>
                                     <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
                                     <div>
                                         <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Add</button>
-                                        <ul>{x}</ul>
+                                        <ul id={'group'+this.props.group} data-groupId={this.props.group} class="tile__list">{x}</ul>
                                     </div>
                                 </li>
                             );
@@ -299,8 +344,8 @@
                         if (this.state.edit === 0){
                                 return (
                                     <li>
-                                        <span onClick={this.handleUpdateName}>{this.props.group_name}</span>
-                                        <span onClick={this.handleWeight}>{this.props.weight}</span>
+                                        <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
+                                        <span onDoubleClick={this.handleWeight}>{this.props.weight}</span>
                                         <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
                                         <div>
                                             <input  ref="name" type="text" placeholder="Name" />
@@ -372,8 +417,8 @@
                         </li>
                     )
                 } else {
-                    return <li><div onClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span>
-                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button></div></li>                                                
+                    return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span><span>
+                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button></span></div></li>                                                
                         
                 }                                
             }                
