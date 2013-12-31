@@ -13,9 +13,9 @@ describe EnrollmentsController do
 	      us = FactoryGirl.create(:giangvien)
 	      us.imageable = gv
 	      us.save!
-	      lop1 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml1")
+	      lop1 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml1", :settings => {})
 	      en = FactoryGirl.create(:enrollment, :sinh_vien => sv, :lop_mon_hoc => lop1)
-	      lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2")
+	      lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2", :settings => {})
 	      t1 = FactoryGirl.create(:tuan, :stt => 1, :tu_ngay => Date.new(2013, 8, 12).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 18).change(:offset => Rational(7,24)))
 	      t2 = FactoryGirl.create(:tuan, :stt => 2,  :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24)))
 	      t3 = FactoryGirl.create(:tuan, :stt => 3,  :tu_ngay => Date.new(2013, 8, 26).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 31).change(:offset => Rational(7,24)))     
@@ -26,13 +26,16 @@ describe EnrollmentsController do
 	      #ApplicationController.any_instance.stub(:current_image).and_return(gv)
 	      ApplicationController.any_instance.stub(:load_tenant).and_return(nil)     
 	      sign_in :user, us  
+	      lop1.start!
+	      lop2.start!
 			lich = LichTrinhGiangDay.find(1)
 			lich.so_tiet.should == 3
 			post :update, :stat => 'vang', :lich_id => 1, :enrollment => {:sinh_vien_id => 1, :id => 1, :phep => false}, :format => :json
-			assigns(:lich).should eq(lich)		
+			
 			assigns(:attendance).so_tiet_vang.should eq(3)
 			assigns(:attendance).state.should eq("absent")
-			assigns(:attendance).decorate.phep_status.should eq("Không phép")			
+			assigns(:attendance).decorate.phep_status.should eq("Không phép")	
+
 		end
 	end	
 end

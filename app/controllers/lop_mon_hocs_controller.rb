@@ -2,21 +2,20 @@
 require 'lop_assignment_group_serializer'
 class LopMonHocsController < ApplicationController
 	def show
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
+			authorize @lop, :update?
 			enrollments = @lop.enrollments    
 	    	results = enrollments.map {|e| LopEnrollmentSerializer.new(e)}
 	    	render json: {:lop => LopMonHocSerializer.new(@lop), :enrollments => results}
-    	rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+    	
 	end
 	def info
 		@lop = LopMonHoc.find(params[:lop_id])
 		render json: LopMonHocSerializer.new(@lop)
 	end
 	def update
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])	
 			@lop.settings ||= {}	
 			@lop.settings["so_tiet_ly_thuyet"] = params[:lt].to_i
@@ -27,44 +26,36 @@ class LopMonHocsController < ApplicationController
 			enrollments = @lop.enrollments    
 	    	results = enrollments.map {|e| LopEnrollmentSerializer.new(e)}
 	    	render json: {:lop => LopMonHocSerializer.new(@lop), :enrollments => results}
-	    rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+	    
 	end
 	# get assignments
 	def assignments		
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	def create_assignment
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@lop.assignments.create(assignment_group_id: params[:assignment_group_id], giang_vien_id: params[:giang_vien_id], name: params[:name], points: params[:points])
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# post
 	def create_assignment_group
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# update assignment
 	def update_assignment
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@a = @lop.assignments.find(params[:assignment_id]);
 			if @a
@@ -74,25 +65,21 @@ class LopMonHocsController < ApplicationController
 			end
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# delete assignment group
 	def delete_assignment_group
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@as = @lop.assignment_groups.find(params[:assignment_group_id]);
 			@as.destroy if @as
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# update assignment group
 	def update_assignment_group
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@as = @lop.assignment_groups.find(params[:assignment_group_id]);
 			if @as
@@ -102,26 +89,22 @@ class LopMonHocsController < ApplicationController
 			end
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# delete assignment
 	def delete_assignment
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@a = @lop.assignments.find(params[:assignment_id]);
 			@a.destroy if @a
 			results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 			render json: results.to_json
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 
 	# get grades
 	def submissions
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			assignments = @lop.assignments
 			count = 0
@@ -137,13 +120,11 @@ class LopMonHocsController < ApplicationController
 				tmp
 			end
 		    render json: {:names => names, :results => results}.to_json		
-		rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+		
 	end
 	# post grades
 	def update_submissions
-		begin
+		
 			@lop = LopMonHoc.find(params[:id])
 			@as= @lop.assignments.find(params[:assignment_id])
 			@sub = @as.submissions.where(sinh_vien_id: params[:sinh_vien_id]).first
@@ -169,8 +150,6 @@ class LopMonHocsController < ApplicationController
 				tmp
 			end
 		    render json: {:names => names, :results => results}.to_json	
-	    rescue Exception => e
-	    	render json: {:error => e}.to_json
-	    end
+	    
 	end
 end

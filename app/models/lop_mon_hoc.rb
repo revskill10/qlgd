@@ -16,7 +16,7 @@ class LopMonHoc < ActiveRecord::Base
   
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so
-      transition all => :started, :if => lambda {|lop| lop.settings != nil }
+      transition all - :removed => :started, :if => lambda {|lop| lop.settings != nil }
     end 
     event :complete do 
       transition :started => :completed # da ket thuc mon
@@ -25,11 +25,7 @@ class LopMonHoc < ActiveRecord::Base
       transition :pending => :removed
     end
   end
-
-  def start
-    self.settings ||= {}
-    super
-  end
+  
 
   def generate_calendars
     if calendars.count > 0 

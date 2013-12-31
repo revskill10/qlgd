@@ -1,6 +1,7 @@
 require 'pg_tools'
 class ApplicationController < ActionController::Base
   protect_from_forgery  
+  include Pundit
   #before_filter :load_tenant
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   private
@@ -31,6 +32,6 @@ class ApplicationController < ActionController::Base
 
   def user_not_authorized
     flash[:error] = "You are not authorized to perform this action."
-    redirect_to request.headers["Referer"] || root_path
+    redirect_to request.headers["Referer"] || "/"
   end
 end

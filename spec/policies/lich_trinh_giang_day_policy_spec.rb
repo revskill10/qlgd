@@ -10,7 +10,7 @@ describe LichTrinhGiangDayPolicy do
 			u = FactoryGirl.create(:user, :imageable => gv)
 			lop = FactoryGirl.create(:lop_mon_hoc)    
     		lich = lop.lich_trinh_giang_days.create(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id => gv.id)
-    		Timecop.freeze(lich.thoi_gian.localtime - 1.day)
+    		Timecop.freeze(lich.thoi_gian.localtime + 1.day)
 			lich.accept!
 			lich.accepted?.should be_true			
 			lich.lop_mon_hoc.pending?.should be_true

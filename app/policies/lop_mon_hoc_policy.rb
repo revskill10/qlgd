@@ -7,6 +7,6 @@ class LopMonHocPolicy
   end
   
   def update?
-  	user.imageable.is_a?(GiangVien) and user.imageable.lop_mon_hocs.include?(lop_mon_hoc)
+  	user and user.imageable.is_a?(GiangVien) and user.imageable.lop_mon_hocs.include?(lop_mon_hoc)
   end
 end

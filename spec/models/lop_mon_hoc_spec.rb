@@ -20,6 +20,9 @@ describe LopMonHoc do
   it "should change state" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
     lop.state.should == "pending"    
+    lop.settings.should be_nil
+    lop.can_start?.should be_false
+    lop.settings = {}
     lop.start!
     lop.state.should == "started" # khi da thiet lap thong so
     lop.complete!

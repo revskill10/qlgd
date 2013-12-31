@@ -1,21 +1,21 @@
 #encoding: utf-8
 class EnrollmentsController < ApplicationController
   
-  def index
-    begin       	
-     	@lich = LichTrinhGiangDay.find(params[:lich_id])
-      enrollments = @lich.lop_mon_hoc.enrollments    
-      results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
-      render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
-    rescue Exception => e
-      render json: {:error => e}.to_json
-    end
+  def index    
+    
+   	@lich = LichTrinhGiangDay.find(params[:lich_id])      
+    authorize @lich, :update?
+    enrollments = @lich.lop_mon_hoc.enrollments    
+    results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
+    render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
+    
   end
   def settinglop
-    begin
+    
       @lich = LichTrinhGiangDay.find(params[:lich_id])
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
       @lop = @lich.lop_mon_hoc
+      authorize @lop, :update?
       @lop.settings ||= {}
       @lop.settings["so_tiet_ly_thuyet"] = params[:lop][:so_tiet_ly_thuyet].to_i
       @lop.settings["so_tiet_thuc_hanh"] = params[:lop][:so_tiet_thuc_hanh].to_i
@@ -24,14 +24,13 @@ class EnrollmentsController < ApplicationController
       enrollments = @lich.lop_mon_hoc.enrollments    
       results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}
       render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
-    rescue Exception => e
-      render json: {:error => e}.to_json
-    end
+    
   end
   def update  	
-    begin
-    	@lich = LichTrinhGiangDay.find(params[:lich_id])
+    
+    	@lich = LichTrinhGiangDay.find(params[:lich_id])      
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
+      authorize @lich, :update?
       @sv= SinhVien.find(params[:enrollment][:sinh_vien_id])
       render json: {:error => 'Sinh viên không tìm thấy'} unless @sv
     	@attendance = @lich.attendances.where(sinh_vien_id: @sv.id).first_or_create!
@@ -53,21 +52,18 @@ class EnrollmentsController < ApplicationController
       enrollments = @lich.lop_mon_hoc.enrollments    
       results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
       render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
-    rescue Exception => e
-      render json: {:error => e}.to_json
-    end
+    
   end 
   def noidung
-    begin
+    
       @lich = LichTrinhGiangDay.find(params[:id])
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
+      authorize @lich, :update?
       @lich.noi_dung = params[:content]
       @lich.save!
       enrollments = @lich.lop_mon_hoc.enrollments    
       results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
       render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
-    rescue Exception => e
-      render json: {:error => e}.to_json
-    end
+    
   end 
 end  
