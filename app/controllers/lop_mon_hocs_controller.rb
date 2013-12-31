@@ -38,7 +38,8 @@ class LopMonHocsController < ApplicationController
 	# post
 	def create_assignment_group
 		@lop = LopMonHoc.find(params[:id])
-		@lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
+		@assignment_group = @lop.assignment_groups.create(giang_vien_id: params[:giang_vien_id], name: params[:name], weight: params[:weight])
+		@assignment_group.move_to_bottom
 		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 		render json: results.to_json
 	end
@@ -74,7 +75,8 @@ class LopMonHocsController < ApplicationController
 	end
 	def create_assignment
 		@lop = LopMonHoc.find(params[:id])
-		@lop.assignments.create(assignment_group_id: params[:assignment_group_id], giang_vien_id: params[:giang_vien_id], name: params[:name], points: params[:points])
+		@assignment = @lop.assignments.create(assignment_group_id: params[:assignment_group_id], giang_vien_id: params[:giang_vien_id], name: params[:name], points: params[:points])
+		@assignment.move_to_bottom
 		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 		render json: results.to_json
 		
@@ -115,7 +117,7 @@ class LopMonHocsController < ApplicationController
 	def submissions
 		
 			@lop = LopMonHoc.find(params[:id])
-			assignments = @lop.assignments
+			assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
 			count = 0
 			names = [{:name => "Họ và tên"}]
 			names += assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}

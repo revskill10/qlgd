@@ -11,7 +11,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :enrollments, :dependent => :destroy
   has_many :results, :dependent => :destroy
   has_many :assignment_groups, :dependent => :destroy, :order => 'position'
-  has_many :assignments, :through => :assignment_groups, :uniq => true
+  has_many :assignments
   has_many :submissions, :through => :assignments
   
   state_machine :state, :initial => :pending do  
