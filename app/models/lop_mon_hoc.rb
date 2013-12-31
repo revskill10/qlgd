@@ -15,8 +15,8 @@ class LopMonHoc < ActiveRecord::Base
   has_many :submissions, :through => :assignments
   
   state_machine :state, :initial => :pending do  
-    event :start do 
-      transition all => :started # da thiet lap thong so
+    event :start do # da thiet lap thong so
+      transition all => :started, :if => lambda {|lop| lop.settings != nil }
     end 
     event :complete do 
       transition :started => :completed # da ket thuc mon

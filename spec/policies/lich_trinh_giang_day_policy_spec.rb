@@ -13,7 +13,11 @@ describe LichTrinhGiangDayPolicy do
     		Timecop.freeze(lich.thoi_gian.localtime - 1.day)
 			lich.accept!
 			lich.accepted?.should be_true			
-			Pundit.policy!(u, lich).update?.should be_true
+			lich.lop_mon_hoc.pending?.should be_true
+			Pundit.policy!(u, lich).update?.should be_false
+			lop.settings = {}
+			lop.start!			
+			Pundit.policy!(u, lich.reload).update?.should be_true
 		end
 	end
 end
