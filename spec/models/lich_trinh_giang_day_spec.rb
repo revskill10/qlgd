@@ -81,5 +81,15 @@ describe LichTrinhGiangDay do
     gv = FactoryGirl.create(:giang_vien)
     lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 6, 30), :giang_vien_id  => gv.id)
     lich.attendances.count.should == 0
+  end  
+
+  it "can be dang ky bo sung" do 
+    t1 = FactoryGirl.create(:tuan)
+    t2 = FactoryGirl.create(:tuan, :tu_ngay => Date.new(2013, 8, 19).change(:offset => Rational(7,24)), :den_ngay => Date.new(2013, 8, 25).change(:offset => Rational(7,24))) 
+    lop = FactoryGirl.create(:lop_mon_hoc)
+    gv = FactoryGirl.create(:giang_vien)
+    lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => DateTime.new(2013, 8, 12, 9, 15), :giang_vien_id => gv.id, :state => :bosung)
+    lich.accept!
+    lich.state.should eq(:bosung)
   end
 end

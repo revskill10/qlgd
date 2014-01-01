@@ -10,8 +10,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
   validate :check_thoi_gian, on: :create
   
   has_many :du_gios, :dependent => :destroy
-
-  
+  scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
+  scope :accepted, where(status: :accepted)
+  scope :with_giangvien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
+  scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}
+  scope :conflict, lambda {|lich| accepted.select {|m| lich.conflict?(m)}}
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
     [9,5] => 4, [9,55] => 5, [10, 45] => 6,
     [12,30] => 7, [13,20] => 8, [14,10] => 9,
@@ -57,7 +60,15 @@ class LichTrinhGiangDay < ActiveRecord::Base
     minute = thoi_gian.localtime.min
     return TIET[[hour, minute]]
   end
+  # Co 2 loai conflict. 1 la khi 2 gio hoc cung thoi gian cung phong, 2 la khi  co 2 gio hoc trung thoi gian cung 1 giang vien
+  # Khi dang ky bo sung, kiem tra ca 2 loai conflict
+  def conflict?(lich)
+    return false if id == lich.id
+    (lich.thoi_gian.to_date == thoi_gian.to_date) and (tiet_bat_dau..tiet_bat_dau + so_tiet).overlaps?(lich.tiet_bat_dau..lich.tiet_bat_dau + lich.so_tiet) and (phong == lich.phong or giang_vien_id == lich.giang_vien_id)
+  end
+
   
+
   def load_tuan
     Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.localtime.to_date and t.den_ngay >= thoi_gian.localtime.to_date }.stt    
   end
