@@ -213,7 +213,9 @@
                                   type: 'POST',
                                   data: data,
                                   success: function(data) {             
-                                        console.log(data);
+                                    React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                    React.renderComponent(<Grade giang_vien={self.props.giang_vien} lop={self.props.lop} />,
+                                                document.getElementById("grades"));
                                   }.bind(self)
                                 });      
                             }                            
@@ -222,8 +224,7 @@
 
 
                     [].forEach.call(multi.getElementsByClassName('tile__list'), function (el){
-                        new Sortable(el, { group: 'photo',
-                            onAdd: function (evt){ console.log('onAdd.'+el.id+':'+ $('li.foo'+el.id).index(evt.item)); },
+                        new Sortable(el, { group: 'photo'+el.id,
                             onUpdate: function (evt){
                                 var assignment_group_id = $('#'+evt.item.id).data('group');
                                 var assignment_id = $('#'+evt.item.id).data('assignment');
@@ -238,11 +239,13 @@
                                   type: 'POST',
                                   data: data,
                                   success: function(data) {             
-                                        console.log(data);
+                                        React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+                                        React.renderComponent(<Grade giang_vien={self.props.giang_vien} lop={self.props.lop} />,
+                                                document.getElementById("grades"));
                                   }.bind(self)
                                 }); 
-                            },
-                            onRemove: function (evt){ console.log('onRemove.'+el.id+':'+ $('li.foo'+el.id).index(evt.item) ); } });
+                            }
+                        });
                     });
                 },
                 render: function(){
@@ -318,7 +321,7 @@
                                     <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
                                     <div>
                                         <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Add</button>
-                                        <ul id={'group'+this.props.group} data-groupId={this.props.group} class="tile__list">{x}</ul>
+                                        <ul id={'group'+this.props.group} data-group={this.props.group} class="tile__list">{x}</ul>
                                     </div>
                                 </li>
                             );

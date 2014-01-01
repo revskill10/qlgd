@@ -29,7 +29,8 @@ class LopMonHocsController < ApplicationController
 		@lop = LopMonHoc.find(params[:id].to_i)
 		@assignment_group = @lop.assignment_groups.find(params[:assignment_group_id].to_i);
 		@assignment_group.insert_at(params[:position].to_i+1)
-		render json: {:result => "OK"}
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json
 	end
 	# post
 	def create_assignment_group
@@ -78,7 +79,17 @@ class LopMonHocsController < ApplicationController
 		@assignment_group = @lop.assignment_groups.find(params[:assignment_group_id])
 		@assignment = @assignment_group.assignments.find(params[:assignment_id])
 		@assignment.insert_at(params[:position].to_i + 1);
-		render json: {:result => "OK"}
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json		
+	end
+	def change_assignment_group
+		@lop = LopMonHoc.find(params[:id])
+		@assignment_group = @lop.assignment_groups.find(params[:assignment_group_id])
+		@assignment = @lop.assignments.assignment_group = @assignment_group
+		@assignment.insert_at(params[:positin].to_i + 1);
+		@assignment.save!
+		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
+		render json: results.to_json		
 	end
 	# update assignment
 	def update_assignment
@@ -132,7 +143,7 @@ class LopMonHocsController < ApplicationController
 			@sub = @as.submissions.create(sinh_vien_id: params[:sinh_vien_id], giang_vien_id: params[:giang_vien_id], grade: params[:grade])
 		end
 
-		assignments = @lop.assignments
+		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
 		count = 0
 		names = [{:name => "Họ và tên"}]
 		names += assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
