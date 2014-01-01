@@ -9,23 +9,25 @@ var Cell = React.createClass({
             this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);            
         },        
         handleKey: function(e){
-            if (e.keyCode == 37) {// left
-                this.props.onKeyPress(this.props.data.index, 'left');        
-            } else if (e.keyCode == 38) {
-                this.props.onKeyPress(this.props.data.index, 'up');                
-            } else if (e.keyCode == 39) {
-                this.props.onKeyPress(this.props.data.index, 'right');        
-            } else if (e.keyCode == 40) {
-                this.props.onKeyPress(this.props.data.index, 'down');
-            } else if (e.keyCode == 13) {
-                var grade = this.refs.grade.getDOMNode().value;
-                this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);
+            if (this.props.data.edit === 1) {
+                if (e.shiftKey && e.keyCode == 9) {// left
+                    this.props.onKeyPress(this.props.data.index, 'left');        
+                } else if (e.keyCode == 38) {
+                    this.props.onKeyPress(this.props.data.index, 'up');                
+                } else if (e.keyCode == 9) {
+                    this.props.onKeyPress(this.props.data.index, 'right');        
+                } else if (e.keyCode == 40) {
+                    this.props.onKeyPress(this.props.data.index, 'down');
+                } else if (e.keyCode == 13) {
+                    var grade = this.refs.grade.getDOMNode().value;
+                    this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);
+                }
             }
         },        
         componentDidUpdate: function(){
             if (this.props.data.edit === 1){
-                $('#mi').val(this.props.data.grade);
-                $('#mi').focus();                    
+                $('#mi').focus();           
+                $('#mi').val(this.props.data.grade);         
             }            
         },
     render: function() {
