@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 //= require assignments
 //= require grade
+//= require dangkybosung
 var Enrollment = React.createClass({
 
 	render: function(){
@@ -179,3 +180,4 @@ React.renderComponent(
 
 React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
 				, document.getElementById('assignment'));
+React.renderComponent(<Bosung />, document.getElementById('bosung'));

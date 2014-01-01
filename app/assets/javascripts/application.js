@@ -14,4 +14,6 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require sortable.min
+//= require bootstrap-datepicker
+//= require bootstrap-datepicker.vi
 //= require react

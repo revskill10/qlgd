@@ -11,6 +11,7 @@
  *= require_self
  *= require bootstrap
  *= require sticky_footer
+ *= require datepicker3
  *= require lop
  */
 .navbar-static-top {

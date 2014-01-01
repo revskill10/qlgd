@@ -26,6 +26,8 @@
       a href="#assignments" data-toggle="tab" Assignments
     li
       a href="#grades" data-toggle="tab" Grades
+    li
+      a href="#dangkybosung" data-toggle="tab" DKBS
   div.tab-content
     div.tab-pane.active#home
       #main
@@ -35,6 +37,8 @@
       #assignment
     div.tab-pane#grades
       #grade
+    div.tab-pane#dangkybosung
+      #bosung
     
 javascript:
   var ENV = {lop_id: #{raw @lop.id}, giang_vien_id: #{raw @giang_vien.id} };  
