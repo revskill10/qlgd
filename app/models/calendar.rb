@@ -34,7 +34,7 @@ class Calendar < ActiveRecord::Base
       if sch.count > 0
         sch.each do |s|
           begin
-            lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_datetime, giang_vien_id: self.giang_vien.id, so_tiet: self.so_tiet)
+            lich = self.lop_mon_hoc.lich_trinh_giang_days.create(thoi_gian: s.to_time, giang_vien_id: self.giang_vien.id, so_tiet: self.so_tiet)
             lich.accept!          
           rescue Exception => e
             puts e
@@ -47,13 +47,13 @@ class Calendar < ActiveRecord::Base
   def ngay_bat_dau
     t1 = Tuan.where(stt: tuan_hoc_bat_dau).first
     day = t1.tu_ngay + (thu - 2).days
-    return DateTime.new(day.year, day.month, day.day).change(:offset => Rational(7,24))
+    return Time.new(day.year, day.month, day.day)
   end
   def ngay_ket_thuc
     t2 = Tuan.where(stt: tuan_hoc_bat_dau + so_tuan - 1).first    
     if t2
       day = t2.den_ngay
-      return DateTime.new(day.year, day.month, day.day).change(:offset => Rational(7,24))
+      return Time.new(day.year, day.month, day.day)
     else
       return nil
     end
