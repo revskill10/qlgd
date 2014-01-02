@@ -1,3 +1,4 @@
+#encoding: utf-8
 class LopMonHoc < ActiveRecord::Base  
   serialize :settings
   attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc
@@ -16,14 +17,20 @@ class LopMonHoc < ActiveRecord::Base
   
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so
-      transition all - :removed => :started, :if => lambda {|lop| lop.settings != nil }
+      transition all  => :started
     end 
     event :complete do 
       transition :started => :completed # da ket thuc mon
     end
     event :remove do 
       transition :pending => :removed
-    end
+    end    
+  end
+  
+  def start
+    self.settings ||= {}
+    self.settings[:generated] = false unless self.settings[:generated]
+    super
   end
   
 
@@ -40,4 +47,30 @@ class LopMonHoc < ActiveRecord::Base
     return (settings["so_tiet_ly_thuyet"] || 0) + (settings["so_tiet_thuc_hanh"] || 0)
   end
 
+  
+  def generate_assignments(gv)
+    return nil unless self.started?
+    return nil unless self.settings.present?
+    return nil if self.settings.present? and self.settings[:generated] == true    
+    ag1 = self.assignment_groups.create(name: "Điểm chuyên cần", weight: 40, giang_vien_id: gv.id)
+    ag1.move_to_bottom
+    as1 = self.assignments.create(name: "Điểm chuyên cần", points: 10, giang_vien_id: gv.id, assignment_group_id: ag1.id)
+    as1.move_to_bottom
+    ag2 = self.assignment_groups.create(name: "Điểm thực hành", weight: 30, giang_vien_id: gv.id)
+    ag2.move_to_bottom
+    as2 = self.assignments.create(name: "Điểm thực hành", points: 10, giang_vien_id: gv.id, assignment_group_id: ag2.id)
+    as2.move_to_bottom
+    ag3 = self.assignment_groups.create(name: "Điểm trung bình kiểm tra", weight: 30, giang_vien_id: gv.id)
+    ag3.move_to_bottom
+    as31 = self.assignments.create(name: "KT lần 1", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as31.move_to_bottom
+    as32 = self.assignments.create(name: "KT lần 2", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as32.move_to_bottom
+    as33 = self.assignments.create(name: "KT lần 3", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as33.move_to_bottom
+    self.settings[:generated] = true    
+    self.save!
+  end
+
+  
 end

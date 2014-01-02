@@ -1,3 +1,4 @@
+#encoding: utf-8
 require 'spec_helper'
 
 describe LopMonHoc do
@@ -20,9 +21,7 @@ describe LopMonHoc do
   it "should change state" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
     lop.state.should == "pending"    
-    lop.settings.should be_nil
-    lop.can_start?.should be_false
-    lop.settings = {}
+    lop.settings.should be_nil        
     lop.start!
     lop.state.should == "started" # khi da thiet lap thong so
     lop.complete!
@@ -40,5 +39,17 @@ describe LopMonHoc do
     calendar = FactoryGirl.create(:calendar, :lop_mon_hoc => lop, :giang_vien => gv)
     lop.giang_viens.count.should > 0
     lop.giang_viens.should include(gv)
+  end
+
+  it "have default assignments settings" do 
+    gv = FactoryGirl.create(:giang_vien)
+    lop = FactoryGirl.create(:lop_mon_hoc)  
+    lop.pending?.should be_true  
+    lop.start!
+    lop.started?.should be_true    
+    lop.generate_assignments(gv)
+    lop.settings[:generated].should be_true
+    lop.assignment_groups.count.should > 0
+    lop.assignments.count.should > 0
   end
 end

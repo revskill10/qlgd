@@ -198,7 +198,8 @@
                 },
                 componentDidUpdate: function(){
                     var self = this;
-                    new Sortable(multi, {
+                    var multi = document.getElementById('multi');
+                    /*new Sortable(multi, {
                         draggable: '.tile',
                         handle: '.tile__name',
                         onUpdate: function(evt){
@@ -220,7 +221,7 @@
                                 });      
                             }                            
                         }
-                    });
+                    });*/
 
 
                     [].forEach.call(multi.getElementsByClassName('tile__list'), function (el){
@@ -254,14 +255,14 @@
                         return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} can_destroy={d.can_destroy} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
                     });
                     if (this.state.add === 0) {
-                            return (
-                                    <div >
-                                    <hr />
-                                    <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Thêm</button>
-                                    <hr />
-                                    <ul id="multi">{x}</ul>       
-                                    </div>                         
-                            );        
+                        return (
+                                <div >
+                                <hr />
+                                <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Thêm</button>
+                                <hr />
+                                <ul id="multi">{x}</ul>       
+                                </div>                         
+                        );        
                     } else {
                             return (<div>
                                     <hr />

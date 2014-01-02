@@ -41,6 +41,7 @@ class LopEnrollmentSerializer < ActiveModel::Serializer
     @tong_vang
   end
   def tong_so_tiet
+    return 1 if object.lop_mon_hoc.tong_so_tiet == 0
     @tong_so_tiet ||= object.lop_mon_hoc.tong_so_tiet
     @tong_so_tiet
   end
