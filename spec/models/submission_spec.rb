@@ -6,12 +6,18 @@ describe Submission do
   	gv = FactoryGirl.create(:giang_vien)
   	lop = FactoryGirl.create(:lop_mon_hoc, :giang_vien_id => gv.id)
   	ag = lop.assignment_groups.create(name: "Thuc Hanh", weight: 50, giang_vien_id: gv.id)
-  	as = ag.assignments.create(name: "BT1", points: 10)  	
+  	as = ag.assignments.create(name: "BT1", points: 10, giang_vien_id: gv.id)  	
   	
-  	as.name.should == "BT1"
-  	sub = as.submissions.where(sinh_vien_id: sv.id, giang_vien_id: gv.id).first_or_create!
-  	sub.giang_vien.id.should == gv.id
-  	#sub2 = as.submissions.create(sinh_vien_id: sv.id, giang_vien_id: gv.id)
-  	#sub2.giang_vien.id.should == gv.id
+  	as.can_destroy?.should be_true
+  	ag.can_destroy?.should be_true
+  	sub = as.submissions.where(sinh_vien_id: sv.id, giang_vien_id: gv.id).first_or_create!  	
+  	
+  	
+    as.can_destroy?.should be_true
+    sub.grade = 10
+    sub.save!
+    as.reload.can_destroy?.should be_false
+    ag.reload.can_destroy?.should be_false
+    expect {ag.destroy}.to raise_error
   end
 end

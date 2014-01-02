@@ -8,6 +8,6 @@ class Assignment < ActiveRecord::Base
   validates :name, :points, :giang_vien_id, :assignment_group_id, :presence => true
 
   def can_destroy?
-  	submissions.sum(:grade) == 0
+  	submissions.to_a.sum { |e| e.grade.to_i } == 0
   end
 end

@@ -29,6 +29,10 @@ class EnrollmentSubmissionDecorator < Draper::Decorator
   def assignment_name
     @assignment.name
   end
+  def can_destroy
+    return false if @assignment.can_destroy? == false
+    true
+  end
   def grade
     return 0 unless @submission    
     return 0 unless @submission.grade

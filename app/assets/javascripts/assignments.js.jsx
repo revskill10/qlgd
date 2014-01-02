@@ -251,21 +251,27 @@
                 render: function(){
                     var self = this;
                     var x = this.state.data.map(function(d){
-                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
+                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} can_destroy={d.can_destroy} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
                     });
                     if (this.state.add === 0) {
                             return (
                                     <div >
-                                    <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Add</button>
+                                    <hr />
+                                    <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Thêm</button>
+                                    <hr />
                                     <ul id="multi">{x}</ul>       
                                     </div>                         
                             );        
                     } else {
                             return (<div>
+                                    <hr />
                                     <input ref="name" type="text" placeholder="Name" />
                                     <input ref="weight" type="text" placeholder="Weight" />
-                                    <button class="btn btn-primary btn-sm" onClick={this.cancelAdd}>Cancel</button>
-                                    <button class="btn btn-primary btn-sm" onClick={this.onAdd}>Update</button>
+                                    <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-primary btn-sm" onClick={this.cancelAdd}>Hủy</button>
+                                    <button class="btn btn-primary btn-sm" onClick={this.onAdd}>Cập nhật</button>
+                                    </div>
+                                    <hr />
                                     <ul>{x}</ul>
                                     </div>
                             );
@@ -277,7 +283,7 @@
                 getInitialState: function(){
                     return {add: 0, edit: 0};
                 },
-                handleClick: function(){                        
+                handleClick: function(){                                     
                     this.setState({add: 1, edit: 0});
                 },
                 handleCancel: function(){                        
@@ -305,24 +311,25 @@
                     if (confirm('Đồng ý')) {
                         this.props.onDelete({assignment_group_id: this.props.group});
                     }                    
-                },
+                },                
                 render: function(){
                     var self = this;      
                     var x = <li></li>;
                     if (this.props.data != null){
                            x = this.props.data.map(function(d){
-                                    return <Assignment group={self.props.group} key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
+                                return <Assignment group={self.props.group} key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
                             });  
                     }                                 
                     if (this.state.add === 0){
-                        if (this.state.edit === 0){
+                        if (this.state.edit === 0){                            
                             return ( 
                                 <li id={'group'+this.props.group} data-type="assignment_group" data-group={this.props.group} class="layer tile">
-                                    <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
-                                    <span onClick={this.handleWeight}>{this.props.weight}</span>
-                                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
-                                    <div>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Add</button>
+                                    <div class="row">
+                                        <div class="col-sm-3" class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</div>
+                                        <div style={{"font-weight": "bold"}} class="col-sm-3" onClick={this.handleWeight}>{this.props.weight} %</div>                                    
+                                        <button disabled={this.props.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
+                                        <span>{'                 '}</span>
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Thêm đầu điểm</button>
                                         <ul id={'group'+this.props.group} data-group={this.props.group} class="tile__list">{x}</ul>
                                     </div>
                                 </li>
@@ -333,11 +340,13 @@
                                     <div>
                                         <input ref="name" type="text" id={"group" + this.props.group} placeholder="Name" />
                                         <input ref="weight" type="text" id={"weight" + this.props.group} placeholder="Weight" />
-                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Cancel</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Update</button>
+                                        <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Hủy</button>
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Cập nhật</button>
+                                        </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Add</button>
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Thêm đầu điểm</button>
                                         <ul>{x}</ul>
                                     </div>
                                 </li>
@@ -351,12 +360,14 @@
                                     <li>
                                         <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
                                         <span onDoubleClick={this.handleWeight}>{this.props.weight}</span>
-                                        <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button>
+                                        <button disabled={this.props.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
                                         <div>
                                             <input  ref="name" type="text" placeholder="Name" />
                                             <input  ref="points" type="text" placeholder="points" />
-                                            <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Cancel</button>
-                                            <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Update</button>
+                                            <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Hủy</button>
+                                            <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Cập nhật</button>
+                                            </div>
                                             <ul>{x}</ul>
                                         </div>
                                     </li>
@@ -368,14 +379,18 @@
                                     <div>
                                         <input ref="name" type="text" id={"group" + this.props.group} placeholder="Name" />
                                         <input ref="weight" type="text" id={"weight" + this.props.group} placeholder="Weight" />
-                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Cancel</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Update</button>
+                                        <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Hủy</button>
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Cập nhật</button>
+                                        </div>
                                     </div>
                                     <div>
                                         <input  ref="name" type="text" placeholder="Name" />
                                         <input  ref="points" type="text" placeholder="points" />
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Cancel</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Update</button>
+                                        <div class="btn-group btn-group-sm">
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Hủy</button>
+                                        <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Cập nhật</button>
+                                        </div>
                                         <ul>{x}</ul>
                                     </div>
                                 </li>
@@ -412,6 +427,11 @@
             componentDidUpdate: function(){                        
                 $('#mname' + this.props.data.assignment_id).val(this.props.data.name);
                 $('#mpoints' + this.props.data.assignment_id).val(this.props.data.points);
+                
+                if (this.props.data.can_destroy === false){
+                    $('#btndelete'+this.props.data.assignment_id).hide();
+                }
+                
             },
             render: function(){                        
                 if (this.state.edit === 1) {
@@ -419,13 +439,13 @@
                         <li>
                             <input id={"mname" + this.props.data.assignment_id} ref="mname" type="text" />
                             <input id={"mpoints" + this.props.data.assignment_id} ref="mpoints" type="text" />
-                            <input class="btn btn-primary btn-sm" onClick={this.handleCancelEdit} type="submit" value="Cancel" />
-                            <input class="btn btn-primary btn-sm" onClick={this.handleUpdate} type="submit" value="Update" />
+                            <input class="btn btn-primary btn-sm" onClick={this.handleCancelEdit} type="submit" value="Hủy" />
+                            <input class="btn btn-primary btn-sm" onClick={this.handleUpdate} type="submit" value="Cập nhật" />
                         </li>
                     )
                 } else {
                     return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span><span>
-                    <button class="btn btn-danger btn-sm" onClick={this.handleDelete}>x</button></span></div></li>                                                
+                    <button disabled={this.props.data.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
                         
                 }                                
             }                

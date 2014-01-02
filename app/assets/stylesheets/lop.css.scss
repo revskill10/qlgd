@@ -5,7 +5,10 @@
 
 
 		
-
+ul
+{
+    list-style-type: none;
+}
 
 		.tile {
 				
@@ -15,69 +18,15 @@
 				
 		}
 			.tile__name {
-				cursor: move;
-				padding-bottom: 10px;
+				cursor: move;				
 				border-bottom: 1px solid #FF7373;
 			}
-
-			
-				.tile__list:last-child {
-					margin-right: 0;
-					min-height: 80px;
-				}
+				
 
 				.tile__list div {
 					cursor: move;
-					margin: 10px;
+					margin-bottom: 10px;
 					border-radius: 100%;
 				}
 
 
-
-		.block {
-			opacity: 1;
-			position: absolute;
-		}
-			.block__list {
-				padding: 20px 0;
-				max-width: 360px;
-				margin-top: -8px;
-				margin-left: 5px;
-				background-color: #fff;
-			}
-				.block__list li { cursor: move; }
-
-			.block__list_words li {
-				background-color: #fff;
-				padding: 10px 40px;
-			}
-				.block__list_words .sortable-ghost {
-					opacity: 0.4;
-					background-color: #F4E2C9;
-				}
-
-				.block__list_words li:first-letter {
-					text-transform: uppercase;
-				}
-
-			.block__list_tags {
-				padding-left: 30px;
-			}
-
-			.block__list_tags:after {
-				clear: both;
-				content: '';
-				display: block;
-			}
-				.block__list_tags li {
-					color: #fff;
-					float: left;
-					margin: 8px 20px 10px 0;
-					padding: 5px 10px;
-					min-width: 10px;
-					background-color: #5F9EDF;
-					text-align: center;
-				}
-					.block__list_tags li:first-child:first-letter {
-						text-transform: uppercase;
-					}

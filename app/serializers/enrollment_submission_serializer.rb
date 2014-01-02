@@ -1,6 +1,6 @@
 class EnrollmentSubmissionSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :sinh_vien_id, :index, :name, :assignment_id, :code, :tong_vang, :tinhhinh, :grade, :assignment_name
+  attributes :sinh_vien_id, :index, :name, :assignment_id, :code, :tong_vang, :tinhhinh, :grade, :assignment_name, :can_destroy
 
   def index
     object.index
@@ -17,6 +17,9 @@ class EnrollmentSubmissionSerializer < ActiveModel::Serializer
   def assignment_id
     object.assignment_id
   end  
+  def can_destroy
+    object.can_destroy
+  end
   def name
   	object.name
   end
