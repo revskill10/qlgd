@@ -2,35 +2,46 @@
 
 
 var MDATA = [
-	{id: 1, thoi_gian: '12/08/2013', tiet_bat_dau: 1, phong: 'A101'},
+	{id: 1, thoi_gian: '12/08/2013', tiet_bat_dau: 1, phong: 'A101', status: ''},
 	{id: 2, thoi_gian: '19/08/2013', tiet_bat_dau: 2, phong: 'A103'}
 ];
 
 
 var Bosung = React.createClass({
 	loadData: function(){
-		this.setState({data: MDATA});
+		this.setState({data: MDATA, add: 0});
 	},
 	componentWillMount: function(){
 		this.loadData();
 	},
+	onAdd: function(){
+		this.setState({add: 1});
+	},
 	render: function(){
 		var x = this.state.data.map(function(d){
 			return <Row2 data={d} />
-		});
-		return (
-
-			<div>
-			<table class="table table-bordered">
-				<thead>
-					<th>Stt</th><th>Thoi gian</th><th>Tiet bat dau</th><th>Phong</th>
-				</thead>
-				<tbody>
-					{x}
-				</tbody>
-			</table>
-			</div>
-		);
+		});		
+		if (this.state.add === 0) {
+			return (
+				<div>
+				<button onClick={this.onAdd} >Add</button>
+				<table class="table table-bordered">
+					<thead>
+						<th>Stt</th><th>Thoi gian</th><th>Tiet bat dau</th><th>Phong</th>
+					</thead>
+					<tbody>
+						{x}
+					</tbody>
+				</table>
+				</div>
+			);
+		} else if (this.state.add === 1) {
+			return (
+				<div>
+				</div>
+			);
+		}
+		
 	}
 });
 

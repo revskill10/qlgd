@@ -6,4 +6,8 @@ class Assignment < ActiveRecord::Base
   acts_as_list :scope => :assignment_group
   has_many :submissions, :dependent => :destroy
   validates :name, :points, :giang_vien_id, :assignment_group_id, :presence => true
+
+  def can_destroy?
+  	submissions.sum(:grade) == 0
+  end
 end

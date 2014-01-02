@@ -302,7 +302,9 @@
                     this.props.onEdit({assignment_group_id: this.props.group, name: x, weight: y});                    
                 },
                 handleDelete: function(e){
-                    this.props.onDelete({assignment_group_id: this.props.group});
+                    if (confirm('Đồng ý')) {
+                        this.props.onDelete({assignment_group_id: this.props.group});
+                    }                    
                 },
                 render: function(){
                     var self = this;      
@@ -403,7 +405,9 @@
                 }                        
             },
             handleDelete: function(e){
-                this.props.onDelete({assignment_id: this.props.data.assignment_id});
+                if (confirm('Đồng ý')) {
+                    this.props.onDelete({assignment_id: this.props.data.assignment_id});
+                }
             },
             componentDidUpdate: function(){                        
                 $('#mname' + this.props.data.assignment_id).val(this.props.data.name);

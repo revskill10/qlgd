@@ -4,42 +4,49 @@ var Cell = React.createClass({
         handleInput: function(e){
             this.props.onInput1(this.props.data.index);
         },
-        handleBlur: function(e){
+        handleBlur: function(e){                    
             var grade = this.refs.grade.getDOMNode().value;
             this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);            
         },        
-        handleKey: function(e){
-            if (this.props.data.edit === 1) {
-                if (e.shiftKey && e.keyCode == 9) {// left
-                    this.props.onKeyPress(this.props.data.index, 'left');        
-                } else if (e.keyCode == 38) {
-                    this.props.onKeyPress(this.props.data.index, 'up');                
-                } else if (e.keyCode == 9) {
-                    this.props.onKeyPress(this.props.data.index, 'right');        
-                } else if (e.keyCode == 40) {
-                    this.props.onKeyPress(this.props.data.index, 'down');
-                } else if (e.keyCode == 13) {
-                    var grade = this.refs.grade.getDOMNode().value;
-                    this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);
-                }
+        handleKey: function(e){                
+            if (this.props.data.edit == 1){        
+                var grade = this.refs.grade.getDOMNode().value;    
+                var data = {index: this.props.data.index, assignment_id: this.props.data.assignment_id, sinh_vien_id: this.props.data.sinh_vien_id, grade: grade};
+                
+                if (e.shiftKey && e.keyCode == 9) {// left                    
+                    e.preventDefault();
+                    this.props.onKeyPress(data, 'left');        
+                } else if (e.keyCode == 38) {                                        
+                    e.preventDefault();
+                    this.props.onKeyPress(data, 'up');            
+                } else if (e.keyCode == 9 && !e.shiftKey) {                    
+                    e.preventDefault();
+                    this.props.onKeyPress(data, 'right');        
+                } else if (e.keyCode == 40) {                    
+                    e.preventDefault();
+                    this.props.onKeyPress(data, 'down');
+                } else if (e.keyCode == 13) {                    
+                    e.preventDefault();
+                    this.props.onEnter(data);
+                }                                
             }
         },        
         componentDidUpdate: function(){
-            if (this.props.data.edit === 1){
-                $('#mi').focus();           
-                $('#mi').val(this.props.data.grade);         
+            if (this.props.data.edit === 1){                
+                $('#mi').focus();
+                $('#mi').val(this.props.data.grade);
             }            
         },
     render: function() {
-                if (this.props.data.edit === 0) {
-                 return (
-                 <div ref="t" onClick={this.handleInput}>{this.props.data.grade}</div>
-                 );
-                } else {
-                        return (
-                                <input id="mi" ref="grade" onKeyPress={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur} type="text"  />
-                        );
-                }
+        if (this.props.data.edit === 0) {
+         return (
+            <div ref="t" onClick={this.handleInput}>{this.props.data.grade}</div>
+         );
+        } else if (this.props.data.edit === 1) {
+            return (
+                <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput}   type="text"  />
+            );
+        }
     }
 });
 
@@ -71,7 +78,7 @@ var Grade = React.createClass({
         $.ajax({
           url: "/lop/"+this.props.lop+"/submissions.json" ,
           success: function(data) {                      
-            this.setState({names: data.names, data: data.results, active: -1, active2: -1});         
+            this.setState({names: data.names, data: data.results, active: -1});
           }.bind(this)
         });  
     },
@@ -82,22 +89,25 @@ var Grade = React.createClass({
             return 0;
         }
     },
-    handleEnter: function(assignment_id, sinh_vien_id, grade){
+    saveToServer: function(data, index){
         var d = {
             giang_vien_id: this.props.giang_vien,
-            assignment_id: assignment_id,
-            sinh_vien_id: sinh_vien_id,
-            grade: grade
+            assignment_id: data.assignment_id,
+            sinh_vien_id: data.sinh_vien_id,
+            grade: data.grade
         }
         $.ajax({
             url: "/lop/" + this.props.lop + "/submissions",
             type: 'POST',
             data: d,
             success: function(data) {             
-                this.setState({names: data.names, data: data.results, active: -1});  
+                this.setState({names: data.names, data: data.results, active: index});  
             }.bind(this)           
         });
         return false;
+    },
+    handleEnter: function(data){
+        this.saveToServer(data, -1);
     },
     handleInput: function(obj){                 
         this.setState({active: obj});
@@ -105,16 +115,16 @@ var Grade = React.createClass({
     handleBlur: function(){
         this.setState({active: -1});
     },    
-    handleKeyPress: function(index, stat){
-            if (stat == 'left'){
-                    this.setState({active: index - 1});
-            } else if (stat == 'up') {
-                    this.setState({active: index - this.state.names.length + 1});
-            } else if (stat == 'down') {
-                    this.setState({active: index + this.state.names.length - 1});
-            } else if (stat == 'right') {
-                    this.setState({active: index + 1});
-            }
+    handleKeyPress: function(data, stat){
+        if (stat == 'left'){            
+            this.saveToServer(data, data.index - 1);                
+        } else if (stat == 'up') {
+            this.saveToServer(data, data.index - this.state.names.length + 1);
+        } else if (stat == 'down') {
+            this.saveToServer(data, data.index + this.state.names.length - 1);
+        } else if (stat == 'right') {            
+            this.saveToServer(data, data.index + 1);                    
+        }
     },
     componentWillMount: function(){
         this.loadSubmissions();

@@ -31,6 +31,7 @@ class EnrollmentSubmissionDecorator < Draper::Decorator
   end
   def grade
     return 0 unless @submission    
+    return 0 unless @submission.grade
     return @submission.grade if @submission
   end  
   def name

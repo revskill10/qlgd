@@ -7,4 +7,7 @@ class Submission < ActiveRecord::Base
   has_many :submissions, :through => :sinh_vien
   validates :assignment_id, :sinh_vien_id, :giang_vien_id, :presence => true
 
+  def can_destroy?
+  	grade.nil? or grade == 0
+  end
 end

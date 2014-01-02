@@ -32,16 +32,13 @@ class LichTrinhGiangDay < ActiveRecord::Base
 
   state_machine :status, :initial => :waiting do     
     event :accept do 
-      transition [:waiting, :queued] => :accepted # duoc chap nhan thuc hien
+      transition :waiting => :accepted # duoc chap nhan thuc hien
     end
     event :complete do 
       transition :accepted => :completed
-    end
-    event :queue do 
-      transition all - :completed => :queued # dang cho xet duyet
-    end
+    end    
     event :drop do 
-      transition :queued => :dropped # khong duoc xet duyet
+      transition :waiting => :dropped # khong duoc xet duyet
     end    
   end
 
