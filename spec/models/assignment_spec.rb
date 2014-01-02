@@ -11,4 +11,6 @@ describe Assignment do
   	as.valid?.should be_true
   	as.name.should == "BT1"
   end
+
+  
 end

@@ -5,8 +5,9 @@ var Cell = React.createClass({
             this.props.onInput1(this.props.data.index);
         },
         handleBlur: function(e){                    
-            var grade = this.refs.grade.getDOMNode().value;
-            this.props.onEnter(this.props.data.assignment_id, this.props.data.sinh_vien_id, grade);            
+            var grade = this.refs.grade.getDOMNode().value;    
+                var data = {index: this.props.data.index, assignment_id: this.props.data.assignment_id, sinh_vien_id: this.props.data.sinh_vien_id, grade: grade};
+            this.props.onEnter(data);            
         },        
         handleKey: function(e){                
             if (this.props.data.edit == 1){        
@@ -44,7 +45,7 @@ var Cell = React.createClass({
          );
         } else if (this.props.data.edit === 1) {
             return (
-                <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput}   type="text"  />
+                <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur}   type="text"  />
             );
         }
     }

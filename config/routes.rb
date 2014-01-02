@@ -15,17 +15,20 @@ Qlgd::Application.routes.draw do
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
   get "lop/:id/show" => "lop_mon_hocs#show"  
-  get 'lop/:id/assignments' => "lop_mon_hocs#assignments"
-  post 'lop/:id/assignments' => "lop_mon_hocs#create_assignment"
-  post 'lop/:id/reorder_assignments' => "lop_mon_hocs#reorder_assignment"
-  put 'lop/:id/assignments' => 'lop_mon_hocs#update_assignment'
-  delete 'lop/:id/assignments' => "lop_mon_hocs#delete_assignment"
-  post 'lop/:id/assignment_groups' => "lop_mon_hocs#create_assignment_group"
-  delete 'lop/:id/assignment_groups' => "lop_mon_hocs#delete_assignment_group"
-  put 'lop/:id/assignment_groups' => 'lop_mon_hocs#update_assignment_group'  
-  post 'lop/:id/reorder_assignment_groups' => 'lop_mon_hocs#reorder_assignment_group'
-  get '/lop/:id/submissions' => 'lop_mon_hocs#submissions'
-  post '/lop/:id/submissions' => 'lop_mon_hocs#update_submissions'
+
+  get 'lop/:id/assignments' => "assignments#index"
+  post 'lop/:id/assignments' => "assignments#create"
+  post 'lop/:id/reorder_assignments' => "assignments#reorder"
+  put 'lop/:id/assignments' => 'assignments#update'
+  delete 'lop/:id/assignments' => "assignments#delete"
+
+  post 'lop/:id/assignment_groups' => "assignment_groups#create"
+  delete 'lop/:id/assignment_groups' => "assignment_groups#delete"
+  put 'lop/:id/assignment_groups' => 'assignment_groups#update'  
+  post 'lop/:id/reorder_assignment_groups' => 'assignment_groups#reorder'
+
+  get '/lop/:id/submissions' => 'submissions#index'
+  post '/lop/:id/submissions' => 'submissions#update'
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens
