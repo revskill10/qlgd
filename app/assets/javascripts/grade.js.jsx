@@ -41,11 +41,14 @@ var Cell = React.createClass({
     render: function() {
         if (this.props.data.edit === 0) {
          return (
-            <div ref="t" onClick={this.handleInput}>{this.props.data.grade}</div>
+            <div ref="t" onClick={this.handleInput}>{this.props.data.grade} / {this.props.data.assignment_points}</div>
          );
         } else if (this.props.data.edit === 1) {
             return (
-                <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur}   type="text"  />
+                <span>
+                <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur}  type="text"  />
+                    / thang {this.props.data.assignment_points}
+                </span>
             );
         }
     }
@@ -135,7 +138,10 @@ var Grade = React.createClass({
             var header_name = <th>Họ và tên</th>;
             var header_dqt = <th>Điểm quá trình</th>;
             var headers = this.state.names.map(function(d){
-                return <th>{d.name} ( {d.points} điểm, nhóm {d.group_name}, {d.group_weight} % )</th>;
+                return <th><div><strong>{d.name}</strong></div>
+                    <ul><li>- Thang điểm {d.points}</li>
+                    <li>- Nhóm {d.group_name}, {d.group_weight} %
+                    </li></ul></th>;
             });
             var y = this.state.data.map(function(d){
                     d.assignments.map(function(d2){
