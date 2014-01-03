@@ -312,7 +312,13 @@
                     if (confirm('Đồng ý')) {
                         this.props.onDelete({assignment_group_id: this.props.group});
                     }                    
-                },                
+                },
+                componentDidUpdate: function(){
+                    if (this.state.edit == 1) {
+                        this.refs.name.getDOMNode().value = this.props.group_name;
+                        this.refs.weight.getDOMNode().value = this.props.weight;
+                    }
+                },             
                 render: function(){
                     var self = this;      
                     var x = <li></li>;

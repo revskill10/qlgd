@@ -5,11 +5,10 @@ class SubmissionsController < ApplicationController
 		@lop = LopMonHoc.find(params[:id])
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
 		count = 0
-		names = [{:name => "Họ và tên"}]
-		names += assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
+		names = assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
+			tmp = {:name => en.sinh_vien.hovaten, :assignments => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end
@@ -33,12 +32,11 @@ class SubmissionsController < ApplicationController
 		end
 
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
-		count = 0
-		names = [{:name => "Họ và tên"}]
-		names += assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
+		count = 0		
+		names = assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
+			tmp = {:name => en.sinh_vien.hovaten, :assignments => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end

@@ -11,6 +11,7 @@ class EnrollmentSubmissionSerializer < ActiveModel::Serializer
   def tong_vang
     object.tong_vang
   end
+  
   def sinh_vien_id
     object.sinh_vien_id
   end

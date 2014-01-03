@@ -59,7 +59,7 @@ var Row = React.createClass({
                         return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
                 });
         return (
-            <tr><td>{this.props.name}</td>{x}</tr>                        
+            <tr><td>{this.props.name}</td>{x}<td>{this.props.diem_qua_trinh}</td></tr>
             
         );
     }
@@ -132,6 +132,8 @@ var Grade = React.createClass({
     },             
     render: function(){
             var self = this;
+            var header_name = <th>Họ và tên</th>;
+            var header_dqt = <th>Điểm quá trình</th>;
             var headers = this.state.names.map(function(d){
                 return <th>{d.name} ( {d.points} điểm, nhóm {d.group_name}, {d.group_weight} % )</th>;
             });
@@ -143,11 +145,11 @@ var Grade = React.createClass({
                     return d;
                 });                
             var x = y.map(function(d){                        
-                    return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+                    return <Row name={d.name} diem_qua_trinh={d.diem_qua_trinh} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });            
             return (
                     <table class="table table-bordered"><thead>           
-                    <tr>{headers}</tr>
+                    <tr>{header_name}{headers}{header_dqt}</tr>
                     </thead>
         <tbody>
         {x}</tbody>

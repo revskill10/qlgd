@@ -40,4 +40,22 @@ describe Enrollment do
     en.attendances.first.id.should == at.id
     en.tong_vang.should == 3
   end
+
+  it "have diem qua trinh" do 
+    gv = FactoryGirl.create(:giang_vien)
+    sv = FactoryGirl.create(:sinh_vien)
+    lop = FactoryGirl.create(:lop_mon_hoc)  
+    lop.pending?.should be_true  
+    lop.start!
+    lop.started?.should be_true    
+    lop.generate_assignments(gv)
+    en = lop.enrollments.where(:sinh_vien_id => sv.id).first_or_create
+    subs = lop.assignments
+    subs.each do |s|
+      g = s.submissions.where(sinh_vien_id: sv.id, giang_vien_id: gv.id).first_or_create
+      g.grade = 7
+      g.save!
+    end
+    en.diem_qua_trinh.should == 7
+  end
 end

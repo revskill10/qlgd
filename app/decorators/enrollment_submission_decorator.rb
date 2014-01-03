@@ -20,6 +20,7 @@ class EnrollmentSubmissionDecorator < Draper::Decorator
   def index
     @index
   end
+  
   def sinh_vien_id
     @object.sinh_vien.id
   end
