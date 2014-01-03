@@ -15,6 +15,9 @@ class SubmissionsController < ApplicationController
 			count += assignments.count
 			tmp
 		end
+		group_names = @lop.assignment_groups.map { |g|
+			{:name => g.name, :weight => g.weight}
+		}
 		group_results = enrollments.map do |en|
 			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			@lop.assignment_groups.each do |ag|				
@@ -23,7 +26,7 @@ class SubmissionsController < ApplicationController
 			
 			tmp
 		end
-	    render json: {:names => names, :results => results, :group_results => group_results}.to_json		
+	    render json: {:names => names, :results => results, :group_results => group_results, :group_names => group_names }.to_json		
 	end
 
 	# post grades
@@ -42,6 +45,9 @@ class SubmissionsController < ApplicationController
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
 		count = 0		
 		names = assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
+		group_names = @lop.assignment_groups.map { |g|
+			{:name => g.name, :weight => g.weight}
+		}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
 			tmp = {:name => en.sinh_vien.hovaten, :assignments => [], :diem_qua_trinh => en.diem_qua_trinh}			
@@ -51,7 +57,7 @@ class SubmissionsController < ApplicationController
 			count += assignments.count
 			tmp
 		end
-		
+
 	    group_results = enrollments.map do |en|
 			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			@lop.assignment_groups.each do |ag|				
@@ -60,6 +66,6 @@ class SubmissionsController < ApplicationController
 			
 			tmp
 		end
-	    render json: {:names => names, :results => results, :group_results => group_results}.to_json	
+	    render json: {:names => names, :results => results, :group_results => group_results, :group_names => group_names }.to_json	
 	end
 end

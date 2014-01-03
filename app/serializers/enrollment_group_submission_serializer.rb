@@ -1,6 +1,6 @@
 class EnrollmentGroupSubmissionSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :weight, :name, :assignment_group_id, :code, :tong_vang, :tinhhinh, :diem_trung_binh, :assignment_group_name
+  attributes :weight, :sinh_vien_id, :name, :assignment_group_id, :code, :tong_vang, :tinhhinh, :diem_trung_binh, :assignment_group_name
 
   def index
     object.index

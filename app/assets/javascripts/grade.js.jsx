@@ -47,7 +47,7 @@ var Cell = React.createClass({
             return (
                 <span>
                 <input id="mi" ref="grade" onKeyDown={this.handleKey} onFocus={this.handleInput} onBlur={this.handleBlur}  type="text"  />
-                    / thang {this.props.data.assignment_points}
+                    / {this.props.data.assignment_points}
                 </span>
             );
         }
@@ -58,12 +58,25 @@ var Row = React.createClass({
     
     render: function(){
         var self = this;
-                var x = this.props.data.map(function(d){                        
-                        return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
-                });
+        var x = this.props.data.map(function(d){                        
+                return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
+        });
         return (
             <tr><td>{this.props.name}</td>{x}<td>{this.props.diem_qua_trinh}</td></tr>
             
+        );
+    }
+});
+
+var RowGroup = React.createClass({
+
+    render: function(){
+        var self = this;
+        var x = this.props.data.map(function(d){
+            return <td>{d.diem_trung_binh}</td>;            
+        });
+        return (
+            <tr><td>{this.props.name}</td>{x}<td>{this.props.diem_qua_trinh}</td></tr>
         );
     }
 });
@@ -76,13 +89,13 @@ var GRADE = {
 
 var Grade = React.createClass({
     getInitialState: function(){
-        return {names: [], data: [], active: -1, active2: -1};
+        return {names: [], data: [], group_names: [], group_data: [], active: -1, active2: -1};
     },
     loadSubmissions: function(){
         $.ajax({
           url: "/lop/"+this.props.lop+"/submissions.json" ,
           success: function(data) {                      
-            this.setState({names: data.names, data: data.results, active: -1});
+            this.setState({names: data.names, group_names: data.group_names, data: data.results, group_data: data.group_results, active: -1});
           }.bind(this)
         });  
     },
@@ -105,7 +118,7 @@ var Grade = React.createClass({
             type: 'POST',
             data: d,
             success: function(data) {             
-                this.setState({names: data.names, data: data.results, active: index});  
+                this.setState({names: data.names, data: data.results, group_data: data.group_results, group_names: data.group_names, active: index});  
             }.bind(this)           
         });
         return false;
@@ -143,6 +156,9 @@ var Grade = React.createClass({
                     <li>- Nhóm {d.group_name}, {d.group_weight} %
                     </li></ul></th>;
             });
+            var group_headers = this.state.group_names.map(function(d){
+                return <th>{d.name} - {d.weight}</th>;
+            });
             var y = this.state.data.map(function(d){
                     d.assignments.map(function(d2){
                             d2.edit = self.getStatus(d2);
@@ -151,16 +167,36 @@ var Grade = React.createClass({
                     return d;
                 });                
             var x = y.map(function(d){                        
-                    return <Row name={d.name} diem_qua_trinh={d.diem_qua_trinh} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
-            });            
-            return (
-                <div class="table-responsive">
-                    <table class="table table-bordered"><thead>           
-                    <tr>{header_name}{headers}{header_dqt}</tr>
-                    </thead>                
-        <tbody>
-        {x}</tbody>
-        </table></div>
+                return <Row name={d.name} diem_qua_trinh={d.diem_qua_trinh} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+            });    
+            var z = this.state.group_data.map(function(d){
+                return <RowGroup name={d.name} diem_qua_trinh={d.diem_qua_trinh} data={d.assignment_groups} />
+            });      
+
+            return (                
+                <div>
+                    <hr />
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>           
+                                <tr>{header_name}{headers}{header_dqt}</tr>
+                            </thead>                
+                            <tbody>
+                                {x}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>           
+                               <tr><th>Họ và tên</th>{group_headers}<th>Điểm quá trình</th></tr>
+                            </thead>                
+                            <tbody>
+                                {z}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             );
     }
 });
