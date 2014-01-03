@@ -9,8 +9,7 @@ class LopMonHocAssignmentGroupSerializer < ActiveModel::Serializer
 
   def assignments
     object.assignments.map {|a| a and LopMonHocAssignmentSerializer.new(a)}
-  end
-
+  end  
   def can_destroy
   	object.can_destroy?
   end

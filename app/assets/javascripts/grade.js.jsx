@@ -26,7 +26,7 @@ var Cell = React.createClass({
                 } else if (e.keyCode == 40) {                    
                     e.preventDefault();
                     this.props.onKeyPress(data, 'down');
-                } else if (e.keyCode == 13) {                    
+                } else if (e.keyCode == 13 || e.keyCode == 27) {                    
                     e.preventDefault();
                     this.props.onEnter(data);
                 }                                
@@ -154,12 +154,13 @@ var Grade = React.createClass({
                     return <Row name={d.name} diem_qua_trinh={d.diem_qua_trinh} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });            
             return (
+                <div class="table-responsive">
                     <table class="table table-bordered"><thead>           
                     <tr>{header_name}{headers}{header_dqt}</tr>
-                    </thead>
+                    </thead>                
         <tbody>
         {x}</tbody>
-        </table>
+        </table></div>
             );
     }
 });

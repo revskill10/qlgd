@@ -15,7 +15,15 @@ class SubmissionsController < ApplicationController
 			count += assignments.count
 			tmp
 		end
-	    render json: {:names => names, :results => results}.to_json		
+		group_results = enrollments.map do |en|
+			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			@lop.assignment_groups.each do |ag|				
+				tmp[:assignment_groups] << EnrollmentGroupSubmissionSerializer.new(EnrollmentGroupSubmissionDecorator.new(en, ag))
+			end
+			
+			tmp
+		end
+	    render json: {:names => names, :results => results, :group_results => group_results}.to_json		
 	end
 
 	# post grades
@@ -43,6 +51,15 @@ class SubmissionsController < ApplicationController
 			count += assignments.count
 			tmp
 		end
-	    render json: {:names => names, :results => results}.to_json	
+		
+	    group_results = enrollments.map do |en|
+			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			@lop.assignment_groups.each do |ag|				
+				tmp[:assignment_groups] << EnrollmentGroupSubmissionSerializer.new(EnrollmentGroupSubmissionDecorator.new(en, ag))
+			end
+			
+			tmp
+		end
+	    render json: {:names => names, :results => results, :group_results => group_results}.to_json	
 	end
 end
