@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe LichTrinhGiangDay do  
+  before(:each) do 
+    d = Date.new(2013, 8, 12)
+    (0..46).each do |t|
+        FactoryGirl.create(:tuan, :stt => t+1, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day)    
+    end   
+  end
   it "should require giang_vien, thoi gian va so tiet" do 
   	lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
@@ -64,9 +70,7 @@ describe LichTrinhGiangDay do
     lich.tuan.should == 1
   end
 
-  it "has states" do
-    t1 = FactoryGirl.create(:tuan)
-    t2 = FactoryGirl.create(:tuan, :tu_ngay => Date.new(2013, 8, 19), :den_ngay => Date.new(2013, 8, 25)) 
+  it "has states" do    
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     lich = lop.lich_trinh_giang_days.build(:so_tiet => 2, :thoi_gian => Time.new(2013, 8, 12, 6, 30), :giang_vien_id  => gv.id)
@@ -83,9 +87,7 @@ describe LichTrinhGiangDay do
     lich.attendances.count.should == 0
   end  
 
-  it "can be dang ky bo sung" do 
-    t1 = FactoryGirl.create(:tuan)
-    t2 = FactoryGirl.create(:tuan, :tu_ngay => Date.new(2013, 8, 19), :den_ngay => Date.new(2013, 8, 25)) 
+  it "can be dang ky bo sung" do     
     lop = FactoryGirl.create(:lop_mon_hoc)
     gv = FactoryGirl.create(:giang_vien)
     lich = lop.lich_trinh_giang_days.create(:so_tiet => 2, :thoi_gian => Time.new(2013, 8, 12, 6, 35), :giang_vien_id => gv.id, :state => :bosung)

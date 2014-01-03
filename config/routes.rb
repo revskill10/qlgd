@@ -29,6 +29,9 @@ Qlgd::Application.routes.draw do
 
   get '/lop/:id/submissions' => 'submissions#index'
   post '/lop/:id/submissions' => 'submissions#update'
+
+  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index'
+  post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create'
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

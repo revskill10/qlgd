@@ -180,4 +180,4 @@ React.renderComponent(
 
 React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
 				, document.getElementById('assignment'));
-React.renderComponent(<Bosung />, document.getElementById('bosung'));
+React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));

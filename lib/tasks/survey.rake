@@ -50,4 +50,12 @@ namespace :survey do
         lop1.generate_assignments(gv)
         lop2.generate_assignments(gv)
     end
+
+    task seed_tuan: :environment do
+        require 'factory_girl_rails'
+        d = Date.new(2013, 8, 12)
+        (0..46).each do |t|
+            FactoryGirl.create(:tuan, :stt => t+1, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day)    
+        end         
+    end
 end
