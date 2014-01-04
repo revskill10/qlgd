@@ -27,9 +27,12 @@ class LopMonHoc < ActiveRecord::Base
     end    
   end
   
-  def start
+  def start(gv)
     self.settings ||= {}
     self.settings[:generated] = false unless self.settings[:generated]
+    self.settings[:so_tiet_ly_thuyet] ||= 0
+    self.settings[:so_tiet_thuc_hanh] ||= 0
+    self.generate_assignments(gv)
     super
   end
   
@@ -49,7 +52,7 @@ class LopMonHoc < ActiveRecord::Base
 
   
   def generate_assignments(gv)
-    return nil unless self.started?
+#    return nil unless self.started?
     return nil unless self.settings.present?
     return nil if self.settings.present? and self.settings[:generated] == true    
     ag1 = self.assignment_groups.create(name: "Điểm chuyên cần", weight: 40, giang_vien_id: gv.id)

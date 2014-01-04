@@ -32,6 +32,10 @@ Qlgd::Application.routes.draw do
 
   get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index'
   post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create'
+  put '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#update'
+  delete '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#remove'
+  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
+  
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

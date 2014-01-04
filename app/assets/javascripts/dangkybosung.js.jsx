@@ -49,6 +49,41 @@ var Bosung = React.createClass({
 	onCancelAdd: function(){
 		this.setState({add: 0});
 	},
+	onUpdate: function(data){		
+		data.giang_vien = this.props.giang_vien;
+		data._method = "put";
+		$.ajax({
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days",
+	            type: 'POST',
+	            data: data,
+	            success: function(data) {             
+	                this.setState({data: data, add: 0}); 
+	            }.bind(this)           
+	        });	
+	},
+	onRemove: function(data){		
+		data.giang_vien = this.props.giang_vien;
+		data._method = "delete";
+		$.ajax({
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days",
+	            type: 'POST',
+	            data: data,
+	            success: function(data) {             
+	                this.setState({data: data, add: 0}); 
+	            }.bind(this)           
+	        });	
+	},
+	onRestore: function(data){		
+		data.giang_vien = this.props.giang_vien;
+		$.ajax({
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/restore",
+	            type: 'POST',
+	            data: data,
+	            success: function(data) {             
+	                this.setState({data: data, add: 0}); 
+	            }.bind(this)           
+	        });	
+	},
 	componentDidUpdate: function(){
 		if (this.state.add == 1) {
 			$('.input-append.date').datepicker({
@@ -62,8 +97,9 @@ var Bosung = React.createClass({
 		}
 	},
 	render: function(){
+		var self = this;
 		var x = this.state.data.map(function(d){
-			return <Row2 data={d} />
+			return <Row2 onUpdate={self.onUpdate} onRemove={self.onRemove} onRestore={self.onRestore} data={d} />
 		});		
 		if (this.state.add === 0) {
 			return (
@@ -123,9 +159,9 @@ var Bosung = React.createClass({
 										<option value="11">11 (15h55)</option>
 										<option value="12">12 (16h45)</option>
 										<option value="13">13 (18h00)</option>
-										<option value="14">14 (16h45)</option>
-										<option value="15">15 (16h45)</option>
-										<option value="16">16 (16h45)</option>
+										<option value="14">14 (18h50)</option>
+										<option value="15">15 (19h40)</option>
+										<option value="16">16 (20h30)</option>
 									</select>
 								</td>
 								<td>
@@ -189,12 +225,17 @@ var Row2 = React.createClass({
 			var phong = this.refs.phong.getDOMNode().value;
 			var so_tiet = this.refs.so_tiet.getDOMNode().value;
 			var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
-
-			alert(tiet_bat_dau + '\n' + thoi_gian + '\n' + phong + '\n' + so_tiet + '\n' + thuc_hanh);
+			var data = {
+				id: this.props.data.id,
+				tiet_bat_dau: tiet_bat_dau,
+				thoi_gian: thoi_gian,
+				phong: phong,
+				so_tiet: so_tiet,
+				thuc_hanh: thuc_hanh
+			};
 			this.setState({edit: 0});
-		}
-		
-		return false;
+			this.props.onUpdate(data);		
+		}	
 	},
 	componentDidUpdate: function(){
 		if (this.state.edit == 1){
@@ -213,8 +254,17 @@ var Row2 = React.createClass({
 	    	});
 		}		
 	},
-	render: function(){
-
+	onRemove: function(){
+		if (confirm('Đồng ý')) {
+			this.props.onRemove(this.props.data);
+		}
+	},
+	onRestore: function(){
+		if (confirm('Đồng ý')) {
+			this.props.onRestore(this.props.data);
+		}
+	},
+	render: function(){	
 		if (this.state.edit === 0) {
 			return (
 				<tr><td>{this.props.data.id}</td>
@@ -224,7 +274,9 @@ var Row2 = React.createClass({
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
 				<td>{this.props.data.status}</td>
-				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit}>Edit</button></td>
+				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit} disabled={this.props.data.can_edit === false ? 'disabled' : ''} >Sửa</button>
+				<button class="btn btn-sm btn-danger" onClick={this.onRemove} disabled={this.props.data.can_remove === false ? 'disabled' : ''} >Xóa</button>
+				<button class="btn btn-sm btn-info" onClick={this.onRestore} disabled={this.props.data.can_restore === false ? 'disabled' : ''} >Phục hồi</button></td>
 				</tr>
 			);
 		} else {
@@ -251,9 +303,9 @@ var Row2 = React.createClass({
 							<option value="11">11 (15h55)</option>
 							<option value="12">12 (16h45)</option>
 							<option value="13">13 (18h00)</option>
-							<option value="14">14 (16h45)</option>
-							<option value="15">15 (16h45)</option>
-							<option value="16">16 (16h45)</option>
+							<option value="14">14 (18h50)</option>
+							<option value="15">15 (19h40)</option>
+							<option value="16">16 (20h30)</option>
 						</select>
 					</td>
 					<td>

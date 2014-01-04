@@ -7,18 +7,21 @@ class LichTrinhGiangDay < ActiveRecord::Base
   belongs_to :giang_vien
   has_many :attendances, :dependent => :destroy
   has_many :enrollments, :through => :lop_mon_hoc
-  validates :thoi_gian, :so_tiet, :giang_vien_id, :presence => true
+  validates :thoi_gian, :so_tiet, :giang_vien_id, :state, :presence => true
   validate :check_thoi_gian, on: :create
-  
+  validate :check_state
+  validates :giang_vien_id, :numericality => {:greater_than => 0}
+  validates :so_tiet, :numericality => {:greater_than => 0}
   has_many :du_gios, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
   scope :accepted, where(status: :accepted)
   scope :with_giangvien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
   scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}
   scope :conflict, lambda {|lich| accepted.select {|m| lich.conflict?(m)}}
-  scope :bosung, where(state: :bosung)
-  scope :nghiday, where(state: :nghiday)
-  scope :nghile, where(state: :nghile)
+  scope :bosung, where(state: "bosung")
+  scope :nghiday, where(state: "nghiday")
+  scope :nghile, where(state: "nghile")
+  scope :normal, where(state: "normal")
   before_create :set_default
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
     [9,5] => 4, [9,55] => 5, [10, 45] => 6,
@@ -37,20 +40,29 @@ class LichTrinhGiangDay < ActiveRecord::Base
 
   state_machine :status, :initial => :waiting do     
     event :accept do 
-      transition :waiting => :accepted # duoc chap nhan thuc hien
+      transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "normal", "bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet # duoc chap nhan thuc hien
     end
     event :complete do 
-      transition :accepted => :completed
+      transition :accepted => :completed, :if => lambda {|lich| ["bosung", "normal"].include?(lich.state) } # khong duoc xet duyet
     end    
     event :drop do 
-      transition :waiting => :dropped # khong duoc xet duyet
-    end    
+      transition :waiting => :dropped, :if => lambda {|lich| ["bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet
+    end
+    event :remove do 
+      transition :waiting => :removed, :if => lambda {|lich| ["normal", "bosung"].include?(lich.state) } # khong duoc xet duyet # xoa lich bo sung hoac lich chinh
+    end
+    event :restore do 
+      transition :removed => :waiting, :if => lambda {|lich| ["normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
+    end
+    event :uncomplete do 
+      transition :completed => :accepted
+    end
   end
 
   
 
   def accept
-    self.state ||= :normal
+    self.state ||= "normal"
     self.tuan = self.load_tuan
     self.tiet_bat_dau ||= self.get_tiet_bat_dau    
     self.so_tiet_moi = self.so_tiet
@@ -73,20 +85,32 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
 
   def load_tuan
-    Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.localtime.to_date and t.den_ngay >= thoi_gian.localtime.to_date }.stt    
+    tmp = Tuan.all.detect {|t| t.tu_ngay <= thoi_gian.localtime.to_date and t.den_ngay >= thoi_gian.localtime.to_date }
+    return nil unless tmp
+    tmp.try(:stt)
   end
-  def check_thoi_gian    
+
+  
+  
+  private
+  def set_default    
+    self.tuan = self.load_tuan
+    self.tiet_bat_dau ||= self.get_tiet_bat_dau
+    self.so_tiet_moi = self.so_tiet    
+  end
+  # tim tuan va trung lich
+  def check_thoi_gian
+    unless load_tuan
+      errors[:name] << 'nonexistent tuan'
+    end    
     t = lop_mon_hoc.lich_trinh_giang_days.where("thoi_gian = timestamp ?", thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
     unless t.nil?
       errors[:name] << 'duplicates thoi_gian'
     end
   end
-  
-  private
-  def set_default
-    self.state ||= :normal
-    self.tuan = self.load_tuan
-    self.tiet_bat_dau ||= self.get_tiet_bat_dau
-    self.so_tiet_moi = self.so_tiet    
+  def check_state
+    unless ["normal", "bosung"].include?(self.state)
+      errors[:name] << 'state can not be nil'
+    end
   end
 end

@@ -20,10 +20,12 @@ describe LopMonHoc do
 
   it "should change state" do 
     lop = FactoryGirl.create(:lop_mon_hoc)
+    gv = FactoryGirl.create(:giang_vien)
     lop.state.should == "pending"    
     lop.settings.should be_nil        
-    lop.start!
+    lop.start!(gv)
     lop.state.should == "started" # khi da thiet lap thong so
+    lop.assignments.count.should == 5
     lop.complete!
     lop.state.should == "completed"
   end
@@ -45,9 +47,9 @@ describe LopMonHoc do
     gv = FactoryGirl.create(:giang_vien)
     lop = FactoryGirl.create(:lop_mon_hoc)  
     lop.pending?.should be_true  
-    lop.start!
+    lop.start!(gv)
     lop.started?.should be_true    
-    lop.generate_assignments(gv)
+    lop.generate_assignments(gv).should eq(nil)
     lop.settings[:generated].should be_true
     lop.assignment_groups.count.should > 0
     lop.assignments.count.should > 0
