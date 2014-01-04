@@ -44,7 +44,7 @@ describe LichTrinhGiangDay do
   	lich2 = lop.lich_trinh_giang_days.normal.create(:so_tiet => 2, :thoi_gian => Time.new(2013, 8, 12, 6, 30))
     lich2.giang_vien = gv
     #lich2.save!
-  	lich2.errors[:name].should  include('duplicates thoi_gian')
+  	lich2.errors[:thoi_gian].should  include('duplicates')
     lich3 = lop.lich_trinh_giang_days.normal.where(:so_tiet => 2, :thoi_gian => Time.new(2013, 8, 12, 6, 30)).first_or_create!    
     lich3.should == lich    
   end

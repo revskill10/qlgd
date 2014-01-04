@@ -6,15 +6,15 @@ Qlgd::Application.routes.draw do
   get "/lich/:id" => "dashboard#show", :as => :lich
   get "/lop/:id" => "dashboard#lop"  
   #get '/' => 'static_pages#home'
-  get "lich/:lich_id/enrollments" => "enrollments#index"
-  post "lich/:lich_id/enrollments" => "enrollments#update"
-  post "lich/noidung" => "enrollments#noidung"
-  post "lop/settinglop" => "lop_mon_hocs#update"
-  post "lich/:lich_id/settinglop" => "enrollments#settinglop"
-  get "/test" => "enrollments#test"
-  get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
+  get "lich/:lich_id/attendances" => "attendances#index"
+  post "lich/:lich_id/attendances" => "attendances#update"
+  post "lich/noidung" => "attendances#noidung"
+  post "lich/:lich_id/settinglop" => "attendances#settinglop"
+  
+
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
-  get "lop/:id/show" => "lop_mon_hocs#show"  
+  get "lop/:id/show" => "lop_mon_hocs#show"
+  post "lop/settinglop" => "lop_mon_hocs#update"  
 
   get 'lop/:id/assignments' => "assignments#index"
   post 'lop/:id/assignments' => "assignments#create"
@@ -30,6 +30,7 @@ Qlgd::Application.routes.draw do
   get '/lop/:id/submissions' => 'submissions#index'
   post '/lop/:id/submissions' => 'submissions#update'
 
+  get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index'
   post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create'
   put '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#update'

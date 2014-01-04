@@ -15,10 +15,10 @@ class LopMonHocsController < ApplicationController
 	def update
 		@lop = LopMonHoc.find(params[:id])	
 		@lop.settings ||= {}	
-		@lop.settings["so_tiet_ly_thuyet"] = params[:lt].to_i
-    	@lop.settings["so_tiet_thuc_hanh"] = params[:th].to_i
-    	@lop.settings["language"] = params[:lang]
-    	@lop.settings["de_cuong_du_kien"] = params[:decuong]
+		@lop.settings[:so_tiet_ly_thuyet] = params[:lt].to_i
+    	@lop.settings[:so_tiet_thuc_hanh] = params[:th].to_i
+    	@lop.settings[:language] = params[:lang]
+    	@lop.settings[:de_cuong_du_kien] = params[:decuong]
     	@lop.start!
 		enrollments = @lop.enrollments    
     	results = enrollments.map {|e| LopEnrollmentSerializer.new(e)}

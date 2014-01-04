@@ -29,10 +29,11 @@ group :development, :test do
   gem 'guard-brakeman'
   gem 'forgery'
   gem 'database_cleaner'
+  gem 'win32console'
+  gem 'konacha'
 end
 group :test do
   gem 'rb-notifu'
-  gem 'win32console'
   gem 'wdm'
   gem 'selenium-webdriver'
   gem 'capybara'
@@ -66,6 +67,8 @@ gem "pundit"
 gem 'react-rails'
 gem "active_model_serializers"
 gem 'acts_as_list'
+gem 'sidekiq'
+gem 'strong_parameters'
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'

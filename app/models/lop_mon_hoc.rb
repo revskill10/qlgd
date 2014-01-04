@@ -46,8 +46,8 @@ class LopMonHoc < ActiveRecord::Base
   end
   
   def tong_so_tiet
-    return 0 unless settings
-    return (settings["so_tiet_ly_thuyet"] || 0) + (settings["so_tiet_thuc_hanh"] || 0)
+    return 0 unless self.settings
+    return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0)
   end
 
   

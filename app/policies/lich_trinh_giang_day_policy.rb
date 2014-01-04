@@ -7,7 +7,7 @@ class LichTrinhGiangDayPolicy
   end
 
   def update?
-  	!(lich_trinh_giang_day.state == :nghile) and !(lich_trinh_giang_day.state == :nghiday) and lich_trinh_giang_day.accepted? and user and user.imageable.is_a?(GiangVien) and user.imageable.lich_trinh_giang_days.include?(lich_trinh_giang_day) and lich_trinh_giang_day.thoi_gian.localtime < Time.now and lich_trinh_giang_day.lop_mon_hoc.started?
+  	!(lich_trinh_giang_day.state == "nghile") and !(lich_trinh_giang_day.state == "nghiday") and lich_trinh_giang_day.accepted? and user and user.imageable.is_a?(GiangVien) and user.imageable.lich_trinh_giang_days.include?(lich_trinh_giang_day) and lich_trinh_giang_day.thoi_gian.localtime < Time.now and lich_trinh_giang_day.lop_mon_hoc.tong_so_tiet > 0
   end
   
 

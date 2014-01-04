@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131231084014) do
+ActiveRecord::Schema.define(:version => 20140104125417) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20131231084014) do
     t.datetime "updated_at",       :null => false
     t.integer  "giang_vien_id"
     t.string   "state"
+    t.string   "phong"
   end
 
   add_index "calendars", ["lop_mon_hoc_id"], :name => "index_calendars_on_lop_mon_hoc_id"

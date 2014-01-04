@@ -71,6 +71,7 @@ var Enrollments = React.createClass({
     return (
       <div>          
         <h6>Thông tin điểm danh:</h6>
+        <div class="table-responsive">
         <table class="table table-bordered table-condensed">
           <colgroup>
             <col style={{width: "5%"}} />
@@ -94,6 +95,7 @@ var Enrollments = React.createClass({
             {enrollments}
           </tbody>           
         </table>
+        </div>
       </div>
     );
   }
@@ -116,6 +118,7 @@ var Lop = React.createClass({
         <div>          
         <h6>Thông tin lớp học:</h6>
         <form className="settingForm" onSubmit={this.handleSubmit}>
+        <div class="table-responsive">
         <table class="table table-bordered table-condensed">
           <thead>
             <td>Mã lớp</td>
@@ -136,6 +139,7 @@ var Lop = React.createClass({
               <td><input class="btn btn-primary btn-sm" type="submit" value="Cập nhật" /></td>
           </tbody>           
         </table>
+        </div>
         </form>
       </div>
       );
@@ -173,7 +177,7 @@ var Editor = React.createClass({
 var Lich = React.createClass({    
   loadEnrollmentsFromServer: function(){    
     $.ajax({
-      url: "/lich/"+this.props.lich+"/enrollments.json" ,
+      url: "/lich/"+this.props.lich+"/attendances.json" ,
       success: function(data2) {                      
         this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false});         
       }.bind(this)
@@ -220,7 +224,7 @@ var Lich = React.createClass({
       enrollment: enrollment
     };    
     $.ajax({
-      url: "/lich/"+this.props.lich+"/enrollments",
+      url: "/lich/"+this.props.lich+"/attendances",
       type: 'POST',
       data: d,
       success: function(data2) {             
@@ -248,6 +252,7 @@ var Lich = React.createClass({
     <div class="panel-body">
       <Lop lop={this.state.lop} onSettingLop={this.handleSettingLop} />
       <h6>Thông tin buổi học</h6>
+      <div class="table-responsive">
       <table class="table table-bordered">
         <thead>
           <td>Phòng</td>
@@ -266,6 +271,7 @@ var Lich = React.createClass({
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
     
   </div>      

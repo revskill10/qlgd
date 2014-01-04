@@ -21,7 +21,8 @@ class DashboardController < ApplicationController
       if guest?        
         format.html {render "dashboard/show/guest"} 
       elsif teacher?       
-        @giang_vien = current_user.imageable             
+        @giang_vien = current_user.imageable
+        authorize @lich, :update?             
         format.html {render "dashboard/show/teacher"}
       elsif student?        
         format.html {render "dashboard/show/student"}

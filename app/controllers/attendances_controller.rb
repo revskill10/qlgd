@@ -1,5 +1,5 @@
 #encoding: utf-8
-class EnrollmentsController < ApplicationController
+class AttendancesController < ApplicationController
   
   def index    
     
@@ -16,10 +16,8 @@ class EnrollmentsController < ApplicationController
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
       @lop = @lich.lop_mon_hoc
       authorize @lop, :update?
-      @lop.settings ||= {}
-      @lop.settings["so_tiet_ly_thuyet"] = params[:lop][:so_tiet_ly_thuyet].to_i
-      @lop.settings["so_tiet_thuc_hanh"] = params[:lop][:so_tiet_thuc_hanh].to_i
-      @lop.start!
+      @lop.settings[:so_tiet_ly_thuyet] = params[:lop][:so_tiet_ly_thuyet].to_i
+      @lop.settings[:so_tiet_thuc_hanh] = params[:lop][:so_tiet_thuc_hanh].to_i
       @lop.save!
       enrollments = @lich.lop_mon_hoc.enrollments    
       results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| EnrollmentSerializer.new(e)}

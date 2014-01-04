@@ -6,7 +6,9 @@ class Attendance < ActiveRecord::Base
   before_create :set_init_data
   validates :lich_trinh_giang_day, :sinh_vien_id, :presence => true
   validates :sinh_vien, :presence => true
-  validates :so_tiet_vang, numericality: {only_integer: true, greater_than_or_equal_to: 0}, :on => :save
+  #validates :so_tiet_vang, numericality: {only_integer: true, greater_than_or_equal_to: 0}, :on => :save
+
+  scope :vang_hoac_tre, where(state: [:absent, :late])
   state_machine :state, :initial => :attendant do  
     #before_transition any => :absent, :do => :do_absent
 

@@ -9,13 +9,15 @@ class LichTrinhGiangDay < ActiveRecord::Base
   has_many :enrollments, :through => :lop_mon_hoc
   validates :thoi_gian, :so_tiet, :giang_vien_id, :state, :presence => true
   validate :check_thoi_gian, on: :create
+  
   validate :check_state
-  validates :giang_vien_id, :numericality => {:greater_than => 0}
+  validates :giang_vien, :presence => true
   validates :so_tiet, :numericality => {:greater_than => 0}
+  
   has_many :du_gios, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
   scope :accepted, where(status: :accepted)
-  scope :with_giangvien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
+  scope :with_giang_vien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
   scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}
   scope :conflict, lambda {|lich| accepted.select {|m| lich.conflict?(m)}}
   scope :bosung, where(state: "bosung")
@@ -59,12 +61,16 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end
   end
 
+  def nghitiet(st)
+    return nil if st <= 0 or st >= self.so_tiet_moi
+     
+  end
+
   
 
   def accept
-    self.state ||= "normal"
     self.tuan = self.load_tuan
-    self.tiet_bat_dau ||= self.get_tiet_bat_dau    
+    self.tiet_bat_dau = self.get_tiet_bat_dau    
     self.so_tiet_moi = self.so_tiet
     super
   end
@@ -95,22 +101,25 @@ class LichTrinhGiangDay < ActiveRecord::Base
   private
   def set_default    
     self.tuan = self.load_tuan
-    self.tiet_bat_dau ||= self.get_tiet_bat_dau
+    self.tiet_bat_dau = self.get_tiet_bat_dau
     self.so_tiet_moi = self.so_tiet    
   end
   # tim tuan va trung lich
   def check_thoi_gian
     unless load_tuan
-      errors[:name] << 'nonexistent tuan'
+      errors[:tuan] << 'nonexists'
     end    
     t = lop_mon_hoc.lich_trinh_giang_days.where("thoi_gian = timestamp ?", thoi_gian.strftime('%Y-%m-%d %H:%M:00')).first
     unless t.nil?
-      errors[:name] << 'duplicates thoi_gian'
+      errors[:thoi_gian] << 'duplicates'
     end
   end
+
+  
+
   def check_state
     unless ["normal", "bosung"].include?(self.state)
-      errors[:name] << 'state can not be nil'
+      errors[:state] << 'can not be nil'
     end
   end
 end
