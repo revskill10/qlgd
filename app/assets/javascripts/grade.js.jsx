@@ -62,7 +62,7 @@ var Row = React.createClass({
                 return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
         });
         return (
-            <tr><td>{this.props.name}</td>{x}<td>{this.props.diem_qua_trinh}</td></tr>
+            <tr><td>{this.props.name}</td>{x}</tr>
             
         );
     }
@@ -136,9 +136,9 @@ var Grade = React.createClass({
         if (stat == 'left'){            
             this.saveToServer(data, data.index - 1);                
         } else if (stat == 'up') {
-            this.saveToServer(data, data.index - this.state.names.length + 1);
+            this.saveToServer(data, data.index - this.state.names.length);
         } else if (stat == 'down') {
-            this.saveToServer(data, data.index + this.state.names.length - 1);
+            this.saveToServer(data, data.index + this.state.names.length);
         } else if (stat == 'right') {            
             this.saveToServer(data, data.index + 1);                    
         }
@@ -167,7 +167,7 @@ var Grade = React.createClass({
                     return d;
                 });                
             var x = y.map(function(d){                        
-                return <Row name={d.name} diem_qua_trinh={d.diem_qua_trinh} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+                return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });    
             var z = this.state.group_data.map(function(d){
                 return <RowGroup name={d.name} diem_qua_trinh={d.diem_qua_trinh} data={d.assignment_groups} />
@@ -179,7 +179,7 @@ var Grade = React.createClass({
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>           
-                                <tr>{header_name}{headers}{header_dqt}</tr>
+                                <tr>{header_name}{headers}</tr>
                             </thead>                
                             <tbody>
                                 {x}

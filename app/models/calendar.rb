@@ -8,6 +8,11 @@ class Calendar < ActiveRecord::Base
   belongs_to :giang_vien
 
   validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :lop_mon_hoc, :giang_vien, :presence => true
+
+  validates :lop_mon_hoc, :presence => true
+  validates :giang_vien, :presence => true
+  validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, numericality: {only_integer: true, greater_than: 0}
+
   TIET = {1 => [6,30], 2 => [7,20], 3 => [8,10],
           4 => [9,5], 5 => [9,55], 6 => [10, 45],
           7 => [12,30], 8 => [13,20], 9 => [14,10],

@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
 		names = assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end
@@ -50,7 +50,7 @@ class SubmissionsController < ApplicationController
 		}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end
