@@ -46,6 +46,12 @@ class LichTrinhGiangDay < ActiveRecord::Base
     event :accept do 
       transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "normal", "bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet # duoc chap nhan thuc hien
     end
+    event :giang_vien_accept do 
+      transition :waiting => :accepted, :if => lambda {|lich| lich.state == "normal"}
+    end
+    event :dao_tao_accept do 
+      transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "bosung", "nghiday"].include?(lich.state)}
+    end
     event :complete do 
       transition :accepted => :completed, :if => lambda {|lich| ["bosung", "normal"].include?(lich.state) } # khong duoc xet duyet
     end    
@@ -53,21 +59,38 @@ class LichTrinhGiangDay < ActiveRecord::Base
       transition :waiting => :dropped, :if => lambda {|lich| ["bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet
     end
     event :remove do 
-      transition :waiting => :removed, :if => lambda {|lich| ["normal", "bosung"].include?(lich.state) } # khong duoc xet duyet # xoa lich bo sung hoac lich chinh
+      transition :waiting => :removed, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet # xoa lich bo sung hoac lich chinh
     end
     event :restore do 
-      transition :removed => :waiting, :if => lambda {|lich| ["normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
+      transition :removed => :waiting, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
     end
     event :uncomplete do 
-      transition :completed => :accepted
+      transition :completed => :accepted, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
     end
   end
 
-  def nghitiet(st)
-    return nil if st <= 0 or st >= self.so_tiet_moi
-     
+  def can_nghiday?
+    self.state == "normal" and [:waiting, :accepted].include?(self.status.to_sym)
+  end
+  def nghiday!
+    return nil unless can_nghiday?
+    self.state = "nghiday"
+    self.status = "waiting"
+  end
+  def can_unnghiday?
+    self.state == "nghiday" and self.status.to_sym == :waiting
+  end
+  def unnghiday!
+    return nil unless can_unnghiday?
+    self.state = "normal"
   end
 
+  def can_edit?
+    (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and self.status == "waiting")
+  end
+
+  
+  
   def alias_state
     case self.state
     when "normal"
@@ -122,6 +145,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
   
   private
+  
   def set_default    
     self.tuan = self.load_tuan
     self.tiet_bat_dau = self.get_tiet_bat_dau
@@ -141,7 +165,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
 
   def check_state
-    unless ["normal", "bosung"].include?(self.state)
+    unless ["normal", "bosung", "nghiday", "nghile"].include?(self.state)
       errors[:state] << 'can not be nil'
     end
   end

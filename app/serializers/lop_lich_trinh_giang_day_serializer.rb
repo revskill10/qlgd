@@ -19,30 +19,30 @@ class LopLichTrinhGiangDaySerializer < ActiveModel::Serializer
     object.alias_status
   end
   def can_remove
-  	return object.can_remove?
+  	object.can_remove?
   end
 
   def can_restore
-  	return object.can_restore?
+  	object.can_restore?
   end
 
   def can_edit
-    (object.state == "bosung" and object.status == "waiting") or (object.state == "normal" and object.status == "waiting")
+    object.can_edit?
   end
 
   def can_nghiday
-    (object.state == "normal" and object.status == "waiting") or (object.state == "bosung" and object.status == "accepted")
+    object.can_nghiday?
   end
 
   def can_accept
-    object.state == "normal" and  object.can_accept?
+    object.can_giang_vien_accept?
   end
 
   def can_unnghiday
-    object.state == "nghiday" and object.status == "waiting"
+    object.can_unnghiday?
   end
 
   def can_uncomplete
-    (object.state == "normal" or object.state == "bosung") and object.status == "completed"
+    object.can_uncomplete?
   end
 end

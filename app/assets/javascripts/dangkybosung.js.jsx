@@ -36,7 +36,7 @@ var Bosung = React.createClass({
 			var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
 			var data = {giang_vien: this.props.giang_vien,thoi_gian: thoi_gian, tiet_bat_dau: tiet_bat_dau, phong: phong, so_tiet: so_tiet, thuc_hanh: thuc_hanh};
 			$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/create_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
@@ -57,7 +57,7 @@ var Bosung = React.createClass({
 		data.giang_vien = this.props.giang_vien;
 		data._method = "put";
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/update_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
@@ -72,7 +72,7 @@ var Bosung = React.createClass({
 		data.giang_vien = this.props.giang_vien;
 		data._method = "delete";
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/remove_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
@@ -86,7 +86,7 @@ var Bosung = React.createClass({
 	onRestore: function(data){		
 		data.giang_vien = this.props.giang_vien;
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/restore",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/restore_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             

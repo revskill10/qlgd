@@ -36,10 +36,17 @@ Qlgd::Application.routes.draw do\
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
   get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#index'
   get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index_bosung'
-  post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create_bosung'
-  put '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#update_bosung'
-  delete '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#remove_bosung'
-  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore_bosung'
+  post '/lop/:lop_id/lich_trinh_giang_days/create_bosung' => 'lich_trinh_giang_days#create_bosung'
+  put '/lop/:lop_id/lich_trinh_giang_days/update_bosung' => 'lich_trinh_giang_days#update_bosung'
+  delete '/lop/:lop_id/lich_trinh_giang_days/remove_bosung' => 'lich_trinh_giang_days#remove_bosung'
+  post '/lop/:lop_id/lich_trinh_giang_days/restore_bosung' => 'lich_trinh_giang_days#restore_bosung'
+  post '/lop/:lop_id/lich_trinh_giang_days/nghiday' => 'lich_trinh_giang_days#nghiday'
+  post '/lop/:lop_id/lich_trinh_giang_days/unnghiday' => 'lich_trinh_giang_days#unnghiday'
+  post '/lop/:lop_id/lich_trinh_giang_days/complete' => 'lich_trinh_giang_days#complete'
+  post '/lop/:lop_id/lich_trinh_giang_days/uncomplete' => 'lich_trinh_giang_days#uncomplete'
+  post '/lop/:lop_id/lich_trinh_giang_days/accept' => 'lich_trinh_giang_days#accept'
+  post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
+  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
   
   resources :tenants do 
     resources :giang_viens

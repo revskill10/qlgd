@@ -55,4 +55,69 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end	
+	def nghiday
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_nghiday?
+			@lich.nghiday!
+			@lich.save!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def unnghiday
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_unnghiday?
+			@lich.unnghiday!
+			@lich.save!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def complete
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_complete?
+			@lich.complete!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def uncomplete
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_uncomplete?
+			@lich.uncomplete!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def accept
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_giang_vien_accept?
+			@lich.giang_vien_accept!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def remove
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_remove?
+			@lich.remove!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def restore
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich and @lich.can_restore?
+			@lich.restore!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
 end
