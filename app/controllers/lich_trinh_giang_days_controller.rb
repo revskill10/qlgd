@@ -5,10 +5,15 @@ class LichTrinhGiangDaysController < ApplicationController
 	end
 	def index
 		@lop = LopMonHoc.find(params[:lop_id])
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien_id]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def index_bosung
+		@lop = LopMonHoc.find(params[:lop_id])
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien_id]).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
-	def create
+	def create_bosung
 		@lop = LopMonHoc.find(params[:lop_id])		
 		hour = LichTrinhGiangDay::TIET2[params[:tiet_bat_dau].to_i][0].to_s
 		minute = LichTrinhGiangDay::TIET2[params[:tiet_bat_dau].to_i][1].to_s
@@ -20,7 +25,7 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
-	def update
+	def update_bosung
 		@lop = LopMonHoc.find(params[:lop_id])		
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.find(params[:id])
 		if @lich
@@ -32,7 +37,7 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
-	def remove
+	def remove_bosung
 		@lop = LopMonHoc.find(params[:lop_id])		
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.find(params[:id])
 		if @lich and @lich.can_remove?
@@ -41,7 +46,7 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
-	def restore
+	def restore_bosung
 		@lop = LopMonHoc.find(params[:lop_id])		
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).bosung.find(params[:id])
 		if @lich and @lich.can_restore?

@@ -1,4 +1,4 @@
-
+#encoding: utf-8
 class LichTrinhGiangDay < ActiveRecord::Base
   default_scope order('thoi_gian')
   attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi
@@ -24,7 +24,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :nghiday, where(state: "nghiday")
   scope :nghile, where(state: "nghile")
   scope :normal, where(state: "normal")
+
   before_create :set_default
+  
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
     [9,5] => 4, [9,55] => 5, [10, 45] => 6,
     [12,30] => 7, [13,20] => 8, [14,10] => 9,
@@ -66,14 +68,35 @@ class LichTrinhGiangDay < ActiveRecord::Base
      
   end
 
-  
-
-  def accept
-    self.tuan = self.load_tuan
-    self.tiet_bat_dau = self.get_tiet_bat_dau    
-    self.so_tiet_moi = self.so_tiet
-    super
+  def alias_state
+    case self.state
+    when "normal"
+      return "Bình thường"
+    when "nghiday"
+      return "Nghỉ dạy"
+    when "nghile"
+      return "Nghỉ lễ"
+    when "bosung"
+      return "Bổ sung"
+    end
   end
+
+  def alias_status
+    case self.status.to_sym
+    when :waiting
+      return "Đang chờ"
+    when :accepted
+      return "Được chấp nhận"
+    when :removed
+      return "Bị hủy"
+    when :completed
+      return "Đã hoàn thành"
+    when :dropped
+      return "Không được chấp nhận"
+    end
+  end
+
+  
 
   
   def get_tiet_bat_dau

@@ -30,9 +30,6 @@
                                 }
                             });        
                             this.setState({data: data, add: 0});
-                            React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
-                                document.getElementById("grades"));
                         }.bind(this)
                     });             
                 },
@@ -334,7 +331,7 @@
                                     <div class="row">
                                         <div class="col-sm-3" class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</div>
                                         <div style={{"font-weight": "bold"}} class="col-sm-3" onClick={this.handleWeight}>{this.props.weight} %</div>                                    
-                                        <button disabled={this.props.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
+                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
                                         <span>{'                 '}</span>
                                         <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Thêm đầu điểm</button>
                                         <ul id={'group'+this.props.group} data-group={this.props.group} class="tile__list">{x}</ul>
@@ -367,7 +364,7 @@
                                     <li>
                                         <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
                                         <span onDoubleClick={this.handleWeight}>{this.props.weight}</span>
-                                        <button disabled={this.props.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
+                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
                                         <div>
                                             <input  ref="name" type="text" placeholder="Name" />
                                             <input  ref="points" type="text" placeholder="points" />
@@ -452,7 +449,7 @@
                     )
                 } else {
                     return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span><span>
-                    <button disabled={this.props.data.can_destroy === false ? 'disabled' : ''} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
+                    <button style={{display: this.props.data.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
                         
                 }                                
             }                

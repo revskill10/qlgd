@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
 
+
 var MDATA = [
 	{id: 1, thoi_gian: '12/08/2013', tiet_bat_dau: 1, so_tiet: 3, phong: 'A101', thuc_hanh: false, status: 'waiting'},
 	{id: 2, thoi_gian: '19/08/2013', tiet_bat_dau: 2, so_tiet: 3,phong: 'A103', thuc_hanh: false, status: 'accepted'},
@@ -40,6 +41,9 @@ var Bosung = React.createClass({
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+                , document.getElementById('calendar'));
 	            }.bind(this)           
 	        });			
 		}
@@ -57,7 +61,10 @@ var Bosung = React.createClass({
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
-	                this.setState({data: data, add: 0}); 
+	                this.setState({data: data, add: 0});
+	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+                , document.getElementById('calendar')); 
 	            }.bind(this)           
 	        });	
 	},
@@ -70,6 +77,9 @@ var Bosung = React.createClass({
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+                , document.getElementById('calendar'));
 	            }.bind(this)           
 	        });	
 	},
@@ -81,6 +91,9 @@ var Bosung = React.createClass({
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+                , document.getElementById('calendar'));	
 	            }.bind(this)           
 	        });	
 	},
@@ -273,10 +286,10 @@ var Row2 = React.createClass({
 				<td>{this.props.data.so_tiet}</td>
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
-				<td>{this.props.data.status}</td>
-				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit} disabled={this.props.data.can_edit === false ? 'disabled' : ''} >Sửa</button>
-				<button class="btn btn-sm btn-danger" onClick={this.onRemove} disabled={this.props.data.can_remove === false ? 'disabled' : ''} >Xóa</button>
-				<button class="btn btn-sm btn-info" onClick={this.onRestore} disabled={this.props.data.can_restore === false ? 'disabled' : ''} >Phục hồi</button></td>
+				<td>{this.props.data.alias_status}</td>
+				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit} style={{display: this.props.data.can_edit === false ? 'none' : ''}} >Sửa</button>
+				<button class="btn btn-sm btn-danger" onClick={this.onRemove} style={{display: this.props.data.can_remove === false ? 'none' : ''}} >Xóa</button>
+				<button class="btn btn-sm btn-info" onClick={this.onRestore} style={{display: this.props.data.can_restore === false ? 'none' : ''}} >Phục hồi</button></td>
 				</tr>
 			);
 		} else {
@@ -321,7 +334,7 @@ var Row2 = React.createClass({
 						</select>
 					</td>
 					<td>
-						{this.props.data.status}
+						{this.props.data.alias_status}
 					</td>
 					<td>
 						<input onClick={this.handleCancelEdit} class="btn btn-sm" type="submit" value="Cancel" />

@@ -52,3 +52,6 @@ p {
   line-height: 1.7em;
 }
 
+.nobreak {
+    page-break-inside: avoid;
+}

@@ -1,4 +1,7 @@
-Qlgd::Application.routes.draw do
+Qlgd::Application.routes.draw do\
+  require 'sidekiq/web'
+# ...
+  mount Sidekiq::Web, at: '/sidekiq'
   devise_for :users
   get "/" => "dashboard#index"
   get "calendar" => "dashboard#calendar", :as => :calendar
@@ -31,11 +34,12 @@ Qlgd::Application.routes.draw do
   post '/lop/:id/submissions' => 'submissions#update'
 
   get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
-  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index'
-  post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create'
-  put '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#update'
-  delete '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#remove'
-  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
+  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#index'
+  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index_bosung'
+  post '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#create_bosung'
+  put '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#update_bosung'
+  delete '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#remove_bosung'
+  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore_bosung'
   
   resources :tenants do 
     resources :giang_viens
@@ -91,7 +95,7 @@ Qlgd::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-  # root :to => 'welcome#index'
+  root :to => 'dashboard#index'
 
   # See how all your routes lay out with "rake routes"
 

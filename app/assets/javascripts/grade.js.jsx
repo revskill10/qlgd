@@ -119,6 +119,9 @@ var Grade = React.createClass({
             data: d,
             success: function(data) {             
                 this.setState({names: data.names, data: data.results, group_data: data.group_results, group_names: data.group_names, active: index});  
+                React.unmountAndReleaseReactRootNode(document.getElementById('assignment'));
+                React.renderComponent(<Assignments giang_vien={this.props.giang_vien} lop={this.props.lop} />
+                , document.getElementById('assignment'));
             }.bind(this)           
         });
         return false;

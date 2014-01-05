@@ -2,6 +2,7 @@
 //= require assignments
 //= require grade
 //= require dangkybosung
+//= require calendar
 var Enrollment = React.createClass({
 
 	render: function(){
@@ -180,4 +181,8 @@ React.renderComponent(
 
 React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
 				, document.getElementById('assignment'));
+React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />,
+                                document.getElementById("grades"));
 React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
+React.renderComponent(<Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('calendar'));
+

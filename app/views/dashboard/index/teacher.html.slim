@@ -17,7 +17,7 @@
     
     
     
-      
+    
     table.table
       thead
         td Tuần
@@ -27,6 +27,8 @@
           tr
             td= "Tuần #{lich.tuan}"
             td= link_to lich.thoi_gian.localtime.strftime("%Hh%M ngày %d/%m/%Y"), "/lich/#{lich.id}"
+
+    = link_to "Export", root_path(:format => :pdf)
 
 
 

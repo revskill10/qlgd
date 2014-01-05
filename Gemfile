@@ -31,6 +31,7 @@ group :development, :test do
   gem 'database_cleaner'
   gem 'win32console'
   gem 'konacha'
+  gem "bullet"
 end
 group :test do
   gem 'rb-notifu'
@@ -68,7 +69,13 @@ gem 'react-rails'
 gem "active_model_serializers"
 gem 'acts_as_list'
 gem 'sidekiq'
+gem 'sidetiq'
 gem 'strong_parameters'
+gem "statsd-ruby"
+gem 'wkhtmltopdf-binary'
+gem "lograge"
+gem 'wicked_pdf'
+gem 'sinatra', require: false
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
