@@ -1,7 +1,10 @@
 class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :phong, :content, :updated, :status, :sv_co_mat, :sv_vang_mat
+  attributes :id, :phong, :content, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet
 
+  def so_tiet
+    object.so_tiet
+  end
   def content
     object.content
   end

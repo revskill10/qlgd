@@ -58,9 +58,14 @@ class LichTrinhGiangDay < ActiveRecord::Base
     event :restore do 
       transition :removed => :waiting, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
     end
-    event :report do 
-      transition :completed => :reported, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
+    event :uncomplete do 
+      transition :completed => :accepted, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
     end
+  end
+
+  def complete
+    self.completed_at = Time.now
+    super
   end
 
   def can_nghiday?

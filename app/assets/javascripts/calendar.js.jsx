@@ -53,11 +53,11 @@
 	            }.bind(this)           
 	        });		
  	},
- 	handleReport: function(d){
+ 	handleUncomplete: function(d){
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/report",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/uncomplete",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -114,18 +114,18 @@
  		var self = this;
  		var x = this.state.data.map(function(d){
  			if (d.alias_state === 'Bổ sung') {
- 				return <CalendarRowBosung onRemove={self.handleRemove} onRestore={self.handleRestore} onReport={self.handleReport} data={d} />
+ 				return <CalendarRowBosung onRemove={self.handleRemove} onRestore={self.handleRestore} onUncomplete={self.handleUncomplete} data={d} />
  			}
  			if (d.alias_state === 'Nghỉ dạy') {
  				return <CalendarRowNghiday onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
  			}
- 			return <CalendarRow onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onReport={self.handleReport} data={d} />;
+ 			return <CalendarRow onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
  		});
  		return (
  			<div class="table-responsive">
  				<table class="table table-bordered">
  					<thead>
- 						<td>Tuần</td><td>Thời gian</td><td>Phòng</td><td>Số tiết</td><td>Thực hành</td><td>Loại</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
+ 						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Thực hành</td><td>Loại</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
  					</thead>
  					<tbody>
  						{x}
@@ -155,6 +155,7 @@ var CalendarRowNghiday = React.createClass({
 				<tr>
 					<td>{this.props.data.tuan}</td>
 					<td>{this.props.data.thoi_gian}</td>
+					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>
 					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
@@ -186,6 +187,7 @@ var CalendarRowBosung = React.createClass({
 			<tr>
 				<td>{this.props.data.tuan}</td>
 				<td>{this.props.data.thoi_gian}</td>
+				<td>{this.props.data.tiet_bat_dau}</td>
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.so_tiet}</td>
 				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
@@ -195,7 +197,7 @@ var CalendarRowBosung = React.createClass({
 				<td>
 					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
 					<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>
-					<button onClick={this.onReport} style={{display: this.props.data.can_report === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
+					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
 				</td>
 			</tr>
 		);
@@ -220,8 +222,8 @@ var CalendarRow = React.createClass({
 		this.setState({edit: 0});
 		this.props.onUpdate(data);
 	},
-	onReport: function(e){
-		this.props.onReport(this.props.data);
+	onUncomplete: function(e){
+		this.props.onUncomplete(this.props.data);
 	},	
 	onRestore: function(e){
 		this.props.onRestore(this.props.data);
@@ -248,6 +250,7 @@ var CalendarRow = React.createClass({
 				<tr>
 					<td>{this.props.data.tuan}</td>
 					<td>{this.props.data.thoi_gian}</td>
+					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>
 					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
@@ -259,7 +262,7 @@ var CalendarRow = React.createClass({
 						<button onClick={this.onEdit} style={{display: this.props.data.can_edit === false ?  'none' : ''}} class="btn btn-sm btn-success">Sửa</button>
 						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
 						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>						
-						<button onClick={this.onReport} style={{display: this.props.data.can_report === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
+						<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Hủy hoàn thành</button>
 					</td>
 				</tr>
 			);
@@ -268,6 +271,7 @@ var CalendarRow = React.createClass({
 				<tr>
 					<td>{this.props.data.tuan}</td>
 					<td>{this.props.data.thoi_gian}</td>
+					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>
 						<input type="text" ref="phong" class="form-control input-sm" />
 					</td>
