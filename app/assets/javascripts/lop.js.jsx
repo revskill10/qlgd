@@ -97,6 +97,7 @@ var ThongSo = React.createClass({
 	    }
     	var data = {
     		id: this.state.data.id,
+    		giang_vien: this.props.giang_vien,
     		lt: lt,
     		th: th,
     		lang: lang,
@@ -174,7 +175,7 @@ var data = {};
 
 
 React.renderComponent(
-	<ThongSo lop={ENV.lop_id} />
+	<ThongSo giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
 	, document.getElementById('thongso')
 );
 			
