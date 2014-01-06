@@ -12,9 +12,11 @@ class Enrollment < ActiveRecord::Base
   has_many :attendances, :through => :sinh_vien
   has_many :submissions, :through => :sinh_vien
   def tong_vang
-  	attendances.where('phep is NULL or phep=false').sum(:so_tiet_vang)
+  	attendances.not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
   end
-
+  def so_tiet_thua
+    attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.so_tiet_moi }
+  end
   def diem_qua_trinh
   	assignment_groups.to_a.sum {|e| e.diem_trung_binh(sinh_vien.id) }
   end

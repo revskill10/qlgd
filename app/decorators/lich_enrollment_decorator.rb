@@ -59,7 +59,7 @@ class LichEnrollmentDecorator < Draper::Decorator
   end
   def tinhhinh
     return 0 if (@lich.lop_mon_hoc.tong_so_tiet == 0)
-    (@object.tong_vang * 100.0 / @lich.lop_mon_hoc.tong_so_tiet).round(2)
+    (@object.tong_vang * 100.0 / (@lich.lop_mon_hoc.tong_so_tiet - @object.so_tiet_thua)).round(2)
   end
   def dihoc_tinhhinh
     return (100 - tinhhinh).round(2)

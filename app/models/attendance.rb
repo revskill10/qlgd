@@ -9,6 +9,8 @@ class Attendance < ActiveRecord::Base
   #validates :so_tiet_vang, numericality: {only_integer: true, greater_than_or_equal_to: 0}, :on => :save
 
   scope :vang_hoac_tre, where(state: [:absent, :late])
+  scope :not_idle, where(state: [:absent, :late, :attendant])
+  scope :idle, where(state: [:idle])
   state_machine :state, :initial => :attendant do  
     #before_transition any => :absent, :do => :do_absent
 

@@ -23,7 +23,7 @@ var Enrollment = React.createClass({
     var css = {"Đang học": "btn btn-success btn-sm btn-block",
               "Vắng": "btn btn-danger btn-sm btn-block",
               "Trễ": "btn btn-warning btn-sm btn-block",
-              "x": "btn btn-primary btn-sm btn-block"};
+              "x": "btn btn-default btn-sm btn-block"};
     var phep = {"Có": "btn btn-success btn-sm btn-block",
     "Không": "btn btn-danger btn-sm btn-block",
     "x" : "btn btn-default btn-sm btn-block"};
@@ -79,9 +79,9 @@ var Enrollments = React.createClass({
           <colgroup>
             <col style={{width: "5%"}} />
             <col style={{width: "15%"}} />
-            <col style={{width: "20%"}} />
+            <col style={{width: "15%"}} />
             <col style={{width: "10%"}} />
-            <col style={{width: "10%"}} />
+            <col style={{width: "15%"}} />
             <col style={{width: "10%"}} />
             <col style={{width: "10%"}} />
             <col style={{width: "20%"}} />
