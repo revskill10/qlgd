@@ -41,6 +41,8 @@ class AttendancesController < ApplicationController
         @attendance.minus
       elsif params[:stat] == 'phep'
         @attendance.turn_phep
+      elsif params[:stat] == 'idle'
+        @attendance.turn_idle
       elsif params[:stat] == 'note'
         @attendance.set_note(params[:enrollment][:note])
       end

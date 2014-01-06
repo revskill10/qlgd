@@ -26,11 +26,12 @@ class LichEnrollmentDecorator < Draper::Decorator
     return 0 unless @at    
     return @at.so_tiet_vang if @at
   end
-  def phep_status
-    return 'Không phép' unless @at
+  def phep_status    
+    return 'Không' unless @at
     return @at.decorate.phep_status
   end
   def idle_status
+    return 'Có' unless @at
     return 'Có' unless @at.idle?
     return 'Không'
   end
@@ -40,7 +41,7 @@ class LichEnrollmentDecorator < Draper::Decorator
     return @at.phep
   end
   def status  	
-  	return 'Không vắng' unless @at
+  	return 'Đang học' unless @at
   	return @at.decorate.status if @at
   end
   def name

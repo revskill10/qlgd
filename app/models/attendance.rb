@@ -58,25 +58,30 @@ class Attendance < ActiveRecord::Base
   end
 
   def mark(stv, phep, idle)
-    return nil if stv.nil? or stv > lich_trinh_giang_day.so_tiet_moi
-    if idle == true
-      mark_idle      
-    else
-      if stv == 0
-        mark_attendant
-      end
-      if stv > 0 and stv < lich_trinh_giang_day.so_tiet_moi
-        mark_late(stv, phep)
-      end
-      if stv > 0 and stv == lich_trinh_giang_day.so_tiet_moi
-        mark_absent(phep)
-      end
-    end    
+    return nil if stv.nil? or stv > lich_trinh_giang_day.so_tiet_moi and self.idle?
+    
+    if stv == 0
+      mark_attendant
+    end
+    if stv > 0 and stv < lich_trinh_giang_day.so_tiet_moi
+      mark_late(stv, phep)
+    end
+    if stv > 0 and stv == lich_trinh_giang_day.so_tiet_moi
+      mark_absent(phep)
+    end
+        
   end
   def turn_phep
     return nil if self.idle? or self.attendant?
     self.phep = !self.phep
     self.save!
+  end
+  def turn_idle
+    unless self.idle?
+      self.mark_idle!
+    else
+      self.mark_attendant!
+    end
   end
   def turn(phep)
     if self.state == 'absent'

@@ -85,24 +85,15 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
-	def uncomplete
+	def report
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
-		if @lich and @lich.can_uncomplete?
-			@lich.uncomplete!
+		if @lich and @lich.can_report?
+			@lich.report!
 		end
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
-	end
-	def accept
-		@lop = LopMonHoc.find(params[:lop_id])
-		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
-		if @lich and @lich.can_giang_vien_accept?
-			@lich.giang_vien_accept!
-		end
-		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		render json: @lichs, :root => false
-	end
+	end	
 	def remove
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])

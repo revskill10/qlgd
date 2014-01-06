@@ -23,17 +23,17 @@ var Enrollment = React.createClass({
     var css = {"Đang học": "btn btn-success btn-sm btn-block",
               "Vắng": "btn btn-danger btn-sm btn-block",
               "Trễ": "btn btn-warning btn-sm btn-block",
-              "Không học": "btn btn-primary btn-sm btn-block"};
-    var phep = {"CP": "btn btn-success btn-sm btn-block",
-    "KP": "btn btn-danger btn-sm btn-block",
-    "xx" : "btn btn-default btn-sm btn-block"};
+              "x": "btn btn-primary btn-sm btn-block"};
+    var phep = {"Có": "btn btn-success btn-sm btn-block",
+    "Không": "btn btn-danger btn-sm btn-block",
+    "x" : "btn btn-default btn-sm btn-block"};
     var idle = {"Có": "btn btn-success btn-sm btn-block", 
-    "Không": "btn btn-success btn-sm btn-block"};
+    "Không": "btn btn-danger btn-sm btn-block"};
     var value = this.state.value;    
     var plus = 'disabled';
     var minus = 'disabled';
-    if (parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true && this.props.ajax.loading === false ) {plus = '';}
-    if (parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true && this.props.ajax.loading === false) {minus = '';}
+    if (this.props.enrollment.idle_status === "Có" && parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true && this.props.ajax.loading === false ) {plus = '';}
+    if (this.props.enrollment.idle_status === "Có" && parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true && this.props.ajax.loading === false) {minus = '';}
     return (
       <tr>
         <td>{this.props.stt}</td>
@@ -46,10 +46,10 @@ var Enrollment = React.createClass({
           <span>{this.props.enrollment.tinhhinh +"%"}</span>
         </div>
       </div></td>
-        <td><button onClick={this.props.on_absent} disabled={this.props.ajax.loading === true}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
+        <td><button onClick={this.props.on_absent} disabled={this.props.enrollment.idle_status === "Không" || this.props.ajax.loading === true || this.props.enrollment.status === "Trễ" ? 'disabled' : ''}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
-        <td><button disabled={( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
+        <td><button disabled={this.props.enrollment.idle_status === "Không" && ( ( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
         <td><button onClick={this.props.on_idle} class={idle[this.props.enrollment.idle_status]}>{this.props.enrollment.idle_status}</button></td>
         <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật ghi chú</button></td>
       </tr>
@@ -69,7 +69,7 @@ var Enrollments = React.createClass({
   render: function(){      
     var self = this;
     var enrollments = this.props.data.map(function (enrollment, i) {
-      return <Enrollment state={self.props.state} stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')} on_note={self.handleVang.bind(self,enrollment,'note')} ajax={ {loading: self.props.loading} } />;
+      return <Enrollment state={self.props.state} stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_idle={self.handleVang.bind(self, enrollment, 'idle')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')} on_note={self.handleVang.bind(self,enrollment,'note')} ajax={ {loading: self.props.loading} } />;
     }); 
     return (
       <div>          

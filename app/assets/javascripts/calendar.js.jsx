@@ -53,11 +53,11 @@
 	            }.bind(this)           
 	        });		
  	},
- 	handleUncomplete: function(d){
+ 	handleReport: function(d){
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/uncomplete",
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/report",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -67,37 +67,7 @@
                 , document.getElementById('bosung'));
 	            }.bind(this)           
 	        });		
- 	},
- 	handleComplete: function(d){
- 		d.giang_vien = this.props.giang_vien;
- 		d.lop_id = this.props.lop;
- 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/complete",
-	            type: 'POST',
-	            data: d,
-	            success: function(data) {             
-	                this.setState({data: data, add: 0}); 
-	                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
-            		React.renderComponent(<Bosung giang_vien={this.props.giang_vien} lop={this.props.lop} />
-                , document.getElementById('bosung'));
-	            }.bind(this)           
-	        });		
- 	},
- 	handleAccept: function(d){
- 		d.giang_vien = this.props.giang_vien;
- 		d.lop_id = this.props.lop;
- 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/accept",
-	            type: 'POST',
-	            data: d,
-	            success: function(data) {             
-	                this.setState({data: data, add: 0}); 
-	                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
-            		React.renderComponent(<Bosung giang_vien={this.props.giang_vien} lop={this.props.lop} />
-                , document.getElementById('bosung'));
-	            }.bind(this)           
-	        });	
- 	},
+ 	}, 	
  	handleRemove: function(d){
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
@@ -144,12 +114,12 @@
  		var self = this;
  		var x = this.state.data.map(function(d){
  			if (d.alias_state === 'Bổ sung') {
- 				return <CalendarRowBosung onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onUncomplete={self.handleUncomplete} data={d} />
+ 				return <CalendarRowBosung onRemove={self.handleRemove} onRestore={self.handleRestore} onReport={self.handleReport} data={d} />
  			}
  			if (d.alias_state === 'Nghỉ dạy') {
  				return <CalendarRowNghiday onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
  			}
- 			return <CalendarRow onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onAccept={self.handleAccept} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
+ 			return <CalendarRow onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onReport={self.handleReport} data={d} />;
  		});
  		return (
  			<div class="table-responsive">
@@ -225,7 +195,7 @@ var CalendarRowBosung = React.createClass({
 				<td>
 					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
 					<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>
-					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Hủy hoàn thành</button>
+					<button onClick={this.onReport} style={{display: this.props.data.can_report === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
 				</td>
 			</tr>
 		);
@@ -250,12 +220,9 @@ var CalendarRow = React.createClass({
 		this.setState({edit: 0});
 		this.props.onUpdate(data);
 	},
-	onUncomplete: function(e){
-		this.props.onUncomplete(this.props.data);
-	},
-	onAccept: function(e){
-		this.props.onAccept(this.props.data);
-	},
+	onReport: function(e){
+		this.props.onReport(this.props.data);
+	},	
 	onRestore: function(e){
 		this.props.onRestore(this.props.data);
 	},
@@ -291,9 +258,8 @@ var CalendarRow = React.createClass({
 						<button onClick={this.onNghiday} style={{display: this.props.data.can_nghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning">Đăng ký nghỉ</button>
 						<button onClick={this.onEdit} style={{display: this.props.data.can_edit === false ?  'none' : ''}} class="btn btn-sm btn-success">Sửa</button>
 						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
-						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>
-						<button onClick={this.onAccept} style={{display: this.props.data.can_accept === false ?  'none' : ''}} class="btn btn-sm btn-primary">Chấp nhận</button>
-						<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Hủy hoàn thành</button>
+						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>						
+						<button onClick={this.onReport} style={{display: this.props.data.can_report === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
 					</td>
 				</tr>
 			);

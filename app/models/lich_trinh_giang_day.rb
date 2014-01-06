@@ -45,13 +45,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   state_machine :status, :initial => :waiting do     
     event :accept do 
       transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "normal", "bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet # duoc chap nhan thuc hien
-    end
-    event :giang_vien_accept do 
-      transition :waiting => :accepted, :if => lambda {|lich| lich.state == "normal"}
-    end
-    event :dao_tao_accept do 
-      transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "bosung", "nghiday"].include?(lich.state)}
-    end
+    end    
     event :complete do 
       transition :accepted => :completed, :if => lambda {|lich| ["bosung", "normal"].include?(lich.state) } # khong duoc xet duyet
     end    
@@ -64,8 +58,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
     event :restore do 
       transition :removed => :waiting, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
     end
-    event :uncomplete do 
-      transition :completed => :accepted, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
+    event :report do 
+      transition :completed => :reported, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
     end
   end
 
