@@ -20,13 +20,15 @@ var Enrollment = React.createClass({
     return false;
   },  
   render: function() {
-    var css = {"Không vắng": "btn btn-success btn-sm btn-block",
+    var css = {"Đang học": "btn btn-success btn-sm btn-block",
               "Vắng": "btn btn-danger btn-sm btn-block",
               "Trễ": "btn btn-warning btn-sm btn-block",
               "Không học": "btn btn-primary btn-sm btn-block"};
-    var phep = {"Có phép": "btn btn-success btn-sm btn-block",
-    "Không phép": "btn btn-danger btn-sm btn-block",
-    "x" : "btn btn-default btn-sm btn-block"};
+    var phep = {"CP": "btn btn-success btn-sm btn-block",
+    "KP": "btn btn-danger btn-sm btn-block",
+    "xx" : "btn btn-default btn-sm btn-block"};
+    var idle = {"Có": "btn btn-success btn-sm btn-block", 
+    "Không": "btn btn-success btn-sm btn-block"};
     var value = this.state.value;    
     var plus = 'disabled';
     var minus = 'disabled';
@@ -48,7 +50,8 @@ var Enrollment = React.createClass({
         <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
         <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
         <td><button disabled={( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
-        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật</button></td>
+        <td><button onClick={this.props.on_idle} class={idle[this.props.enrollment.idle_status]}>{this.props.enrollment.idle_status}</button></td>
+        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật ghi chú</button></td>
       </tr>
     );
   }
@@ -80,7 +83,8 @@ var Enrollments = React.createClass({
             <col style={{width: "10%"}} />
             <col style={{width: "10%"}} />
             <col style={{width: "10%"}} />
-            <col style={{width: "30%"}} />
+            <col style={{width: "10%"}} />
+            <col style={{width: "20%"}} />
           </colgroup>
           <thead>
             <td>Stt</td>
@@ -89,6 +93,7 @@ var Enrollments = React.createClass({
             <td>Vắng</td>        
             <td>Số tiết vắng</td>
             <td>Phép</td>  
+            <td>Bắt buộc tham dự</td>
             <td>Ghi chú</td>
           </thead>
           <tbody>
@@ -100,47 +105,31 @@ var Enrollments = React.createClass({
     );
   }
 });
-var Lop = React.createClass({  
-  handleSubmit: function() {
-    var lt = this.refs.lt.getDOMNode().value.trim();
-    var th = this.refs.th.getDOMNode().value.trim();
-    if (!lt || !th) {
-      return false;
-    }
-    this.props.lop.so_tiet_ly_thuyet = lt;
-    this.props.lop.so_tiet_thuc_hanh = th;    
-    this.props.onSettingLop(this.props.lop);
-    this.setState({lt: lt, th: th});
-    return false;
-  },  
+var Lop = React.createClass({     
   render: function(){        
     return(
         <div>          
-        <h6>Thông tin lớp học:</h6>
-        <form className="settingForm" onSubmit={this.handleSubmit}>
+        <h6>Thông tin lớp học:</h6>        
         <div class="table-responsive">
-        <table class="table table-bordered table-condensed">
-          <thead>
-            <td>Mã lớp</td>
-            <td>Tên môn học</td>
-            <td>Sĩ số</td>
-            <td>Số tiết lý thuyết</td>
-            <td>Số tiết thực hành</td>
-            <td>Trạng thái</td>  
-            <td>Cập nhật</td>                  
-          </thead>
-          <tbody>
-              <td><a href={"/lop/"+this.props.lop.id}>{this.props.lop.ma_lop}</a></td>
-              <td>{this.props.lop.ten_mon_hoc}</td>
-              <td>{this.props.lop.si_so}</td>
-              <td><input type="text"  ref="lt" placeholder={this.props.lop.so_tiet_ly_thuyet}  /></td>
-              <td><input type="text"  ref="th" placeholder={this.props.lop.so_tiet_thuc_hanh}  /></td>
-              <td>{this.props.lop.updated === true ? 'Đã cấu hình' : 'Chưa cấu hình'}</td>
-              <td><input class="btn btn-primary btn-sm" type="submit" value="Cập nhật" /></td>
-          </tbody>           
-        </table>
-        </div>
-        </form>
+          <table class="table table-bordered table-condensed">
+            <thead>
+              <td>Mã lớp</td>
+              <td>Tên môn học</td>
+              <td>Sĩ số</td>
+              <td>Số tiết lý thuyết</td>
+              <td>Số tiết thực hành</td>
+              <td>Trạng thái</td>              
+            </thead>
+            <tbody>
+                <td><a href={"/lop/"+this.props.lop.id}>{this.props.lop.ma_lop}</a></td>
+                <td>{this.props.lop.ten_mon_hoc}</td>
+                <td>{this.props.lop.si_so}</td>
+                <td>{this.props.lop.so_tiet_ly_thuyet}</td>
+                <td>{this.props.lop.so_tiet_thuc_hanh}</td>
+                <td>{this.props.lop.updated === true ? 'Đã cấu hình' : 'Chưa cấu hình'}</td>              
+            </tbody>           
+          </table>
+        </div>        
       </div>
       );
   }
@@ -148,29 +137,66 @@ var Lop = React.createClass({
 
 var Editor = React.createClass({
   getInitialState: function(){      
-      return {content: this.props.content};
+      return {content: '', edit: 0};
+  },      
+  loadData: function(){
+    $.ajax({
+      url: "/lich/" + this.props.lich +"/noidung",            
+      success: function(data) {             
+        this.setState({content: data.lich.content, edit: 0});         
+      }.bind(this)
+    });
   },
-  handleChange: function(e){
-      this.setState({content: e.target.value});
+  componentDidMount: function(){
+    this.loadData();
   },
-  handleSubmit: function(){
-
-      return false;
+  componentDidUpdate: function(){        
+    if (this.state.edit == 1){
+      this.refs.editor.getDOMNode().value = this.state.content;      
+    }
   },
-  componentWillMount: function(){
-    console.log(this.state.content);
-    return false;
+  handleEdit: function(e){
+    this.setState({edit: 1});
+  },
+  handleUpdate: function(e){
+    var content = this.refs.editor.getDOMNode().value;
+    var data = {
+      id: this.props.lich,
+      content: content
+    }
+    $.ajax({
+      url: "/lich/noidung",
+      type: 'POST',
+      data: data,
+      success: function(data) {             
+        this.setState({content: data.lich.content, edit: 0});         
+      }.bind(this)
+    });
+  },
+  handleCancel: function(e){
+    this.setState({edit: 0});
   },
   render: function() {
-    return (
-        <form onSubmit={this.handleSubmit}>
-      <div id='content-header'>
-        <textarea value={this.state.content} onChange={this.handleChange} ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100}}>
-        </textarea>
-      </div>
-      <input type="submit" value="Post" />
-      </form>
-    );
+    if (this.state.edit === 0){
+      return (
+        <div id='content-header'>
+          <p><span dangerouslySetInnerHTML={{__html: this.state.content.replace(/(\r\n|\n|\r)/gm, "<br/>") }} /></p>
+          <button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa nội dung</button>
+        </div>
+      );
+    } else {
+      return (     
+        <div>   
+        <div id='content-header'>
+          <textarea id='editor' ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100}}>
+          </textarea>          
+        </div>      
+        <br />
+        <button onClick={this.handleCancel} class="btn btn-sm btn-warning">Hủy</button>
+          <button onClick={this.handleUpdate} class="btn btn-sm btn-primary">Cập nhật</button>
+          </div>
+      );
+    }    
   }
 });
 
@@ -188,19 +214,7 @@ var Lich = React.createClass({
   },
   getInitialState: function() {
     return {data: [], lich: {}, lop: {}, loading: false };
-  },    
-  handleNoiDung: function(){    
-    $.ajax({
-      url: "/lich/noidung",
-      type: 'POST',
-      data: this.state.lich,
-      success: function(data2) {             
-        this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
-        //alert(data.so_tiet_vang);
-      }.bind(this)
-    });
-    return false;
-  },
+  },      
   handleSettingLop: function(lop){
     var d = {                  
       lich_id: this.state.lich.id,
@@ -306,13 +320,7 @@ var Lich = React.createClass({
             <br />
             <div class="row">
               <div class="col-sm-6">
-                <form onSubmit={this.handleNoiDung}>
-                <div id='content-header'>
-                  <textarea value={this.state.noidung} onChange={this.handleChangeContent} ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100, minWidth: 500}}>
-                  </textarea>
-                </div>
-                <input class="btn btn-primary" type="submit" value="Post" />
-                </form>
+                <Editor lich={this.props.lich} />
               </div>
               <div class="col-sm-6">
                 <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />

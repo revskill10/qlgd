@@ -30,7 +30,10 @@ class LichEnrollmentDecorator < Draper::Decorator
     return 'Không phép' unless @at
     return @at.decorate.phep_status
   end
-
+  def idle_status
+    return 'Có' unless @at.idle?
+    return 'Không'
+  end
   def phep
     return false unless @at
     return false unless @at.phep    

@@ -11,6 +11,7 @@ Qlgd::Application.routes.draw do\
   #get '/' => 'static_pages#home'
   get "lich/:lich_id/attendances" => "attendances#index"
   post "lich/:lich_id/attendances" => "attendances#update"
+  get "lich/:lich_id/noidung" => 'attendances#getnoidung'
   post "lich/noidung" => "attendances#noidung"
   post "lich/:lich_id/settinglop" => "attendances#settinglop"
   

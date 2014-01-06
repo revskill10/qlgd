@@ -6,7 +6,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
     return object.phong
   end
   def content
-    return nil unless object.noi_dung
+    return "" unless object.noi_dung
     object.noi_dung
   end
   def updated

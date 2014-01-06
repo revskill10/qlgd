@@ -13,12 +13,16 @@ class AttendanceDecorator < Draper::Decorator
   def status
   	return 'Trễ' if object.late?
   	return 'Vắng' if object.absent?
-  	return 'Không vắng' if object.attendant?
-  	return 'Không học' if object.idle?
+  	return 'Đang học' if object.attendant?
+  	return 'x' if object.idle?
+  end
+  def idle_status
+    return 'Không' if object.idle?
+    return 'Có'
   end
   def phep_status
-    return 'x' if object.attendant?
-    return 'Có phép' if object.phep == true
-    return 'Không phép'
+    return 'xx' if object.attendant?
+    return 'CP' if object.phep == true
+    return 'KP'
   end
 end

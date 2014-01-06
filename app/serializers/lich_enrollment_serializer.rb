@@ -1,6 +1,6 @@
 class LichEnrollmentSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :sinh_vien_id, :dihoc_tinhhinh, :name, :code, :status, :so_tiet_vang, :phep, :max, :phep_status, :note, :tong_vang, :tinhhinh
+  attributes :id, :sinh_vien_id, :dihoc_tinhhinh, :name, :code, :status, :so_tiet_vang, :phep, :max, :phep_status, :note, :tong_vang, :tinhhinh, :idle_status
 
   def dihoc_tinhhinh
     object.dihoc_tinhhinh
@@ -13,6 +13,9 @@ class LichEnrollmentSerializer < ActiveModel::Serializer
   end
   def sinh_vien_id
     object.sinh_vien_id
+  end
+  def idle_status
+    object.idle_status
   end
   def note
     object.note
