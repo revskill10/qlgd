@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LichTrinhGiangDay < ActiveRecord::Base
   default_scope order('thoi_gian')
-  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi
+  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi, :note
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien

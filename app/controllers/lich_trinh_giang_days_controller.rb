@@ -59,6 +59,7 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
 		if @lich and @lich.can_nghiday?
+			@lich.note = params[:note]
 			@lich.nghiday!
 			@lich.save!
 		end
@@ -116,6 +117,15 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
 		if @lich and @lich.can_restore?
 			@lich.restore!
+		end
+		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
+		render json: @lichs, :root => false
+	end
+	def update
+		@lop = LopMonHoc.find(params[:lop_id])		
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich
+			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh], note: params[:note])
 		end
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false

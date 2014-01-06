@@ -47,6 +47,7 @@ Qlgd::Application.routes.draw do\
   post '/lop/:lop_id/lich_trinh_giang_days/accept' => 'lich_trinh_giang_days#accept'
   post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
   post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
+  post '/lop/:lop_id/lich_trinh_giang_days/update' => 'lich_trinh_giang_days#update'
   
   resources :tenants do 
     resources :giang_viens
