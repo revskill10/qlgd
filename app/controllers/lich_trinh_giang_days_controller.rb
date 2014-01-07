@@ -121,4 +121,12 @@ class LichTrinhGiangDaysController < ApplicationController
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
+	def getcontent
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lichs = @lop.lich_trinh_giang_days.normal_or_bosung.accepted.with_giang_vien(params[:giang_vien]).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
+		render json: @lichs, :root => false
+	end
+	def content
+
+	end
 end

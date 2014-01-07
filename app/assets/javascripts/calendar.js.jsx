@@ -154,7 +154,7 @@ var CalendarRowNghiday = React.createClass({
 			return (
 				<tr>
 					<td>{this.props.data.tuan}</td>
-					<td>{this.props.data.thoi_gian}</td>
+					<td><a href={"/lich/" + this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>

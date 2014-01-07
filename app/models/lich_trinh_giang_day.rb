@@ -23,8 +23,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :bosung, where(state: "bosung")
   scope :nghiday, where(state: "nghiday")
   scope :nghile, where(state: "nghile")
-  scope :normal, where(state: "normal")
-
+  scope :normal, where(state: "normal") 
+  scope :normal_or_bosung, where(state: ["bosung","normal"]) 
   before_create :set_default
   
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,

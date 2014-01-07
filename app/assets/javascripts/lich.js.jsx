@@ -1,8 +1,10 @@
 /** @jsx React.DOM */
+
 //= require grade
 //= require calendar
 //= require lopsetting
 //= require assignments
+//= require lichgiangday
 var Enrollment = React.createClass({   
   getInitialState: function(){
     return {value: this.props.enrollment.note};
@@ -117,11 +119,25 @@ var Lop = React.createClass({
               <a href="#home" data-toggle="tab">Thông tin chung</a>
             </li>
             <li>
-              <a href="#thongso" data-toggle="tab">Thông số</a>
-            </li>                      
+              <a href="#thongso" data-toggle="tab">Thiết lập thông số</a>
+            </li>  
+            <li>
+              <a href="#assignments" data-toggle="tab">Thiết lập nhóm điểm</a>
+            </li> 
+            <li>
+              <a href="#calendar" data-toggle="tab">Thời khóa biểu</a>
+            </li>                    
           </ul>
       
           <div class="tab-content">
+            <div class="tab-pane" id="assignments">
+              <br />
+              <Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
+            </div>
+            <div class="tab-pane" id="calendar">
+              <br />
+              <Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
+            </div>
             <div class="tab-pane" id="thongso">
               <LopSetting giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
             </div>
@@ -200,21 +216,28 @@ var Editor = React.createClass({
   render: function() {
     if (this.state.edit === 0){
       return (
-        <div id='content-header'>
+        <div style={{'border-right': '2px solid blue'}}>
+        <div id='content-header' >
           <p><span dangerouslySetInnerHTML={{__html: this.state.content.replace(/(\r\n|\n|\r)/gm, "<br/>") }} /></p>
-          <button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa nội dung</button>
+          <button onClick={this.handleEdit} class="btn btn-sm btn-default">Sửa nội dung</button>
+        </div>        
+        <h4>Các buổi đã dạy</h4>
+        <LichGiangDay giang_vien={this.props.giang_vien} lop={this.props.lop} />
         </div>
       );
     } else {
       return (     
         <div>   
         <div id='content-header'>
-          <textarea id='editor' ref='editor' className='expanding' placeholder='Share whats new...' style={{minHeight: 100}}>
+          <textarea id='editor' ref='editor' className='expanding' placeholder='Share whats new...' style={{width: '100%', minHeight: 200}}>
           </textarea>          
         </div>      
         <br />
         <button onClick={this.handleCancel} class="btn btn-sm btn-warning">Hủy</button>
           <button onClick={this.handleUpdate} class="btn btn-sm btn-primary">Cập nhật</button>
+          <br />
+          <h4>Các buổi đã dạy</h4>
+        <LichGiangDay giang_vien={this.props.giang_vien} lop={ENV.lop_id} />
           </div>
       );
     }    
@@ -404,9 +427,7 @@ var Lich = React.createClass({
           <li>
             <a href="#grade" data-toggle="tab">Điểm</a>
           </li>          
-          <li>
-            <a href="#assignments" data-toggle="tab">BT</a>
-          </li>          
+                  
         </ul>
     
         <div class="tab-content">
@@ -418,7 +439,7 @@ var Lich = React.createClass({
             <br />
             <div class="row">
               <div class="col-sm-6">
-                <Editor lich={this.props.lich} />
+                <Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} />
               </div>
               <div class="col-sm-6">
                 <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
@@ -428,11 +449,7 @@ var Lich = React.createClass({
           <div class="tab-pane" id="grade">
             <br />
             <Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
-          </div>
-          <div class="tab-pane" id="assignments">
-            <br />
-            <Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
-          </div>
+          </div>          
         </div>
        </div>
     </div>
@@ -455,7 +472,7 @@ $.ajax({
 });    
 */
 React.renderComponent(  
-  <Lich lich={ENV.lich_id} />,
+  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
   document.getElementById('main')
 );  
    

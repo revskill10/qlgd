@@ -1,6 +1,7 @@
 class LichTrinhGiangDayDecorator < Draper::Decorator
   delegate_all
   
+  
   def so_tiet
     object.so_tiet_moi
   end

@@ -270,7 +270,7 @@
                                     <button class="btn btn-primary btn-sm" onClick={this.onAdd}>Cập nhật</button>
                                     </div>
                                     <hr />
-                                    <ul>{x}</ul>
+                                    <ul id="multi">{x}</ul>
                                     </div>
                             );
                     }
@@ -448,7 +448,7 @@
                         </li>
                     )
                 } else {
-                    return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, points: {this.props.data.points}</span><span>
+                    return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, điểm tối đa: {this.props.data.points}</span><span>
                     <button style={{display: this.props.data.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
                         
                 }                                

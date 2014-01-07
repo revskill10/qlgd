@@ -1,4 +1,4 @@
-Qlgd::Application.routes.draw do\
+Qlgd::Application.routes.draw do
   require 'sidekiq/web'
 # ...
   mount Sidekiq::Web, at: '/sidekiq'
@@ -49,7 +49,8 @@ Qlgd::Application.routes.draw do\
   post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
   post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
   post '/lop/:lop_id/lich_trinh_giang_days/update' => 'lich_trinh_giang_days#update'
-  
+  get '/lop/:lop_id/:giang_vien/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
+  post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

@@ -21,7 +21,7 @@ class AttendanceDecorator < Draper::Decorator
     return 'Có'
   end
   def phep_status
-    return 'x' if object.attendant?
+    return 'x' if object.attendant? or object.idle?
     return 'Có' if object.phep == true
     return 'Không'
   end
