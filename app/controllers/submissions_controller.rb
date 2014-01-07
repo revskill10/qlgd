@@ -50,7 +50,7 @@ class SubmissionsController < ApplicationController
 		}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:id => en.id ,:name => en.sinh_vien.hovaten, :assignments => []}					
+			tmp = {:id => en.id, :name => en.sinh_vien.hovaten, :assignments => []}					
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end

@@ -102,7 +102,20 @@ class LichTrinhGiangDay < ActiveRecord::Base
       return "Bổ sung"
     end
   end
-
+  def color
+    case self.status.to_sym
+    when :waiting
+      return "info"
+    when :accepted
+      return ""
+    when :removed
+      return "warning"
+    when :completed
+      return "success"
+    when :dropped
+      return "error"
+    end
+  end
   def alias_status
     case self.status.to_sym
     when :waiting

@@ -1,6 +1,6 @@
 class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :alias_state, :alias_status, :tuan, :thoi_gian, :phong, :content, :content_html, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet
+  attributes :id, :alias_state, :color, :alias_status, :tuan, :thoi_gian, :phong, :content, :content_html, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet
 
   def thoi_gian
     object.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")
@@ -10,6 +10,9 @@ class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   end
   def content
     object.content
+  end
+  def color
+    object.color
   end
   def alias_state
     object.alias_state

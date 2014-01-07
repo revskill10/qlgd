@@ -3,6 +3,7 @@ class LichTrinhGiangDaysController < ApplicationController
 		lich = LichTrinhGiangDay.find(params[:lich_id])
 		render json: LichTrinhGiangDaySerializer.new(lich), :root => false
 	end
+	
 	def index
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien_id]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}

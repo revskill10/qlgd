@@ -1,34 +1,28 @@
-#wrap
-  .navbar.navbar-default.navbar-fixed-top role="navigation"
-    .container
-      .navbar-header
-        button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
-          span.sr-only Toggle navigation
-          span.icon-bar
-          span.icon-bar            
-        = link_to "QLGD", '/', {class:"navbar-brand"}
-      .collapse.navbar-collapse
-        ul.nav.navbar-nav
-          li= link_to "Home", '/'            
-          li= link_to "About", '/about'    
-          li= link_to "Sign Out", destroy_user_session_path      
-
+.navbar.navbar-default.navbar-static-top role="navigation"
   .container
-    
-    
-    
-    
-    table.table
-      thead
-        td Tuần
-        td Thời gian
-      tbody
-        - @lichs.all.each do |lich|
-          tr
-            td= "Tuần #{lich.tuan}"
-            td= link_to lich.thoi_gian.localtime.strftime("%Hh%M ngày %d/%m/%Y"), "/lich/#{lich.id}"
+    .navbar-header
+      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar            
+        span.icon-bar
+      = link_to "QLGD", '/', {class:"navbar-brand"}
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li= link_to "Home", '/'            
+        li= link_to "About", '/about' 
+      ul.nav.navbar-nav.navbar-right   
+        li= link_to "Sign Out", destroy_user_session_path      
 
-    = link_to "Export", root_path(:format => :pdf)
+.container
+  #main
+               
+    
+javascript:
+  var ENV = {giang_vien_id: #{raw @giang_vien.id}};  
+= javascript_include_tag asset_path("home");
+
+    
 
 
 

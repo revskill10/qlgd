@@ -5,7 +5,7 @@ class DashboardController < ApplicationController
       if guest?        
         format.html {render "dashboard/index/guest"} 
       elsif teacher?        
-        @lichs = current_image.lich_trinh_giang_days
+        @giang_vien = current_user.imageable
         format.html {render "dashboard/index/teacher"}
       elsif student?        
       	format.html {render "dashboard/index/student"}

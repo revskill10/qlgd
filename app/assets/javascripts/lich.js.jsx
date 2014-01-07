@@ -220,7 +220,19 @@ var Lop = React.createClass({
       );
   }
 });
-
+var DisabledEditor = React.createClass({
+  render: function(){
+    return (
+        <div style={{'border-right': '2px solid blue'}}>
+        <div id='content-header' >
+          <p><span dangerouslySetInnerHTML={{__html: this.props.lich.content_html}} /></p>         
+        </div>        
+        <h4>Các buổi đã dạy</h4>
+        <LichGiangDay state={this.props.lich.updated} giang_vien={this.props.giang_vien} lop={this.props.lop} />
+        </div>
+      );
+  }
+});
 var Editor = React.createClass({
   getInitialState: function(){      
       return {content: '', edit: 0};
@@ -495,7 +507,7 @@ var Lich = React.createClass({
             <div class="row">
               <div class="col-sm-6">
                 <br />                
-                <Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} />
+               {this.state.lich.updated === true ? <Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> : <DisabledEditor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} />}
               </div>
               <div class="col-sm-6">
                 <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
