@@ -28,7 +28,15 @@
  		console.log(this.state.data);
  	},
  	*/
-
+ 	updateLich: function(){
+ 		if (ENV.lich_id != null) {
+        	React.unmountAndReleaseReactRootNode(document.getElementById('main'));
+        	React.renderComponent(  
+			  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
+			  document.getElementById('main')
+			);  
+        }	
+ 	},
  	handleNghiday: function(d){
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
@@ -38,6 +46,7 @@
 	            data: d,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                this.updateLich();
 	            }.bind(this)           
 	        });		
  	},
@@ -50,6 +59,7 @@
 	            data: d,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                this.updateLich();
 	            }.bind(this)           
 	        });		
  	},
@@ -65,6 +75,7 @@
 	                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
             		React.renderComponent(<Bosung giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('bosung'));
+            		this.updateLich();
 	            }.bind(this)           
 	        });		
  	}, 	
@@ -80,6 +91,7 @@
 	                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
             		React.renderComponent(<Bosung giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('bosung'));
+            		this.updateLich();
 	            }.bind(this)           
 	        });	
  	},
@@ -95,6 +107,7 @@
 	                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
             		React.renderComponent(<Bosung giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('bosung'));
+            		this.updateLich();
 	            }.bind(this)           
 	        });	
  	},
@@ -107,6 +120,7 @@
 	            data: d,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
+	                this.updateLich();
 	            }.bind(this)           
 	        });	
  	},
@@ -114,12 +128,12 @@
  		var self = this;
  		var x = this.state.data.map(function(d){
  			if (d.alias_state === 'Bổ sung') {
- 				return <CalendarRowBosung onRemove={self.handleRemove} onRestore={self.handleRestore} onUncomplete={self.handleUncomplete} data={d} />
+ 				return <CalendarRowBosung key={'bosung-' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUncomplete={self.handleUncomplete} data={d} />
  			}
  			if (d.alias_state === 'Nghỉ dạy') {
- 				return <CalendarRowNghiday onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
+ 				return <CalendarRowNghiday key={'nghiday' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
  			}
- 			return <CalendarRow onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
+ 			return <CalendarRow key={'normal'+d.id} onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
  		});
  		return (
  			<div class="table-responsive">

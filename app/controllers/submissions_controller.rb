@@ -8,7 +8,7 @@ class SubmissionsController < ApplicationController
 		names = assignments.map {|a| {:name => a.name, :points => a.points, :group_name => a.assignment_group.name, :group_weight => a.assignment_group.weight}}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
+			tmp = {:id => en.id ,:name => en.sinh_vien.hovaten, :assignments => []}			
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end
@@ -19,7 +19,7 @@ class SubmissionsController < ApplicationController
 			{:name => g.name, :weight => g.weight}
 		}
 		group_results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			tmp = {:id => en.id, :name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			@lop.assignment_groups.each do |ag|				
 				tmp[:assignment_groups] << EnrollmentGroupSubmissionSerializer.new(EnrollmentGroupSubmissionDecorator.new(en, ag))
 			end
@@ -50,7 +50,7 @@ class SubmissionsController < ApplicationController
 		}
 		enrollments = @lop.enrollments
 		results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignments => []}			
+			tmp = {:id => en.id ,:name => en.sinh_vien.hovaten, :assignments => []}					
 			assignments.each_with_index do |as, index|				
 				tmp[:assignments] << EnrollmentSubmissionSerializer.new(EnrollmentSubmissionDecorator.new(en, as, index + count))
 			end
@@ -59,7 +59,7 @@ class SubmissionsController < ApplicationController
 		end
 
 	    group_results = enrollments.map do |en|
-			tmp = {:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
+			tmp = {:id => en.id ,:name => en.sinh_vien.hovaten, :assignment_groups => [], :diem_qua_trinh => en.diem_qua_trinh}			
 			@lop.assignment_groups.each do |ag|				
 				tmp[:assignment_groups] << EnrollmentGroupSubmissionSerializer.new(EnrollmentGroupSubmissionDecorator.new(en, ag))
 			end

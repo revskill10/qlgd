@@ -34,7 +34,12 @@ var ldata = [
  	render: function(){
  		var self = this;
  		var x = this.state.data.map(function(d){
- 			return <RowLichGiangDay onUpdate={self.handleUpdate} data={d} />
+ 			if (self.props.state === true) {
+ 				return <RowLichGiangDay onUpdate={self.handleUpdate} data={d} />	
+ 			} else {
+ 				return <DisabledRowLichGiangDay data={d} />
+ 			}
+ 			
  		});
  		return ( 			 		
  			<ul>
@@ -43,7 +48,18 @@ var ldata = [
  		);
  	}
  });
-
+var DisabledRowLichGiangDay = React.createClass({
+	render: function(){
+		return (
+ 			<li><a href={"/lich/" + this.props.data.id}><strong>Tuần: {this.props.data.tuan}, {this.props.data.thoi_gian}</strong></a>
+ 				<div>
+ 					<span dangerouslySetInnerHTML={{__html: this.props.data.content_html }} />
+ 				</div> 				
+ 				<hr />
+ 			</li>
+ 		);
+	}
+});
  var RowLichGiangDay = React.createClass({
  	getInitialState: function(){
  		return {edit: 0};
@@ -71,7 +87,7 @@ var ldata = [
  			return (
 	 			<li><a href={"/lich/" + this.props.data.id}><strong>Tuần: {this.props.data.tuan}, {this.props.data.thoi_gian}</strong></a>
 	 				<div>
-	 					{this.props.data.content}
+	 					<span dangerouslySetInnerHTML={{__html: this.props.data.content_html }} />
 	 				</div>
 	 				<button onClick={this.onEdit} class="btn btn-sm btn-default">Sửa nội dung</button>
 	 				<hr />

@@ -3,7 +3,7 @@ require 'lop_assignment_group_serializer'
 class LopMonHocsController < ApplicationController
 	def show
 		@lop = LopMonHoc.find(params[:id])
-		authorize @lop, :update?
+		#authorize @lop, :update?
 		enrollments = @lop.enrollments    
     	results = enrollments.map {|e| LopEnrollmentSerializer.new(e)}
     	render json: {:lop => LopMonHocSerializer.new(@lop), :enrollments => results}

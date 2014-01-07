@@ -8,5 +8,7 @@ describe AssignmentGroup do
   	ag = lop.assignment_groups.create(name: "Thuc Hanh", weight: 50, giang_vien_id: gv.id)
   	ag.valid?.should be_true
   	ag.name.should == "Thuc Hanh"
+  	ag.destroy if ag.can_destroy?
   end
+
 end

@@ -249,7 +249,7 @@
                 render: function(){
                     var self = this;
                     var x = this.state.data.map(function(d){
-                        return <AssignmentGroup key={d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} can_destroy={d.can_destroy} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
+                        return <AssignmentGroup key={'assignment_group' + d.assignment_group_id} onAssignmentDelete={self.handleAssignmentDelete} onDelete={self.handleDelete} onEdit={self.handleEdit} weight={d.weight} group_name={d.name} onUpdate={self.handleUpdate} group={d.assignment_group_id} can_destroy={d.can_destroy} data={d.assignments} onAddAssignment={self.handleAssignmentAdd} /> 
                     });
                     if (this.state.add === 0) {
                         return (
@@ -321,7 +321,7 @@
                     var x = <li></li>;
                     if (this.props.data != null){
                            x = this.props.data.map(function(d){
-                                return <Assignment group={self.props.group} key={d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
+                                return <Assignment group={self.props.group} key={'assignment'+d.assignment_id} data={d} onUpdate={self.props.onUpdate} onDelete={self.props.onAssignmentDelete} />
                             });  
                     }                                 
                     if (this.state.add === 0){

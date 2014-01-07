@@ -6,7 +6,7 @@ class LopMonHocSerializer < ActiveModel::Serializer
     object.decorate.language
   end
   def de_cuong_du_kien_html
-    return '' if object.decorate.de_cuong_du_kien.try(:length) == 0
+    return '' if object.decorate.de_cuong_du_kien.try(:length) == 0 or object.decorate.de_cuong_du_kien.nil?
     object.decorate.de_cuong_du_kien.gsub(/\n/,'<br/>')
   end
   def de_cuong_du_kien

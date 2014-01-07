@@ -20,8 +20,7 @@ class AssignmentGroupsController < ApplicationController
 	# delete assignment group
 	def delete
 		@lop = LopMonHoc.find(params[:id])
-		@as = @lop.assignment_groups.find(params[:assignment_group_id]);
-		@as.destroy if @as
+		@as = @lop.assignment_groups.destroy(params[:assignment_group_id].to_i)		
 		results = @lop.assignment_groups.map {|g| g and LopMonHocAssignmentGroupSerializer.new(g)}
 		render json: results.to_json
 	end

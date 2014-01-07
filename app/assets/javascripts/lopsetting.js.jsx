@@ -33,7 +33,14 @@ var LopSetting = React.createClass({
 	      type: 'POST',
 	      data: data,
 	      success: function(data2) {             
-	        this.setState({data : data2.lop, edit: 0});	 	           
+	        this.setState({data : data2.lop, edit: 0});	 
+	        if (ENV.lich_id != null) {
+	        	React.unmountAndReleaseReactRootNode(document.getElementById('main'));
+	        	React.renderComponent(  
+				  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
+				  document.getElementById('main')
+				);  
+	        }	           
 	      }.bind(this)
 	    });
 	    return false;

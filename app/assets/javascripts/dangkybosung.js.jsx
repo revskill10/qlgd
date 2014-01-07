@@ -13,6 +13,15 @@ var Bosung = React.createClass({
 	getInitialState: function(){
 		return {data: [], add: 0};
 	},
+	updateLich: function(){
+ 		if (ENV.lich_id != null) {
+        	React.unmountAndReleaseReactRootNode(document.getElementById('main'));
+        	React.renderComponent(  
+			  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
+			  document.getElementById('main')
+			);  
+        }	
+ 	},
 	loadData: function(){
 		$.ajax({
           url: "/lop/"+this.props.lop+"/"+this.props.giang_vien +"/lich_trinh_giang_days/bosung" ,
@@ -43,7 +52,7 @@ var Bosung = React.createClass({
 	                this.setState({data: data, add: 0}); 
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
             		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
-                , document.getElementById('calendar'));
+                , document.getElementById('calendar'));            		
 	            }.bind(this)           
 	        });			
 		}
@@ -65,6 +74,7 @@ var Bosung = React.createClass({
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
             		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('calendar')); 
+            		this.updateLich();
 	            }.bind(this)           
 	        });	
 	},
@@ -80,6 +90,7 @@ var Bosung = React.createClass({
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
             		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('calendar'));
+            		this.updateLich();
 	            }.bind(this)           
 	        });	
 	},
@@ -94,6 +105,7 @@ var Bosung = React.createClass({
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
             		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
                 , document.getElementById('calendar'));	
+            		this.updateLich();
 	            }.bind(this)           
 	        });	
 	},
@@ -112,7 +124,7 @@ var Bosung = React.createClass({
 	render: function(){
 		var self = this;
 		var x = this.state.data.map(function(d){
-			return <Row2 onUpdate={self.onUpdate} onRemove={self.onRemove} onRestore={self.onRestore} data={d} />
+			return <Row2 key={'row2'+d.id} onUpdate={self.onUpdate} onRemove={self.onRemove} onRestore={self.onRestore} data={d} />
 		});		
 		if (this.state.add === 0) {
 			return (

@@ -1,6 +1,6 @@
 class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :tuan, :thoi_gian, :phong, :content, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet
+  attributes :id, :alias_state, :alias_status, :tuan, :thoi_gian, :phong, :content, :content_html, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet
 
   def thoi_gian
     object.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")
@@ -10,6 +10,16 @@ class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   end
   def content
     object.content
+  end
+  def alias_state
+    object.alias_state
+  end
+  def alias_status
+    object.alias_status
+  end
+  def content_html
+    return '' if object.content.try(:length) == 0
+    object.content.gsub(/\n/,'<br/>')
   end
   def updated
   	object.updated

@@ -4,7 +4,7 @@ class AttendancesController < ApplicationController
   def index    
     
    	@lich = LichTrinhGiangDay.find(params[:lich_id])      
-    authorize @lich, :update?
+    #authorize @lich, :update?
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
     render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
@@ -58,7 +58,7 @@ class AttendancesController < ApplicationController
     
       @lich = LichTrinhGiangDay.find(params[:id])
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
-      authorize @lich, :update?
+      #authorize @lich, :update?
       @lich.noi_dung = params[:content]
       @lich.save!            
       render json: {lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}.to_json
@@ -67,7 +67,7 @@ class AttendancesController < ApplicationController
   def getnoidung
     @lich = LichTrinhGiangDay.find(params[:lich_id])
     render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
-    authorize @lich, :update?
+    #authorize @lich, :update?
     render json: {lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}.to_json
   end
 end  

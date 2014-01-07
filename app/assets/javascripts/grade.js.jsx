@@ -59,7 +59,7 @@ var Row = React.createClass({
     render: function(){
         var self = this;
         var x = this.props.data.map(function(d){                        
-                return <td><Cell key={d.sinh_vien_id + '-' + d.assignment_id + '-' + d.index} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
+                return <td><Cell key={'rowcell' + d.sinh_vien_id.toString() + '-' + d.assignment_id.toString()} onKeyPress={self.props.handleKeyPress} data={d} onBlur1={self.props.handleBlur} onChange1={self.props.handleChange} onInput1={self.props.handleInput} onEnter={self.props.handleEnter} /></td>
         });
         return (
             <tr><td>{this.props.name}</td>{x}</tr>
@@ -118,10 +118,9 @@ var Grade = React.createClass({
             type: 'POST',
             data: d,
             success: function(data) {             
-                this.setState({names: data.names, data: data.results, group_data: data.group_results, group_names: data.group_names, active: index});  
+                this.setState({names: data.names, data: data.results, group_data: data.group_results, group_names: data.group_names, active: index});                  
                 React.unmountAndReleaseReactRootNode(document.getElementById('assignment'));
-                React.renderComponent(<Assignments giang_vien={this.props.giang_vien} lop={this.props.lop} />
-                , document.getElementById('assignment'));
+                React.renderComponent(<Assignments giang_vien={this.props.giang_vien} lop={this.props.lop} />, document.getElementById('assignment'));
             }.bind(this)           
         });
         return false;
@@ -170,35 +169,61 @@ var Grade = React.createClass({
                     return d;
                 });                
             var x = y.map(function(d){                        
-                return <Row name={d.name} key={d.index} handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
+                return <Row key={'row'+d.id} name={d.name}  handleKeyPress={self.handleKeyPress} handleEnter={self.handleEnter}  handleInput={self.handleInput} handleBlur={self.handleBlur} data={d.assignments} />
             });    
             var z = this.state.group_data.map(function(d){
-                return <RowGroup name={d.name} diem_qua_trinh={d.diem_qua_trinh} data={d.assignment_groups} />
+                return <RowGroup key={'rowgroup'+d.id} name={d.name} diem_qua_trinh={d.diem_qua_trinh} data={d.assignment_groups} />
             });      
 
             return (                
-                <div>
-                    <hr />
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>           
-                                <tr>{header_name}{headers}</tr>
-                            </thead>                
-                            <tbody>
-                                {x}
-                            </tbody>
-                        </table>
+                <div class="panel-group" id="accordion-grade">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion-grade" href="#collapseOne-grade">
+                          Điểm chi tiết
+                        </a>
+                      </h4>
                     </div>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>           
-                               <tr><th>Họ và tên</th>{group_headers}<th>Điểm quá trình</th></tr>
-                            </thead>                
-                            <tbody>
-                                {z}
-                            </tbody>
-                        </table>
+                    <div id="collapseOne-grade" class="panel-collapse collapse in">
+                      <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>           
+                                    <tr>{header_name}{headers}</tr>
+                                </thead>                
+                                <tbody>
+                                    {x}
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion-grade" href="#collapseTwo-grade">
+                          Điểm tổng hợp
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapseTwo-grade" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>           
+                                   <tr><th>Họ và tên</th>{group_headers}<th>Điểm quá trình</th></tr>
+                                </thead>                
+                                <tbody>
+                                    {z}
+                                </tbody>
+                            </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
             );
     }

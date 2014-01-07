@@ -1,7 +1,7 @@
 class LichTrinhGiangDayDecorator < Draper::Decorator
   delegate_all
   
-  
+
   def so_tiet
     object.so_tiet_moi
   end
@@ -14,7 +14,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
     object.noi_dung
   end
   def updated
-  	object.state != :nghile and object.state != :nghiday
+  	object.state != :nghile and object.state != :nghiday and object.accepted?
   end
   def sv_co_mat
   	object.attendances.where("state = 'attendant' or state = 'late'").count
@@ -22,5 +22,11 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
   
   def sv_vang_mat
   	object.attendances.where("state = 'absent'").count
+  end
+  def alias_state
+    object.alias_state
+  end
+  def alias_status
+    object.alias_status
   end
 end

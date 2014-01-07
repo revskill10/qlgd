@@ -10,10 +10,7 @@ class AssignmentGroup < ActiveRecord::Base
   validates :lop_mon_hoc, :presence => true
   validates :giang_vien, :presence => true
   validates :weight, numericality: {only_integer: true, less_than_or_equal_to: 100, greater_than_or_equal_to: 0}
-  def destroy
-  	raise "Can not be destroyed because there are grades" if can_destroy? == false
-  	destroy
-  end
+  
   def can_destroy?
   	return true if assignments.count == 0
   	return false if assignments.select {|a| a.can_destroy? == false}.count > 0
