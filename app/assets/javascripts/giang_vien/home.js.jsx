@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+//= require monitor
+
 var hdata = [
 	{tuan: 1, colapse: 'colapseOne', active: false, data: [
 			{id: 1, thoi_gian: '6h30 12/08/2013', phong: 'A103', so_tiet: 3, ma_lop: 'ml', ten_mon_hoc: 'tm', alias_state: 'Bình thường', alias_status: 'Đang chờ', color: 'warning'},
@@ -95,4 +97,54 @@ var TuanRow = React.createClass({
 		);
 	}
 });
+
+var LopHome = React.createClass({
+	getInitialState: function(){
+		return {data: []};
+	},
+	loadData: function(){
+		$.ajax({
+	      url: "/lops",
+	      success: function(data) {             
+	        this.setState({data: data});         
+	      }.bind(this)
+	    });
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	render: function(){
+		var x = this.state.data.map(function(d){
+			return <LopRow data={d} />
+		});
+		return (
+			<div class="table-responsive">
+ 				<table class="table table-bordered">
+ 					<thead>
+ 						<td>Lớp</td><td>Môn</td><td>Khối lượng dự kiến</td><td>Khối lượng thực hiện</td><td>Đã cấu hình</td>
+ 					</thead>
+ 					<tbody>
+ 						{x}
+ 					</tbody>
+ 				</table>
+ 			</div>
+		);
+	}
+});
+
+var LopRow = React.createClass({
+	render: function(){
+		return (
+			<tr>
+				<td><a href={"/lop/" + this.props.data.id}>{this.props.data.ma_lop}</a></td>
+				<td>{this.props.data.ten_mon_hoc}</td>
+				<td>{this.props.data.khoi_luong_du_kien}</td>
+				<td>{this.props.data.khoi_luong_thuc_hien}</td>
+				<td>{this.props.data.updated === false ? 'Chưa cấu hình' : 'Đã cấu hình'}</td>
+			</tr>
+		);
+	}
+});
 React.renderComponent(<Home2 />, document.getElementById('main'));
+React.renderComponent(<LopHome />, document.getElementById('dslop'));
+React.renderComponent(<Monitor />, document.getElementById('monitor'));

@@ -4,6 +4,7 @@ Qlgd::Application.routes.draw do
   mount Sidekiq::Web, at: '/sidekiq'
   devise_for :users
   get "/" => "dashboard#index"
+  get '/active' => 'dashboard#monitor'
   get "calendar" => "dashboard#calendar", :as => :calendar
   get "about" => "static_pages#about"
   get "/lich/:id" => "dashboard#show", :as => :lich
@@ -16,6 +17,7 @@ Qlgd::Application.routes.draw do
   post "lich/:lich_id/settinglop" => "attendances#settinglop"
   
 
+  get "lops" => "lop_mon_hocs#index"
   get "lop/:lop_id/info" => "lop_mon_hocs#info"
   get "lop/:id/show" => "lop_mon_hocs#show"
   post "lop/settinglop" => "lop_mon_hocs#update"  
@@ -53,6 +55,7 @@ Qlgd::Application.routes.draw do
   get '/lop/:lop_id/:giang_vien/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
   post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
   get '/lich_trinh_giang_days' => 'lich_trinh_giang_days#home'
+  get '/monitor' => 'lich_trinh_giang_days#monitor'
   resources :tenants do 
     resources :giang_viens
     resources :sinh_viens

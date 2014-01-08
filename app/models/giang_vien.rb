@@ -9,7 +9,7 @@ class GiangVien < ActiveRecord::Base
   def hovaten
   	return trans(ho) + trans(dem) + ten
   end
-
+  
   private
   def trans(x)
   	(x ? x + " " : "")

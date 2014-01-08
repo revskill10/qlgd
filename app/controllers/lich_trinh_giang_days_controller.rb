@@ -15,6 +15,12 @@ class LichTrinhGiangDaysController < ApplicationController
 			
 		end
 	end
+
+	def monitor		
+		@lichs = LichTrinhGiangDay.active.map{|k| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(k))}
+		render json: @lichs, :root => false		
+	end
+
 	def index
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien_id]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}

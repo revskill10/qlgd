@@ -1,6 +1,17 @@
 #encoding: utf-8
 require 'lop_assignment_group_serializer'
 class LopMonHocsController < ApplicationController
+	def index
+		if guest?        
+			
+		elsif teacher?        
+			@giang_vien = current_user.imageable
+			@lops = @giang_vien.lop_mon_hocs.map{|k| LopMonHocSerializer.new(k)}
+			render json: @lops, :root => false
+		elsif student?        
+			
+		end
+	end
 	def show
 		@lop = LopMonHoc.find(params[:id])
 		#authorize @lop, :update?

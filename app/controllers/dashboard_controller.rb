@@ -45,5 +45,17 @@ class DashboardController < ApplicationController
     end
   end
   
-  
+  def monitor
+
+    respond_to do |format|
+      if guest?
+
+      elsif teacher?
+
+        format.html {render "dashboard/monitor/teacher"}
+      elsif student?
+
+      end
+    end
+  end
 end

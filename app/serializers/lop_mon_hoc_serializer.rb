@@ -1,6 +1,6 @@
 class LopMonHocSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :si_so, :so_tiet_ly_thuyet, :so_tiet_thuc_hanh, :updated, :de_cuong_du_kien, :language, :de_cuong_du_kien_html
+  attributes :id, :khoi_luong_du_kien, :khoi_luong_thuc_hien, :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :si_so, :so_tiet_ly_thuyet, :so_tiet_thuc_hanh, :updated, :de_cuong_du_kien, :language, :de_cuong_du_kien_html
 
   def language
     object.decorate.language
@@ -12,6 +12,9 @@ class LopMonHocSerializer < ActiveModel::Serializer
   def de_cuong_du_kien
     return '' if object.decorate.de_cuong_du_kien.try(:length) == 0
     object.decorate.de_cuong_du_kien
+  end
+  def khoi_luong_du_kien
+    so_tiet_ly_thuyet + so_tiet_thuc_hanh
   end
   def updated
     object.decorate.updated

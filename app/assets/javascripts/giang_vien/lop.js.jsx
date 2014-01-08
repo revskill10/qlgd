@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
-//= require thongso
-//= require assignments
-//= require grade
-//= require dangkybosung
-//= require calendar
+//= require ./thongso
+//= require ./assignments
+//= require ./grade
+//= require ./dangkybosung
+//= require ./calendar
 var Enrollment = React.createClass({
 
 	render: function(){

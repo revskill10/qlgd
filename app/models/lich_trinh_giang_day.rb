@@ -17,6 +17,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   has_many :du_gios, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
   scope :accepted, where(status: :accepted)
+  scope :completed, where(status: :completed)
   scope :with_giang_vien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
   scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}
   scope :conflict, lambda {|lich| accepted.select {|m| lich.conflict?(m)}}

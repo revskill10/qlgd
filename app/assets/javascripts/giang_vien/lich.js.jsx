@@ -1,11 +1,11 @@
 /** @jsx React.DOM */
 
-//= require grade
-//= require calendar
-//= require lopsetting
-//= require assignments
-//= require lichgiangday
-//= require dangkybosung
+//= require ./grade
+//= require ./calendar
+//= require ./lopsetting
+//= require ./assignments
+//= require ./lichgiangday
+//= require ./dangkybosung
 
 var DisabledEnrollment = React.createClass({
   render: function(){

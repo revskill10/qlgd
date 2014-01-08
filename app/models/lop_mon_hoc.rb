@@ -36,6 +36,9 @@ class LopMonHoc < ActiveRecord::Base
     super
   end
   
+  def khoi_luong_thuc_hien
+    lich_trinh_giang_days.completed.sum(:so_tiet_moi)
+  end
 
   def generate_calendars
     if calendars.count > 0 

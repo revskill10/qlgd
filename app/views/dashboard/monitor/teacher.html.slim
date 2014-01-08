@@ -13,12 +13,10 @@
         li= link_to "Home", '/'            
         li= link_to "About", '/about' 
       ul.nav.navbar-nav.navbar-right   
-        li= link_to "Sign Out", destroy_user_session_path      
+        li= link_to "Sign Out    <span class='glyphicon glyphicon-log-out'></span>".html_safe, destroy_user_session_path
+                
 
-.container
-  #main
-               
-    
-javascript:
-  var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lich.lop_mon_hoc.id}, giang_vien_id: #{raw @giang_vien.id}};  
-= javascript_include_tag asset_path("giang_vien/lich")
+.container   
+  #monitor
+ 
+= javascript_include_tag asset_path("monitor")
