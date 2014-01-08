@@ -40,6 +40,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
     13 => [18, 0], 14 => [18, 50], 15 => [19,40], 16 => [20,30]}
   CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
   
+  
   # state [normal, nghiday, nghile, bosung]  
 
   state_machine :status, :initial => :waiting do     
@@ -67,7 +68,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
     self.completed_at = Time.now
     super
   end
-
+  def active?
+    self.thoi_gian.localtime >= Date.today.to_time and self.thoi_gian.localtime < Date.tomorrow.to_time    
+  end
   def can_nghiday?
     self.state == "normal" and [:waiting, :accepted].include?(self.status.to_sym)
   end
@@ -103,17 +106,29 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end
   end
   def color
+    case self.state.to_sym
+    when :normal
+      return "success"
+    when :bosung
+      return "active"
+    when :nghiday
+      return "danger"
+    when :nghile
+      return "warning"    
+    end
+  end
+  def color_status
     case self.status.to_sym
     when :waiting
-      return "info"
+      "label label-default"
     when :accepted
-      return ""
+      "label label-primary"
     when :removed
-      return "warning"
+      "label label-warning"
     when :completed
-      return "success"
+      "label label-success"
     when :dropped
-      return "error"
+      "label label-danger"
     end
   end
   def alias_status

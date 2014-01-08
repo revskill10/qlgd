@@ -3,7 +3,18 @@ class LichTrinhGiangDaysController < ApplicationController
 		lich = LichTrinhGiangDay.find(params[:lich_id])
 		render json: LichTrinhGiangDaySerializer.new(lich), :root => false
 	end
-	
+	def home
+		if guest?        
+			
+		elsif teacher?        
+			@giang_vien = current_user.imageable
+			@lichs = @giang_vien.lich_trinh_giang_days.map{|k| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(k))}.group_by {|g| g.tuan}
+			@t = @lichs.keys.inject([]) {|res, elem| res << {:tuan => elem, :colapse => "tuan#{elem}" , :active => (Tuan.active.first.try(:stt) == elem), :data => @lichs[elem]}}
+			render json: @t, :root => false
+		elsif student?        
+			
+		end
+	end
 	def index
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien_id]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}

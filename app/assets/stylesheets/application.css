@@ -14,9 +14,21 @@
  *= require datepicker3
  *= require lop
  *= require color
-
  */
 .navbar-static-top {
 	 margin-top: 1px;
   margin-bottom: 1px;
+}
+.table tbody tr > td.error {
+  background-color: #f2dede !important;
+}
+a {
+	font-color: black;
+}
+.table tbody tr > td.warning {
+  background-color: #fcf8e3 !important;
+}
+
+.table tbody tr > td.info {
+  background-color: #d9edf7 !important;
 }
