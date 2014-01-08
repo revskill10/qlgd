@@ -319,10 +319,14 @@ var LichSetting = React.createClass({
     var phong = this.refs.phong.getDOMNode().value;
     var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
     var so_tiet = this.refs.so_tiet.getDOMNode().value;
-    this.props.onCapnhat({phong: phong, thuc_hanh: thuc_hanh, so_tiet: so_tiet});
+    this.props.onCapnhat({id: this.props.lich.id, phong: phong, thuc_hanh: thuc_hanh, so_tiet: so_tiet});
+    this.setState({edit: 0});
   },
   handleComplete: function(e){
     this.props.onComplete(this.props.lich);
+  },
+  handleNghiday: function(e){
+    this.props.onNghiday(this.props.lich);
   },
   componentDidUpdate: function(){
     if (this.state.edit === 1){
@@ -356,7 +360,7 @@ var LichSetting = React.createClass({
                 <td>{this.props.lich.alias_state}</td>
                 <td>{this.props.lich.alias_status}</td>
                 <td>
-                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary">Hoàn thành</button></div> : 'x' }
+                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary">Hoàn thành</button></div> : '' }                  
                 </td>                            
               </tr>
             </tbody>
@@ -450,6 +454,30 @@ var Lich = React.createClass({
     this.setState({noidung: e.target.value});
     this.state.lich.content = this.state.noidung;
   },
+  handleCapnhat: function(d){
+    d.giang_vien = this.props.giang_vien;
+    d.lop_id = this.props.lop;
+    $.ajax({
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
+              type: 'POST',
+              data: d,
+              success: function(data2) {             
+                  this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+              }.bind(this)           
+          }); 
+  },
+  handleComplete: function(d){
+    d.giang_vien = this.props.giang_vien;
+    d.lop_id = this.props.lop;
+    $.ajax({
+            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/complete",
+              type: 'POST',
+              data: d,
+              success: function(data2) {             
+                  this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+              }.bind(this)           
+          }); 
+  },  
   render: function(){      
     
     return (      
@@ -495,14 +523,14 @@ var Lich = React.createClass({
           <div class="tab-pane active" id="home2">
             <br />
             <h6>Thông tin buổi học</h6>
-            <LichSetting lich={this.state.lich} onCapnhat={this.handleCapnhat} onComplete={this.handleComplete} />
+            <LichSetting lich={this.state.lich} onNghiday={this.handleNghiday} onCapnhat={this.handleCapnhat} onComplete={this.handleComplete} />
             <br />
             <Enrollments state={this.state.lich.updated===true && this.state.lop.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
           </div>                  
           <div class="tab-pane" id="noidung">
             <br />
             <h6>Thông tin buổi học</h6>
-                <LichSetting lich={this.state.lich} onCapnhat={this.handleCapnhat} onComplete={this.handleComplete} />
+                <LichSetting lich={this.state.lich} onCapnhat={this.handleCapnhat} onNghiday={this.handleNghiday} onComplete={this.handleComplete} />
                 <br />
             <div class="row">
               <div class="col-sm-6">

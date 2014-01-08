@@ -94,14 +94,15 @@ class LichTrinhGiangDaysController < ApplicationController
 		if @lich and @lich.can_complete?
 			@lich.complete!
 		end
-		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		render json: @lichs, :root => false
+		enrollments = @lich.lop_mon_hoc.enrollments    
+      	results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
+      	render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
 	end
-	def report
+	def uncomplete
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
-		if @lich and @lich.can_report?
-			@lich.report!
+		if @lich and @lich.can_uncomplete?
+			@lich.uncomplete!
 		end
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
@@ -132,6 +133,17 @@ class LichTrinhGiangDaysController < ApplicationController
 		end
 		@lichs = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
+	end
+	def capnhat
+		# update in lich context
+		@lop = LopMonHoc.find(params[:lop_id])		
+		@lich = @lop.lich_trinh_giang_days.with_giang_vien(params[:giang_vien]).find(params[:id])
+		if @lich
+			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh])
+		end
+		enrollments = @lich.lop_mon_hoc.enrollments    
+      	results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
+      	render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
 	end
 	def getcontent
 		@lop = LopMonHoc.find(params[:lop_id])

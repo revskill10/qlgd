@@ -49,6 +49,7 @@ Qlgd::Application.routes.draw do
   post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
   post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
   post '/lop/:lop_id/lich_trinh_giang_days/update' => 'lich_trinh_giang_days#update'
+  post '/lop/:lop_id/lich_trinh_giang_days/capnhat' => 'lich_trinh_giang_days#capnhat'
   get '/lop/:lop_id/:giang_vien/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
   post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
   get '/lich_trinh_giang_days' => 'lich_trinh_giang_days#home'

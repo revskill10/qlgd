@@ -164,9 +164,10 @@ var CalendarRowNghiday = React.createClass({
 		this.props.onRestore(this.props.data);
 	},
 	render: function(){
+		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		if (this.state.edit === 0) {
 			return (
-				<tr>
+				<tr style={boldstyle} class={this.props.data.color}>
 					<td>{this.props.data.tuan}</td>
 					<td><a href={"/lich/" + this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
@@ -174,7 +175,7 @@ var CalendarRowNghiday = React.createClass({
 					<td>{this.props.data.so_tiet}</td>
 					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
 					<td>{this.props.data.alias_state}</td>
-					<td>{this.props.data.alias_status}</td>
+					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td>{this.props.data.note}</td>
 					<td>
 						<button onClick={this.onUnNghiday} style={{display: this.props.data.can_unnghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning">Hủy đăng ký</button>
@@ -197,16 +198,17 @@ var CalendarRowBosung = React.createClass({
 		this.props.onRemove(this.props.data);
 	},
 	render: function(){
+		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		return (
-			<tr>
+			<tr style={boldstyle} class={this.props.data.color}>
 				<td>{this.props.data.tuan}</td>
-				<td>{this.props.data.thoi_gian}</td>
+				<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 				<td>{this.props.data.tiet_bat_dau}</td>
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.so_tiet}</td>
 				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
 				<td>{this.props.data.alias_state}</td>
-				<td>{this.props.data.alias_status}</td>
+				<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 				<td>{this.props.data.note}</td>
 				<td>
 					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
@@ -258,18 +260,18 @@ var CalendarRow = React.createClass({
 		}	
 	},
 	render: function(){
-
+		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		if (this.state.edit === 0) {
 			return (
-				<tr>
+				<tr style={boldstyle} class={this.props.data.color}>
 					<td>{this.props.data.tuan}</td>
-					<td>{this.props.data.thoi_gian}</td>
+					<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>
 					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
 					<td>{this.props.data.alias_state}</td>
-					<td>{this.props.data.alias_status}</td>
+					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
 					<td>
 						<button onClick={this.onNghiday} style={{display: this.props.data.can_nghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning">Đăng ký nghỉ</button>
@@ -282,9 +284,9 @@ var CalendarRow = React.createClass({
 			);
 		} else {
 			return (
-				<tr>
+				<tr style={boldstyle} class={this.props.data.color}>
 					<td>{this.props.data.tuan}</td>
-					<td>{this.props.data.thoi_gian}</td>
+					<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>
 						<input type="text" ref="phong" class="form-control input-sm" />
@@ -299,7 +301,7 @@ var CalendarRow = React.createClass({
 						</select>
 					</td>
 					<td>{this.props.data.alias_state}</td>
-					<td>{this.props.data.alias_status}</td>
+					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
 					<td>
 						<button onClick={this.onCancelEdit} class="btn btn-sm btn-warning">Hủy</button>
