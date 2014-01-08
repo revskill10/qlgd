@@ -14,6 +14,8 @@ class LopMonHoc < ActiveRecord::Base
   has_many :assignment_groups, :dependent => :destroy, :order => 'position'
   has_many :assignments
   has_many :submissions, :through => :assignments
+  has_many :assistants, :dependent => :destroy
+  has_many :users, :through => :assistants, :uniq => true
   
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so
@@ -23,8 +25,11 @@ class LopMonHoc < ActiveRecord::Base
       transition :started => :completed # da ket thuc mon
     end
     event :remove do 
-      transition :pending => :removed
-    end    
+      transition :pending => :removed # 
+    end
+    event :restore do 
+      transition :removed => :pending
+    end
   end
   
   def start(gv)
@@ -43,7 +48,7 @@ class LopMonHoc < ActiveRecord::Base
   def generate_calendars
     if calendars.count > 0 
       calendars.each do |calendar|
-        calendar.generate
+        calendar.generate unless calendar.generated?
       end
     end
   end

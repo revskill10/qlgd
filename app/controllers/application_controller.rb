@@ -14,7 +14,9 @@ class ApplicationController < ActionController::Base
   def student?
   	current_user and current_user.imageable.is_a?(SinhVien)
   end
-
+  def assistant?
+    false
+  end
   
   def current_image
     current_user.imageable

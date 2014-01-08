@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140106080858) do
+ActiveRecord::Schema.define(:version => 20140108083649) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(:version => 20140106080858) do
     t.string   "state"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
-    t.integer  "giang_vien_id"
+    t.integer  "user_id"
     t.integer  "position"
   end
 
@@ -32,8 +32,15 @@ ActiveRecord::Schema.define(:version => 20140106080858) do
     t.text     "description"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
-    t.integer  "giang_vien_id"
+    t.integer  "user_id"
     t.integer  "position"
+  end
+
+  create_table "assistants", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "lop_mon_hoc_id"
+    t.datetime "created_at",     :null => false
+    t.datetime "updated_at",     :null => false
   end
 
   create_table "attendances", :force => true do |t|
@@ -116,6 +123,7 @@ ActiveRecord::Schema.define(:version => 20140106080858) do
     t.integer  "so_tiet_moi"
     t.text     "note"
     t.datetime "completed_at"
+    t.integer  "user_id"
   end
 
   create_table "lop_mon_hocs", :force => true do |t|
@@ -163,7 +171,7 @@ ActiveRecord::Schema.define(:version => 20140106080858) do
     t.decimal  "grade"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
-    t.integer  "giang_vien_id"
+    t.integer  "user_id"
   end
 
   create_table "surveys", :force => true do |t|

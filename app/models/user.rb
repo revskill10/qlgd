@@ -12,7 +12,9 @@ class User < ActiveRecord::Base
 
   has_many :user_groups, :dependent => :destroy
   has_many :groups, :through => :user_groups
-  
+  has_many :assistants, :dependent => :destroy
+  has_many :lop_mon_hocs, :through => :assistants, :uniq => true
+
   def cas_extra_attributes=(extra_attributes)
     if extra_attributes["status"] != 0 and extra_attributes["masinhvien"]
         code = extra_attributes["masinhvien"].upcase
