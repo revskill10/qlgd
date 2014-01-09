@@ -30,7 +30,15 @@ class User < ActiveRecord::Base
         end
     end    
   end
-
+ 
+  def get_lops
+    tmp = self.lop_mon_hocs.pending_or_started
+    if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
+      tmp = tmp + self.imageable.lop_mon_hocs.pending_or_started
+    end
+    tmp
+  end
+  
   def hovaten
     if imageable != nil
       return imageable.hovaten    

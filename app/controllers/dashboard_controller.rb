@@ -1,15 +1,8 @@
-class DashboardController < ApplicationController
+class DashboardController < TenantsController
   
   def index    
   	respond_to do |format|
-      if guest?        
-        format.html {render "dashboard/index/guest"} 
-      elsif teacher?        
-        @giang_vien = current_user.imageable
-        format.html {render "dashboard/index/teacher"}
-      elsif student?        
-      	format.html {render "dashboard/index/student"}
-      end
+      format.html {render "dashboard/index"} 
   	end
   end
 
@@ -27,29 +20,16 @@ class DashboardController < ApplicationController
   def lop
     @lop = LopMonHoc.find(params[:id])
     respond_to do |format|
-      if guest?        
-        format.html {render "dashboard/lop/guest"} 
-      elsif teacher?
-        @giang_vien = current_user.imageable
-        authorize @lop, :update?
-        format.html {render "dashboard/lop/teacher"}
-      elsif student?        
-        format.html {render "dashboard/lop/student"}
-      end
+      @giang_vien = current_user.imageable
+      authorize @lop, :update?
+      format.html {render "dashboard/lop/update"}
     end
   end
   
   def monitor
 
     respond_to do |format|
-      if guest?
-
-      elsif teacher?
-
         format.html {render "dashboard/monitor/teacher"}
-      elsif student?
-
-      end
     end
   end
 end

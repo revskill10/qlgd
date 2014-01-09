@@ -9,7 +9,7 @@ var Monitor = React.createClass({
 	},
 	loadData: function(){
 		$.ajax({
-			url: '/monitor',
+			url: '/teacher/monitor',
 			success: function(data){
 				this.setState({data: data});
 			}.bind(this)

@@ -16,6 +16,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :submissions, :through => :assignments
   has_many :assistants, :dependent => :destroy
   has_many :users, :through => :assistants, :uniq => true
+  scope :pending_or_started, where(state: ["pending","started"]) 
   
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so
@@ -32,12 +33,13 @@ class LopMonHoc < ActiveRecord::Base
     end
   end
   
-  def start(gv)
+  def start
     self.settings ||= {}
     self.settings[:generated] = false unless self.settings[:generated]
     self.settings[:so_tiet_ly_thuyet] ||= 0
     self.settings[:so_tiet_thuc_hanh] ||= 0
-    self.generate_assignments(gv)
+    self.generate_assignments
+    self.generate_calendars
     super
   end
   
@@ -59,25 +61,25 @@ class LopMonHoc < ActiveRecord::Base
   end
 
   
-  def generate_assignments(gv)
+  def generate_assignments
 #    return nil unless self.started?
     return nil unless self.settings.present?
     return nil if self.settings.present? and self.settings[:generated] == true    
-    ag1 = self.assignment_groups.create(name: "Điểm chuyên cần", weight: 40, giang_vien_id: gv.id)
+    ag1 = self.assignment_groups.create(name: "Điểm chuyên cần", weight: 40)
     ag1.move_to_bottom
-    as1 = self.assignments.create(name: "Điểm chuyên cần", points: 10, giang_vien_id: gv.id, assignment_group_id: ag1.id)
+    as1 = self.assignments.create(name: "Điểm chuyên cần", points: 10, assignment_group_id: ag1.id)
     as1.move_to_bottom
-    ag2 = self.assignment_groups.create(name: "Điểm thực hành", weight: 30, giang_vien_id: gv.id)
+    ag2 = self.assignment_groups.create(name: "Điểm thực hành", weight: 30)
     ag2.move_to_bottom
-    as2 = self.assignments.create(name: "Điểm thực hành", points: 10, giang_vien_id: gv.id, assignment_group_id: ag2.id)
+    as2 = self.assignments.create(name: "Điểm thực hành", points: 10, assignment_group_id: ag2.id)
     as2.move_to_bottom
-    ag3 = self.assignment_groups.create(name: "Điểm trung bình kiểm tra", weight: 30, giang_vien_id: gv.id)
+    ag3 = self.assignment_groups.create(name: "Điểm trung bình kiểm tra", weight: 30)
     ag3.move_to_bottom
-    as31 = self.assignments.create(name: "KT lần 1", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as31 = self.assignments.create(name: "KT lần 1", points: 10, assignment_group_id: ag3.id)
     as31.move_to_bottom
-    as32 = self.assignments.create(name: "KT lần 2", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as32 = self.assignments.create(name: "KT lần 2", points: 10, assignment_group_id: ag3.id)
     as32.move_to_bottom
-    as33 = self.assignments.create(name: "KT lần 3", points: 10, giang_vien_id: gv.id, assignment_group_id: ag3.id)
+    as33 = self.assignments.create(name: "KT lần 3", points: 10, assignment_group_id: ag3.id)
     as33.move_to_bottom
     self.settings[:generated] = true    
     self.save!

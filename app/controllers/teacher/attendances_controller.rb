@@ -1,9 +1,10 @@
 #encoding: utf-8
-class AttendancesController < ApplicationController
+class Teacher::AttendancesController < ApplicationController
   
   def index    
     
-   	@lich = LichTrinhGiangDay.find(params[:lich_id])      
+   	@lich = LichTrinhGiangDay.find(params[:lich_id])   
+    authorize @lich, :update?   
     #authorize @lich, :update?
     enrollments = @lich.lop_mon_hoc.enrollments    
     results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
@@ -58,7 +59,7 @@ class AttendancesController < ApplicationController
     
       @lich = LichTrinhGiangDay.find(params[:id])
       render json: {:error => 'Lịch giảng dạy không tìm thấy'} unless @lich
-      #authorize @lich, :update?
+      authorize @lich, :update?
       @lich.noi_dung = params[:content]
       @lich.save!            
       render json: {lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}.to_json

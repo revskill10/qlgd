@@ -11,16 +11,15 @@ var ldata = [
  	},
  	loadData: function(){ 		
  		$.ajax({
-	      url: "/lop/" +this.props.lop +"/" + this.props.giang_vien + "/lich_trinh_giang_days/content",	      
+	      url: "/teacher/lop/" +this.props.lop + "/lich_trinh_giang_days/content",	      
 	      success: function(data) {             
 	        this.setState({data: data});         
 	      }.bind(this)
 	    });
  	},
  	handleUpdate: function(data){
- 		data.giang_vien = this.props.giang_vien;
  		$.ajax({
-	      url: "/lop/" +this.props.lop + "/lich_trinh_giang_days/content",
+	      url: "/teacher/lop/" +this.props.lop + "/lich_trinh_giang_days/content",
 	      type: 'POST',
 	      data: data,
 	      success: function(data) {             

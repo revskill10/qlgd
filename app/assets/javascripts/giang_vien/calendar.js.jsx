@@ -8,7 +8,7 @@
 	},
 	loadData: function(){
 		$.ajax({
-          url: "/lop/"+this.props.lop+"/"+this.props.giang_vien +"/lich_trinh_giang_days" ,
+          url: "/teacher/lop/"+this.props.lop +"/lich_trinh_giang_days" ,
           success: function(data) {                      
             this.setState({data: data});
           }.bind(this)
@@ -32,16 +32,15 @@
  		if (ENV.lich_id != null) {
         	React.unmountAndReleaseReactRootNode(document.getElementById('main'));
         	React.renderComponent(  
-			  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
+			  <Lich lich={ENV.lich_id} lop={ENV.lop_id}  />,
 			  document.getElementById('main')
 			);  
         }	
  	},
  	handleNghiday: function(d){
- 		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/nghiday",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/nghiday",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -51,10 +50,9 @@
 	        });		
  	},
  	handleUnNghiday: function(d){
- 		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/unnghiday",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/unnghiday",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -64,10 +62,9 @@
 	        });		
  	},
  	handleUncomplete: function(d){
- 		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/uncomplete",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/uncomplete",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -80,10 +77,9 @@
 	        });		
  	}, 	
  	handleRemove: function(d){
- 		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/remove",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/remove",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -99,7 +95,7 @@
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/restore",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/restore",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             
@@ -115,7 +111,7 @@
  		d.giang_vien = this.props.giang_vien;
  		d.lop_id = this.props.lop;
  		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/update",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/update",
 	            type: 'POST',
 	            data: d,
 	            success: function(data) {             

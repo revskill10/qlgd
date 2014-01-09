@@ -17,14 +17,14 @@ var Bosung = React.createClass({
  		if (ENV.lich_id != null) {
         	React.unmountAndReleaseReactRootNode(document.getElementById('main'));
         	React.renderComponent(  
-			  <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
+			  <Lich lich={ENV.lich_id} lop={ENV.lop_id} />,
 			  document.getElementById('main')
 			);  
         }	
  	},
 	loadData: function(){
 		$.ajax({
-          url: "/lop/"+this.props.lop+"/"+this.props.giang_vien +"/lich_trinh_giang_days/bosung" ,
+          url: "/teacher/lop/"+this.props.lop +"/lich_trinh_giang_days/bosung" ,
           success: function(data) {                      
             this.setState({data: data, add: 0});
           }.bind(this)
@@ -43,15 +43,15 @@ var Bosung = React.createClass({
 			var phong = this.refs.phong.getDOMNode().value;
 			var so_tiet = this.refs.so_tiet.getDOMNode().value;
 			var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
-			var data = {giang_vien: this.props.giang_vien,thoi_gian: thoi_gian, tiet_bat_dau: tiet_bat_dau, phong: phong, so_tiet: so_tiet, thuc_hanh: thuc_hanh};
+			var data = {thoi_gian: thoi_gian, tiet_bat_dau: tiet_bat_dau, phong: phong, so_tiet: so_tiet, thuc_hanh: thuc_hanh};
 			$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/create_bosung",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/create_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
-            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+            		React.renderComponent(<Calendar  lop={this.props.lop} />
                 , document.getElementById('calendar'));            		
 	            }.bind(this)           
 	        });			
@@ -63,48 +63,44 @@ var Bosung = React.createClass({
 		this.setState({add: 0});
 	},
 	onUpdate: function(data){		
-		data.giang_vien = this.props.giang_vien;
 		data._method = "put";
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/update_bosung",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/update_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0});
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
-            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+            		React.renderComponent(<Calendar  lop={this.props.lop} />
                 , document.getElementById('calendar')); 
             		this.updateLich();
 	            }.bind(this)           
 	        });	
 	},
 	onRemove: function(data){		
-		data.giang_vien = this.props.giang_vien;
 		data._method = "delete";
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/remove_bosung",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/remove_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
-            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
+            		React.renderComponent(<Calendar  lop={this.props.lop} />
                 , document.getElementById('calendar'));
             		this.updateLich();
 	            }.bind(this)           
 	        });	
 	},
 	onRestore: function(data){		
-		data.giang_vien = this.props.giang_vien;
 		$.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/restore_bosung",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/restore_bosung",
 	            type: 'POST',
 	            data: data,
 	            success: function(data) {             
 	                this.setState({data: data, add: 0}); 
 	                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
-            		React.renderComponent(<Calendar giang_vien={this.props.giang_vien} lop={this.props.lop} />
-                , document.getElementById('calendar'));	
+            		React.renderComponent(<Calendar lop={this.props.lop} />, document.getElementById('calendar'));	
             		this.updateLich();
 	            }.bind(this)           
 	        });	

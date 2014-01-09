@@ -22,14 +22,13 @@ var ThongSo = React.createClass({
 	    }
     	var data = {
     		id: this.state.data.id,
-    		giang_vien: this.props.giang_vien,
     		lt: lt,
     		th: th,
     		lang: lang,
     		decuong: decuong
     	}
     	$.ajax({
-	      url: "/lop/settinglop",
+	      url: "/teacher/lop/settinglop",
 	      type: 'POST',
 	      data: data,
 	      success: function(data2) {             
@@ -45,7 +44,7 @@ var ThongSo = React.createClass({
 	},
 	componentWillMount: function(){
 		$.ajax({
-			url: "/lop/"+this.props.lop+ "/show.json" ,
+			url: "/teacher/lop/"+this.props.lop+ "/show.json" ,
 			success: function(data) {                      			
 				this.setState({data: data.lop});					
 				React.renderComponent(

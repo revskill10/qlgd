@@ -89,15 +89,15 @@ var data = {};
 
 
 React.renderComponent(
-	<ThongSo giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
+	<ThongSo lop={ENV.lop_id} />
 	, document.getElementById('thongso')
 );
 			
 
-React.renderComponent(<Assignments giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />
+React.renderComponent(<Assignments lop={ENV.lop_id} />
 				, document.getElementById('assignment'));
-React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />,
+React.renderComponent(<Grade lop={ENV.lop_id} />,
                                 document.getElementById("grades"));
-React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
-React.renderComponent(<Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('calendar'));
+React.renderComponent(<Bosung lop={ENV.lop_id} />, document.getElementById('bosung'));
+React.renderComponent(<Calendar lop={ENV.lop_id} />, document.getElementById('calendar'));
 

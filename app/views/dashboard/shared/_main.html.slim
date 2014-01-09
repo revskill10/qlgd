@@ -1,0 +1,24 @@
+
+
+.container
+  ul.nav.nav-pills
+    li.active
+      a href="#tkb" data-toggle="tab" Thời khóa biểu
+    li
+      a href="#dsl" data-toggle="tab" Danh sách lớp
+    li
+      a href="#mnt" data-toggle="tab" Theo dõi
+
+
+  .tab-content
+    #tkb.tab-pane.fade.in.active
+      br
+      #main
+    #dsl.tab-pane
+      br
+      #dslop
+    #mnt.tab-pane
+      br
+      #monitor
+
+= javascript_include_tag asset_path("giang_vien/home");

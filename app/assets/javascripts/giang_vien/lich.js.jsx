@@ -239,7 +239,7 @@ var Editor = React.createClass({
   },      
   loadData: function(){
     $.ajax({
-      url: "/lich/" + this.props.lich +"/noidung.json",            
+      url: "/teacher/lich/" + this.props.lich +"/noidung.json",            
       success: function(data) {             
         this.setState({content: data.lich.content, edit: 0});         
       }.bind(this)
@@ -263,7 +263,7 @@ var Editor = React.createClass({
       content: content
     }
     $.ajax({
-      url: "/lich/noidung",
+      url: "/teacher/lich/noidung",
       type: 'POST',
       data: data,
       success: function(data) {             
@@ -402,7 +402,7 @@ var LichSetting = React.createClass({
 var Lich = React.createClass({      
   loadEnrollmentsFromServer: function(){    
     $.ajax({
-      url: "/lich/"+this.props.lich+"/attendances.json" ,
+      url: "/teacher/lich/"+this.props.lich+"/attendances.json" ,
       success: function(data2) {                      
         this.setState({noidung: data2.info.lich.content,data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false});         
       }.bind(this)
@@ -423,7 +423,7 @@ var Lich = React.createClass({
       lop: lop
     }; 
     $.ajax({
-      url: "/lich/"+this.props.lich+"/settinglop",
+      url: "/teacher/lich/"+this.props.lich+"/settinglop",
       type: 'POST',
       data: d,
       success: function(data2) {             
@@ -440,7 +440,7 @@ var Lich = React.createClass({
       enrollment: enrollment
     };    
     $.ajax({
-      url: "/lich/"+this.props.lich+"/attendances",
+      url: "/teacher/lich/"+this.props.lich+"/attendances",
       type: 'POST',
       data: d,
       success: function(data2) {             
@@ -458,7 +458,7 @@ var Lich = React.createClass({
     d.giang_vien = this.props.giang_vien;
     d.lop_id = this.props.lop;
     $.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
               type: 'POST',
               data: d,
               success: function(data2) {             
@@ -470,7 +470,7 @@ var Lich = React.createClass({
     d.giang_vien = this.props.giang_vien;
     d.lop_id = this.props.lop;
     $.ajax({
-            url: "/lop/" + this.props.lop + "/lich_trinh_giang_days/complete",
+            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/complete",
               type: 'POST',
               data: d,
               success: function(data2) {             

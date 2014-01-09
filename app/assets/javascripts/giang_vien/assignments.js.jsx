@@ -19,7 +19,7 @@
                 },                                
                 loadData: function(){
                     $.ajax({
-                        url: "/lop/" + this.props.lop + "/assignments.json",
+                        url: "/teacher/lop/" + this.props.lop + "/assignments.json",
                         success: function(data) {
                             data.forEach(function(d){
                                 if (d.assignments != null && d.assignments.length > 0) {
@@ -40,7 +40,7 @@
                 handleEdit: function(obj){                    
                     obj._method = "put"
                     $.ajax({
-                        url: "/lop/" + this.props.lop + "/assignment_groups",
+                        url: "/teacher//lop/" + this.props.lop + "/assignment_groups",
                         type: 'POST',
                         data: obj,
                         success: function(data) {
@@ -54,7 +54,7 @@
                             });        
                             this.setState({data: data, add: 0});
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                            React.renderComponent(<Grade lop={this.props.lop} />,
                                 document.getElementById("grades"));
                         }.bind(this)
                     });       
@@ -63,7 +63,7 @@
                 handleUpdate: function(d){                        
                     d._method = "put";
                     $.ajax({
-                      url: "/lop/" + this.props.lop + "/assignments",
+                      url: "/teacher//lop/" + this.props.lop + "/assignments",
                       type: 'POST',
                       data: d,
                       success: function(data) {             
@@ -77,7 +77,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                            React.renderComponent(<Grade lop={this.props.lop} />,
                         document.getElementById("grades"));
                       }.bind(this)
                     });    
@@ -96,12 +96,11 @@
                         var weight = this.refs.weight.getDOMNode().value;
                         var d = {
                                 lop_id: this.props.lop_id,
-                                giang_vien_id: this.props.giang_vien,
                                 name: name,
                                 weight: weight
                         }
                         $.ajax({
-                          url: "/lop/" + this.props.lop + "/assignment_groups",
+                          url: "/teacher//lop/" + this.props.lop + "/assignment_groups",
                           type: 'POST',
                           data: d,
                           success: function(data) {             
@@ -115,7 +114,7 @@
                                 });        
                                 this.setState({data: data, add: 0}); 
                                 React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                                React.renderComponent(<Grade lop={this.props.lop} />,
                                     document.getElementById("grades"));
                           }.bind(this)
                         });
@@ -124,7 +123,7 @@
                 handleDelete: function(assignment_group){
                     var d = {assignment_group_id: assignment_group.assignment_group_id, "_method":"delete"};
                     $.ajax({
-                      url: "/lop/" + this.props.lop + "/assignment_groups",
+                      url: "/teacher//lop/" + this.props.lop + "/assignment_groups",
                       type: 'POST',
                       data: d,
                       success: function(data) {             
@@ -138,7 +137,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                            React.renderComponent(<Grade lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });
@@ -146,7 +145,7 @@
                 handleAssignmentDelete: function(assignment){
                     var d = {assignment_id: assignment.assignment_id, "_method":"delete"};
                     $.ajax({
-                      url: "/lop/" + this.props.lop + "/assignments",
+                      url: "/teacher//lop/" + this.props.lop + "/assignments",
                       type: 'POST',
                       data: d,
                       success: function(data) {             
@@ -160,7 +159,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                            React.renderComponent(<Grade lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });
@@ -168,12 +167,11 @@
                 handleAssignmentAdd: function(obj){
                     var d = {
                             assignment_group_id: obj.assignment_group_id,
-                            giang_vien_id: this.props.giang_vien,
                             name: obj.name,
                             points: obj.points
                     }
                     $.ajax({
-                      url: "/lop/" + this.props.lop + "/assignments",
+                      url: "/teacher//lop/" + this.props.lop + "/assignments",
                       type: 'POST',
                       data: d,
                       success: function(data) {             
@@ -187,7 +185,7 @@
                             });        
                             this.setState({data: data, add: 0}); 
                             React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                            React.renderComponent(<Grade giang_vien={this.props.giang_vien} lop={this.props.lop} />,
+                            React.renderComponent(<Grade lop={this.props.lop} />,
                                     document.getElementById("grades"));
                       }.bind(this)
                     });
@@ -233,12 +231,12 @@
                                     position: position
                                 };
                                 $.ajax({
-                                  url: "/lop/" + self.props.lop + "/reorder_assignments",
+                                  url: "/teacher//lop/" + self.props.lop + "/reorder_assignments",
                                   type: 'POST',
                                   data: data,
                                   success: function(data) {             
                                         React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
-                                        React.renderComponent(<Grade giang_vien={self.props.giang_vien} lop={self.props.lop} />,
+                                        React.renderComponent(<Grade  lop={self.props.lop} />,
                                                 document.getElementById("grades"));
                                   }.bind(self)
                                 }); 

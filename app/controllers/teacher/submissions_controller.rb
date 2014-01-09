@@ -1,5 +1,5 @@
 #encoding: utf-8
-class SubmissionsController < ApplicationController
+class Teacher::SubmissionsController < ApplicationController
 
 	def index
 		@lop = LopMonHoc.find(params[:id])
@@ -32,14 +32,14 @@ class SubmissionsController < ApplicationController
 	# post grades
 	def update
 		@lop = LopMonHoc.find(params[:id])
+		authorize @lop, assistant_update?
 		@as= @lop.assignments.find(params[:assignment_id])
 		@sub = @as.submissions.where(sinh_vien_id: params[:sinh_vien_id]).first
 		if @sub
 			@sub.grade = params[:grade]
-			@sub.giang_vien_id = params[:giang_vien_id]
 			@sub.save!
 		else
-			@sub = @as.submissions.create(sinh_vien_id: params[:sinh_vien_id], giang_vien_id: params[:giang_vien_id], grade: params[:grade])
+			@sub = @as.submissions.create(sinh_vien_id: params[:sinh_vien_id], grade: params[:grade])
 		end
 
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}

@@ -93,7 +93,7 @@ var Grade = React.createClass({
     },
     loadSubmissions: function(){
         $.ajax({
-          url: "/lop/"+this.props.lop+"/submissions.json" ,
+          url: "/teacher/lop/"+this.props.lop+"/submissions.json" ,
           success: function(data) {                      
             this.setState({names: data.names, group_names: data.group_names, data: data.results, group_data: data.group_results, active: -1});
           }.bind(this)
@@ -108,19 +108,18 @@ var Grade = React.createClass({
     },
     saveToServer: function(data, index){
         var d = {
-            giang_vien_id: this.props.giang_vien,
             assignment_id: data.assignment_id,
             sinh_vien_id: data.sinh_vien_id,
             grade: data.grade
         }
         $.ajax({
-            url: "/lop/" + this.props.lop + "/submissions",
+            url: "/teacher/lop/" + this.props.lop + "/submissions",
             type: 'POST',
             data: d,
             success: function(data) {             
                 this.setState({names: data.names, data: data.results, group_data: data.group_results, group_names: data.group_names, active: index});                  
                 React.unmountAndReleaseReactRootNode(document.getElementById('assignment'));
-                React.renderComponent(<Assignments giang_vien={this.props.giang_vien} lop={this.props.lop} />, document.getElementById('assignment'));
+                React.renderComponent(<Assignments lop={this.props.lop} />, document.getElementById('assignment'));
             }.bind(this)           
         });
         return false;

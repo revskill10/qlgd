@@ -2,64 +2,65 @@ Qlgd::Application.routes.draw do
   require 'sidekiq/web'
 # ...
   mount Sidekiq::Web, at: '/sidekiq'
-  devise_for :users
-  get "/" => "dashboard#index"
-  get '/active' => 'dashboard#monitor'
-  get "calendar" => "dashboard#calendar", :as => :calendar
-  get "about" => "static_pages#about"
-  get "/lich/:id" => "dashboard#show", :as => :lich
-  get "/lop/:id" => "dashboard#lop"  
-  #get '/' => 'static_pages#home'
-  get "lich/:lich_id/attendances" => "attendances#index"
-  post "lich/:lich_id/attendances" => "attendances#update"
-  get "lich/:lich_id/noidung" => 'attendances#getnoidung'
-  post "lich/noidung" => "attendances#noidung"
-  post "lich/:lich_id/settinglop" => "attendances#settinglop"
   
+  devise_for :users
+  scope '(tenants/:tenant_id)' do
+    
+    get "/" => "dashboard#index"
+     get '/active' => 'dashboard#monitor'
+      get "calendar" => "dashboard#calendar", :as => :calendar
+      get "/lich/:id" => "dashboard#show", :as => :lich
+      get "/lop/:id" => "dashboard#lop"  
+    namespace :teacher do 
+     
+      #get '/' => 'static_pages#home'
+      get "lich/:lich_id/attendances" => "attendances#index"
+      post "lich/:lich_id/attendances" => "attendances#update"
+      get "lich/:lich_id/noidung" => 'attendances#getnoidung'
+      post "lich/noidung" => "attendances#noidung"
+      post "lich/:lich_id/settinglop" => "attendances#settinglop"
+      
 
-  get "lops" => "lop_mon_hocs#index"
-  get "lop/:lop_id/info" => "lop_mon_hocs#info"
-  get "lop/:id/show" => "lop_mon_hocs#show"
-  post "lop/settinglop" => "lop_mon_hocs#update"  
+      get "lops" => "lop_mon_hocs#index"
+      get "lop/:lop_id/info" => "lop_mon_hocs#info"
+      get "lop/:id/show" => "lop_mon_hocs#show"
+      post "lop/settinglop" => "lop_mon_hocs#update"  
 
-  get 'lop/:id/assignments' => "assignments#index"
-  post 'lop/:id/assignments' => "assignments#create"
-  post 'lop/:id/reorder_assignments' => "assignments#reorder"
-  put 'lop/:id/assignments' => 'assignments#update'
-  delete 'lop/:id/assignments' => "assignments#delete"
+      get 'lop/:id/assignments' => "assignments#index"
+      post 'lop/:id/assignments' => "assignments#create"
+      post 'lop/:id/reorder_assignments' => "assignments#reorder"
+      put 'lop/:id/assignments' => 'assignments#update'
+      delete 'lop/:id/assignments' => "assignments#delete"
 
-  post 'lop/:id/assignment_groups' => "assignment_groups#create"
-  delete 'lop/:id/assignment_groups' => "assignment_groups#delete"
-  put 'lop/:id/assignment_groups' => 'assignment_groups#update'  
-  post 'lop/:id/reorder_assignment_groups' => 'assignment_groups#reorder'
+      post 'lop/:id/assignment_groups' => "assignment_groups#create"
+      delete 'lop/:id/assignment_groups' => "assignment_groups#delete"
+      put 'lop/:id/assignment_groups' => 'assignment_groups#update'  
+      post 'lop/:id/reorder_assignment_groups' => 'assignment_groups#reorder'
 
-  get '/lop/:id/submissions' => 'submissions#index'
-  post '/lop/:id/submissions' => 'submissions#update'
+      get '/lop/:id/submissions' => 'submissions#index'
+      post '/lop/:id/submissions' => 'submissions#update'
 
-  get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
-  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#index'
-  get '/lop/:lop_id/:giang_vien_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index_bosung'
-  post '/lop/:lop_id/lich_trinh_giang_days/create_bosung' => 'lich_trinh_giang_days#create_bosung'
-  put '/lop/:lop_id/lich_trinh_giang_days/update_bosung' => 'lich_trinh_giang_days#update_bosung'
-  delete '/lop/:lop_id/lich_trinh_giang_days/remove_bosung' => 'lich_trinh_giang_days#remove_bosung'
-  post '/lop/:lop_id/lich_trinh_giang_days/restore_bosung' => 'lich_trinh_giang_days#restore_bosung'
-  post '/lop/:lop_id/lich_trinh_giang_days/nghiday' => 'lich_trinh_giang_days#nghiday'
-  post '/lop/:lop_id/lich_trinh_giang_days/unnghiday' => 'lich_trinh_giang_days#unnghiday'
-  post '/lop/:lop_id/lich_trinh_giang_days/complete' => 'lich_trinh_giang_days#complete'
-  post '/lop/:lop_id/lich_trinh_giang_days/uncomplete' => 'lich_trinh_giang_days#uncomplete'
-  post '/lop/:lop_id/lich_trinh_giang_days/accept' => 'lich_trinh_giang_days#accept'
-  post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
-  post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
-  post '/lop/:lop_id/lich_trinh_giang_days/update' => 'lich_trinh_giang_days#update'
-  post '/lop/:lop_id/lich_trinh_giang_days/capnhat' => 'lich_trinh_giang_days#capnhat'
-  get '/lop/:lop_id/:giang_vien/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
-  post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
-  get '/lich_trinh_giang_days' => 'lich_trinh_giang_days#home'
-  get '/monitor' => 'lich_trinh_giang_days#monitor'
-  resources :tenants do 
-    resources :giang_viens
-    resources :sinh_viens
-    resources :users
+      get "lich/:lich_id/info" => "lich_trinh_giang_days#info"
+      get '/lop/:lop_id/lich_trinh_giang_days' => 'lich_trinh_giang_days#index'
+      get '/lop/:lop_id/lich_trinh_giang_days/bosung' => 'lich_trinh_giang_days#index_bosung'
+      post '/lop/:lop_id/lich_trinh_giang_days/create_bosung' => 'lich_trinh_giang_days#create_bosung'
+      put '/lop/:lop_id/lich_trinh_giang_days/update_bosung' => 'lich_trinh_giang_days#update_bosung'
+      delete '/lop/:lop_id/lich_trinh_giang_days/remove_bosung' => 'lich_trinh_giang_days#remove_bosung'
+      post '/lop/:lop_id/lich_trinh_giang_days/restore_bosung' => 'lich_trinh_giang_days#restore_bosung'
+      post '/lop/:lop_id/lich_trinh_giang_days/nghiday' => 'lich_trinh_giang_days#nghiday'
+      post '/lop/:lop_id/lich_trinh_giang_days/unnghiday' => 'lich_trinh_giang_days#unnghiday'
+      post '/lop/:lop_id/lich_trinh_giang_days/complete' => 'lich_trinh_giang_days#complete'
+      post '/lop/:lop_id/lich_trinh_giang_days/uncomplete' => 'lich_trinh_giang_days#uncomplete'
+      post '/lop/:lop_id/lich_trinh_giang_days/accept' => 'lich_trinh_giang_days#accept'
+      post '/lop/:lop_id/lich_trinh_giang_days/remove' => 'lich_trinh_giang_days#remove'
+      post '/lop/:lop_id/lich_trinh_giang_days/restore' => 'lich_trinh_giang_days#restore'
+      post '/lop/:lop_id/lich_trinh_giang_days/update' => 'lich_trinh_giang_days#update'
+      post '/lop/:lop_id/lich_trinh_giang_days/capnhat' => 'lich_trinh_giang_days#capnhat'
+      get '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
+      post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
+      get '/lich_trinh_giang_days' => 'lich_trinh_giang_days#home'
+      get '/monitor' => 'lich_trinh_giang_days#monitor'
+    end
   end
   # The priority is based upon order of creation:
   # first created -> highest priority.

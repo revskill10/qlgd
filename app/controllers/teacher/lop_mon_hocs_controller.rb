@@ -1,17 +1,12 @@
 #encoding: utf-8
 require 'lop_assignment_group_serializer'
-class LopMonHocsController < ApplicationController
-	def index
-		if guest?        
-			
-		elsif teacher?        
-			@giang_vien = current_user.imageable
-			@lops = @giang_vien.lop_mon_hocs.map{|k| LopMonHocSerializer.new(k)}
-			render json: @lops, :root => false
-		elsif student?        
-			
-		end
+class Teacher::LopMonHocsController < ApplicationController
+
+	def index		
+		@lop_mon_hocs = policy_scope(LopMonHoc).map{|k| LopMonHocSerializer.new(k)}
+		render json: @lop_mon_hocs, :root => false
 	end
+
 	def show
 		@lop = LopMonHoc.find(params[:id])
 		#authorize @lop, :update?
@@ -25,14 +20,14 @@ class LopMonHocsController < ApplicationController
 	end
 	def update
 		@lop = LopMonHoc.find(params[:id])
-		@gv = @lop.giang_viens.find(params[:giang_vien])	
+		authorize @lop, :update_settings?
 		@lop.settings ||= {}	
 		@lop.settings[:so_tiet_ly_thuyet] = params[:lt].to_i
     	@lop.settings[:so_tiet_thuc_hanh] = params[:th].to_i
     	@lop.settings[:language] = params[:lang]
     	@lop.settings[:de_cuong_du_kien] = params[:decuong]
     	if !@lop.started?
-    		@lop.start!(@gv)
+    		@lop.start!
     	else
     		@lop.save!
     	end

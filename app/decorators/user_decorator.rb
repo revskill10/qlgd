@@ -20,22 +20,22 @@ class UserDecorator < Draper::Decorator
 	end
 
 	def is_admin?
-		object.groups.pluck(:name).include?("admin")
+		is_super_admin? or object.groups.pluck(:name).include?("admin")
 	end
 
 	def is_dao_tao?
-		object.groups.pluck(:name).include?("dao_tao")
+		is_admin? or object.groups.pluck(:name).include?("dao_tao")
 	end
 
 	def is_quan_ly_sinh_vien?
-		object.groups.pluck(:name).include?("quan_ly_sinh_vien")
+		is_admin? or object.groups.pluck(:name).include?("quan_ly_sinh_vien")
 	end
 
 	def is_thanh_tra?
-		object.groups.pluck(:name).include?("thanh_tra")
+		is_admin? or object.groups.pluck(:name).include?("thanh_tra")
 	end
 
 	def is_kiem_dinh?
-		object.groups.pluck(:name).include?("kiem_dinh")
+		is_admin? or object.groups.pluck(:name).include?("kiem_dinh")
 	end
 end

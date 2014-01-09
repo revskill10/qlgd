@@ -4,6 +4,8 @@ class SinhVien < ActiveRecord::Base
   has_one :user, :as => :imageable
   has_many :attendances, :dependent => :destroy
   has_many :submissions, :dependent => :destroy
+  has_many :enrollments, :dependent => :destroy
+  has_many :lop_mon_hocs, :through => :enrollments, :uniq => true
   def hovaten
   	return trans(ho) + trans(dem) + ten
   end
