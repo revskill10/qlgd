@@ -1,3 +1,4 @@
 = render 'dashboard/shared/menu'
 
-= render 'dashboard/shared/main'
+- if current_user.get_lops.count > 0
+  = render 'dashboard/shared/main'

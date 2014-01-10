@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-//= require giang_vien/monitor
+
 
 var hdata = [
 	{tuan: 1, colapse: 'colapseOne', active: false, data: [
@@ -22,7 +22,7 @@ var Home2 = React.createClass({
 	},
 	loadData: function(){
 		$.ajax({
-			url: "/teacher/lich_trinh_giang_days" ,
+			url: "/student/lich_trinh_giang_days" ,
 			success: function(data) {                      			
 				this.setState({data: data});
 			}.bind(this)
@@ -104,7 +104,7 @@ var LopHome = React.createClass({
 	},
 	loadData: function(){
 		$.ajax({
-	      url: "/teacher/lops",
+	      url: "/student/lops",
 	      success: function(data) {             
 	        this.setState({data: data});         
 	      }.bind(this)

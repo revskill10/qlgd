@@ -2,20 +2,20 @@ class DashboardController < TenantsController
   
   def index    
   	respond_to do |format|
-      format.html {render "dashboard/index"} 
+      format.html {render "index"} 
   	end
   end
 
-  def show
+  def lich
     @lich = LichTrinhGiangDay.find(params[:id])    
+    @giang_vien = @lich.giang_vien   
     svs = @lich.enrollments
     @enrollments = LichEnrollmentDecorator.decorate_collection(svs)
     respond_to do |format|     
-      if current_user and Pundit.policy!(current_user, @lich).update?     
-        @giang_vien = @lich.giang_vien                 
-        format.html {render "dashboard/lich/update"}            
+      if current_user and Pundit.policy!(current_user, @lich).update?                         
+        format.html {render "dashboard/teacher/lich"}            
       else
-        format.html {render "dashboard/lich/show"}
+        format.html {render "dashboard/student/lich"}
       end
     end
   end  
@@ -25,9 +25,9 @@ class DashboardController < TenantsController
     respond_to do |format|
       if current_user and Pundit.policy!(current_user, @lop).update?
         @giang_vien = current_user.giang_vien(@lop)      
-        format.html {render "dashboard/lop/update"}
+        format.html {render "dashboard/teacher/lop"}
       else
-        format.html {render "dashboard/lop/show"}
+        format.html {render "dashboard/student/lop"}
       end
     end
   end

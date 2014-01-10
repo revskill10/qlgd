@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140110011730) do
+ActiveRecord::Schema.define(:version => 20140110093645) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "updated_at",     :null => false
     t.integer  "position"
   end
+
+  add_index "assignment_groups", ["lop_mon_hoc_id"], :name => "index_assignment_groups_on_lop_mon_hoc_id"
 
   create_table "assignments", :force => true do |t|
     t.integer  "assignment_group_id"
@@ -34,6 +36,8 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.integer  "position"
   end
 
+  add_index "assignments", ["lop_mon_hoc_id", "assignment_group_id"], :name => "index_assignments_on_lop_mon_hoc_id_and_assignment_group_id"
+
   create_table "assistants", :force => true do |t|
     t.integer  "user_id"
     t.integer  "lop_mon_hoc_id"
@@ -41,6 +45,9 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "updated_at",     :null => false
     t.integer  "giang_vien_id"
   end
+
+  add_index "assistants", ["lop_mon_hoc_id", "giang_vien_id"], :name => "index_assistants_on_lop_mon_hoc_id_and_giang_vien_id"
+  add_index "assistants", ["user_id"], :name => "index_assistants_on_user_id"
 
   create_table "attendances", :force => true do |t|
     t.integer  "lich_trinh_giang_day_id"
@@ -52,6 +59,9 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
   end
+
+  add_index "attendances", ["lich_trinh_giang_day_id", "sinh_vien_id"], :name => "index_attendances_on_lich_trinh_giang_day_id_and_sinh_vien_id"
+  add_index "attendances", ["state"], :name => "index_attendances_on_state"
 
   create_table "calendars", :force => true do |t|
     t.integer  "so_tiet"
@@ -67,6 +77,7 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.string   "phong"
   end
 
+  add_index "calendars", ["lop_mon_hoc_id", "giang_vien_id"], :name => "index_calendars_on_lop_mon_hoc_id_and_giang_vien_id"
   add_index "calendars", ["lop_mon_hoc_id"], :name => "index_calendars_on_lop_mon_hoc_id"
 
   create_table "du_gios", :force => true do |t|
@@ -86,6 +97,8 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "updated_at",     :null => false
   end
 
+  add_index "enrollments", ["lop_mon_hoc_id", "sinh_vien_id"], :name => "index_enrollments_on_lop_mon_hoc_id_and_sinh_vien_id"
+
   create_table "giang_viens", :force => true do |t|
     t.string   "ho"
     t.string   "dem"
@@ -95,6 +108,8 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
+
+  add_index "giang_viens", ["code"], :name => "index_giang_viens_on_code"
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -124,6 +139,9 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "completed_at"
     t.integer  "user_id"
   end
+
+  add_index "lich_trinh_giang_days", ["giang_vien_id", "lop_mon_hoc_id"], :name => "index_lich_trinh_giang_days_on_giang_vien_id_and_lop_mon_hoc_id"
+  add_index "lich_trinh_giang_days", ["lop_mon_hoc_id", "giang_vien_id"], :name => "index_lich_trinh_giang_days_on_lop_mon_hoc_id_and_giang_vien_id"
 
   create_table "lop_mon_hocs", :force => true do |t|
     t.string   "ma_lop"
@@ -162,6 +180,11 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.string   "ma_lop_hanh_chinh"
     t.datetime "created_at",        :null => false
     t.datetime "updated_at",        :null => false
+    t.boolean  "tin_chi"
+    t.string   "khoa"
+    t.string   "he"
+    t.string   "nganh"
+    t.integer  "gioi_tinh"
   end
 
   create_table "submissions", :force => true do |t|
@@ -171,6 +194,8 @@ ActiveRecord::Schema.define(:version => 20140110011730) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
+
+  add_index "submissions", ["sinh_vien_id", "assignment_id"], :name => "index_submissions_on_sinh_vien_id_and_assignment_id"
 
   create_table "surveys", :force => true do |t|
     t.string   "name"

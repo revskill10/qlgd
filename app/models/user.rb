@@ -73,6 +73,7 @@ class User < ActiveRecord::Base
   end
 
   def giang_vien(lop)
+    return nil if self.imageable.is_a?(SinhVien)
     gv = self.imageable if self.lop_chinhs.include?(lop)   
     assistant = lop.assistants.where(:user_id => self.id).first
     gv2 = assistant.giang_vien if assistant

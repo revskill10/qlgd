@@ -90,7 +90,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   def can_edit?
-    (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and self.status == "waiting")
+    (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status))
   end
 
   

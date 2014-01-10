@@ -9,7 +9,7 @@ Qlgd::Application.routes.draw do
     get "/" => "dashboard#index"
      get '/active' => 'dashboard#monitor'
       get "calendar" => "dashboard#calendar", :as => :calendar
-      get "/lich/:id" => "dashboard#show", :as => :lich
+      get "/lich/:id" => "dashboard#lich", :as => :lich
       get "/lop/:id" => "dashboard#lop"  
     namespace :teacher do 
      
