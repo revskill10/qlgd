@@ -17,18 +17,17 @@ class User < ActiveRecord::Base
   has_many :lop_mon_hocs, :through => :assistants, :uniq => true
 
   def cas_extra_attributes=(extra_attributes)
-    if extra_attributes["status"] != 0 and extra_attributes["masinhvien"]
-        code = extra_attributes["masinhvien"].upcase
-        sv = SinhVien.where(:code => code).first
-        if sv
-          self.imageable = sv          
-        end
-        gv = GiangVien.where(:code => code).first
-        if gv
-          self.imageable = gv               
-        end
-        self.email = self.username
-    end    
+    extra_attributes.each do |name, value|
+      case name.to_sym
+      when :masinhvien
+        sv = SinhVien.where(code: value.upcase).first
+        self.imageable = sv if sv
+        gv = GiangVien.where(code: value.upcase).first
+        self.imageable = gv if gv
+      when :email
+        self.email = value
+      end
+    end
   end
  
   def lop_chinhs

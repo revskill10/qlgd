@@ -8,8 +8,7 @@
         span.icon-bar
       = link_to "QLGD", '/', {class:"navbar-brand"}
     .collapse.navbar-collapse
-      ul.nav.navbar-nav
-        li= link_to "Home", '/'                    
+      ul.nav.navbar-nav                   
         - if user_signed_in? and current_user.decorate.is_dao_tao?
           li= link_to "Đào tạo", '/daotao'
         - if user_signed_in? and current_user.decorate.is_quan_ly_sinh_vien?
@@ -22,5 +21,8 @@
           li= link_to "Superadmin", '/superadmin'
         - if user_signed_in? and current_user.decorate.is_admin?
           li= link_to "Admin", '/admin'        
-      ul.nav.navbar-nav.navbar-right   
-        li= link_to "Đăng xuất", destroy_user_session_path
+      ul.nav.navbar-nav.navbar-right
+        - if user_signed_in?
+          li= link_to "Đăng xuất", destroy_user_session_path
+        - else
+          li= link_to "Sign in", new_user_session_path

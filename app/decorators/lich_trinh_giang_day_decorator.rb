@@ -17,7 +17,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
   	object.state != :nghile and object.state != :nghiday and object.accepted?
   end
   def sv_co_mat
-  	object.attendances.where("state = 'attendant' or state = 'late'").count
+  	object.lop_mon_hoc.enrollments.count - sv_vang_mat - object.attendances.where("state = 'idle'").count
   end
   
   def sv_vang_mat
