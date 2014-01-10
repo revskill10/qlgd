@@ -1,5 +1,8 @@
 #encoding: utf-8
 class Teacher::SubmissionsController < TenantsController	
+	def index2
+
+	end
 	def index
 		@lop = LopMonHoc.find(params[:id])
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}

@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-//= require ./grade
+
 //= require ./calendar
 //= require ./lopsetting
 //= require ./assignments
@@ -89,10 +89,8 @@ var Enrollments = React.createClass({
   handleVang: function(e,s){
     var self = this;
     this.props.loading = true;
-    this.forceUpdate();
-    setTimeout(function(){
-      self.props.on_vang(e,s);  
-    }, 1000);    
+    this.forceUpdate();    
+    self.props.on_vang(e,s);      
     return false;
   },  
   render: function(){      
@@ -412,7 +410,7 @@ var Lich = React.createClass({
     this.loadEnrollmentsFromServer();  
   },
   componentDidMount: function(){
-    React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('grades'));
+    //React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('grades'));
     if (this.state.lich.updated === true ){
       React.renderComponent(<Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
     } else {
@@ -522,7 +520,7 @@ var Lich = React.createClass({
           </a>
       </h4>
     </div>
-    <div id="collapseTwo" class="panel-collapse collapse in">
+    <div id="collapseTwo" class="panel-collapse collapse">
       <div class="panel-body">
         <ul class="nav nav-tabs">
           <li class="active">

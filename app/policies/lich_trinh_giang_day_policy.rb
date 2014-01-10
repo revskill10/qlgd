@@ -14,7 +14,7 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
   
   def update?
     #return false unless Pundit.policy!(user, lich_trinh_giang_day.lop_mon_hoc).update?
-    !(lich_trinh_giang_day.state == "nghile") and !(lich_trinh_giang_day.state == "nghiday") and lich_trinh_giang_day.accepted? and lich_trinh_giang_day.thoi_gian.localtime < Time.now and lich_trinh_giang_day.lop_mon_hoc.tong_so_tiet > 0 and user.get_lichs.map(&:id).include?(lich_trinh_giang_day.id) and !user.giang_vien(lich_trinh_giang_day.lop_mon_hoc).nil?
+    !(lich_trinh_giang_day.state == "nghile") and !(lich_trinh_giang_day.state == "nghiday") and lich_trinh_giang_day.accepted? and lich_trinh_giang_day.lop_mon_hoc.tong_so_tiet > 0 and user.get_lichs.map(&:id).include?(lich_trinh_giang_day.id) and !user.giang_vien(lich_trinh_giang_day.lop_mon_hoc).nil?
   end
 
 end

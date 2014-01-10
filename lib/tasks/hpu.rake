@@ -44,6 +44,8 @@ namespace :hpu do
     Apartment::Database.switch('public')
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)
+    LichTrinhGiangDay.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('lich_trinh_giang_days') 
     Calendar.delete_all
     ActiveRecord::Base.connection.reset_pk_sequence!('calendars') 
     @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
@@ -66,10 +68,10 @@ namespace :hpu do
     Apartment::Database.switch(tenant.name)
     Tuan.delete_all
     ActiveRecord::Base.connection.reset_pk_sequence!('tuans') 
-    d = Date.new(2013, 1, 13)
-        (22..39).each do |t|
-            Tuan.where(:stt => t+1, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
-        end 
+    d = Date.new(2014, 1, 13)
+    (0..20).each do |t|
+        Tuan.where(:stt => t+23, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
+    end 
   end
   task :load_sinh_vien => :environment do
     Apartment::Database.switch('public')
