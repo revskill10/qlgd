@@ -27,6 +27,7 @@ class User < ActiveRecord::Base
         if gv
           self.imageable = gv               
         end
+        self.email = self.username
     end    
   end
  
@@ -34,7 +35,7 @@ class User < ActiveRecord::Base
     if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
       return self.imageable.lop_mon_hocs.pending_or_started
     end
-    return []
+    []
   end
   def lop_tro_giangs
     self.lop_mon_hocs.pending_or_started
@@ -47,13 +48,14 @@ class User < ActiveRecord::Base
     if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
       return self.imageable.lich_trinh_giang_days
     end
+    []
   end
   def lich_tro_giangs
     tmp2 = []
     tmp = self.assistants
     if tmp.count > 0    
       tmp.each do |as|
-        tmp2 += as.lich_trinh_giang_days.uniq
+        tmp2 += as.get_lichs.uniq
       end
     end
     tmp2

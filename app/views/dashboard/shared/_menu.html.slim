@@ -9,21 +9,18 @@
       = link_to "QLGD", '/', {class:"navbar-brand"}
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li= link_to "Home", '/'            
-        - if user_signed_in? and current_user.decorate.is_assistant?
-          li= link_to "Trợ giảng", '/assistant'
+        li= link_to "Home", '/'                    
         - if user_signed_in? and current_user.decorate.is_dao_tao?
-          li= link_to "Trợ giảng", '/daotao'
+          li= link_to "Đào tạo", '/daotao'
         - if user_signed_in? and current_user.decorate.is_quan_ly_sinh_vien?
-          li= link_to "Trợ giảng", '/quan_ly_sinh_vien'
+          li= link_to "Quản lý sinh viên", '/quan_ly_sinh_vien'
         - if user_signed_in? and current_user.decorate.is_thanh_tra?
-          li= link_to "Trợ giảng", '/thanh_tra'
+          li= link_to "Thanh tra", '/thanh_tra'
         - if user_signed_in? and current_user.decorate.is_kiem_dinh?
-          li= link_to "Trợ giảng", '/kiem_dinh'
+          li= link_to "Kiểm định", '/kiem_dinh'
         - if user_signed_in? and current_user.decorate.is_super_admin?
-          li= link_to "Trợ giảng", '/superadmin'
+          li= link_to "Superadmin", '/superadmin'
         - if user_signed_in? and current_user.decorate.is_admin?
-          li= link_to "Trợ giảng", '/admin'
-        li= link_to "About", '/about' 
+          li= link_to "Admin", '/admin'        
       ul.nav.navbar-nav.navbar-right   
-        li= link_to "Sign Out", destroy_user_session_path
+        li= link_to "Đăng xuất", destroy_user_session_path
