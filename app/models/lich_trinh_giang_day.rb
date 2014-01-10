@@ -86,6 +86,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   def unnghiday!
     return nil unless can_unnghiday?
     self.state = "normal"
+    self.status = "accepted"
   end
 
   def can_edit?
