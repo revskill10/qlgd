@@ -42,8 +42,8 @@ var Bosung = React.createClass({
 			var thoi_gian = this.refs.thoi_gian.getDOMNode().value;
 			var phong = this.refs.phong.getDOMNode().value;
 			var so_tiet = this.refs.so_tiet.getDOMNode().value;
-			var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
-			var data = {thoi_gian: thoi_gian, tiet_bat_dau: tiet_bat_dau, phong: phong, so_tiet: so_tiet, thuc_hanh: thuc_hanh};
+			var ltype = this.refs.ltype.getDOMNode().value;
+			var data = {thoi_gian: thoi_gian, tiet_bat_dau: tiet_bat_dau, phong: phong, so_tiet: so_tiet, ltype: ltype};
 			$.ajax({
             url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/create_bosung",
 	            type: 'POST',
@@ -135,7 +135,7 @@ var Bosung = React.createClass({
 								<th>Tiết bắt đầu</th>
 								<th>Số tiết</th>
 								<th>Phòng</th>
-								<th>Thực hành</th>
+								<th>Loại</th>
 								<th>Trạng thái</th>
 							</thead>
 							<tbody>
@@ -156,7 +156,7 @@ var Bosung = React.createClass({
 								<th>Tiết bắt đầu</th>								
 								<th>Số tiết dạy</th>
 								<th>Phòng</th>
-								<th>Thực hành</th>
+								<th>Loại</th>
 								<th>Thực hiện</th>
 							</thead>
 							<tbody>
@@ -192,9 +192,11 @@ var Bosung = React.createClass({
 									<input type="text" placeholder="Phòng" ref="phong" class="form-control input-sm" />
 								</td>
 								<td>
-									<select ref="thuc_hanh" class="form-control input-sm">
-										<option value="false">Lý thuyết</option>
-										<option value="true">Thực hành</option>
+									<select ref="ltype" class="form-control input-sm">
+										<option value="lythuyet">Lý thuyết</option>
+										<option value="thuchanh">Thực hành</option>
+										<option value="tuhoc">Tự học</option>
+										<option value="baitap">Bài tập</option>
 									</select>
 								</td>								
 								<td>
@@ -214,7 +216,7 @@ var Bosung = React.createClass({
 								<th>Tiết bắt đầu</th>
 								<th>Số tiết</th>
 								<th>Phòng</th>
-								<th>Thực hành</th>
+								<th>Loại</th>
 								<th>Trạng thái</th>
 							</thead>
 							<tbody>
@@ -245,14 +247,14 @@ var Row2 = React.createClass({
 			var thoi_gian = this.refs.thoi_gian.getDOMNode().value;
 			var phong = this.refs.phong.getDOMNode().value;
 			var so_tiet = this.refs.so_tiet.getDOMNode().value;
-			var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
+			var ltype = this.refs.ltype.getDOMNode().value;
 			var data = {
 				id: this.props.data.id,
 				tiet_bat_dau: tiet_bat_dau,
 				thoi_gian: thoi_gian,
 				phong: phong,
 				so_tiet: so_tiet,
-				thuc_hanh: thuc_hanh
+				ltype: ltype
 			};
 			this.setState({edit: 0});
 			this.props.onUpdate(data);		
@@ -264,7 +266,7 @@ var Row2 = React.createClass({
 			this.refs.tiet_bat_dau.getDOMNode().value = this.props.data.tiet_bat_dau;
 			this.refs.so_tiet.getDOMNode().value = this.props.data.so_tiet;
 			this.refs.phong.getDOMNode().value = this.props.data.phong;	
-			this.refs.thuc_hanh.getDOMNode().value = this.props.data.thuc_hanh;
+			this.refs.ltype.getDOMNode().value = this.props.data.ltype;
 			$('.input-append.date').datepicker({
 				format: "dd/mm/yyyy",
 				startDate: "8/1/2014",
@@ -293,7 +295,7 @@ var Row2 = React.createClass({
 				<td>{this.props.data.tiet_bat_dau}</td>
 				<td>{this.props.data.so_tiet}</td>
 				<td>{this.props.data.phong}</td>
-				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
+				<td>{this.props.data.type_status}</td>
 				<td>{this.props.data.alias_status}</td>
 				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit} style={{display: this.props.data.can_edit === false ? 'none' : ''}} >Sửa</button>
 				<button class="btn btn-sm btn-danger" onClick={this.onRemove} style={{display: this.props.data.can_remove === false ? 'none' : ''}} >Xóa</button>
@@ -336,9 +338,11 @@ var Row2 = React.createClass({
 						<input type="text" ref="phong" class="form-control input-sm" />
 					</td>
 					<td>
-						<select ref="thuc_hanh" class="form-control input-sm">
-							<option value="false">Lý thuyết</option>
-							<option value="true">Thực hành</option>
+						<select ref="ltype" class="form-control input-sm">
+							<option value="lythuyet">Lý thuyết</option>
+							<option value="thuchanh">Thực hành</option>
+							<option value="tuhoc">Tự học</option>
+							<option value="baitap">Bài tập</option>
 						</select>
 					</td>
 					<td>

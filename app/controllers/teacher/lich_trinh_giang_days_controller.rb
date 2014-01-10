@@ -33,7 +33,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		thoi_gian = Time.strptime(hour + ":" + minute + " " +params[:thoi_gian], "%H:%M %d/%m/%Y")
 		@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).bosung.where(thoi_gian: thoi_gian).first
 		if @lich.nil?	
-			@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).bosung.create(thoi_gian: thoi_gian,phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh])			
+			@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).bosung.create(thoi_gian: thoi_gian,phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype])			
 		end
 		@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
@@ -44,7 +44,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			hour = LichTrinhGiangDay::TIET2[params[:tiet_bat_dau].to_i][0].to_s
 			minute = LichTrinhGiangDay::TIET2[params[:tiet_bat_dau].to_i][1].to_s
 			thoi_gian = Time.strptime(hour + ":" + minute + " " +params[:thoi_gian], "%H:%M %d/%m/%Y")
-			@lich.update_attributes(thoi_gian: thoi_gian, phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh])
+			@lich.update_attributes(thoi_gian: thoi_gian, phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype])
 		end
 		@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).bosung.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
@@ -120,7 +120,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 	def update		
 		@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).find(params[:id])
 		if @lich
-			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh], note: params[:note])
+			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype], note: params[:note])
 		end
 		@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
@@ -129,7 +129,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		# update in lich context		
 		@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).find(params[:id])
 		if @lich
-			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, thuc_hanh: params[:thuc_hanh])
+			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype])
 		end
 		enrollments = @lich.lop_mon_hoc.enrollments    
       	results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}

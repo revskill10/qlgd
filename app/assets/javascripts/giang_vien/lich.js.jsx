@@ -315,9 +315,9 @@ var LichSetting = React.createClass({
   },
   handleCapnhat: function(e){
     var phong = this.refs.phong.getDOMNode().value;
-    var thuc_hanh = this.refs.thuc_hanh.getDOMNode().value;
+    var ltype = this.refs.ltype.getDOMNode().value;
     var so_tiet = this.refs.so_tiet.getDOMNode().value;
-    this.props.onCapnhat({id: this.props.lich.id, phong: phong, thuc_hanh: thuc_hanh, so_tiet: so_tiet});
+    this.props.onCapnhat({id: this.props.lich.id, phong: phong, ltype: ltype, so_tiet: so_tiet});
     this.setState({edit: 0});
   },
   handleComplete: function(e){
@@ -329,7 +329,7 @@ var LichSetting = React.createClass({
   componentDidUpdate: function(){
     if (this.state.edit === 1){
       this.refs.phong.getDOMNode().value = this.props.lich.phong;
-      this.refs.thuc_hanh.getDOMNode().value = this.props.lich.thuc_hanh;
+      this.refs.ltype.getDOMNode().value = this.props.lich.ltype;
       this.refs.so_tiet.getDOMNode().value = this.props.lich.so_tiet;
     }
   },
@@ -340,18 +340,18 @@ var LichSetting = React.createClass({
           <table class="table table-bordered">
             <thead>
               <td>Phòng</td>
-              <td>Thực hành</td>
+              <td>Loại</td>
               <td>Số tiết</td>
               <td>Số sinh viên có mặt</td>
               <td>Số sinh viên vắng</td>
-              <td>Loại</td>
+              <td>Giờ học</td>
               <td>Trạng thái</td>
               <td>Thao tác</td>
             </thead>
             <tbody>
               <tr>
                 <td>{this.props.lich.phong}</td>
-                <td>{this.props.lich.thuc_hanh === false ? 'Lý thuyết' : 'Thực hành'}</td>
+                <td>{this.props.lich.type_status}</td>
                 <td>{this.props.lich.so_tiet}</td>
                 <td>{this.props.lich.sv_co_mat}</td>
                 <td>{this.props.lich.sv_vang_mat}</td>

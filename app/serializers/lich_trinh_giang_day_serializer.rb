@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :color_status, :giang_vien, :tiet_bat_dau, :active, :alias_state, :color, :alias_status, :tuan, :thoi_gian, :phong, :content, :content_html, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet, :ma_lop, :ten_mon_hoc, :thu
+  attributes :id, :color_status, :giang_vien, :tiet_bat_dau, :type_status, :active, :alias_state, :color, :alias_status, :tuan, :thoi_gian, :phong, :content, :content_html, :updated, :status, :sv_co_mat, :sv_vang_mat, :so_tiet, :ma_lop, :ten_mon_hoc, :thu, :ltype
   DAYS = {0 => 'Chủ nhật', 1 => 'Thứ hai', 2 => 'Thứ ba', 3 => 'Thứ tư', 4 => 'Thứ năm', 5 => 'Thứ sáu', 6 => 'Thứ 7'}
   def thoi_gian
     object.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")
@@ -11,6 +11,12 @@ class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   end  
   def color_status
     object.color_status
+  end
+  def ltype
+    object.ltype
+  end
+  def type_status
+    object.type_status
   end
   def giang_vien
     object.giang_vien.hovaten

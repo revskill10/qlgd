@@ -135,7 +135,7 @@
  			<div class="table-responsive">
  				<table class="table table-bordered">
  					<thead>
- 						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Thực hành</td><td>Loại</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
+ 						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
  					</thead>
  					<tbody>
  						{x}
@@ -169,7 +169,7 @@ var CalendarRowNghiday = React.createClass({
 					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>
-					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
+					<td>{this.props.data.type_status}</td>
 					<td>{this.props.data.alias_state}</td>
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td>{this.props.data.note}</td>
@@ -202,7 +202,7 @@ var CalendarRowBosung = React.createClass({
 				<td>{this.props.data.tiet_bat_dau}</td>
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.so_tiet}</td>
-				<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
+				<td>{this.props.data.type_status}</td>
 				<td>{this.props.data.alias_state}</td>
 				<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 				<td>{this.props.data.note}</td>
@@ -229,8 +229,8 @@ var CalendarRow = React.createClass({
 		var note = this.refs.note.getDOMNode().value;
 		var so_tiet = this.refs.so_tiet.getDOMNode().value;
 		var phong =	this.refs.phong.getDOMNode().value;
-		var thuc_hanh =	this.refs.thuc_hanh.getDOMNode().value;
-		var data = {id: this.props.data.id, so_tiet: so_tiet, phong: phong, thuc_hanh: thuc_hanh}
+		var ltype =	this.refs.ltype.getDOMNode().value;
+		var data = {id: this.props.data.id, so_tiet: so_tiet, phong: phong, ltype: ltype}
 		this.setState({edit: 0});
 		this.props.onUpdate(data);
 	},
@@ -252,7 +252,7 @@ var CalendarRow = React.createClass({
 		if (this.state.edit === 1){
 			this.refs.so_tiet.getDOMNode().value = this.props.data.so_tiet;
 			this.refs.phong.getDOMNode().value = this.props.data.phong;	
-			this.refs.thuc_hanh.getDOMNode().value = this.props.data.thuc_hanh;
+			this.refs.ltype.getDOMNode().value = this.props.data.ltype;
 		}	
 	},
 	render: function(){
@@ -265,7 +265,7 @@ var CalendarRow = React.createClass({
 					<td>{this.props.data.tiet_bat_dau}</td>
 					<td>{this.props.data.phong}</td>
 					<td>{this.props.data.so_tiet}</td>
-					<td>{this.props.data.thuc_hanh === false ? "Lý thuyết" : "Thực hành"}</td>
+					<td>{this.props.data.type_status}</td>
 					<td>{this.props.data.alias_state}</td>
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
@@ -291,9 +291,11 @@ var CalendarRow = React.createClass({
 						<input type="text" ref="so_tiet" class="form-control input-sm" />
 					</td>
 					<td>
-						<select ref="thuc_hanh" class="form-control input-sm">
-							<option value="false">Lý thuyết</option>
-							<option value="true">Thực hành</option>
+						<select ref="ltype" class="form-control input-sm">
+							<option value="lythuyet">Lý thuyết</option>
+							<option value="thuchanh">Thực hành</option>
+							<option value="tuhoc">Tự học</option>
+							<option value="baitap">Bài tập</option>
 						</select>
 					</td>
 					<td>{this.props.data.alias_state}</td>

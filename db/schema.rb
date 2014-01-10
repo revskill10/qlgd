@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140110093645) do
+ActiveRecord::Schema.define(:version => 20140110183345) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -138,6 +138,7 @@ ActiveRecord::Schema.define(:version => 20140110093645) do
     t.text     "note"
     t.datetime "completed_at"
     t.integer  "user_id"
+    t.string   "ltype"
   end
 
   add_index "lich_trinh_giang_days", ["giang_vien_id", "lop_mon_hoc_id"], :name => "index_lich_trinh_giang_days_on_giang_vien_id_and_lop_mon_hoc_id"

@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LichTrinhGiangDay < ActiveRecord::Base
   default_scope order('thoi_gian')
-  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi, :note
+  attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi, :note, :ltype
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
@@ -41,6 +41,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
     13 => [18, 0], 14 => [18, 50], 15 => [19,40], 16 => [20,30]}
   CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
   
+
   
   # state [normal, nghiday, nghile, bosung]  
 
@@ -63,6 +64,17 @@ class LichTrinhGiangDay < ActiveRecord::Base
     event :uncomplete do 
       transition :completed => :accepted, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
     end
+  end
+
+  def accept
+    if self.type == "tuhoc"
+      self.enrollments.each do |e|
+        at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
+        at.turn_idle
+        at.save!
+      end
+    end
+    super
   end
 
   def complete
@@ -148,7 +160,18 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end
   end
 
-  
+  def type_status
+    case self.ltype 
+    when "lythuyet"
+      "Lý thuyết"
+    when "thuchanh"
+      "Thực hành"
+    when "tuhoc"
+      "Tự học"
+    when "baitap"
+      "Bài tập"
+    end
+  end
 
   
   def get_tiet_bat_dau
