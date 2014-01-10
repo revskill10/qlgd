@@ -413,6 +413,12 @@ var Lich = React.createClass({
   },
   componentDidMount: function(){
     React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('grades'));
+    if (this.state.lich.updated === true ){
+      React.renderComponent(<Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
+    } else {
+      React.renderComponent(<DisabledEditor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
+    } 
+    
   },
   getInitialState: function() {
     return {data: [], lich: {}, lop: {}, loading: false };
@@ -458,13 +464,17 @@ var Lich = React.createClass({
     d.giang_vien = this.props.giang_vien;
     d.lop_id = this.props.lop;
     $.ajax({
-            url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
-              type: 'POST',
-              data: d,
-              success: function(data2) {             
-                  this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
-              }.bind(this)           
-          }); 
+        url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
+          type: 'POST',
+          data: d,
+          success: function(data2) {             
+              this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+              React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
+              React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
+              React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+              React.renderComponent(<Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('calendar'));
+          }.bind(this)           
+      }); 
   },
   handleComplete: function(d){
     d.giang_vien = this.props.giang_vien;
@@ -475,6 +485,10 @@ var Lich = React.createClass({
               data: d,
               success: function(data2) {             
                   this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+                React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
+                React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
+                React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
+                React.renderComponent(<Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('calendar'));
               }.bind(this)           
           }); 
   },  
@@ -535,7 +549,7 @@ var Lich = React.createClass({
             <div class="row">
               <div class="col-sm-6">
                 <br />                
-               {this.state.lich.updated === true ? <Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> : <DisabledEditor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} />}
+                <div id="editor"></div>
               </div>
               <div class="col-sm-6">
                 <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />

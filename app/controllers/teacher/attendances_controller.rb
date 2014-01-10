@@ -1,5 +1,5 @@
 #encoding: utf-8
-class Teacher::AttendancesController < ApplicationController
+class Teacher::AttendancesController < TenantsController
   
   def index    
     

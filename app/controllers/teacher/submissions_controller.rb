@@ -1,6 +1,5 @@
 #encoding: utf-8
-class Teacher::SubmissionsController < ApplicationController
-
+class Teacher::SubmissionsController < TenantsController	
 	def index
 		@lop = LopMonHoc.find(params[:id])
 		assignments = @lop.assignment_groups.includes(:assignments).inject([]) {|res, el| res + el.assignments}
@@ -32,7 +31,7 @@ class Teacher::SubmissionsController < ApplicationController
 	# post grades
 	def update
 		@lop = LopMonHoc.find(params[:id])
-		authorize @lop, assistant_update?
+		authorize @lop, :update?
 		@as= @lop.assignments.find(params[:assignment_id])
 		@sub = @as.submissions.where(sinh_vien_id: params[:sinh_vien_id]).first
 		if @sub

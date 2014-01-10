@@ -10,11 +10,8 @@ LopMonHocPolicy  = Struct.new(:user, :lop_mon_hoc) do
     end
   end 
 
-  
+    
   def update?
-  	user and user.imageable.is_a?(GiangVien) and user.imageable.lop_mon_hocs.include?(lop_mon_hoc) and !lop_mon_hoc.completed? and !lop_mon_hoc.removed?
-  end
-  def update_settings?
     user and user.get_lops.map(&:id).include?(lop_mon_hoc.id) and !lop_mon_hoc.completed? and !lop_mon_hoc.removed?
   end
 end

@@ -1,6 +1,6 @@
 #encoding: utf-8
 require 'lop_assignment_group_serializer'
-class Teacher::AssignmentsController < ApplicationController
+class Teacher::AssignmentsController < TenantsController
 
 
 	

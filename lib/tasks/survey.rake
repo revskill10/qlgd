@@ -25,13 +25,13 @@ namespace :survey do
    	end
     task seed: :environment do 
         require 'factory_girl_rails'
-        t = Tenant.find(2)
+        t = Tenant.last
         Apartment::Database.switch(t.name)
         d = Date.new(2013, 8, 12)
         (0..46).each do |t|
             FactoryGirl.create(:tuan, :stt => t+1, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day)    
         end 
-        gv = FactoryGirl.create(:giang_vien)
+        gv = FactoryGirl.create(:giang_vien)        
         lop1 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml1", :ma_mon_hoc => "mmh1", :ten_mon_hoc => "tmh1")
         lop2 = FactoryGirl.create(:lop_mon_hoc, :ma_lop => "ml2", :ma_mon_hoc => "mmh2", :ten_mon_hoc => "tmh2")
         t1 = FactoryGirl.create(:tuan, :stt => 1, :tu_ngay => Date.new(2013, 8, 12), :den_ngay => Date.new(2013, 8, 18))

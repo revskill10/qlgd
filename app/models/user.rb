@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :user_groups, :dependent => :destroy
   has_many :groups, :through => :user_groups
   has_many :assistants, :dependent => :destroy
+  
   has_many :lop_mon_hocs, :through => :assistants, :uniq => true
 
   def cas_extra_attributes=(extra_attributes)
@@ -20,30 +21,59 @@ class User < ActiveRecord::Base
         code = extra_attributes["masinhvien"].upcase
         sv = SinhVien.where(:code => code).first
         if sv
-          sv.user = self
-          sv.save!
+          self.imageable = sv          
         end
         gv = GiangVien.where(:code => code).first
         if gv
-          gv.user = self 
-          gv.save!              
+          self.imageable = gv               
         end
     end    
   end
  
-  def get_lops
-    tmp = self.lop_mon_hocs.pending_or_started
+  def lop_chinhs
     if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
-      tmp = tmp + self.imageable.lop_mon_hocs.pending_or_started
+      return self.imageable.lop_mon_hocs.pending_or_started
     end
-    tmp
+    return []
+  end
+  def lop_tro_giangs
+    self.lop_mon_hocs.pending_or_started
+  end
+  def get_lops
+    lop_chinhs + lop_tro_giangs
   end
   
+  def lich_chinhs
+    if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
+      return self.imageable.lich_trinh_giang_days
+    end
+  end
+  def lich_tro_giangs
+    tmp2 = []
+    tmp = self.assistants
+    if tmp.count > 0    
+      tmp.each do |as|
+        tmp2 += as.lich_trinh_giang_days.uniq
+      end
+    end
+    tmp2
+  end
+  def get_lichs
+    lich_chinhs + lich_tro_giangs
+  end
+
   def hovaten
     if imageable != nil
       return imageable.hovaten    
     else
       return ho_dem + " " + ten
     end
+  end
+
+  def giang_vien(lop)
+    gv = self.imageable if self.lop_chinhs.include?(lop)   
+    assistant = lop.assistants.where(:user_id => self.id).first
+    gv2 = assistant.giang_vien if assistant
+    gv || gv2
   end
 end
