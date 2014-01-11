@@ -2,7 +2,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery  
   include Pundit
-  before_filter :load_tenant
+  before_filter :current_tenant
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def routing
@@ -11,8 +11,18 @@ class ApplicationController < ActionController::Base
   
 
   private
-  def load_tenant
-  	Apartment::Database.switch(Tenant.last.name)
+  def current_tenant
+    Apartment::Database.switch('public')
+
+    if params[:tenant_id].present?
+      tenant = Tenant.find(params[:tenant_id])
+      Apartment::Database.switch(tenant.name)
+      return tenant
+    else
+      tenant = Tenant.last
+      Apartment::Database.switch(tenant.name)
+      return tenant
+    end
   end
   def user_not_authorized
     flash[:error] = "You are not authorized to perform this action."
