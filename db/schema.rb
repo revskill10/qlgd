@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140110183345) do
+ActiveRecord::Schema.define(:version => 20140111023231) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -194,6 +194,7 @@ ActiveRecord::Schema.define(:version => 20140110183345) do
     t.decimal  "grade"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.integer  "enrollment_id"
   end
 
   add_index "submissions", ["sinh_vien_id", "assignment_id"], :name => "index_submissions_on_sinh_vien_id_and_assignment_id"

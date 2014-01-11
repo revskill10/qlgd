@@ -4,4 +4,6 @@ class Tuan < ActiveRecord::Base
   validates :stt, :tu_ngay, :den_ngay, :presence => true
 
   scope :active, where(["tu_ngay <= ? and den_ngay >= ?", Time.now, Time.now])
+
+  
 end

@@ -24,8 +24,11 @@ class Teacher::LopMonHocsController < TenantsController
 		@lop.settings ||= {}	
 		@lop.settings[:so_tiet_ly_thuyet] = params[:lt].to_i
     	@lop.settings[:so_tiet_thuc_hanh] = params[:th].to_i
+    	@lop.settings[:so_tiet_tu_hoc] = params[:tuhoc].to_i
+    	@lop.settings[:so_tiet_bai_tap] = params[:bt].to_i
     	@lop.settings[:language] = params[:lang]
-    	@lop.settings[:de_cuong_du_kien] = params[:decuong]
+    	@lop.settings[:lich_trinh_du_kien] = params[:lichtrinh]
+    	@lop.settings[:de_cuong_chi_tiet] = params[:decuong]
     	if !@lop.started?
     		@lop.start!
     	else

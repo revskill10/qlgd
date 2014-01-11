@@ -8,7 +8,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 	end
 	def home
 		@lichs = policy_scope(LichTrinhGiangDay).map{|k| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(k))}.group_by {|g| g.tuan}
-		@t = @lichs.keys.inject([]) {|res, elem| res << {:tuan => elem, :colapse => "tuan#{elem}" , :active => (Tuan.active.first.try(:stt) == elem), :data => @lichs[elem]}}
+		@t = @lichs.keys.inject([]) {|res, elem| res << {:tuan => TuanSerializer.new(Tuan.where(stt: elem).first.decorate), :colapse => "tuan#{elem}" , :active => (Tuan.active.first.try(:stt) == elem), :data => @lichs[elem]}}
 		render json: @t, :root => false
 	end
 

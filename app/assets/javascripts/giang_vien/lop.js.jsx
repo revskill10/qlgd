@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 //= require ./thongso
 //= require ./assignments
-//= require ./grade
+//= require ./grade2
 //= require ./dangkybosung
 //= require ./calendar
 var Enrollment = React.createClass({
@@ -96,7 +96,7 @@ React.renderComponent(
 
 React.renderComponent(<Assignments lop={ENV.lop_id} />
 				, document.getElementById('assignment'));
-React.renderComponent(<Grade lop={ENV.lop_id} />,
+React.renderComponent(<Grade2 lop={ENV.lop_id} />,
                                 document.getElementById("grades"));
 React.renderComponent(<Bosung lop={ENV.lop_id} />, document.getElementById('bosung'));
 React.renderComponent(<Calendar lop={ENV.lop_id} />, document.getElementById('calendar'));

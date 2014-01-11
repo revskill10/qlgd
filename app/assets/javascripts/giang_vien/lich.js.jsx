@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-
+//= require ./grade2
 //= require ./calendar
 //= require ./lopsetting
 //= require ./assignments
@@ -410,7 +410,7 @@ var Lich = React.createClass({
     this.loadEnrollmentsFromServer();  
   },
   componentDidMount: function(){
-    //React.renderComponent(<Grade giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('grades'));
+    React.renderComponent(<Grade2 lop={this.props.lop} />, document.getElementById('grades'));
     if (this.state.lich.updated === true ){
       React.renderComponent(<Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
     } else {

@@ -34,7 +34,7 @@ var Home2 = React.createClass({
 	render: function(){
 		var self = this;
 		var x = this.state.data.map(function(d){
-			return <Tuan colapse={d.colapse} active={d.active} key={d.tuan} tuan={d.tuan} data={d.data} />;
+			return <Tuan colapse={d.colapse} active={d.active} key={d.tuan.id} tuan={d.tuan} data={d.data} />;
 		});
 		return (
 			<div class="panel-group" id="accordion">
@@ -48,14 +48,14 @@ var Home2 = React.createClass({
 var Tuan = React.createClass({
 	render: function(){		
 		var x = this.props.data.map(function(d){
-			return <TuanRow key={'tuanrow' + d.id} data={d} />
+			return <TuanRow  data={d} />
 		});
 		return(
 			<div class="panel panel-default">
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
 			        <a data-toggle="collapse" data-parent="#accordion" href={"#"+this.props.colapse}>
-			          {"Tuần " + this.props.tuan}
+			          {"Tuần " + this.props.tuan.id} ({this.props.tuan.tu_ngay2} - {this.props.tuan.den_ngay2})
 			        </a>
 			      </h4>
 			    </div>
@@ -63,7 +63,7 @@ var Tuan = React.createClass({
 			      <div class="panel-body">
 			      		<div class="table-responsive">
 			 				<table class="table table-bordered">
-			 					<thead>
+			 					<thead style={{"font-weight":"bold"}}>
 			 						<td>Thứ</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Số tiết</td><td>Thực hành</td><td>Phòng</td><td>Mã lớp</td><td>Môn</td><td>Loại</td><td>Trạng thái</td>
 			 					</thead>
 			 					<tbody>
@@ -121,7 +121,7 @@ var LopHome = React.createClass({
 			<div class="table-responsive">
  				<table class="table table-bordered">
  					<thead>
- 						<td>Lớp</td><td>Môn</td><td>Khối lượng dự kiến</td><td>Khối lượng thực hiện</td><td>Đã cấu hình</td>
+ 						<td>Lớp</td><td>Môn</td><td>Khối lượng dự kiến</td><td>Khối lượng thực hiện</td><td>Sĩ số</td><td>Đã cấu hình</td>
  					</thead>
  					<tbody>
  						{x}
@@ -140,6 +140,7 @@ var LopRow = React.createClass({
 				<td>{this.props.data.ten_mon_hoc}</td>
 				<td>{this.props.data.khoi_luong_du_kien}</td>
 				<td>{this.props.data.khoi_luong_thuc_hien}</td>
+				<td>{this.props.data.si_so}</td>
 				<td>{this.props.data.updated === false ? 'Chưa cấu hình' : 'Đã cấu hình'}</td>
 			</tr>
 		);

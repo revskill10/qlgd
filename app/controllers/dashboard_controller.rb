@@ -9,8 +9,7 @@ class DashboardController < TenantsController
   def lich
     @lich = LichTrinhGiangDay.find(params[:id])    
     @giang_vien = @lich.giang_vien   
-    svs = @lich.enrollments
-    @enrollments = LichEnrollmentDecorator.decorate_collection(svs)
+    @lop = @lich.lop_mon_hoc
     respond_to do |format|     
       if current_user and Pundit.policy!(current_user, @lich).update?                         
         format.html {render "dashboard/teacher/lich"}            

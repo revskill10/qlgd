@@ -14,8 +14,11 @@ var LopSetting = React.createClass({
 	handleSubmit: function(){
 		var lt = this.refs.lt.getDOMNode().value.trim();
     	var th = this.refs.th.getDOMNode().value.trim();
+    	var tuhoc = this.refs.tuhoc.getDOMNode().value.trim();
+    	var bt = this.refs.bt.getDOMNode().value.trim();
     	var lang = this.refs.lang.getDOMNode().value;
-    	var decuong = this.refs.dcdk.getDOMNode().value.trim();
+    	var lichtrinh = this.refs.ltdk.getDOMNode().value.trim();
+    	var decuong = this.refs.dcct.getDOMNode().value.trim();
     	if  (!lt || !th) {
     	  alert("Bạn cần nhập số tiết lý thuyết và số tiết thực hành");
 	      return false;
@@ -23,8 +26,11 @@ var LopSetting = React.createClass({
     	var data = {
     		id: this.state.data.id,
     		lt: lt,
-    		th: th,
+    		th: th,    		
+    		tuhoc: tuhoc,
+    		bt: bt,
     		lang: lang,
+    		lichtrinh: lichtrinh,
     		decuong: decuong
     	}
     	$.ajax({
@@ -56,7 +62,10 @@ var LopSetting = React.createClass({
 		$('#lang').val(this.state.data.language);
 		$('#lt').val(this.state.data.so_tiet_ly_thuyet);
 		$('#th').val(this.state.data.so_tiet_thuc_hanh);
-		$('#dcdk').val(this.state.data.de_cuong_du_kien);
+		$('#tuhoc').val(this.state.data.so_tiet_tu_hoc);
+		$('#bt').val(this.state.data.so_tiet_bai_tap);
+		$('#ltdk').val(this.state.data.lich_trinh_du_kien);
+		$('#dcct').val(this.state.data.de_cuong_chi_tiet);
 	},
 	render: function(){
 
@@ -78,15 +87,19 @@ var LopSetting = React.createClass({
 		            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td></tr>
 		            <tr><td>Số tiết lý thuyết</td><td><input id="lt" type="text" ref="lt" /></td></tr>
 		            <tr><td>Số tiết thực hành</td><td><input id="th" type="text" ref="th" /></td></tr>
+		            <tr><td>Số tiết tự học</td><td><input id="tuhoc" type="text" ref="tuhoc" /></td></tr>
+		            <tr><td>Số tiết bài tập</td><td><input id="bt" type="text" ref="bt" /></td></tr>
 		            <tr><td>Ngôn ngữ</td><td>
 		            	  <select id="lang" ref="lang">
 						    <option value="vietnamse">Tiếng Việt</option>
-						    <option value="chinense">Tiếng Trung Quốc</option>
+						    <option value="english">Tiếng Anh</option>
+						    <option value="chinese">Tiếng Trung Quốc</option>
 						    <option value="japanese">Tiếng Nhật</option>
 						  </select>
 
 		            </td></tr>
-		            <tr><td>Đề cương dự kiến</td><td><textarea id="dcdk" ref="dcdk" style={{minHeight: 300}} /></td></tr>		            
+		            <tr><td>Lịch trình dự kiến</td><td><textarea id="ltdk" ref="ltdk" style={{"width": "80%"}} /></td></tr>	
+		            <tr><td>Đề cương chi tiết</td><td><textarea id="dcct" ref="dcct" style={{"width": "80%"}} /></td></tr>	            
 		          </tbody>           
 		        </table> 
 		        
@@ -109,17 +122,27 @@ var LopSetting = React.createClass({
 			            <tr><td>Sĩ số</td><td>{this.state.data.si_so}</td></tr>
 			            <tr><td>Số tiết lý thuyết</td><td>{this.state.data.so_tiet_ly_thuyet}</td></tr>
 			            <tr><td>Số tiết thực hành</td><td>{this.state.data.so_tiet_thuc_hanh}</td></tr>
+			            <tr><td>Số tiết tự học</td><td>{this.state.data.so_tiet_tu_hoc}</td></tr>
+			            <tr><td>Số tiết bài tập</td><td>{this.state.data.so_tiet_bai_tap}</td></tr>
 			            <tr><td>Ngôn ngữ</td><td>
 			            	  {this.state.data.language}
 			            </td></tr>
 			            <tr>
-				            <td>Đề cương dự kiến</td>
+				            <td>Lịch trình dự kiến</td>
 				            <td>
 				            	<p>
-				            	<span dangerouslySetInnerHTML={{__html: this.state.data.de_cuong_du_kien_html }} />				            		
+				            	<span dangerouslySetInnerHTML={{__html: this.state.data.lich_trinh_du_kien_html }} />				            		
 				            	</p>
 				            </td>
-			            </tr>		            
+			            </tr>		
+			            <tr>
+				            <td>Đề cương chi tiết</td>
+				            <td>
+				            	<p>
+				            	<span dangerouslySetInnerHTML={{__html: this.state.data.de_cuong_chi_tiet_html }} />				            		
+				            	</p>
+				            </td>
+			            </tr>	            
 			          </tbody>           
 			        </table> 			        
 				</div>

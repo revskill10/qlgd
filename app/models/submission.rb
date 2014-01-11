@@ -1,10 +1,11 @@
 class Submission < ActiveRecord::Base
-  attr_accessible :grade, :sinh_vien_id
+  attr_accessible :grade, :enrollment_id, :assignment_id
 
   belongs_to :assignment
-  belongs_to :sinh_vien
-  
-  validates :assignment_id, :sinh_vien_id, :presence => true
+  belongs_to :enrollment
+  delegate :lop_mon_hoc, :to => :enrollment
+
+  validates :assignment_id, :enrollment_id, :presence => true
 
   def can_destroy?
   	grade.nil? or grade == 0
