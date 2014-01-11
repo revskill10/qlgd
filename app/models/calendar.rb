@@ -35,7 +35,7 @@ class Calendar < ActiveRecord::Base
       if sch.count > 0
         sch.each do |s|
           begin
-            lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, type: "lythuyet")
+            lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, ltype: "lythuyet")
             lich.accept!          
           rescue Exception => e
             puts e

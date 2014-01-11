@@ -23,10 +23,9 @@ class User < ActiveRecord::Base
         sv = SinhVien.where(code: value.upcase).first
         self.imageable = sv if sv
         gv = GiangVien.where(code: value.upcase).first
-        self.imageable = gv if gv
-      when :email
-        self.email = value
+        self.imageable = gv if gv      
       end
+      self.email = self.username
     end
   end
  

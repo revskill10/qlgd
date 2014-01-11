@@ -67,7 +67,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   def accept
-    if self.type == "tuhoc"
+    if self.ltype == "tuhoc"
       self.enrollments.each do |e|
         at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
         at.turn_idle

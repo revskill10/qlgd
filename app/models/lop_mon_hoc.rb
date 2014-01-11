@@ -38,6 +38,11 @@ class LopMonHoc < ActiveRecord::Base
     self.settings[:generated] = false unless self.settings[:generated]
     self.settings[:so_tiet_ly_thuyet] ||= 0
     self.settings[:so_tiet_thuc_hanh] ||= 0
+    self.settings[:so_tiet_tu_hoc] ||= 0
+    self.settings[:so_tiet_bai_tap] ||= 0
+    self.settings[:lich_trinh_du_kien] ||= ""
+    self.settings[:de_cuong_chi_tiet] ||= ""
+    self.settings[:language] ||= "vietnamese"
     self.generate_assignments
     self.generate_calendars
     super

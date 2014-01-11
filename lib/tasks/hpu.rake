@@ -1,5 +1,18 @@
 #encoding: utf-8
 namespace :hpu do    
+  #1
+  task load_tuan: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    Tuan.delete_all
+    ActiveRecord::Base.connection.reset_pk_sequence!('tuans') 
+    d = Date.new(2014, 1, 13)
+    (0..20).each do |t|
+        Tuan.where(:stt => t+23, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
+    end 
+  end
+  #2
   task load_giang_vien: :environment do
     Apartment::Database.switch('public')
     tenant = Tenant.last
@@ -21,7 +34,7 @@ namespace :hpu do
       GiangVien.where(:ho => ho, :dem => dem, :ten => ten, :code => l[:ma_giao_vien].strip.upcase).first_or_create!
     end
   end
-
+  #3
   task load_lop_mon_hoc: :environment do
     Apartment::Database.switch('public')
     tenant = Tenant.last
@@ -34,12 +47,12 @@ namespace :hpu do
     ls = res_hash[:tkb_theo_giai_doan_response][:tkb_theo_giai_doan_result][:diffgram][:document_element]
     ls = ls[:tkb_theo_giai_doan]
     puts "loading... lop mon hoc"
-    ls.each_with_index do |l,i| 
-      puts l.inspect     
-      LopMonHoc.where(:ma_lop => l[:ma_lop].strip.upcase, :ma_mon_hoc => l[:ma_mon_hoc].strip.upcase, :ten_mon_hoc => titleize(l[:ten_mon_hoc].strip.downcase) ).first_or_create!      
+    ls.each_with_index do |l,i|       
+      lop = LopMonHoc.where(:ma_lop => l[:ma_lop].strip.upcase, :ma_mon_hoc => l[:ma_mon_hoc].strip.upcase, :ten_mon_hoc => titleize(l[:ten_mon_hoc].strip.downcase) ).first_or_create!      
+      #lop.start!
     end
   end
-
+  # 4
   task load_calendar: :environment do
     Apartment::Database.switch('public')
     tenant = Tenant.last
@@ -62,17 +75,7 @@ namespace :hpu do
       calendar.update_attributes(phong: (l[:ma_phong_hoc].strip if l.has_key?(:ma_phong_hoc) and l[:ma_phong_hoc].is_a?(String)))
     end
   end
-  task load_tuan: :environment do 
-    Apartment::Database.switch('public')
-    tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
-    Tuan.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('tuans') 
-    d = Date.new(2014, 1, 13)
-    (0..20).each do |t|
-        Tuan.where(:stt => t+23, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
-    end 
-  end
+  # 5
   task :load_sinh_vien => :environment do
     Apartment::Database.switch('public')
     tenant = Tenant.last
@@ -106,7 +109,7 @@ namespace :hpu do
       )
     end
   end 
-
+  # 6
   task :load_lopsv => :environment do
     Apartment::Database.switch('public')
     tenant = Tenant.last
@@ -124,10 +127,37 @@ namespace :hpu do
       if lop and sv
         lop.enrollments.where(sinh_vien_id: sv.id).first_or_create!
       end
-    end        
-        
+    end                
   end
+  # 7
+  task :load_lopghep => :environment do
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)        
+    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+    response = @client.call(:lop_ghep_hoc_ky)
+    res_hash = response.body.to_hash
+    ls = res_hash[:lop_ghep_hoc_ky_response][:lop_ghep_hoc_ky_result][:diffgram][:document_element]
 
+
+    ls = ls[:lop_ghep_hoc_ky]    
+    ls.each do |l|         
+      lop = LopMonHoc.where(ma_lop: l[:ma_lop_ghep].strip.upcase, ma_mon_hoc: l[:ma_mon_hoc].strip.upcase).first
+      sv = SinhVien.where(code: l[:ma_sinh_vien].strip.upcase).first
+      if lop and sv
+        lop.enrollments.where(sinh_vien_id: sv.id).first_or_create!
+      end
+    end  
+  end
+  # 8
+  task :start_lop => :environment do
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)    
+    LopMonHoc.all.each do |lop|
+      lop.start! unless lop.started?
+    end
+  end
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end

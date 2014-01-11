@@ -1,4 +1,7 @@
 .container
+  - if user_signed_in?    
+    p Chào bạn #{current_user.username}
+  hr
   ul.nav.nav-pills
     li.active
       a href="#tkb" data-toggle="tab" Thời khóa biểu
