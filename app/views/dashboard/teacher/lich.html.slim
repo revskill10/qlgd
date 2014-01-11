@@ -7,4 +7,4 @@
     
 javascript:
   var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lop.id}, giang_vien_id: #{raw @giang_vien.id}};  
-= javascript_include_tag asset_path("giang_vien/lich")
+script src="/assets/giang_vien/lich.js" type="text/javascript"
