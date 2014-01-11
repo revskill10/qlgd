@@ -64,6 +64,7 @@ Qlgd::Application.routes.draw do
       get '/monitor' => 'lich_trinh_giang_days#monitor'
     end
   end
+  match '*a', :to => 'application#routing'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

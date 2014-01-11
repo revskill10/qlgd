@@ -5,7 +5,9 @@ class ApplicationController < ActionController::Base
   before_filter :load_tenant
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
-
+  def routing
+   render :file => "#{Rails.root}/public/404.html", :status => 404, :layout => false
+  end
   
 
   private
