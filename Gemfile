@@ -69,15 +69,15 @@ gem 'react-rails'
 gem "active_model_serializers"
 gem 'acts_as_list'
 gem 'sidekiq'
-gem 'sidetiq'
 gem 'strong_parameters'
 gem "statsd-ruby"
-gem 'wkhtmltopdf-binary'
 gem "lograge"
-gem 'wicked_pdf'
 gem 'sinatra', require: false
 gem 'apartment'
 gem 'savon'
+gem "redis-store"
+gem 'redis-rails'
+gem "redis-rack-cache"
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'

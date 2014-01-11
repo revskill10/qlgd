@@ -214,8 +214,27 @@ GEM
       react-source (= 0.4.1)
     react-source (0.4.1)
     redis (3.0.6)
+    redis-actionpack (3.2.3)
+      actionpack (~> 3.2.3)
+      redis-rack (~> 1.4.0)
+      redis-store (~> 1.1.0)
+    redis-activesupport (3.2.3)
+      activesupport (~> 3.2.3)
+      redis-store (~> 1.1.0)
     redis-namespace (1.4.1)
       redis (~> 3.0.4)
+    redis-rack (1.4.2)
+      rack (~> 1.4.1)
+      redis-store (~> 1.1.0)
+    redis-rack-cache (1.2.1)
+      rack-cache (~> 1.2)
+      redis-store (~> 1.1.0)
+    redis-rails (3.2.3)
+      redis-actionpack (~> 3.2.3)
+      redis-activesupport (~> 3.2.3)
+      redis-store (~> 1.1.0)
+    redis-store (1.1.3)
+      redis (>= 2.2.0)
     request_store (1.0.5)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
@@ -265,10 +284,6 @@ GEM
       json
       redis (>= 3.0.6)
       redis-namespace (>= 1.3.1)
-    sidetiq (0.5.0)
-      celluloid (>= 0.14.1)
-      ice_cube (~> 0.11.0)
-      sidekiq (>= 2.16.0)
     sinatra (1.3.3)
       rack (~> 1.3, >= 1.3.6)
       rack-protection (~> 1.2)
@@ -327,12 +342,9 @@ GEM
       nokogiri (>= 1.4.0)
     wdm (0.1.0)
     websocket (1.0.7)
-    wicked_pdf (0.9.10)
-      rails
     win32-process (0.7.4)
       ffi (>= 1.0.0)
     win32console (1.3.2-x86-mingw32)
-    wkhtmltopdf-binary (0.9.9.1)
     xpath (2.0.0)
       nokogiri (~> 1.3)
 
@@ -366,12 +378,14 @@ DEPENDENCIES
   rails_12factor (= 0.0.2)
   rb-notifu
   react-rails
+  redis-rack-cache
+  redis-rails
+  redis-store
   rspec-rails
   sass-rails (~> 3.2.3)
   savon
   selenium-webdriver
   sidekiq
-  sidetiq
   sinatra
   slim-rails
   spork-rails
@@ -384,6 +398,4 @@ DEPENDENCIES
   timecop
   uglifier (>= 1.0.3)
   wdm
-  wicked_pdf
   win32console
-  wkhtmltopdf-binary

@@ -64,4 +64,9 @@ Qlgd::Application.configure do
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
+  config.cache_store = :redis_store, 'redis://localhost:6481/1'
+  config.action_dispatch.rack_cache = {
+      metastore:   "redis://localhost:6481/1/metastore",
+      entitystore: "redis://localhost:6481/1/entitystore"
+  }
 end
