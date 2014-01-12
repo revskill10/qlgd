@@ -33,11 +33,13 @@ var ldata = [
  	render: function(){
  		var self = this;
  		var x = this.state.data.map(function(d){
- 			if (self.props.state === true) {
+ 			if (d.updated === true) {
  				return <RowLichGiangDay onUpdate={self.handleUpdate} data={d} />	
- 			} else {
- 				return <DisabledRowLichGiangDay data={d} />
  			}
+ 			else {
+ 				return <DisabledRowLichGiangDay data={d} />
+ 			} 
+
  			
  		});
  		return ( 			 		

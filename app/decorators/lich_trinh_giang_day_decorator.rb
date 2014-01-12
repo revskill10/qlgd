@@ -14,7 +14,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
     object.noi_dung
   end
   def updated
-  	object.state.to_sym != :nghile and object.state.to_sym != :nghiday and object.accepted?
+  	object.state.to_sym != :nghile and object.state.to_sym != :nghiday and object.accepted? and object.thoi_gian.localtime <= Time.now
   end
   def sv_co_mat
   	object.lop_mon_hoc.enrollments.count - sv_vang_mat - object.attendances.where("state = 'idle'").count

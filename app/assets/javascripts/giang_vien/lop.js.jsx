@@ -28,12 +28,12 @@ var Enrollments = React.createClass({
 		return (
 			<div>
 				<h5>Danh sách sinh viên</h5>
-				<table class="table table-bordered table-condensed">
-				<thead>
+				<table class="table table-bordered table-condensed table-striped">
+				<thead><tr class="success">
 					<td>Stt</td>
 					<td>Mã sinh viên</td>
 					<td>Họ và tên</td>
-					<td>Tình hình</td>					
+					<td>Tình hình</td>		</tr>			
 				</thead>
 				<tbody>
 					{enrollments}

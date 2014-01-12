@@ -25,6 +25,7 @@ var DisabledEnrollment = React.createClass({
         <td>x</td>
         <td>x</td>
         <td>x</td>
+        <td>x</td>
       </tr>
     );
   }
@@ -106,7 +107,7 @@ var Enrollments = React.createClass({
       <div>          
         <h6>Thông tin điểm danh:</h6>
         <div class="table-responsive">
-        <table class="table table-bordered table-condensed">
+        <table class="table table-bordered table-condensed table-striped">
           <colgroup>
             <col style={{width: "5%"}} />
             <col style={{width: "15%"}} />
@@ -117,7 +118,7 @@ var Enrollments = React.createClass({
             <col style={{width: "10%"}} />
             <col style={{width: "20%"}} />
           </colgroup>
-          <thead>
+          <thead><tr class="success">
             <td>Stt</td>
             <td>Sinh viên</td>            
             <td>Tình hình đi học</td>
@@ -125,7 +126,7 @@ var Enrollments = React.createClass({
             <td>Số tiết vắng</td>
             <td>Phép</td>  
             <td>Bắt buộc tham dự</td>
-            <td>Ghi chú</td>
+            <td>Ghi chú</td></tr>
           </thead>
           <tbody>
             {enrollments}
@@ -188,13 +189,13 @@ var Lop = React.createClass({
               <h6>Thông tin lớp học:</h6>        
               <div class="table-responsive">
                 <table class="table table-bordered table-condensed">
-                  <thead>
+                  <thead><tr class="success">
                     <td>Mã lớp</td>
                     <td>Tên môn học</td>
                     <td>Sĩ số</td>
                     <td>Số tiết lý thuyết</td>
                     <td>Số tiết thực hành</td>
-                    <td>Trạng thái</td>              
+                    <td>Trạng thái</td></tr>        
                   </thead>
                   <tbody>
                       <td><a href={"/lop/"+this.props.lop.id}>{this.props.lop.ma_lop}</a></td>
@@ -226,7 +227,7 @@ var DisabledEditor = React.createClass({
           <p><span dangerouslySetInnerHTML={{__html: this.props.lich.content_html}} /></p>         
         </div>        
         <h4>Các buổi đã dạy</h4>
-        <LichGiangDay state={this.props.lich.updated} giang_vien={this.props.giang_vien} lop={this.props.lop} />
+        <LichGiangDay  giang_vien={this.props.giang_vien} lop={this.props.lop} />
         </div>
       );
   }
@@ -243,7 +244,7 @@ var Editor = React.createClass({
       }.bind(this)
     });
   },
-  componentDidMount: function(){
+  componentWillMount: function(){
     this.loadData();
   },
   componentDidUpdate: function(){        
@@ -276,26 +277,13 @@ var Editor = React.createClass({
     if (this.state.edit === 0){
       return (
         <div style={{'border-right': '2px solid blue'}}>
-        <div id='content-header' >
-          <p><span dangerouslySetInnerHTML={{__html: this.state.content.replace(/(\r\n|\n|\r)/gm, "<br/>") }} /></p>
-          <button onClick={this.handleEdit} class="btn btn-sm btn-default">Sửa nội dung</button>
-        </div>        
-        <h4>Các buổi đã dạy</h4>
-        <LichGiangDay state={this.props.lich.updated} giang_vien={this.props.giang_vien} lop={this.props.lop} />
+       
+        <LichGiangDay giang_vien={this.props.giang_vien} lop={this.props.lop} />
         </div>
       );
     } else {
       return (     
         <div>   
-        <div id='content-header'>
-          <textarea id='editor' ref='editor' className='expanding' placeholder='Share whats new...' style={{width: '100%', minHeight: 200}}>
-          </textarea>          
-        </div>      
-        <br />
-        <button onClick={this.handleCancel} class="btn btn-sm btn-warning">Hủy</button>
-          <button onClick={this.handleUpdate} class="btn btn-sm btn-primary">Cập nhật</button>
-          <br />
-          <h4>Các buổi đã dạy</h4>
         <LichGiangDay giang_vien={this.props.giang_vien} lop={ENV.lop_id} />
           </div>
       );
@@ -338,7 +326,7 @@ var LichSetting = React.createClass({
       return (        
         <div class="table-responsive">
           <table class="table table-bordered">
-            <thead>
+            <thead><tr class="success">
               <td>Phòng</td>
               <td>Loại</td>
               <td>Số tiết</td>
@@ -346,7 +334,7 @@ var LichSetting = React.createClass({
               <td>Số sinh viên vắng</td>
               <td>Giờ học</td>
               <td>Trạng thái</td>
-              <td>Thao tác</td>
+              <td>Thao tác</td></tr>
             </thead>
             <tbody>
               <tr>
@@ -369,24 +357,30 @@ var LichSetting = React.createClass({
       return (
         <div class="table-responsive">
           <table class="table table-bordered">
-            <thead>
+            <thead><tr class="success">
               <td>Phòng</td>
-              <td>Thực hành</td>
+              <td>Loại</td>
               <td>Số tiết</td>
               <td>Số sinh viên có mặt</td>
               <td>Số sinh viên vắng</td>
-              <td>Thao tác</td>
+              <td>Giờ học</td>
+              <td>Trạng thái</td>
+              <td>Thao tác</td></tr>
             </thead>
             <tbody>
               <tr>
                 <td><input type="text" ref="phong" /></td>
-                <td><select ref="thuc_hanh" class="form-control input-sm">
-                    <option value="false">Lý thuyết</option>
-                    <option value="true">Thực hành</option>
+                <td><select ref="ltype" class="form-control input-sm">
+                    <option value="lythuyet">Lý thuyết</option>
+                    <option value="thuchanh">Thực hành</option>
+                    <option value="tuhoc">Tự học</option>
+                    <option value="baitap">Bài tập</option>
                   </select></td>
                 <td><input type="text" ref="so_tiet" /></td>
                 <td>{this.props.lich.sv_co_mat}</td>
                 <td>{this.props.lich.sv_vang_mat}</td>
+                <td>{this.props.lich.alias_state}</td>
+                <td>{this.props.lich.alias_status}</td>
                 <td><button onClick={this.handleCancelEdit} class="btn btn-sm btn-success">Hủy</button><button onClick={this.handleCapnhat} class="btn btn-sm btn-primary">Cập nhật</button></td>                            
               </tr>
             </tbody>
@@ -411,11 +405,8 @@ var Lich = React.createClass({
   },
   componentDidMount: function(){
     React.renderComponent(<Grade2 lop={this.props.lop} />, document.getElementById('grades'));
-    if (this.state.lich.updated === true ){
-      React.renderComponent(<Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
-    } else {
-      React.renderComponent(<DisabledEditor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
-    } 
+    
+    React.renderComponent(<Editor lich={this.props.lich} lop={this.props.lop} giang_vien={this.props.giang_vien} /> , document.getElementById('editor'));
     
   },
   getInitialState: function() {
@@ -545,12 +536,14 @@ var Lich = React.createClass({
                 <LichSetting lich={this.state.lich} onCapnhat={this.handleCapnhat} onNghiday={this.handleNghiday} onComplete={this.handleComplete} />
                 <br />
             <div class="row">
+              <hr />
               <div class="col-sm-6">
-                <br />                
+                <p class="text-center"><h3>Lịch trình thực hiện</h3> </p>
                 <div id="editor"></div>
               </div>
               <div class="col-sm-6">
-                <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_du_kien }} />
+                <p class="text-center"><h3>Lịch trình dự kiến</h3></p>
+                <span dangerouslySetInnerHTML={{__html: this.state.lop.lich_trinh_du_kien }} />
               </div>
             </div>
           </div>                
