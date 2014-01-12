@@ -55,7 +55,7 @@ var Tuan = React.createClass({
 			    <div class="panel-heading">
 			      <h4 class="panel-title">
 			        <a data-toggle="collapse" data-parent="#accordion" href={"#"+this.props.colapse}>
-			          {"Tuần " + this.props.tuan.id} ({this.props.tuan.tu_ngay2} - {this.props.tuan.den_ngay2})
+			          {"Tuần " + this.props.tuan.stt} ({this.props.tuan.tu_ngay2} - {this.props.tuan.den_ngay2})
 			        </a>
 			      </h4>
 			    </div>

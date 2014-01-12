@@ -133,9 +133,10 @@
  		});
  		return (
  			<div class="table-responsive">
- 				<table class="table table-bordered">
- 					<thead>
+ 				<table class="table table-bordered table-striped">
+ 					<thead><tr class="danger">
  						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
+ 						</tr>
  					</thead>
  					<tbody>
  						{x}

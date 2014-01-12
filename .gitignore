@@ -17,3 +17,5 @@
 /tmp
 /public/system
 /public/assets
+/public/assets/fonts/*
+/public/assets/*.yml
