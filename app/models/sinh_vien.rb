@@ -1,4 +1,4 @@
-# encoding: utf-8
+#encoding: utf-8
 class SinhVien < ActiveRecord::Base
   acts_as_list
   include Comparable
