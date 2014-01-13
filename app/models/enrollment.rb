@@ -1,6 +1,6 @@
 class Enrollment < ActiveRecord::Base
 
-  default_scope order('id')
+  default_scope  includes(:sinh_vien).order('position')
   
   belongs_to :lop_mon_hoc
   belongs_to :sinh_vien

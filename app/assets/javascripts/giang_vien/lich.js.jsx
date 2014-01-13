@@ -98,9 +98,9 @@ var Enrollments = React.createClass({
     var self = this;
     var enrollments = this.props.data.map(function (enrollment, i) {
       if (self.props.state === false){
-        return <DisabledEnrollment stt={i} key={enrollment.id} enrollment={enrollment} />
+        return <DisabledEnrollment stt={i+1} key={enrollment.id} enrollment={enrollment} />
       } else {
-        return <Enrollment state={self.props.state} stt={i} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_idle={self.handleVang.bind(self, enrollment, 'idle')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')} on_note={self.handleVang.bind(self,enrollment,'note')} ajax={ {loading: self.props.loading} } />;
+        return <Enrollment state={self.props.state} stt={i+1} key={enrollment.id} enrollment={enrollment} on_absent={self.handleVang.bind(self,enrollment, 'vang')} on_plus={self.handleVang.bind(self,enrollment,'plus')} on_idle={self.handleVang.bind(self, enrollment, 'idle')} on_minus={self.handleVang.bind(self,enrollment,'minus')} on_phep={self.handleVang.bind(self,enrollment,'phep')} on_note={self.handleVang.bind(self,enrollment,'note')} ajax={ {loading: self.props.loading} } />;
       }      
     }); 
     return (
