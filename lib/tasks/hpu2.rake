@@ -1,22 +1,28 @@
 #encoding: utf-8
-namespace :hpu do    
+namespace :hpu2 do    
+  def check(str)
+	ss = "AÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÌÍỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYỲÝỶỸỴZ "
+    ss2 = "aàáảãạăằắẳẵặâầấẩẫậbcdđeèéẻẽẹêềếểễệfghiìíỉĩịjklmnoòóỏõọôồốổỗộơờớởỡợpqrstuùúủũụưừứửữựvwxyỳýỷỹỵz "
+	index = 0
+	ch = nil
+	while index < str.length
+		return false if  ss.index(str[index]).nil? and ss2.index(str[index]).nil?
+		index += 1
+	end
+	return true
+  end
   task sort_sv:  :environment do 
     Apartment::Database.switch('public')
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)
     ss = "AÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÌÍỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYỲÝỶỸỴZ "
             ss2 = "aàáảãạăằắẳẵặâầấẩẫậbcdđeèéẻẽẹêềếểễệfghiìíỉĩịjklmnoòóỏõọôồốổỗộơờớởỡợpqrstuùúủũụưừứửữựvwxyỳýỷỹỵz "
-    sv = SinhVien.find(1)
-    puts sv.ten
-    index = 0
-    while index < sv.ten.length
-      if ss.index(sv.ten[index]).nil? or ss2.index(sv.ten[index]).nil?
-        puts sv.ten[index]
-      else 
-        puts "A#{index}"
-      end
-      index += 1
-    end
+			
+   svs = SinhVien.all
+	svs.each do |sv|
+		puts sv.id if check(sv.ten) == false
+	end
+    
   end
   #1
   task load_tuan: :environment do 

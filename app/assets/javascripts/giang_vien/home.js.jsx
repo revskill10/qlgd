@@ -64,7 +64,7 @@ var Tuan = React.createClass({
 			      		<div class="table-responsive">
 			 				<table class="table table-bordered">
 			 					<thead style={{"font-weight":"bold"}}>
-			 						<td>Thứ</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Số tiết</td><td>Thực hành</td><td>Phòng</td><td>Mã lớp</td><td>Môn</td><td>Loại</td><td>Trạng thái</td>
+			 						<td>Thứ</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Số tiết</td><td>Giờ học</td><td>Phòng</td><td>Mã lớp</td><td>Môn</td><td>Loại</td><td>Trạng thái</td>
 			 					</thead>
 			 					<tbody>
 			 						{x}
@@ -87,7 +87,7 @@ var TuanRow = React.createClass({
 				<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 				<td>{this.props.data.tiet_bat_dau}</td>
 				<td>{this.props.data.so_tiet}</td>
-				<td>{this.props.data.thuc_hanh === false ? 'Lý thuyết' : 'Thực hành'}</td>
+				<td>{this.props.data.type_status}</td>
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.ma_lop}</td>
 				<td>{this.props.data.ten_mon_hoc}</td>
