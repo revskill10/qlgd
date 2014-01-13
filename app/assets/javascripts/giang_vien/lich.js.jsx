@@ -346,7 +346,7 @@ var LichSetting = React.createClass({
                 <td>{this.props.lich.alias_state}</td>
                 <td>{this.props.lich.alias_status}</td>
                 <td>
-                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary">Hoàn thành</button></div> : '' }                  
+                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary" title="" data-placement="left" data-toggle="tooltip" type="button" data-original-title="Nhấn vào hoàn thành để tính buổi dạy này vào khối lượng thực hiện giảng dạy">Hoàn thành</button></div> : '' }                  
                 </td>                            
               </tr>
             </tbody>
@@ -543,7 +543,7 @@ var Lich = React.createClass({
               </div>
               <div class="col-sm-6">
                 <p class="text-center"><h3>Lịch trình dự kiến</h3></p>
-                <span dangerouslySetInnerHTML={{__html: this.state.lop.lich_trinh_du_kien }} />
+                <span dangerouslySetInnerHTML={{__html: this.state.lop.lich_trinh_du_kien_html }} />
               </div>
             </div>
           </div>                
