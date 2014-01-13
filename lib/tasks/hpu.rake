@@ -1,5 +1,22 @@
 #encoding: utf-8
 namespace :hpu do    
+  task sort_sv:  :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    ss = "AÀÁẢÃẠĂẰẮẲẴẶÂẦẤẨẪẬBCDĐEÈÉẺẼẸÊỀẾỂỄỆFGHIÌÍỈĨỊJKLMNOÒÓỎÕỌÔỒỐỔỖỘƠỜỚỞỠỢPQRSTUÙÚỦŨỤƯỪỨỬỮỰVWXYỲÝỶỸỴZ "
+            ss2 = "aàáảãạăằắẳẵặâầấẩẫậbcdđeèéẻẽẹêềếểễệfghiìíỉĩịjklmnoòóỏõọôồốổỗộơờớởỡợpqrstuùúủũụưừứửữựvwxyỳýỷỹỵz "
+    sv = SinhVien.find(3583)
+    index = 0
+    while index < sv.ten.length
+      if ss.index(sv.ten[index]).nil? or ss2.index(sv.ten[index]).nil?
+        puts index
+      else 
+        puts "A#{index}"
+      end
+      index += 1
+    end
+  end
   #1
   task load_tuan: :environment do 
     Apartment::Database.switch('public')

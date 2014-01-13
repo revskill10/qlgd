@@ -62,10 +62,14 @@ class LopMonHoc < ActiveRecord::Base
   
   def tong_so_tiet
     return 0 unless self.settings
-    return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0)
+    return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0) + (self.settings[:so_tiet_tu_hoc] || 0) + (self.settings[:so_tiet_bai_tap] || 0)
   end
 
-  
+  def tong_so_tiet_hoc
+    return 0 unless self.settings
+    return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0) + (self.settings[:so_tiet_bai_tap] || 0)
+  end
+
   def generate_assignments
 #    return nil unless self.started?
     return nil unless self.settings.present?
