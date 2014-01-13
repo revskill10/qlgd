@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-//= require giang_vien/monitor
+
 
 var hdata = [
 	{tuan: 1, colapse: 'colapseOne', active: false, data: [

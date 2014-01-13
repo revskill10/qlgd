@@ -3,7 +3,12 @@ require 'lop_assignment_group_serializer'
 class Teacher::LopMonHocsController < TenantsController
 
 	def index		
-		@lop_mon_hocs = policy_scope(LopMonHoc).map{|k| LopMonHocSerializer.new(k)}
+		@lops = current_user.get_lops
+		if @lops.count > 0
+			@lop_mon_hocs = @lops.map{|k| LopMonHocSerializer.new(k)}
+		else
+			@lop_mon_hocs = []
+		end
 		render json: @lop_mon_hocs, :root => false
 	end
 
