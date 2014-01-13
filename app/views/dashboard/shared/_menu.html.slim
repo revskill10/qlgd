@@ -9,7 +9,7 @@
       = link_to "QLGD", '/', {class:"navbar-brand"}
     .collapse.navbar-collapse
       ul.nav.navbar-nav         
-        li= link_to "Hướng dẫn sử dụng", '/huongdan.pdf'          
+        li= link_to "Hướng dẫn sử dụng", '/huongdan.htm'          
         - if user_signed_in? and current_user.decorate.is_dao_tao?
           li= link_to "Đào tạo", '/daotao'
         - if user_signed_in? and current_user.decorate.is_quan_ly_sinh_vien?
