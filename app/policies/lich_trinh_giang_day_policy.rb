@@ -13,6 +13,7 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
   end
   
   def update?
+    return true if user.decorate.is_super_admin?
     #return false unless Pundit.policy!(user, lich_trinh_giang_day.lop_mon_hoc).update?
     !(lich_trinh_giang_day.state == "nghile") and !(lich_trinh_giang_day.state == "nghiday") and lich_trinh_giang_day.accepted? and user.get_lichs.map(&:id).include?(lich_trinh_giang_day.id) and !user.giang_vien(lich_trinh_giang_day.lop_mon_hoc).nil? and lich_trinh_giang_day.thoi_gian.localtime > Time.now
   end

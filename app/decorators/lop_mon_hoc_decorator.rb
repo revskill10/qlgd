@@ -11,7 +11,7 @@ class LopMonHocDecorator < Draper::Decorator
   	object.enrollments.count
   end
   def updated
-    object.started? and object.tong_so_tiet > 0
+    object.started? # and object.tong_so_tiet > 0
   end
   def so_tiet_ly_thuyet
   	return 0 if object.pending?

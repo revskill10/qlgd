@@ -1,6 +1,6 @@
 class Enrollment < ActiveRecord::Base
 
-
+  default_scope order('id')
   
   belongs_to :lop_mon_hoc
   belongs_to :sinh_vien
@@ -12,13 +12,18 @@ class Enrollment < ActiveRecord::Base
   has_many :attendances, :through => :sinh_vien
   has_many :submissions, :dependent => :destroy
   def tong_vang
-  	attendances.not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
+    attendances.not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
   end
   def so_tiet_thua
     attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.so_tiet_moi }
   end
   def diem_qua_trinh
   	assignment_groups.to_a.sum {|e| e.diem_trung_binh(sinh_vien.id) }
+  end
+
+  def tinhhinhvang
+    return 0 if lop_mon_hoc.tong_so_tiet_hoc == 0
+    (tong_vang * 100.0 / (lop_mon_hoc.tong_so_tiet_hoc - so_tiet_thua)).round(2)
   end
 
 end

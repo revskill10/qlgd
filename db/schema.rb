@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140111093450) do
+ActiveRecord::Schema.define(:version => 20140112203613) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -95,6 +95,7 @@ ActiveRecord::Schema.define(:version => 20140111093450) do
     t.integer  "sinh_vien_id"
     t.datetime "created_at",     :null => false
     t.datetime "updated_at",     :null => false
+    t.decimal  "tinhhinh"
   end
 
   add_index "enrollments", ["lop_mon_hoc_id", "sinh_vien_id"], :name => "index_enrollments_on_lop_mon_hoc_id_and_sinh_vien_id"
@@ -186,6 +187,7 @@ ActiveRecord::Schema.define(:version => 20140111093450) do
     t.string   "he"
     t.string   "nganh"
     t.integer  "gioi_tinh"
+    t.integer  "position"
   end
 
   create_table "submissions", :force => true do |t|
