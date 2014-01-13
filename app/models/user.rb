@@ -20,10 +20,12 @@ class User < ActiveRecord::Base
     extra_attributes.each do |name, value|
       case name.to_sym
       when :masinhvien
-        sv = SinhVien.where(code: value.upcase).first
-        self.imageable = sv if sv
-        gv = GiangVien.where(code: value.upcase).first
-        self.imageable = gv if gv      
+        if value
+          sv = SinhVien.where(code: value.upcase).first
+          self.imageable = sv if sv
+          gv = GiangVien.where(code: value.upcase).first
+          self.imageable = gv if gv      
+        end
       end
       self.email = self.username
     end
