@@ -176,6 +176,17 @@ namespace :hpu do
       lop.start! unless lop.started?
     end
   end
+
+  #9
+  task :sort_sinh_vien => :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)    
+    svs = SinhVien.all.sort
+    svs.each_with_index do |sv, index|
+      sv.insert_at(index+1)
+    end
+  end
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end
