@@ -122,19 +122,19 @@
  	},
  	render: function(){
  		var self = this;
- 		var x = this.state.data.map(function(d){
+ 		var x = this.state.data.map(function(d, index){
  			if (d.alias_state === 'Bổ sung') {
- 				return <CalendarRowBosung key={'bosung-' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUncomplete={self.handleUncomplete} data={d} />
+ 				return <CalendarRowBosung color={(index+1) % 2 === 0 ? 'danger': 'default'} key={'bosung-' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUncomplete={self.handleUncomplete} data={d} />
  			}
  			if (d.alias_state === 'Nghỉ dạy') {
- 				return <CalendarRowNghiday key={'nghiday' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
+ 				return <CalendarRowNghiday color={(index+1) % 2 === 0 ? 'danger': 'default'} key={'nghiday' + d.id} onRemove={self.handleRemove} onRestore={self.handleRestore} onUnNghiday={self.handleUnNghiday}  data={d} />
  			}
- 			return <CalendarRow key={'normal'+d.id} onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
+ 			return <CalendarRow color={(index+1) % 2 === 0 ? 'danger': 'default'} key={'normal'+d.id} onUpdate={self.handleUpdate} onRemove={self.handleRemove} onRestore={self.handleRestore} onComplete={self.handleComplete} onNghiday={self.handleNghiday} onUncomplete={self.handleUncomplete} data={d} />;
  		});
  		return (
  			<div class="table-responsive">
  				<table class="table table-bordered table-striped">
- 					<thead><tr class="danger">
+ 					<thead><tr class="success">
  						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
  						</tr>
  					</thead>
@@ -164,7 +164,7 @@ var CalendarRowNghiday = React.createClass({
 		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		if (this.state.edit === 0) {
 			return (
-				<tr style={boldstyle} class={this.props.data.color}>
+				<tr style={boldstyle} class={this.props.color}>
 					<td>{this.props.data.tuan}</td>
 					<td><a href={"/lich/" + this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
@@ -197,7 +197,7 @@ var CalendarRowBosung = React.createClass({
 	render: function(){
 		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		return (
-			<tr style={boldstyle} class={this.props.data.color}>
+			<tr style={boldstyle} class={this.props.color}>
 				<td>{this.props.data.tuan}</td>
 				<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 				<td>{this.props.data.tiet_bat_dau}</td>
@@ -260,7 +260,7 @@ var CalendarRow = React.createClass({
 		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		if (this.state.edit === 0) {
 			return (
-				<tr style={boldstyle} class={this.props.data.color}>
+				<tr style={boldstyle} class={this.props.color}>
 					<td>{this.props.data.tuan}</td>
 					<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
@@ -281,7 +281,7 @@ var CalendarRow = React.createClass({
 			);
 		} else {
 			return (
-				<tr style={boldstyle} class={this.props.data.color}>
+				<tr style={boldstyle} class={this.props.color}>
 					<td>{this.props.data.tuan}</td>
 					<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 					<td>{this.props.data.tiet_bat_dau}</td>
