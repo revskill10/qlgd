@@ -11,6 +11,11 @@ Qlgd::Application.routes.draw do
       get "calendar" => "dashboard#calendar", :as => :calendar
       get "/lich/:id" => "dashboard#lich", :as => :lich
       get "/lop/:id" => "dashboard#lop"  
+      get "/daotao" => "dashboard#daotao"
+    namespace :daotao do 
+      get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
+      get "/lop_mon_hocs" => 'ghep_lop#lop_mon_hocs'
+    end
     namespace :teacher do 
      
       #get '/' => 'static_pages#home'

@@ -34,10 +34,10 @@ class DashboardController < TenantsController
     end
   end
   
-  def monitor
+  def daotao
 
     respond_to do |format|
-        format.html {render "dashboard/monitor/teacher"}
+        format.html {render "daotao/index"}
     end
   end
 end

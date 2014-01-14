@@ -13,6 +13,10 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
     return "" unless object.noi_dung
     object.noi_dung
   end
+  def content_html
+    return '' if content.try(:length) == 0 or content.nil?
+    content.gsub(/\n/,'<br/>')
+  end
   def updated
   	object.state.to_sym != :nghile and object.state.to_sym != :nghiday and object.accepted? #and object.thoi_gian.localtime <= Time.now
   end
