@@ -10,7 +10,7 @@
 var DisabledEnrollment = React.createClass({
   render: function(){
     return (
-      <tr>
+      <tr class={this.props.stt % 2 == 0 ? 'danger' : 'default'}>
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>        
         <td><div class="progress">
@@ -65,7 +65,7 @@ var Enrollment = React.createClass({
     if (this.props.enrollment.idle_status === "Có" && parseInt(this.props.enrollment.so_tiet_vang) < parseInt(this.props.enrollment.max) && this.props.state === true && this.props.ajax.loading === false ) {plus = '';}
     if (this.props.enrollment.idle_status === "Có" && parseInt(this.props.enrollment.so_tiet_vang) > 0 && this.props.state === true && this.props.ajax.loading === false) {minus = '';}
     return (
-      <tr>
+      <tr class={this.props.stt % 2 == 0 ? 'danger' : 'default'}>
         <td>{this.props.stt}</td>
         <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>        
         <td><div class="progress">
