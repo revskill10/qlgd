@@ -187,6 +187,18 @@ namespace :hpu do
       sv.insert_at(index+1)
     end
   end
+
+  #10
+  task :reindex => :environment do
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)    
+    SinhVien.reindex
+    LopMonHoc.reindex    
+    Sunspot.commit
+  end
+  
+
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end
