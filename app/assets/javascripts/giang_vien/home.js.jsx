@@ -47,8 +47,8 @@ var Home2 = React.createClass({
 
 var Tuan = React.createClass({
 	render: function(){		
-		var x = this.props.data.map(function(d){
-			return <TuanRow  data={d} />
+		var x = this.props.data.map(function(d, index){
+			return <TuanRow color={(index+1) % 2 === 0 ? 'danger' : 'warning'}  data={d} />
 		});
 		return(
 			<div class="panel panel-default">
@@ -64,7 +64,9 @@ var Tuan = React.createClass({
 			      		<div class="table-responsive">
 			 				<table class="table table-bordered">
 			 					<thead style={{"font-weight":"bold"}}>
-			 						<td>Thứ</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Số tiết</td><td>Giờ học</td><td>Phòng</td><td>Mã lớp</td><td>Môn</td><td>Loại</td><td>Trạng thái</td>
+			 						<tr class="success">
+			 							<td>Thứ</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Số tiết</td><td>Giờ học</td><td>Phòng</td><td>Mã lớp</td><td>Môn</td><td>Loại</td><td>Trạng thái</td>
+			 						</tr>
 			 					</thead>
 			 					<tbody>
 			 						{x}
@@ -82,7 +84,7 @@ var TuanRow = React.createClass({
 	render: function(){
 		var boldstyle = {'font-weight': this.props.data.active === true ? 'bold' : ''};
 		return (
-			<tr style={boldstyle} class={this.props.data.color}>
+			<tr style={boldstyle} class={this.props.color}>
 				<td>{this.props.data.thu}</td>
 				<td><a href={'/lich/'+this.props.data.id}>{this.props.data.thoi_gian}</a></td>
 				<td>{this.props.data.tiet_bat_dau}</td>
