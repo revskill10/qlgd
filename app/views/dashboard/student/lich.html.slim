@@ -2,3 +2,76 @@
 
 .container
   
+  h3 Thông tin lớp học
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Mã lớp
+          td Môn
+          td Tổng số tiết
+          td Ngôn ngữ
+      tbody
+        tr
+          td= @lich.lop_mon_hoc.ma_lop
+          td= @lich.lop_mon_hoc.ten_mon_hoc
+          td= @lich.lop_mon_hoc.tong_so_tiet
+          td= @lich.lop_mon_hoc.decorate.language
+
+  h4 Đề cương chi tiết
+  span= raw @lich.lop_mon_hoc.decorate.de_cuong_chi_tiet_html
+  hr
+  h3 Thông tin giờ học
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Giảng viên
+          td Phòng
+          td Loại
+          td Số tiết
+          td Số sinh viên có mặt
+          td Số sinh viên vắng
+          td Giờ học
+          td Trạng thái
+      tbody
+        tr
+          td= @lich.giang_vien.hovaten
+          td= @lich.phong
+          td= @lich.type_status
+          td= @lich.so_tiet_moi
+          td= @lich.sv_co_mat
+          td= @lich.sv_vang_mat
+          td= @lich.alias_state
+          td= @lich.alias_status
+  hr
+  h3 Sinh viên vắng mặt
+  .table-responsive
+    table.table.table-bordered.table-striped
+      thead
+        tr.success
+          td Stt
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Tình hình đi học
+          td Số tiết vắng
+          td Ghi chú
+      tbody
+        - if @attendances.count > 0
+          - @attendances.each_with_index do |at,index|
+            - enrollment = at.enrollment
+            tr
+              td= "#{index+1}"
+              td= at.sinh_vien.hovaten
+              td= at.sinh_vien.code
+              td= at.sinh_vien.ma_lop_hanh_chinh
+              td
+                .progress
+                  .progress-bar.progress-bar-success style="width: #{enrollment.tinhhinhvang}%"
+                    span.sr-only= "#{enrollment.tinhhinhvang}"
+              td= at.so_tiet_vang
+              td= at.note
+
+  h3 Nội dung buổi học
+

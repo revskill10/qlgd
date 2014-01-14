@@ -14,6 +14,8 @@ class DashboardController < TenantsController
       if current_user and Pundit.policy!(current_user, @lich).update?                         
         format.html {render "dashboard/teacher/lich"}            
       else
+        @attendances = @lich.attendances.vang_hoac_tre
+        @lich = @lich.decorate
         format.html {render "dashboard/student/lich"}
       end
     end

@@ -1,4 +1,6 @@
 class Attendance < ActiveRecord::Base
+  default_scope includes(:sinh_vien).order("sinh_viens.position")
+  
   attr_accessible :note, :phep, :so_tiet_vang, :state, :sinh_vien_id
 
   belongs_to :lich_trinh_giang_day
@@ -30,7 +32,9 @@ class Attendance < ActiveRecord::Base
       transition all => :idle # khong phai di hoc
     end
   end
-  
+  def enrollment
+    lich_trinh_giang_day.lop_mon_hoc.enrollments.where(sinh_vien_id: sinh_vien_id).first
+  end
   def mark_idle
     self.phep = nil
     self.so_tiet_vang = 0
