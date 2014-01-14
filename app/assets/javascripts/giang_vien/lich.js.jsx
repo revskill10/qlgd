@@ -76,12 +76,12 @@ var Enrollment = React.createClass({
           <span>{this.props.enrollment.tinhhinh +"%"}</span>
         </div>
       </div></td>
-        <td><button onClick={this.props.on_absent} disabled={this.props.enrollment.idle_status === "Không" || this.props.ajax.loading === true || this.props.enrollment.status === "Trễ" ? 'disabled' : ''}  class={css[this.props.enrollment.status]}>{this.props.enrollment.status}</button></td>        
-        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
-        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
-        <td><button disabled={this.props.enrollment.idle_status === "Không" && ( ( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status]}>{this.props.enrollment.phep_status}</button></td>
-        <td><button onClick={this.props.on_idle} class={idle[this.props.enrollment.idle_status]}>{this.props.enrollment.idle_status}</button></td>
-        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật ghi chú</button></td>
+        <td><button onClick={this.props.on_absent} disabled={this.props.enrollment.idle_status === "Không" || this.props.ajax.loading === true || this.props.enrollment.status === "Trễ" ? 'disabled' : ''}  class={css[this.props.enrollment.status] + ' curl-top-left'}>{this.props.enrollment.status}</button></td>        
+        <td><button onClick={this.props.on_plus} class="btn btn-default btn-sm curl-top-left" disabled={plus === 'disabled' ? 'disabled' : ''}><span class="glyphicon glyphicon-plus"></span></button>{'   '}{this.props.enrollment.so_tiet_vang}{'   '}
+        <button onClick={this.props.on_minus}  class="btn btn-default btn-sm curl-top-left" disabled={minus === 'disabled' ? 'disabled' : ''} ><span class="glyphicon glyphicon-minus"></span></button></td>
+        <td><button disabled={this.props.enrollment.idle_status === "Không" && ( ( (this.props.enrollment.so_tiet_vang === 0 && this.props.state===true) || this.props.ajax.loading === true) ) ? 'disabled' : ''} onClick={this.props.on_phep} class={phep[this.props.enrollment.phep_status] + ' curl-top-left'}>{this.props.enrollment.phep_status}</button></td>
+        <td><button onClick={this.props.on_idle} class={idle[this.props.enrollment.idle_status] + ' curl-top-left'}>{this.props.enrollment.idle_status}</button></td>
+        <td><input type="text" value={value} onChange={this.handleChange}  /><button class="btn btn-primary btn-sm curl-top-left" onClick={this.onmsubmit} disabled={(this.props.ajax.loading === true && this.props.state === true ) ? 'disabled' : ''} >Cập nhật ghi chú</button></td>
       </tr>
     );
   }
@@ -346,7 +346,7 @@ var LichSetting = React.createClass({
                 <td>{this.props.lich.alias_state}</td>
                 <td>{this.props.lich.alias_status}</td>
                 <td>
-                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary" title="" data-placement="left" data-toggle="tooltip" type="button" data-original-title="Nhấn vào hoàn thành để tính buổi dạy này vào khối lượng thực hiện giảng dạy">Hoàn thành</button></div> : '' }                  
+                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary curl-top-left" title="" data-placement="left" data-toggle="tooltip" type="button" data-original-title="Nhấn vào hoàn thành để tính buổi dạy này vào khối lượng thực hiện giảng dạy">Hoàn thành</button></div> : '' }                  
                 </td>                            
               </tr>
             </tbody>
@@ -381,7 +381,7 @@ var LichSetting = React.createClass({
                 <td>{this.props.lich.sv_vang_mat}</td>
                 <td>{this.props.lich.alias_state}</td>
                 <td>{this.props.lich.alias_status}</td>
-                <td><button onClick={this.handleCancelEdit} class="btn btn-sm btn-success">Hủy</button><button onClick={this.handleCapnhat} class="btn btn-sm btn-primary">Cập nhật</button></td>                            
+                <td><button onClick={this.handleCancelEdit} class="btn btn-sm btn-success curl-top-left">Hủy</button><button onClick={this.handleCapnhat} class="btn btn-sm btn-primary curl-top-left">Cập nhật</button></td>                            
               </tr>
             </tbody>
           </table>

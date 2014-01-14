@@ -175,9 +175,9 @@ var CalendarRowNghiday = React.createClass({
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td>{this.props.data.note}</td>
 					<td>
-						<button onClick={this.onUnNghiday} style={{display: this.props.data.can_unnghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning">Hủy đăng ký</button>
-						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
-						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>
+						<button onClick={this.onUnNghiday} style={{display: this.props.data.can_unnghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning curl-top-left">Hủy đăng ký</button>
+						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger curl-top-left">Xóa</button>
+						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default curl-top-left">Phục hồi</button>
 					</td>
 				</tr>
 			);
@@ -208,9 +208,9 @@ var CalendarRowBosung = React.createClass({
 				<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 				<td>{this.props.data.note}</td>
 				<td>
-					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
-					<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>
-					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Báo lỗi</button>
+					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger curl-top-left">Xóa</button>
+					<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default curl-top-left">Phục hồi</button>
+					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary curl-top-left">Báo lỗi</button>
 				</td>
 			</tr>
 		);
@@ -271,11 +271,11 @@ var CalendarRow = React.createClass({
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
 					<td>
-						<button onClick={this.onNghiday} style={{display: this.props.data.can_nghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning">Đăng ký nghỉ</button>
-						<button onClick={this.onEdit} style={{display: this.props.data.can_edit === false ?  'none' : ''}} class="btn btn-sm btn-success">Sửa</button>
-						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger">Xóa</button>
-						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default">Phục hồi</button>						
-						<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary">Hủy hoàn thành</button>
+						<button onClick={this.onNghiday} style={{display: this.props.data.can_nghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning curl-top-left">Đăng ký nghỉ</button>
+						<button onClick={this.onEdit} style={{display: this.props.data.can_edit === false ?  'none' : ''}} class="btn btn-sm btn-success curl-top-left">Sửa</button>
+						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger curl-top-left">Xóa</button>
+						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default curl-top-left">Phục hồi</button>						
+						<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary curl-top-left">Hủy hoàn thành</button>
 					</td>
 				</tr>
 			);
@@ -303,8 +303,8 @@ var CalendarRow = React.createClass({
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
 					<td>
-						<button onClick={this.onCancelEdit} class="btn btn-sm btn-warning">Hủy</button>
-						<button onClick={this.onUpdate} class="btn btn-sm btn-success">Cập nhật</button>
+						<button onClick={this.onCancelEdit} class="btn btn-sm btn-warning curl-top-left">Hủy</button>
+						<button onClick={this.onUpdate} class="btn btn-sm btn-success curl-top-left">Cập nhật</button>
 					</td>
 				</tr>
 			);

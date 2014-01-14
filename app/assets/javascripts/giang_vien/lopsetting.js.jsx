@@ -75,7 +75,7 @@ var LopSetting = React.createClass({
 			<br />
 			<form onSubmit={this.handleSubmit}>
 				<input type="submit" value="Cập nhật" class="btn btn-primary"/>
-				<button onClick={this.onCancelEdit} class="btn btn-sm btn-warning">Hủy</button>
+				<button onClick={this.onCancelEdit} class="btn btn-sm btn-warning curl-top-left">Hủy</button>
 				<table class="table table-bordered table-condensed table-striped">
 		          <thead><tr class="success">
 		            <td>Thông số</td>		            
@@ -110,7 +110,7 @@ var LopSetting = React.createClass({
 			return (
 				<div>
 					<br/>
-					<button onClick={this.onEdit} class="btn btn-sm btn-success">Sửa</button>					
+					<button onClick={this.onEdit} class="btn btn-sm btn-success curl-top-left">Sửa</button>					
 					<table class="table table-bordered table-condensed">
 			          <thead>
 			            <td>Thông số</td>		            
