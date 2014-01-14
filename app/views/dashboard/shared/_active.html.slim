@@ -1,0 +1,29 @@
+.container
+  h4 Lịch học trong ngày
+  .table-responsive
+    table.table.table-bordered.table-striped
+      thead
+        tr.success
+          td Thời gian
+          td Số tiết
+          td Phòng
+          td Giảng viên
+          td Mã lớp
+          td Môn
+          td Loại
+          td Giờ học
+          td Trạng thái
+      tbody
+        - if @lichs.count > 0
+          - @lichs.each_with_index do |lich, index|
+            tr class="#{index % 2 == 0 ? 'warning' : 'danger'}"
+              td
+                = link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/lich/#{lich.id}"
+              td= lich.so_tiet_moi
+              td= lich.phong
+              td= lich.giang_vien.hovaten
+              td= lich.lop_mon_hoc.ma_lop
+              td= lich.lop_mon_hoc.ten_mon_hoc
+              td= lich.alias_state
+              td= lich.type_status
+              td= lich.alias_status
