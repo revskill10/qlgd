@@ -46,7 +46,7 @@ class User < ActiveRecord::Base
   
   def lich_chinhs
     if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
-      return self.imageable.lich_trinh_giang_days
+      return self.imageable.try(:lich_trinh_giang_days)
     end
     []
   end
