@@ -17,3 +17,4 @@
 //= require bootstrap-datepicker
 //= require bootstrap-datepicker.vi
 //= require react
+//= require select2
