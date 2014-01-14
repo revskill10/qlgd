@@ -253,7 +253,7 @@
                         return (
                                 <div >
                                 <hr />
-                                <button class="btn btn-primary btn-sm" onClick={this.enableAdd}>Thêm</button>
+                                <button class="btn btn-primary btn-sm curl-top-left" onClick={this.enableAdd}>Thêm</button>
                                 <hr />
                                 <ul id="multi">{x}</ul>       
                                 </div>                         
@@ -264,8 +264,8 @@
                                     <input ref="name" type="text" placeholder="Name" />
                                     <input ref="weight" type="text" placeholder="Weight" />
                                     <div class="btn-group btn-group-sm">
-                                    <button class="btn btn-primary btn-sm" onClick={this.cancelAdd}>Hủy</button>
-                                    <button class="btn btn-primary btn-sm" onClick={this.onAdd}>Cập nhật</button>
+                                    <button class="btn btn-primary btn-sm curl-top-left" onClick={this.cancelAdd}>Hủy</button>
+                                    <button class="btn btn-primary btn-sm curl-top-left" onClick={this.onAdd}>Cập nhật</button>
                                     </div>
                                     <hr />
                                     <ul id="multi">{x}</ul>
@@ -329,9 +329,9 @@
                                     <div class="row">
                                         <div class="col-sm-3" class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</div>
                                         <div style={{"font-weight": "bold"}} class="col-sm-3" onClick={this.handleWeight}>{this.props.weight} %</div>                                    
-                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
+                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm curl-top-left" onClick={this.handleDelete}>Xóa</button>
                                         <span>{'                 '}</span>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Thêm đầu điểm</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleClick}>Thêm đầu điểm</button>
                                         <ul id={'group'+this.props.group} data-group={this.props.group} class="tile__list">{x}</ul>
                                     </div>
                                 </li>
@@ -343,12 +343,12 @@
                                         <input ref="name" type="text" id={"group" + this.props.group} placeholder="Name" />
                                         <input ref="weight" type="text" id={"weight" + this.props.group} placeholder="Weight" />
                                         <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Hủy</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Cập nhật</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.cancelUpdateName}>Hủy</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleEdit}>Cập nhật</button>
                                         </div>
                                     </div>
                                     <div>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleClick}>Thêm đầu điểm</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleClick}>Thêm đầu điểm</button>
                                         <ul>{x}</ul>
                                     </div>
                                 </li>
@@ -362,13 +362,13 @@
                                     <li>
                                         <span class="tile__name" onDoubleClick={this.handleUpdateName}>{this.props.group_name}</span>
                                         <span onDoubleClick={this.handleWeight}>{this.props.weight}</span>
-                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button>
+                                        <button style={{display: this.props.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm curl-top-left" onClick={this.handleDelete}>Xóa</button>
                                         <div>
                                             <input  ref="name" type="text" placeholder="Name" />
                                             <input  ref="points" type="text" placeholder="points" />
                                             <div class="btn-group btn-group-sm">
-                                            <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Hủy</button>
-                                            <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Cập nhật</button>
+                                            <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleCancel} >Hủy</button>
+                                            <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleAdd} >Cập nhật</button>
                                             </div>
                                             <ul>{x}</ul>
                                         </div>
@@ -382,16 +382,16 @@
                                         <input ref="name" type="text" id={"group" + this.props.group} placeholder="Name" />
                                         <input ref="weight" type="text" id={"weight" + this.props.group} placeholder="Weight" />
                                         <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-primary btn-sm" onClick={this.cancelUpdateName}>Hủy</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleEdit}>Cập nhật</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.cancelUpdateName}>Hủy</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleEdit}>Cập nhật</button>
                                         </div>
                                     </div>
                                     <div>
                                         <input  ref="name" type="text" placeholder="Name" />
                                         <input  ref="points" type="text" placeholder="points" />
                                         <div class="btn-group btn-group-sm">
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleCancel} >Hủy</button>
-                                        <button class="btn btn-primary btn-sm" onClick={this.handleAdd} >Cập nhật</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleCancel} >Hủy</button>
+                                        <button class="btn btn-primary btn-sm curl-top-left" onClick={this.handleAdd} >Cập nhật</button>
                                         </div>
                                         <ul>{x}</ul>
                                     </div>
@@ -447,7 +447,7 @@
                     )
                 } else {
                     return <li data-type="assignment" data-assignment={this.props.data.assignment_id} data-group={this.props.group} id={'item'+this.props.data.assignment_id} class={'group'+this.props.group}><div onDoubleClick={this.handleEdit}><span>{this.props.data.name}</span><span>, điểm tối đa: {this.props.data.points}</span><span>
-                    <button style={{display: this.props.data.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
+                    <button style={{display: this.props.data.can_destroy === false ? 'none' : ''}} class="btn btn-danger btn-sm curl-top-left" onClick={this.handleDelete}>Xóa</button></span></div></li>                                                
                         
                 }                                
             }                

@@ -90,7 +90,7 @@ var DisabledRowLichGiangDay = React.createClass({
 	 				<div>
 	 					<span dangerouslySetInnerHTML={{__html: this.props.data.content_html }} />
 	 				</div>
-	 				<button onClick={this.onEdit} class="btn btn-sm btn-default">Sửa nội dung</button>
+	 				<button onClick={this.onEdit} class="btn btn-sm btn-default curl-top-left">Sửa nội dung</button>
 	 				<hr />
 	 			</li>
 	 		);
@@ -100,8 +100,8 @@ var DisabledRowLichGiangDay = React.createClass({
  					<div>
  						<textarea ref='content' className='expanding' placeholder='Nội dung buổi học...' style={{width: '100%', minHeight: 200}} />
  					</div>
- 					<button onClick={this.onCancel} class="btn btn-sm btn-default">Hủy</button>
- 					<button onClick={this.onUpdate} class="btn btn-sm btn-primary">Cập nhật</button>
+ 					<button onClick={this.onCancel} class="btn btn-sm btn-default curl-top-left">Hủy</button>
+ 					<button onClick={this.onUpdate} class="btn btn-sm btn-primary curl-top-left">Cập nhật</button>
  					<hr />
  				</li>
  			);

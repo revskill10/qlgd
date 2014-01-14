@@ -126,7 +126,7 @@ var Bosung = React.createClass({
 			return (
 				<div>
 					<br />
-					<button class="btn btn-sm btn-success" onClick={this.onAdd} >Đăng ký bổ sung</button>
+					<button class="btn btn-sm btn-success curl-top-left" onClick={this.onAdd} >Đăng ký bổ sung</button>
 					<div class="table-responsive">
 						<table class="table table-bordered">
 							<thead>
@@ -200,8 +200,8 @@ var Bosung = React.createClass({
 									</select>
 								</td>								
 								<td>
-									<button class="btn btn-sm btn-success" onClick={this.onCancelAdd} >Hủy</button>
-									<button class="btn btn-sm btn-success" onClick={this.onSubmitAdd} >Cập nhật</button>
+									<button class="btn btn-sm btn-success curl-top-left" onClick={this.onCancelAdd} >Hủy</button>
+									<button class="btn btn-sm btn-success curl-top-left" onClick={this.onSubmitAdd} >Cập nhật</button>
 								</td>
 							</tbody>
 						</table>
@@ -297,9 +297,9 @@ var Row2 = React.createClass({
 				<td>{this.props.data.phong}</td>
 				<td>{this.props.data.type_status}</td>
 				<td>{this.props.data.alias_status}</td>
-				<td><button class="btn btn-sm btn-success" onClick={this.onClickEdit} style={{display: this.props.data.can_edit === false ? 'none' : ''}} >Sửa</button>
-				<button class="btn btn-sm btn-danger" onClick={this.onRemove} style={{display: this.props.data.can_remove === false ? 'none' : ''}} >Xóa</button>
-				<button class="btn btn-sm btn-info" onClick={this.onRestore} style={{display: this.props.data.can_restore === false ? 'none' : ''}} >Phục hồi</button></td>
+				<td><button class="btn btn-sm btn-success curl-top-left" onClick={this.onClickEdit} style={{display: this.props.data.can_edit === false ? 'none' : ''}} >Sửa</button>
+				<button class="btn btn-sm btn-danger curl-top-left" onClick={this.onRemove} style={{display: this.props.data.can_remove === false ? 'none' : ''}} >Xóa</button>
+				<button class="btn btn-sm btn-info curl-top-left" onClick={this.onRestore} style={{display: this.props.data.can_restore === false ? 'none' : ''}} >Phục hồi</button></td>
 				</tr>
 			);
 		} else {
