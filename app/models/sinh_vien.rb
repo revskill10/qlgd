@@ -10,6 +10,20 @@ class SinhVien < ActiveRecord::Base
   has_many :submissions, :through => :enrollments
   has_many :lop_mon_hocs, :through => :enrollments, :uniq => true
 
+  FACETS = [:ten, :ma_lop_hanh_chinh, :nganh, :khoa, :he, :hoc_ky, :nam_hoc]
+  searchable do
+    text :ten, :boost => 5
+    text :code, :hovaten, :ma_lop_hanh_chinh, :gioi_tinh, :he, :khoa, :nganh, :tin_chi
+    text :ngay_sinh do 
+      ngay_sinh.strftime("%d/%m/%Y")
+    end    
+    text :hoc_ky do 
+      Tenant.first.hoc_ky
+    end
+    text :nam_hoc do 
+      Tenant.first.nam_hoc
+    end
+  end
   def lich_trinh_giang_days    
     return []if lop_mon_hocs.count == 0
     tmp = []

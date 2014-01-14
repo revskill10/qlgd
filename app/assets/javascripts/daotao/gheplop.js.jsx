@@ -78,6 +78,41 @@ var xdata = {
 				id: function(object) { return object; }
 		    }
 		});
+		$("#sv").select2({
+		    placeholder: "Tìm sinh viên",
+		    minimumInputLength: 3,
+		    ajax: {
+		    	url: "/daotao/sinh_viens.json",			    	
+				quietMillis: 100,
+				data: function (term, page) { 
+				    return {
+					    q: term, //search term
+					    page_limit: 10, // page size
+					    page: page, // page number				    
+				    };					    
+		    	},
+		    	results: function (data, page) {
+				    var more = (page * 10) < data.total; // whether or not there are more results available
+				     
+				    // notice we return the value of more so Select2 knows if more results can be loaded
+				    return {results: data, more: more};
+				},
+				text: function(object) { return object; },
+				id: function(object) { return object; }
+		    }
+		});
+ 	},
+ 	getLopHanhChinh: function(){
+ 		var lhc = $('#lhc').val();
+ 		var lmh = $('#lmh').val();
+ 		var sv = $('#sv').val();
+ 		if (lhc != null && lmh != null) {
+
+ 		} else if (sv != null && lmh != null) {
+
+ 		} else {
+ 			alert('Bạn phải chọn lớp hành chính, hoặc sinh viên, hoặc lớp môn học');
+ 		}
  	},
  	render: function(){ 		
  		return (
@@ -88,17 +123,18 @@ var xdata = {
  							<tr>
  								<td>
  								<h4>Chọn lớp hành chính</h4> 				
- 				 <input type="hidden" id="lhc" style={{width:"300px"}} class="input-xlarge" />
+ 				 <input type="hidden" id="lhc" style={{width:"500px"}} class="input-xlarge" />
+ 				 <button onClick={this.getLopHanhChinh} class="btn btn-success">Chọn</button>
  								<hr />
- 								<SinhVien data={this.state.sinh_viens} onChange={this.onChangeSinhVien} /></td>
+ 								<h4>Chọn sinh viên</h4> 				
+ 				 <input type="hidden" id="sv" style={{width:"500px"}} class="input-xlarge" /></td>
  								<td><div>
  				<h4>Chọn lớp Môn học</h4> 				
- 				 <input type="hidden" id="lmh" style={{width:"300px"}} class="input-xlarge" />
+ 				 <input type="hidden" id="lmh" style={{width:"500px"}} class="input-xlarge" />
  			</div></td>
  							</tr>
- 							<tr>
- 								<td><DSHanhChinh /></td>
- 								<td><DSLopMonHoc /></td>
+ 							<tr id="kq">
+ 								
  							</tr> 												
  						</tbody>
  					</table>
@@ -107,6 +143,7 @@ var xdata = {
  		);
  	}
  });
+ 
  var LopHanhChinh = React.createClass({ 	 	
  	render: function(){
  		return (

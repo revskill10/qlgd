@@ -17,7 +17,33 @@ class LopMonHoc < ActiveRecord::Base
   has_many :assistants, :dependent => :destroy
   has_many :users, :through => :assistants, :uniq => true
   scope :pending_or_started, where(state: ["pending","started"]) 
-  
+
+  FACETS = [:ma_lop, :ten_mon_hoc, :hoc_ky, :nam_hoc]
+  searchable do
+    text :ma_lop, :ten_mon_hoc, :de_cuong_chi_tiet
+    text :lich_trinh_giang_days do
+      lich_trinh_giang_days.map { |lich| lich.noi_dung }
+    end
+    text :giang_viens do 
+      giang_viens.map {|gv| gv.hovaten}
+    end
+    text :assistants do 
+      assistants.map {|as| as.hovaten}
+    end
+    text :enrollments do
+      enrollments.map { |enrollment| enrollment.sinh_vien.code + " " + enrollment.sinh_vien.hovaten }
+    end    
+    text :de_cuong_chi_tiet do 
+      settings["de_cuong_chi_tiet"]
+    end    
+    text :hoc_ky do 
+      Tenant.first.hoc_ky
+    end
+    text :nam_hoc do 
+      Tenant.first.nam_hoc
+    end
+  end
+
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so
       transition all  => :started
