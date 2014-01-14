@@ -28,6 +28,10 @@ class LopMonHocDecorator < Draper::Decorator
     return '' unless object.settings
     object.settings[:de_cuong_chi_tiet]
   end
+  def de_cuong_chi_tiet_html
+    return '' if de_cuong_chi_tiet.try(:length) == 0 or de_cuong_chi_tiet.nil?
+    de_cuong_chi_tiet.gsub(/\n/,'<br/>')
+  end
   def so_tiet_thuc_hanh
   	return 0 if object.pending?
     return 0 unless object.settings
