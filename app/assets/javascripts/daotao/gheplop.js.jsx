@@ -13,12 +13,7 @@ var xdata = {
 		{sinh_vien_id: 3, hovaten: 's3'}]
 };
  var GhepLop = React.createClass({
- 	getInitialState: function(){
- 		return {lop_hanh_chinhs: [], lop_mon_hocs: [], sinh_viens: []}
- 	},
- 	loadData: function(){
- 		this.setState({lop_hanh_chinhs: xdata.lop_hanh_chinhs, lop_mon_hocs: xdata.lop_mon_hocs, sinh_viens: xdata.sinh_viens});
- 	},
+ 	
  	onChangeLopHanhChinh: function(ma_lop_hanh_chinh){
  		alert(ma_lop_hanh_chinh);
  	},
@@ -27,87 +22,84 @@ var xdata = {
  	},
  	onChangeSinhVien: function(sinh_vien_id){
 
- 	},
- 	componentWillMount: function(){
- 		this.loadData();
  	}, 	
  	componentDidMount: function(){ 		 		
 		$("#lhc").select2({
-		    placeholder: "Tìm lớp hành chính",
-		    minimumInputLength: 3,
-		    ajax: {
-		    	url: "/daotao/lop_hanh_chinhs.json",			    	
-				quietMillis: 100,
-				data: function (term, page) { 
-				    return {
-					    q: term, //search term
-					    page_limit: 10, // page size
-					    page: page, // page number				    
-				    };					    
-		    	},
-		    	results: function (data, page) {
-				    var more = (page * 10) < data.total; // whether or not there are more results available
-				     
-				    // notice we return the value of more so Select2 knows if more results can be loaded
-				    return {results: data, more: more};
-				},
-				text: function(object) { return object; },
-				id: function(object) { return object; }
-		    }
-		});
-		$("#lmh").select2({
-		    placeholder: "Tìm lớp môn học",
-		    minimumInputLength: 3,
-		    ajax: {
-		    	url: "/daotao/lop_mon_hocs.json",			    	
-				quietMillis: 100,
-				data: function (term, page) { 
-				    return {
-					    q: term, //search term
-					    page_limit: 10, // page size
-					    page: page, // page number				    
-				    };					    
-		    	},
-		    	results: function (data, page) {
-				    var more = (page * 10) < data.total; // whether or not there are more results available
-				     
-				    // notice we return the value of more so Select2 knows if more results can be loaded
-				    return {results: data, more: more};
-				},
-				text: function(object) { return object; },
-				id: function(object) { return object; }
-		    }
-		});
-		$("#sv").select2({
-		    placeholder: "Tìm sinh viên",
-		    minimumInputLength: 3,
-		    ajax: {
-		    	url: "/daotao/sinh_viens.json",			    	
-				quietMillis: 100,
-				data: function (term, page) { 
-				    return {
-					    q: term, //search term
-					    page_limit: 10, // page size
-					    page: page, // page number				    
-				    };					    
-		    	},
-		    	results: function (data, page) {
-				    var more = (page * 10) < data.total; // whether or not there are more results available
-				     
-				    // notice we return the value of more so Select2 knows if more results can be loaded
-				    return {results: data, more: more};
-				},
-				text: function(object) { return object; },
-				id: function(object) { return object; }
-		    }
-		});
+                 placeholder: "Tìm lớp hành chính",
+                 minimumInputLength: 3,
+                 ajax: {
+                         url: "/daotao/lop_hanh_chinhs.json",                                 
+                                quietMillis: 100,
+                                data: function (term, page) {
+                                 return {
+                                         q: term, //search term
+                                         page_limit: 30, // page size
+                                         page: page, // page number                                
+                                 };                                        
+                         },
+                         results: function (data, page) {
+                                 var more = (page * 30) < data.total; // whether or not there are more results available
+                                
+                                 // notice we return the value of more so Select2 knows if more results can be loaded
+                                 return {results: data.lop_hanh_chinhs, more: more};
+                                },
+                                text: function(object) { return object; },
+                                id: function(object) { return object; }
+                 }
+                });
+                $("#lmh").select2({
+                 placeholder: "Tìm lớp môn học",
+                 minimumInputLength: 3,
+                 ajax: {
+                         url: "/daotao/lop_mon_hocs.json",                                 
+                                quietMillis: 100,
+                                data: function (term, page) {
+                                 return {
+                                         q: term, //search term
+                                         page_limit: 30, // page size
+                                         page: page, // page number                                
+                                 };                                        
+                         },
+                         results: function (data, page) {
+                                 var more = (page * 30) < data.total; // whether or not there are more results available
+                                
+                                 // notice we return the value of more so Select2 knows if more results can be loaded
+                                 return {results: data.lop_mon_hocs, more: more};
+                                },
+                                text: function(object) { return object; },
+                                id: function(object) { return object; }
+                 }
+                });
+                $("#sv").select2({
+                 placeholder: "Tìm sinh viên",
+                 minimumInputLength: 3,
+                 ajax: {
+                         url: "/daotao/sinh_viens.json",                                 
+                                quietMillis: 100,
+                                data: function (term, page) {
+                                 return {
+                                         q: term, //search term
+                                         page_limit: 30, // page size
+                                         page: page, // page number                                
+                                 };                                        
+                         },
+                         results: function (data, page) {
+                                 var more = (page * 30) < data.total; // whether or not there are more results available
+                                
+                                 // notice we return the value of more so Select2 knows if more results can be loaded
+                                 return {results: data.sinh_viens, more: more};
+                                },
+                                text: function(object) { return object; },
+                                id: function(object) { return object; }
+                 }
+                });
  	},
  	getLopHanhChinh: function(){
  		var lhc = $('#lhc').val();
  		var lmh = $('#lmh').val();
  		var sv = $('#sv').val();
  		if (lhc != null && lmh != null) {
-
+ 			alert(lhc);
  		} else if (sv != null && lmh != null) {
 
  		} else {
