@@ -1,28 +1,11 @@
  /** @jsx React.DOM */
 
-var xdata = {
-	lop_hanh_chinhs: [
-		{ma_lop_hanh_chinh: '1'},
-		{ma_lop_hanh_chinh: '2'},
-		{ma_lop_hanh_chinh: '3'}],
-	lop_mon_hocs: [{lop_id: 1, lop:'l1'},
-		{lop_id: 2, lop: 'l2'},
-		{lop_id: 3, lop: 'l3'}],
-	sinh_viens: [{sinh_vien_id: 1, hovaten: 's1'},
-		{sinh_vien_id: 2, hovaten: 's2'},
-		{sinh_vien_id: 3, hovaten: 's3'}]
-};
+
  var GhepLop = React.createClass({
  	
- 	onChangeLopHanhChinh: function(ma_lop_hanh_chinh){
- 		alert(ma_lop_hanh_chinh);
+ 	getInitialState: function(){
+ 		return {sinh_vien_id: -1, ma_lop_hanh_chinh: -1, lop_id: -1}
  	},
- 	onChangeLopMonHoc: function(lop_id){
-
- 	},
- 	onChangeSinhVien: function(sinh_vien_id){
-
- 	}, 	
  	componentDidMount: function(){ 		 		
 		$("#lhc").select2({
                  placeholder: "Tìm lớp hành chính",
@@ -96,12 +79,13 @@ var xdata = {
  	},
  	getLopHanhChinh: function(){
  		var lhc = $('#lhc').val();
- 		var lmh = $('#lmh').val();
- 		var sv = $('#sv').val();
+ 		var lmh = $('#lmh').val(); 		
  		if (lhc != null && lmh != null) {
- 			alert(lhc);
+ 			this.setState({ma_lop_hanh_chinh: lhc, lop_id: lmh});
+ 			React.unmountAndReleaseReactRootNode(document.getElementById('kq'));
+ 			React.renderComponent(<LopHanhChinh ma_lop_hanh_chinh={lhc} lop_id={lmh} />, document.getElementById('kq'));
  		} else if (sv != null && lmh != null) {
-
+ 			this.setState({sinh_vien_id: sv, lop_id: lmh});
  		} else {
  			alert('Bạn phải chọn lớp hành chính, hoặc sinh viên, hoặc lớp môn học');
  		}
@@ -109,77 +93,143 @@ var xdata = {
  	render: function(){ 		
  		return (
  			<div>
- 				<div class="table-responsive">
- 					<table class="table table-bordered">
- 						<tbody>
- 							<tr>
- 								<td>
- 								<h4>Chọn lớp hành chính</h4> 				
- 				 <input type="hidden" id="lhc" style={{width:"500px"}} class="input-xlarge" />
- 				 <button onClick={this.getLopHanhChinh} class="btn btn-success">Chọn</button>
- 								<hr />
- 								<h4>Chọn sinh viên</h4> 				
- 				 <input type="hidden" id="sv" style={{width:"500px"}} class="input-xlarge" /></td>
- 								<td><div>
- 				<h4>Chọn lớp Môn học</h4> 				
- 				 <input type="hidden" id="lmh" style={{width:"500px"}} class="input-xlarge" />
- 			</div></td>
- 							</tr>
- 							<tr id="kq">
- 								
- 							</tr> 												
- 						</tbody>
- 					</table>
+ 				<div class="row">
+ 					<div class="col-md-6"> 					
+ 						<h4>Chọn lớp hành chính</h4> 				
+ 						<input type="hidden" id="lhc" style={{width:"500px"}} class="input-xlarge" />
+ 						<button onClick={this.getLopHanhChinh} class="btn btn-success">Chọn</button>
+ 						<hr />
+ 						<h4>Chọn sinh viên</h4> 				
+ 						<input type="hidden" id="sv" style={{width:"500px"}} class="input-xlarge" />
+ 					</div>
+ 					<div class="col-md-6">
+ 						<h4>Chọn lớp Môn học</h4> 				
+ 				 		<input type="hidden" id="lmh" style={{width:"500px"}} class="input-xlarge" />
+ 					</div> 						
+ 				</div>
+ 				<div class="row" id="kq">
+ 					
  				</div>
  			</div>
  		);
  	}
  });
  
- var LopHanhChinh = React.createClass({ 	 	
- 	render: function(){
- 		return (
- 			<div>
- 				
- 			</div>
- 		);
- 	}
- });
- 
- var SinhVien = React.createClass({
- 	onChange: function(){
- 		var sinh_vien_id = this.refs.sinh_vien_id.getDOMNode().value;
- 		this.props.onChange(sinh_vien_id);
+ var LopHanhChinh = React.createClass({
+ 	getInitialState: function(){
+ 		return {data: [], checked: []}
  	},
- 	componentDidUpdate: function(){
- 		$('.select2').select2();
+ 	loadData: function(){
+ 		$.ajax({
+	      url: "/daotao/lop_hanh_chinhs",
+	      type: 'POST',
+	      data: {ma_lop_hanh_chinh: this.props.ma_lop_hanh_chinh},
+	      success: function(data) {             
+	        this.setState({data: data});         
+	      }.bind(this)
+	    });
+ 	},
+ 	componentWillMount: function(){
+ 		this.loadData();
+ 	},
+ 	onMove: function(){
+ 		var results = [];
+		$('input[id^=svs]').each(function(i, obj) {
+		  if (obj.checked === true){
+		      results.push(obj.value);
+		  }
+		});
+		if (results.length > 0){
+	 		$.ajax({
+		      url: "/daotao/move",
+		      type: 'POST',
+		      data: {lop_id: this.props.lop_id, sinh_viens: results},
+		      success: function(data) {             
+		        this.setState({data: data});         
+		      }.bind(this)
+		    });
+		}
+ 	}, 	
+ 	checkAll: function(){
+ 		$('input[id^=svs]').each(function(i, obj) {
+		  obj.checked = !obj.checked;		      		 
+		});
  	},
  	render: function(){
- 		var x = this.props.data.map(function(d){
- 			return <option value={d.sinh_vien_id}>{d.hovaten}</option>
+ 		var self = this;
+ 		var x = this.state.data.map(function(d, index){
+ 			return <tr><td>{index+1}</td><td>{d.code}</td><td>{d.hovaten}</td><td>
+ 			<div class="checkbox">
+		        <label>
+		          <input id={'svs' + d.code} value={d.code} type="checkbox">Chọn</input>
+		        </label>
+		      </div>
+ 			</td></tr>
  		});
- 		
  		return (
- 			<div>
- 				<h4>Chọn sinh viên</h4>
- 				<select onChange={this.onChange} ref="sinh_vien_id" class="form-control input-sm select2">
-					{x}
-				</select>
+ 			<div class="row">
+ 				<div class="col-md-6 table-responsive">
+ 					<button onClick={this.onMove} class="btn btn-primary">Chuyển</button>
+ 					<hr/>
+	 				<table class="table table-bordered">
+	 					<thead>
+	 						<tr class="success">
+	 							<td>Stt</td><td>Mã sinh viên</td><td>Họ và tên</td><td>
+	 							<div class="checkbox">
+							        <label>
+							          <input onClick={this.checkAll} type="checkbox">Chọn tất cả</input>
+							        </label>
+							      </div>
+	 							</td>
+	 						</tr>
+	 					</thead>
+	 					<tbody>
+	 						{x}
+	 					</tbody>
+	 				</table>
+	 			</div>
+	 			<div class="col-md-6 table-responsive">
+	 				<LopMonHoc lop_id={this.props.lop_id} />
+	 			</div>
  			</div>
  		);
  	}
  });
- var DSHanhChinh = React.createClass({
- 	render: function(){
- 		return (
- 			<div></div>
- 		)
- 	}
- });
- var DSLopMonHoc = React.createClass({
- 	render: function(){
- 		return (
- 			<div></div>
- 		)
- 	}
- });
+var LopMonHoc = React.createClass({
+	getInitialState: function(){
+		return {data: []}
+	},
+	loadData: function(){
+		$.ajax({
+	      url: "/daotao/lop_mon_hocs",
+	      type: 'POST',
+	      data: {lop_id: this.props.lop_id},
+	      success: function(data) {             
+	        this.setState({data: data});         
+	      }.bind(this)
+	    });
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	render: function(){
+		var x = this.state.data.map(function(d, index){
+			return <tr><td>{index+1}</td><td>{d.code}</td><td>{d.name}</td><td>{d.tinchi_status}</td></tr>
+		});
+		return (
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr class="success">
+						<td>Stt</td>
+						<td>Mã sinh viên</td>
+						<td>Họ và tên</td>
+						<td>Tín chỉ?</td>
+					</tr>
+				</thead>
+				<tbody>
+					{x}
+				</tbody>
+			</table>
+		);
+	}
+});

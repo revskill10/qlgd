@@ -9,7 +9,7 @@ class Enrollment < ActiveRecord::Base
   validates :lop_mon_hoc, :sinh_vien, :presence => true
   has_many :assignment_groups, :through => :lop_mon_hoc, :uniq => true
   has_many :assignments, :through => :lop_mon_hoc, :uniq => true
-  has_many :attendances, :through => :sinh_vien
+  has_many :attendances, :through => :lich_trinh_giang_days
   has_many :submissions, :dependent => :destroy
   def tong_vang
     attendances.not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
