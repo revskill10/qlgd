@@ -10,6 +10,9 @@ LopMonHocPolicy  = Struct.new(:user, :lop_mon_hoc) do
     end
   end 
 
+  def daotao?
+    UserDecorator.new(user).is_dao_tao?
+  end
     
   def update?
     return true if user and user.decorate.is_super_admin?
