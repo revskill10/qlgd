@@ -21,7 +21,8 @@ Qlgd::Application.routes.draw do
       post "/lop_mon_hocs" => 'sinh_viens#lop_mon_hocs'
       post "/sinh_viens" => 'sinh_viens#sinh_viens'
 
-      
+      post "/move" => 'sinh_viens#move'
+      delete "/lop_mon_hocs" => 'sinh_viens#remove'
     end
     namespace :teacher do 
      

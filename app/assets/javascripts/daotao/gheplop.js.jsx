@@ -83,9 +83,7 @@
  		if (lhc != null && lmh != null) {
  			this.setState({ma_lop_hanh_chinh: lhc, lop_id: lmh});
  			React.unmountAndReleaseReactRootNode(document.getElementById('kq'));
- 			React.renderComponent(<LopHanhChinh ma_lop_hanh_chinh={lhc} lop_id={lmh} />, document.getElementById('kq'));
- 		} else if (sv != null && lmh != null) {
- 			this.setState({sinh_vien_id: sv, lop_id: lmh});
+ 			React.renderComponent(<LopHanhChinh ma_lop_hanh_chinh={lhc} lop_id={lmh} />, document.getElementById('kq')); 		
  		} else {
  			alert('Bạn phải chọn lớp hành chính, hoặc sinh viên, hoặc lớp môn học');
  		}
@@ -94,15 +92,15 @@
  		return (
  			<div>
  				<div class="row">
- 					<div class="col-md-6"> 					
+ 					<div class="col-md-5"> 					
  						<h4>Chọn lớp hành chính</h4> 				
- 						<input type="hidden" id="lhc" style={{width:"500px"}} class="input-xlarge" />
- 						<button onClick={this.getLopHanhChinh} class="btn btn-success">Chọn</button>
- 						<hr />
- 						<h4>Chọn sinh viên</h4> 				
- 						<input type="hidden" id="sv" style={{width:"500px"}} class="input-xlarge" />
+ 						<input type="hidden" id="lhc" style={{width:"70%"}} class="input-xlarge" /> 						
+ 					</div> 					
+ 					<div class="col-md-2">
+ 						<br /><br />
+ 						<button onClick={this.getLopHanhChinh} class="btn btn-success">Chọn</button> 						 					
  					</div>
- 					<div class="col-md-6">
+ 					<div class="col-md-5">
  						<h4>Chọn lớp Môn học</h4> 				
  				 		<input type="hidden" id="lmh" style={{width:"500px"}} class="input-xlarge" />
  					</div> 						
@@ -125,7 +123,8 @@
 	      type: 'POST',
 	      data: {ma_lop_hanh_chinh: this.props.ma_lop_hanh_chinh},
 	      success: function(data) {             
-	        this.setState({data: data});         
+	        this.setState({data: data});   
+	        React.renderComponent(<LopMonHoc lop_id={this.props.lop_id} />,document.getElementById('lop'));      
 	      }.bind(this)
 	    });
  	},
@@ -143,9 +142,10 @@
 	 		$.ajax({
 		      url: "/daotao/move",
 		      type: 'POST',
-		      data: {lop_id: this.props.lop_id, sinh_viens: results},
+		      data: {ma_lop_hanh_chinh: this.props.ma_lop_hanh_chinh, lop_id: this.props.lop_id, sinh_viens: results},
 		      success: function(data) {             
-		        this.setState({data: data});         
+		      	React.unmountAndReleaseReactRootNode(document.getElementById('lop'));
+		        React.renderComponent(<LopMonHoc lop_id={this.props.lop_id} />,document.getElementById('lop'));      
 		      }.bind(this)
 		    });
 		}
@@ -161,7 +161,7 @@
  			return <tr><td>{index+1}</td><td>{d.code}</td><td>{d.hovaten}</td><td>
  			<div class="checkbox">
 		        <label>
-		          <input id={'svs' + d.code} value={d.code} type="checkbox">Chọn</input>
+		          <input id={'svs' + d.code} value={d.id} type="checkbox">Chọn</input>
 		        </label>
 		      </div>
  			</td></tr>
@@ -188,8 +188,8 @@
 	 					</tbody>
 	 				</table>
 	 			</div>
-	 			<div class="col-md-6 table-responsive">
-	 				<LopMonHoc lop_id={this.props.lop_id} />
+	 			<div class="col-md-6 table-responsive" id="lop">
+	 				
 	 			</div>
  			</div>
  		);
@@ -212,9 +212,28 @@ var LopMonHoc = React.createClass({
 	componentWillMount: function(){
 		this.loadData();
 	},
+	onRemove: function(d){
+		console.log(d.id + ' - ' + this.props.lop_id);
+		var d = {
+			"lop_id" : this.props.lop_id,
+			"enrollment_id": d.id,
+			"_method": "delete"
+		}		
+		$.ajax({
+	      url: "/daotao/lop_mon_hocs",
+	      type: 'POST',
+	      data: d,
+	      success: function(data) {             
+	        this.setState({data: data});         
+	      }.bind(this)
+	    });
+	},
 	render: function(){
+		var self = this;
 		var x = this.state.data.map(function(d, index){
-			return <tr><td>{index+1}</td><td>{d.code}</td><td>{d.name}</td><td>{d.tinchi_status}</td></tr>
+			return <tr class={d.bosung_status}><td>{index+1}</td><td>{d.code}</td><td>{d.name}</td><td>{d.tinchi_status}</td><td>
+			<button onClick={self.onRemove.bind(self, d)} class="btn btn-sm btn-danger">Xóa</button>
+			</td></tr>
 		});
 		return (
 			<table class="table table-bordered table-striped">
@@ -224,6 +243,7 @@ var LopMonHoc = React.createClass({
 						<td>Mã sinh viên</td>
 						<td>Họ và tên</td>
 						<td>Tín chỉ?</td>
+						<td>Xóa</td>
 					</tr>
 				</thead>
 				<tbody>
