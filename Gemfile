@@ -81,6 +81,7 @@ gem "redis-rack-cache"
 gem 'will_paginate', '~> 3.0'
 gem "select2-rails"
 gem 'sunspot_rails', '~> 1.3.0'
+gem "font-awesome-rails"
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'

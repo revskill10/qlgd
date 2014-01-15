@@ -18,3 +18,4 @@
 //= require bootstrap-datepicker.vi
 //= require react
 //= require select2
+//= require summernote
