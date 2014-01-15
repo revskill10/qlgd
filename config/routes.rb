@@ -16,6 +16,12 @@ Qlgd::Application.routes.draw do
       get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
       get "/lop_mon_hocs" => 'ghep_lop#lop_mon_hocs'
       get "/sinh_viens" => 'ghep_lop#sinh_viens'
+
+      post "/lop_hanh_chinhs" => 'sinh_viens#lop_hanh_chinhs'
+      post "/lop_mon_hocs" => 'sinh_viens#lop_mon_hocs'
+      post "/sinh_viens" => 'sinh_viens#sinh_viens'
+
+      
     end
     namespace :teacher do 
      
