@@ -1,15 +1,21 @@
 = render 'dashboard/shared/menu'
+
 .container
   ul.nav.nav-tabs
-    li
-      a href="#gl" data-toggle="tab" Ghép lớp
-    li
-      a href="#ddk" data-toggle="tab" Duyệt đăng ký
+    - if user_signed_in? and current_user.decorate.is_dao_tao?
+      li
+        a href="#gl" data-toggle="tab" Ghép lớp
+    - if user_signed_in? and current_user.decorate.is_dao_tao_duyet?
+      li
+        a href="#ddk" data-toggle="tab" Duyệt đăng ký
 
   .tab-content
-    #gl.tab-pane.active
-      #gheplop
-    #ddk.tab-pane
-      #duyetdangky
+    - if user_signed_in? and current_user.decorate.is_dao_tao?
+      #gl.tab-pane.active
+        #gheplop
+    - if user_signed_in? and current_user.decorate.is_dao_tao_duyet?
+      #ddk.tab-pane
+        #duyetdangky
 
-script src="/assets/daotao/index.js" type="text/javascript"
+- if user_signed_in? and current_user.decorate.is_dao_tao_duyet?
+  script src="/assets/daotao/index.js" type="text/javascript"
