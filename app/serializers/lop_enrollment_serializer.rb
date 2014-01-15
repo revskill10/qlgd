@@ -1,8 +1,11 @@
 #encoding: utf-8
 class LopEnrollmentSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :lop_mon_hoc_id, :sinh_vien_id, :id, :name, :code, :tong_vang, :diem_chuyen_can, :tinhhinh, :dihoc_tinhhinh, :tinchi_status
+  attributes :lop_mon_hoc_id, :sinh_vien_id, :id, :name, :code, :tong_vang, :diem_chuyen_can, :tinhhinh, :dihoc_tinhhinh, :tinchi_status, :bosung_status
 
+  def bosung_status
+    object.bosung == true ? "success" : "default"
+  end
 
   def tinchi_status
     object.sinh_vien.tin_chi == true ? "Tín chỉ" : "Niên chế"
