@@ -7,16 +7,15 @@ class Daotao::SinhViensController < TenantsController
 
 	def lop_mon_hocs
 		@lop = LopMonHoc.find(params[:lop_id])
+		authorize @lop, :daotao?
 		@enrollments = @lop.enrollments.order("enrollments.created_at")
 		render json: @enrollments.map {|en| LopEnrollmentSerializer.new(en)}, :root => false
 	end
 
-	def show
-		sv = SinhVien.find(params[:id])
-	end
-
+	
 	def move
 		@lop = LopMonHoc.find(params[:lop_id])
+		authorize @lop, :daotao?
 		sinh_vien_ids = params[:sinh_viens].map {|k| k and k.to_i}
 		@existing_enrollments_ids = @lop.enrollments.where(sinh_vien_id: sinh_vien_ids).map(&:sinh_vien_id)
 		(sinh_vien_ids - @existing_enrollments_ids).each do |sinh_vien_id|
@@ -27,6 +26,7 @@ class Daotao::SinhViensController < TenantsController
 
 	def remove
 		@lop = LopMonHoc.find(params[:lop_id])
+		authorize @lop, :daotao?
 		@lop.enrollments.find(params[:enrollment_id]).destroy
 		@enrollments = @lop.enrollments.order("enrollments.created_at")
 		render json: @enrollments.map {|en| LopEnrollmentSerializer.new(en)}, :root => false
