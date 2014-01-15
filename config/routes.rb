@@ -15,6 +15,7 @@ Qlgd::Application.routes.draw do
     namespace :daotao do 
       get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
       get "/lop_mon_hocs" => 'ghep_lop#lop_mon_hocs'
+      get "/sinh_viens" => 'ghep_lop#sinh_viens'
     end
     namespace :teacher do 
      
