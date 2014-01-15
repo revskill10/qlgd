@@ -139,6 +139,16 @@
 		      results.push(obj.value);
 		  }
 		});
+		if (results.length > 0){
+	 		$.ajax({
+		      url: "/daotao/move",
+		      type: 'POST',
+		      data: {lop_id: this.props.lop_id, sinh_viens: results},
+		      success: function(data) {             
+		        this.setState({data: data});         
+		      }.bind(this)
+		    });
+		}
  	}, 	
  	checkAll: function(){
  		$('input[id^=svs]').each(function(i, obj) {
