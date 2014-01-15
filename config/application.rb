@@ -66,6 +66,6 @@ module Qlgd
         true
       end
     }
-    config.assets.precompile += %w(giang_vien/* sinh_vien/*)
+    config.assets.precompile += %w(giang_vien/* sinh_vien/* daotao/*)
   end
 end

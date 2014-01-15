@@ -26,6 +26,6 @@ class Daotao::GhepLopController < TenantsController
 			fulltext params[:q]
 			paginate(:page => params[:page] , :per_page => params[:page_limit])
 		end
-		render json: search.results.map {|k| {:id => k.id, :text => k.hovaten} }, :root => false
+		render json: search.results.map {|k| {:id => k.id, :text => k.hovaten + " - " + k.code} }, :root => false
 	end
 end
