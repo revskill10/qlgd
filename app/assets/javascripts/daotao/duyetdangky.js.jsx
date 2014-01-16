@@ -122,21 +122,80 @@ var ldata = [
 
  var LichTrung = React.createClass({
  	getInitialState: function(){
- 		return {data: [], sinh_vien: []}
+ 		return {data: [], sinh_vien: [], loading: false}
  	},
- 	componentWillMount: function(){
+ 	componentWillMount: function(){ 		
  		this.loadData();
  	},
  	loadData: function(){
+ 		this.setState({loading: true});
  		$.ajax({
  			url: '/daotao/lich_trinh_giang_days/check',
  			data: {id: this.props.id},
  			type: 'POST',
  			success: function(data){
- 				this.setState({data: data.lich, sinh_vien: data.sinh_vien});
+ 				this.setState({data: data.lich, sinh_vien: data.sinh_vien, loading: false});
  			}.bind(this)
  		})
  	},
+ 	componentDidUpdate: function(){
+ 		if (this.state.loading === true){
+ 			var opts = {
+			  lines: 15, // The number of lines to draw
+			  length: 40, // The length of each line
+			  width: 10, // The line thickness
+			  radius: 22, // The radius of the inner circle
+			  corners: 1, // Corner roundness (0..1)
+			  rotate: 38, // The rotation offset
+			  direction: 1, // 1: clockwise, -1: counterclockwise
+			  color: '#000', // #rgb or #rrggbb or array of colors
+			  speed: 1.7, // Rounds per second
+			  trail: 81, // Afterglow percentage
+			  shadow: true, // Whether to render a shadow
+			  hwaccel: true, // Whether to use hardware acceleration
+			  className: 'spinner', // The CSS class to assign to the spinner
+			  zIndex: 2e9, // The z-index (defaults to 2000000000)
+			  top: 'auto', // Top position relative to parent in px
+			  left: 'auto' // Left position relative to parent in px
+			};
+	 		var target = document.getElementById('foo');
+			var spinner = new Spinner(opts).spin(target);
+			$(target).data('spinner', spinner);
+ 		} else {
+ 			var target = document.getElementById('foo');
+			var spinner = new Spinner(opts).stop(target);			
+			$('#foo').data('spinner').stop();
+ 		}
+ 	},
+ 	componentDidMount: function(){
+ 		if (this.state.loading === true){
+ 			var opts = {
+			  lines: 15, // The number of lines to draw
+			  length: 40, // The length of each line
+			  width: 10, // The line thickness
+			  radius: 22, // The radius of the inner circle
+			  corners: 1, // Corner roundness (0..1)
+			  rotate: 38, // The rotation offset
+			  direction: 1, // 1: clockwise, -1: counterclockwise
+			  color: '#000', // #rgb or #rrggbb or array of colors
+			  speed: 1.7, // Rounds per second
+			  trail: 81, // Afterglow percentage
+			  shadow: true, // Whether to render a shadow
+			  hwaccel: true, // Whether to use hardware acceleration
+			  className: 'spinner', // The CSS class to assign to the spinner
+			  zIndex: 2e9, // The z-index (defaults to 2000000000)
+			  top: 'auto', // Top position relative to parent in px
+			  left: 'auto' // Left position relative to parent in px
+			};
+	 		var target = document.getElementById('foo');
+			var spinner = new Spinner(opts).spin(target);
+			$(target).data('spinner', spinner);
+ 		} else {
+ 			var target = document.getElementById('foo');
+			var spinner = new Spinner(opts).stop(target);			
+			$('#foo').data('spinner').stop();
+ 		}
+ 	}, 	
  	render: function(){
  		var self = this;
  		var x = this.state.data.map(function(d, index){
@@ -157,9 +216,10 @@ var ldata = [
  				<td>{d.hovaten}</td> 	
  				<td>{d.ma_lop_hanh_chinh}</td>			
  			</tr>
- 		})
- 		return (
- 			<div>
+ 		});
+ 		
+			return (
+ 			<div><div id="foo"></div>
 	 			<div class="table-responsive">
 	 			<h4>Danh sách lịch trùng</h4>
 	 			<table class="table table-bordered table-striped">
@@ -188,7 +248,7 @@ var ldata = [
 				</table>
 				</div>
 			</div>
- 		);
+ 		); 		 		
  	}
  });
 
