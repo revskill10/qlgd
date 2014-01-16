@@ -19,5 +19,6 @@
 /public/assets
 /public/assets/fonts/*
 /public/assets/*.yml
-/solr/data/*
+/solr/**/index/
+/solr/**/spellchecker/
 /log/*.*

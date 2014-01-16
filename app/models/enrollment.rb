@@ -1,7 +1,7 @@
 class Enrollment < ActiveRecord::Base
 
   default_scope includes(:sinh_vien).order('sinh_viens.position')
-  
+  attr_accessible :sinh_vien_id, :bosung
   belongs_to :lop_mon_hoc
   belongs_to :sinh_vien
 

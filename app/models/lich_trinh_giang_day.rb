@@ -1,12 +1,15 @@
 #encoding: utf-8
 class LichTrinhGiangDay < ActiveRecord::Base
+
+  include Comparable
   default_scope order('thoi_gian')
   attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi, :note, :ltype
   
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
   has_many :attendances, :dependent => :destroy
-  has_many :enrollments, :through => :lop_mon_hoc
+  has_many :enrollments, :through => :lop_mon_hoc, :uniq => true
+  has_many :sinh_viens, :through => :enrollments, :uniq => true
   validates :thoi_gian, :so_tiet, :giang_vien_id, :state, :presence => true
   validate :check_thoi_gian, on: :create
   
@@ -185,10 +188,35 @@ class LichTrinhGiangDay < ActiveRecord::Base
   # Co 2 loai conflict. 1 la khi 2 gio hoc cung thoi gian cung phong, 2 la khi  co 2 gio hoc trung thoi gian cung 1 giang vien
   # Khi dang ky bo sung, kiem tra ca 2 loai conflict
   def conflict?(lich)
+    return false unless lich.accepted?
+    return false if state == "nghiday" or state == "nghile"
+    return false if lich.state == "nghiday" or lich.state == "nghile"
     return false if id == lich.id
-    (lich.thoi_gian.to_date == thoi_gian.to_date) and (tiet_bat_dau..tiet_bat_dau + so_tiet).overlaps?(lich.tiet_bat_dau..lich.tiet_bat_dau + lich.so_tiet) and (phong == lich.phong or giang_vien_id == lich.giang_vien_id)
+    return false unless lich.thoi_gian.to_date == thoi_gian.to_date
+    return false unless (phong == lich.phong or giang_vien_id == lich.giang_vien_id)
+    return true if lich.tiet_bat_dau == tiet_bat_dau
+   # if thoi_gian < lich.thoi_gian
+    #  return (lich.tiet_bat_dau > tiet_bat_dau) and (lich.tiet_bat_dau < tiet_bat_dau + so_tiet_moi)
+    #else
+     # return (tiet_bat_dau > lich.tiet_bat_dau) and (tiet_bat_dau < lich.tiet_bat_dau + lich.so_tiet_moi)
+    #end 
+    return (thoi_gian < lich.thoi_gian ? ( (lich.tiet_bat_dau > tiet_bat_dau) and (lich.tiet_bat_dau < tiet_bat_dau + so_tiet_moi) ): ( (tiet_bat_dau > lich.tiet_bat_dau) and (tiet_bat_dau < lich.tiet_bat_dau + lich.so_tiet_moi) ) )
   end
 
+  def conflict_sinh_vien?(lich)
+    return false unless lich.accepted?
+    return false if state == "nghiday" or state == "nghile"
+    return false if lich.state == "nghiday" or lich.state == "nghile"
+    return false if id == lich.id
+    return false unless lich.thoi_gian.to_date == thoi_gian.to_date    
+    return true if lich.tiet_bat_dau == tiet_bat_dau
+   # if thoi_gian < lich.thoi_gian
+    #  return (lich.tiet_bat_dau > tiet_bat_dau) and (lich.tiet_bat_dau < tiet_bat_dau + so_tiet_moi)
+    #else
+     # return (tiet_bat_dau > lich.tiet_bat_dau) and (tiet_bat_dau < lich.tiet_bat_dau + lich.so_tiet_moi)
+    #end 
+    return (thoi_gian < lich.thoi_gian ? ( (lich.tiet_bat_dau > tiet_bat_dau) and (lich.tiet_bat_dau < tiet_bat_dau + so_tiet_moi) ): ( (tiet_bat_dau > lich.tiet_bat_dau) and (tiet_bat_dau < lich.tiet_bat_dau + lich.so_tiet_moi) ) )
+  end
   
 
   def load_tuan

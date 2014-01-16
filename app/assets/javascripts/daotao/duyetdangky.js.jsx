@@ -119,7 +119,7 @@ var ldata = [
 
  var LichTrung = React.createClass({
  	getInitialState: function(){
- 		return {data: []}
+ 		return {data: [], sinh_vien: []}
  	},
  	componentWillMount: function(){
  		this.loadData();
@@ -130,7 +130,7 @@ var ldata = [
  			data: {id: this.props.id},
  			type: 'POST',
  			success: function(data){
- 				this.setState({data: data});
+ 				this.setState({data: data.lich, sinh_vien: data.sinh_vien});
  			}.bind(this)
  		})
  	},
@@ -147,19 +147,43 @@ var ldata = [
  				<td>{d.type_status}</td>
  			</tr>
  		});
+ 		var sv = this.state.sinh_vien.map(function(d, index){
+ 			return <tr class={index % 2 === 0 ? 'warning' : 'danger'}>
+ 				<td>{index+1}</td>
+ 				<td>{d.code}</td>
+ 				<td>{d.hovaten}</td> 	
+ 				<td>{d.ma_lop_hanh_chinh}</td>			
+ 			</tr>
+ 		})
  		return (
- 			<div class="table-responsive">
- 			<h4>Danh sách lịch trùng</h4>
- 			<table class="table table-bordered table-striped">
-				<thead>
-					<tr class="success">
-						<td>Tuần</td><td>Thời gian</td><td>Giảng viên</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td>
-					</tr>
-				</thead>
-				<tbody>
-					{x}
-				</tbody>
-			</table>
+ 			<div>
+	 			<div class="table-responsive">
+	 			<h4>Danh sách lịch trùng</h4>
+	 			<table class="table table-bordered table-striped">
+					<thead>
+						<tr class="success">
+							<td>Tuần</td><td>Thời gian</td><td>Giảng viên</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td>
+						</tr>
+					</thead>
+					<tbody>
+						{x}
+					</tbody>
+				</table>
+				</div>
+
+				<div class="table-responsive">
+	 			<h4>Danh sách sinh viên trùng</h4>
+	 			<table class="table table-bordered table-striped">
+					<thead>
+						<tr class="success">
+							<td>Stt</td><td>Mã sinh viên</td><td>Họ và tên</td><td>Mã lớp hành chính</td>
+						</tr>
+					</thead>
+					<tbody>
+						{sv}
+					</tbody>
+				</table>
+				</div>
 			</div>
  		);
  	}
