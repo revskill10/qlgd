@@ -109,7 +109,7 @@ var Bosung = React.createClass({
 		if (this.state.add == 1) {
 			$('.input-append.date').datepicker({
 				format: "dd/mm/yyyy",
-				startDate: "8/1/2014",
+				startDate: "13/1/2014",
 				todayBtn: "linked",
 	    		language: "vi",
 	    		autoClose: true,
@@ -269,7 +269,7 @@ var Row2 = React.createClass({
 			this.refs.ltype.getDOMNode().value = this.props.data.ltype;
 			$('.input-append.date').datepicker({
 				format: "dd/mm/yyyy",
-				startDate: "8/1/2014",
+				startDate: "13/1/2014",
 				todayBtn: "linked",
 	    		language: "vi",
 	    		autoClose: true,

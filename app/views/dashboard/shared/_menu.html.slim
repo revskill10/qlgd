@@ -15,9 +15,9 @@
         - if user_signed_in? and current_user.decorate.is_quan_ly_sinh_vien?
           li= link_to "Quản lý sinh viên", '/quan_ly_sinh_vien'
         - if user_signed_in? and current_user.decorate.is_thanh_tra?
-          li= link_to "Thanh tra", '/thanh_tra'
+          li= link_to "Thanh tra", '/thanhtra'
         - if user_signed_in? and current_user.decorate.is_kiem_dinh?
-          li= link_to "Kiểm định", '/kiem_dinh'
+          li= link_to "Kiểm định", '/kiemdinh'
         - if user_signed_in? and current_user.decorate.is_super_admin?
           li= link_to "Superadmin", '/superadmin'
         - if user_signed_in? and current_user.decorate.is_admin?
