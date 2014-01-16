@@ -104,14 +104,14 @@ var ldata = [
  				<td>{this.props.data.tuan}</td>
  				<td>{this.props.data.thoi_gian}</td>
  				<td>{this.props.data.giang_vien}</td>
- 				<td> <input type="text" ref="phong" /></td>
+ 				<td>{this.props.data.alias_state === 'Bổ sung' ? <input type="text" ref="phong" /> : this.props.data.phong }</td>
  				<td>{this.props.data.so_tiet}</td>
  				<td>{this.props.data.alias_state}</td>
  				<td>{this.props.data.type_status}</td>
  				<td>{this.props.data.note}</td>
  				<td><button class="btn btn-sm btn-danger" onClick={this.onDrop}>Không chấp nhận</button>
  				<button class="btn btn-sm btn-primary" onClick={this.onAccept}>Chấp nhận</button>
- 				<button class="btn btn-sm btn-warning" onClick={this.onCheck}>Kiểm tra</button></td>
+ 				<button style={{display:this.props.data.alias_state === 'Bổ sung' ? '' : 'none'}} class="btn btn-sm btn-warning" onClick={this.onCheck}>Kiểm tra</button></td>
  			</tr>
  		);
  	}
