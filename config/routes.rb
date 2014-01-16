@@ -7,11 +7,15 @@ Qlgd::Application.routes.draw do
   scope '(tenants/:tenant_id)' do
     
     get "/" => "dashboard#index"
-     get '/active' => 'dashboard#monitor'
-      get "calendar" => "dashboard#calendar", :as => :calendar
-      get "/lich/:id" => "dashboard#lich", :as => :lich
-      get "/lop/:id" => "dashboard#lop"  
-      get "/daotao" => "dashboard#daotao"
+    get '/active' => 'dashboard#monitor'
+    get "calendar" => "dashboard#calendar", :as => :calendar
+    get "/lich/:id" => "dashboard#lich", :as => :lich
+    get "/lop/:id" => "dashboard#lop"  
+    get "/daotao" => "dashboard#daotao"
+    get "/thanhtra" => 'dashboard#thanhtra'
+    namespace :thanhtra do
+      post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
+    end
     namespace :daotao do 
       get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
       get "/lop_mon_hocs" => 'ghep_lop#lop_mon_hocs'
