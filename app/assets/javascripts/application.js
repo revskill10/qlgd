@@ -19,3 +19,5 @@
 //= require react
 //= require select2
 //= require summernote
+//= require spinner
+//= require jquery.spin
