@@ -11,7 +11,9 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
       end
     end
   end
-  
+  def daotao?
+    UserDecorator.new(user).is_dao_tao? or UserDecorator.new(user).is_dao_tao_duyet?
+  end
   def update?
     return true if user.decorate.is_super_admin?
     #return false unless Pundit.policy!(user, lich_trinh_giang_day.lop_mon_hoc).update?

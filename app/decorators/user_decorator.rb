@@ -27,6 +27,10 @@ class UserDecorator < Draper::Decorator
 		is_admin? or object.groups.pluck(:name).include?("dao_tao")
 	end
 
+	def is_dao_tao_duyet?
+		is_admin? or object.groups.pluck(:name).include?("dao_tao_duyet")
+	end
+
 	def is_quan_ly_sinh_vien?
 		is_admin? or object.groups.pluck(:name).include?("quan_ly_sinh_vien")
 	end

@@ -17,7 +17,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
   has_many :du_gios, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time.utc, Date.tomorrow.to_time.utc])
   scope :accepted, where(status: :accepted)
+  scope :accepted_or_dropped, where(status: ["accepted", "dropped"])
   scope :completed, where(status: :completed)
+  scope :waiting, where(status: :waiting)
   scope :with_giang_vien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
   scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}
   scope :conflict, lambda {|lich| accepted.select {|m| lich.conflict?(m)}}
@@ -26,6 +28,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :nghile, where(state: "nghile")
   scope :normal, where(state: "normal") 
   scope :normal_or_bosung, where(state: ["bosung","normal"]) 
+  scope :daduyet, accepted_or_dropped.where(state: ["bosung", "nghiday"])
   before_create :set_default
   
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
