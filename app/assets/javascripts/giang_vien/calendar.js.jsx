@@ -175,7 +175,7 @@ var CalendarRowNghiday = React.createClass({
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
 					<td>{this.props.data.note}</td>
 					<td>
-						<button onClick={this.onUnNghiday} style={{display: this.props.data.can_unnghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning curl-top-left">Hủy đăng ký</button>
+						<button onClick={this.onUnNghiday} style={{display: this.props.data.can_unnghiday === false ?  'none' : ''}} class="btn btn-sm btn-primary curl-top-left">Hủy đăng ký</button>
 						<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger curl-top-left">Xóa</button>
 						<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default curl-top-left">Phục hồi</button>
 					</td>
