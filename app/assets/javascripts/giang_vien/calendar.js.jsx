@@ -135,7 +135,7 @@
  			<div class="table-responsive">
  				<table class="table table-bordered table-striped">
  					<thead><tr class="success">
- 						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Trạng thái</td><td>Ghi chú</td><td>Thao tác</td>
+ 						<td>Tuần</td><td>Thời gian</td><td>Tiết bắt đầu</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Trạng thái</td><td>Lí do nghỉ dạy</td><td>Thao tác</td>
  						</tr>
  					</thead>
  					<tbody>
@@ -210,7 +210,7 @@ var CalendarRowBosung = React.createClass({
 				<td>
 					<button onClick={this.onRemove} style={{display: this.props.data.can_remove === false ?  'none' : ''}} class="btn btn-sm btn-danger curl-top-left">Xóa</button>
 					<button onClick={this.onRestore} style={{display: this.props.data.can_restore === false ?  'none' : ''}} class="btn btn-sm btn-default curl-top-left">Phục hồi</button>
-					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary curl-top-left">Báo lỗi</button>
+					<button onClick={this.onUncomplete} style={{display: this.props.data.can_uncomplete === false ?  'none' : ''}} class="btn btn-sm btn-primary curl-top-left">Hủy hoàn thành</button>
 				</td>
 			</tr>
 		);
@@ -269,7 +269,7 @@ var CalendarRow = React.createClass({
 					<td>{this.props.data.type_status}</td>
 					<td>{this.props.data.alias_state}</td>
 					<td><span class={this.props.data.color_status}>{this.props.data.alias_status}</span></td>
-					<td><input type="text" ref="note" placeholder="Ghi chú buổi học" /></td>
+					<td><input type="text" ref="note" placeholder="Lí do nghỉ dạy" /></td>
 					<td>
 						<button onClick={this.onNghiday} style={{display: this.props.data.can_nghiday === false ?  'none' : ''}} class="btn btn-sm btn-warning curl-top-left">Đăng ký nghỉ</button>
 						<button onClick={this.onEdit} style={{display: this.props.data.can_edit === false ?  'none' : ''}} class="btn btn-sm btn-success curl-top-left">Sửa</button>
