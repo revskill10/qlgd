@@ -2,5 +2,5 @@
 
 - if user_signed_in? and current_user.get_lops.count > 0
   = render 'dashboard/shared/main'
-- elsif user_signed_in?
+- else
   = render 'dashboard/shared/active'
