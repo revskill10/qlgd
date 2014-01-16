@@ -8,7 +8,7 @@ class Daotao::LichTrinhGiangDaysController < TenantsController
 	def accept
 		@lich = LichTrinhGiangDay.find(params[:id])
 		authorize @lich, :daotao?
-		@lich.phong = params[:phong] if @lich.ltype == 'bosung'
+		@lich.phong = params[:phong] if @lich.state == 'bosung'
 		@lich.accept!
 		@lichs = LichTrinhGiangDay.waiting.map {|l| LichTrinhGiangDaySerializer.new(l.decorate)}
 		render json: @lichs, :root => false

@@ -22,7 +22,7 @@ var ldata = [
  	componentWillMount: function(){
  		this.loadData();
  	},
- 	handleAccept: function(d){
+ 	handleAccept: function(d){ 		
  		$.ajax({
 	      url: "/daotao/lich_trinh_giang_days/accept",
 	      type: 'POST',
@@ -82,10 +82,13 @@ var ldata = [
 
  var LichDuyet = React.createClass({
  	onAccept: function(){
- 		if (this.props.data.ltype === 'bosung'){
- 			this.props.data.phong = this.refs.phong.getDOMNode().value;
+ 		if (this.props.data.alias_state === 'Bổ sung'){
+ 			var phong = this.refs.phong.getDOMNode().value;
+ 			this.props.onAccept({id: this.props.data.id, phong: phong});
+ 		} else {
+ 			this.props.onAccept(this.props.data);
  		}
- 		this.props.onAccept(this.props.data);
+ 		
  	},
  	onDrop: function(){
  		this.props.onDrop(this.props.data);

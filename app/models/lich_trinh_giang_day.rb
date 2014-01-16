@@ -62,7 +62,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
       transition :waiting => :dropped, :if => lambda {|lich| ["bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet
     end
     event :remove do 
-      transition :waiting => :removed, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet # xoa lich bo sung hoac lich chinh
+      transition [:waiting, :accepted] => :removed, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet # xoa lich bo sung hoac lich chinh
     end
     event :restore do 
       transition :removed => :waiting, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
