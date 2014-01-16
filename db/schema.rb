@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115064626) do
+ActiveRecord::Schema.define(:version => 20140116022717) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -145,6 +145,7 @@ ActiveRecord::Schema.define(:version => 20140115064626) do
 
   add_index "lich_trinh_giang_days", ["giang_vien_id", "lop_mon_hoc_id"], :name => "index_lich_trinh_giang_days_on_giang_vien_id_and_lop_mon_hoc_id"
   add_index "lich_trinh_giang_days", ["lop_mon_hoc_id", "giang_vien_id"], :name => "index_lich_trinh_giang_days_on_lop_mon_hoc_id_and_giang_vien_id"
+  add_index "lich_trinh_giang_days", ["thoi_gian"], :name => "index_lich_trinh_giang_days_on_thoi_gian"
 
   create_table "lop_mon_hocs", :force => true do |t|
     t.string   "ma_lop"

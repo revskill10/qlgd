@@ -25,8 +25,12 @@ class Daotao::LichTrinhGiangDaysController < TenantsController
 	def check
 		@lich = LichTrinhGiangDay.find(params[:id])
 		authorize @lich, :daotao?
-		@lichs = LichTrinhGiangDay.select {|l| @lich.conflict?(l)}.map {|l| LichTrinhGiangDaySerializer.new(l.decorate)}
-		render json: @lichs, :root => false
+		temp = LichTrinhGiangDay.select {|l| @lich.conflict?(l)}
+		temp2 = LichTrinhGiangDay.select {|l| @lich.conflict_sinh_vien?(l)}
+		@lichs = temp.map {|l| LichTrinhGiangDaySerializer.new(l.decorate)}
+		@sinh_vien_trungs = temp2.inject([]) {|res, elem| res += (elem.sinh_viens & @lich.sinh_viens )}.uniq.map {|sv| SinhVienSerializer.new(sv)}
+		
+		render json: {:lich => @lichs, :sinh_vien => @sinh_vien_trungs}, :root => false
 	end
 
 	def daduyet
