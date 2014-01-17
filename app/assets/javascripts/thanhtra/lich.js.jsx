@@ -147,6 +147,9 @@ var ThanhTra = React.createClass({
 });
 
 var ThanhTraRow = React.createClass({
+  getInitialState: function(){
+    return {edit: false};
+  },
   onDiMuon: function(){
     this.props.onDiMuon({lich_id: this.props.data.id, date: this.props.date});
   },
@@ -157,18 +160,36 @@ var ThanhTraRow = React.createClass({
     this.props.onBoTiet({lich_id: this.props.data.id, date: this.props.date});
   },
   render: function(){
-    return (
-      <tr class={this.props.color}>
-        <td>{this.props.stt}</td>
-        <td><span dangerouslySetInnerHTML={{__html: this.props.data.info}} /></td>
-        <td><button onClick={this.onDiMuon} class={this.props.data.di_muon_color} >{this.props.data.di_muon_alias}</button><br/><br/><button onClick={this.onVeSom} class={this.props.data.ve_som_color} >{this.props.data.ve_som_alias}</button><br/><br/><button onClick={this.onBoTiet} class={this.props.data.bo_tiet_color} >{this.props.data.bo_tiet_alias}</button></td>
-        <td>{this.props.data.note1}</td>
-        <td>{this.props.data.note2}</td>
-        <td>{this.props.data.note3}</td>
-        <td>
-          <button class="btn btn-sm btn-primary">Báo cáo</button>
-        </td>
-      </tr>
-    );
+    if (this.state.edit === 0){
+      return (      
+        <tr class={this.props.color}>
+          <td>{this.props.stt}</td>
+          <td><span dangerouslySetInnerHTML={{__html: this.props.data.info}} /></td>
+          <td><button onClick={this.onDiMuon} class={this.props.data.di_muon_color} >{this.props.data.di_muon_alias}</button><br/><br/><button onClick={this.onVeSom} class={this.props.data.ve_som_color} >{this.props.data.ve_som_alias}</button><br/><br/><button onClick={this.onBoTiet} class={this.props.data.bo_tiet_color} >{this.props.data.bo_tiet_alias}</button></td>
+          <td>{this.props.data.note1}</td>
+          <td>{this.props.data.note2}</td>
+          <td>{this.props.data.note3}</td>
+          <td>
+            <button class="btn btn-sm btn-primary">Sửa</button>
+          </td>
+        </tr>
+      );
+    } else {
+      return (
+        <tr class={this.props.color}>
+          <td>{this.props.stt}</td>
+          <td><span dangerouslySetInnerHTML={{__html: this.props.data.info}} /></td>
+          <td><button onClick={this.onDiMuon} class={this.props.data.di_muon_color} >{this.props.data.di_muon_alias}</button><br/><br/><button onClick={this.onVeSom} class={this.props.data.ve_som_color} >{this.props.data.ve_som_alias}</button><br/><br/><button onClick={this.onBoTiet} class={this.props.data.bo_tiet_color} >{this.props.data.bo_tiet_alias}</button></td>
+          <td>{this.props.data.note1}</td>
+          <td>{this.props.data.note2}</td>
+          <td>{this.props.data.note3}</td>
+          <td>
+            <button class="btn btn-sm btn-primary">Cập nhật</button>
+            <button class="btn btn-sm btn-primary">Cập nhật</button>
+          </td>
+        </tr>
+      );
+    }
+    
   }
 });
