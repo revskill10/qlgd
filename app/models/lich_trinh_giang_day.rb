@@ -2,7 +2,7 @@
 class LichTrinhGiangDay < ActiveRecord::Base
 
   include Comparable
-  default_scope order('thoi_gian')
+  default_scope order('thoi_gian, phong')
   attr_accessible :lop_mon_hoc_id, :moderator_id, :noi_dung, :phong, :so_tiet, :state, :thoi_gian, :thuc_hanh, :tiet_bat_dau, :tiet_nghi, :tuan, :status, :giang_vien_id, :so_tiet_moi, :note, :ltype
   
   belongs_to :lop_mon_hoc
@@ -21,6 +21,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   has_one :vi_pham, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time.utc, Date.tomorrow.to_time.utc])
   scope :accepted, where(status: :accepted)
+  scope :thanhtra, where(status: ["accepted","completed"])
   scope :accepted_or_dropped, where(status: ["accepted", "dropped"])
   scope :completed, where(status: :completed)
   scope :waiting, where(status: :waiting)

@@ -6,7 +6,7 @@ class LichViPhamDecorator < Draper::Decorator
 		@lich = lich
 	end
 	def info
-		return "Thời gian: #{@lich.thoi_gian.strftime("%Hh%M %d/%m/%Y")}\nGiảng viên: #{@lich.giang_vien.hovaten}\nPhòng: #{@lich.phong}\nSố tiết: #{@lich.so_tiet_moi}"
+		return "<table class='table table-condensed'><tbody><tr><td>Thời gian:</td><td>#{@lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")}</td></tr><tr><td>Giảng viên:</td><td>#{@lich.giang_vien.hovaten}</td></tr><tr><td>Phòng:</td><td>#{@lich.phong}, #{@lich.so_tiet_moi} tiết</td></tr><tr><td>Môn:</td><td>#{@lich.lop_mon_hoc.ten_mon_hoc}</td></tr><tr><td>Trạng thái:</td><td>#{@lich.alias_state}</td></tr></tbody></table>"
 	end
 	def di_muon_alias
 		return "Không đi muộn" unless @lich.vi_pham
@@ -19,6 +19,9 @@ class LichViPhamDecorator < Draper::Decorator
 	def bo_tiet_alias
 		return "Không bỏ tiết" unless  @lich.vi_pham
 		return @lich.vi_pham.bo_tiet ? "Bỏ tiết" : "Không bỏ tiết"					
+	end
+	def alias_state
+		return @lich.alias_state
 	end
 	def note1
 		return "" unless  @lich.vi_pham
