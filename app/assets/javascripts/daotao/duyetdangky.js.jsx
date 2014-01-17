@@ -191,8 +191,8 @@ var ldata = [
 			var spinner = new Spinner(opts).spin(target);
 			$(target).data('spinner', spinner);
  		} else {
- 			var target = document.getElementById('foo');
-			var spinner = new Spinner(opts).stop(target);			
+ 			//var target = document.getElementById('foo');
+			//var spinner = new Spinner(opts).stop(target);			
 			$('#foo').data('spinner').stop();
  		}
  	}, 	
