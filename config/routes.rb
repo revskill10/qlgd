@@ -37,7 +37,7 @@ Qlgd::Application.routes.draw do
       post "/move" => 'sinh_viens#move'
       delete "/lop_mon_hocs" => 'sinh_viens#remove'
 
-      post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
+      get "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
       get "/lich_trinh_giang_days/daduyet" => 'lich_trinh_giang_days#daduyet'
       post "/lich_trinh_giang_days/accept" => 'lich_trinh_giang_days#accept'
       post "/lich_trinh_giang_days/drop" => 'lich_trinh_giang_days#drop'
