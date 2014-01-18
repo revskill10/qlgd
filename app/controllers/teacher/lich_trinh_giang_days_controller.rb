@@ -1,6 +1,6 @@
 class Teacher::LichTrinhGiangDaysController < TenantsController
 
-	before_filter :get_lop, :except => [:info, :thanhtra, :thanhtraupdate, :accept, :request, :home, :monitor, :index, :index_bosung]
+	before_filter :get_lop, :except => [:info, :thanhtra, :thanhtraupdate, :accept, :request2, :home, :monitor, :index, :index_bosung]
 
 	
 	def info
