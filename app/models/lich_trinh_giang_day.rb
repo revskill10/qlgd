@@ -227,8 +227,26 @@ class LichTrinhGiangDay < ActiveRecord::Base
     tmp.try(:stt)
   end
 
+  def reported?
+    return false unless self.vi_pham
+    return self.vi_pham.reported?
+  end
   
-  
+  def removed?
+    return false unless self.vi_pham
+    return self.vi_pham.removed?
+  end
+
+  def confirmed?
+    return false unless self.vi_pham
+    return self.vi_pham.confirmed?
+  end
+
+  def accepted?
+    return false unless self.vi_pham
+    return self.vi_pham.accepted?
+  end
+
   private
   
   def set_default    

@@ -1,7 +1,8 @@
 class Teacher::LichTrinhGiangDaysController < TenantsController
 
-	before_filter :get_lop, :except => [:info, :home, :monitor, :index, :index_bosung]
+	before_filter :get_lop, :except => [:info, :thanhtra, :thanhtraupdate, :accept, :request, :home, :monitor, :index, :index_bosung]
 
+	
 	def info
 		lich = LichTrinhGiangDay.find(params[:lich_id])
 		render json: LichTrinhGiangDaySerializer.new(lich.decorate), :root => false
@@ -14,7 +15,94 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		end
 		render json: @t, :root => false
 	end
-
+	def thanhtra						
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? }
+		if @lichs.count > 0
+			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
+		else
+			@lichs2 = []
+		end
+		render json: @lichs2, :root => false	
+	end
+	def thanhtraupdate
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		authorize @lich, :update?
+		if @lich.vi_pham			
+			@vi_pham = @lich.vi_pham
+			@vi_pham.note2 = params[:note2] 			
+			@vi_pham.save!
+		else
+			@vi_pham = @lich.build_vi_pham(note2: params[:note2])			
+			@vi_pham.save!
+		end
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		if @lichs.count > 0
+			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
+		else
+			@lichs2 = []
+		end
+		render json: @lichs2, :root => false	
+	end
+	def accept
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		authorize @lich, :update?
+		if @lich.vi_pham			
+			@vi_pham = @lich.vi_pham
+			@vi_pham.accept! if @vi_pham.can_accept?
+			@vi_pham.save!
+		else
+			@vi_pham = @lich.build_vi_pham
+			@vi_pham.accept! if @vi_pham.can_accept?
+			@vi_pham.save!
+		end
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		if @lichs.count > 0
+			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
+		else
+			@lichs2 = []
+		end
+		render json: @lichs2, :root => false	
+	end
+	def accept
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		authorize @lich, :update?
+		if @lich.vi_pham			
+			@vi_pham = @lich.vi_pham
+			@vi_pham.accept! if @vi_pham.can_accept?
+			@vi_pham.save!
+		else
+			@vi_pham = @lich.build_vi_pham
+			@vi_pham.accept! if @vi_pham.can_accept?
+			@vi_pham.save!
+		end
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		if @lichs.count > 0
+			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
+		else
+			@lichs2 = []
+		end
+		render json: @lichs2, :root => false	
+	end
+	def request2
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		authorize @lich, :update?
+		if @lich.vi_pham			
+			@vi_pham = @lich.vi_pham
+			@vi_pham.request! if @vi_pham.can_request?
+			@vi_pham.save!
+		else
+			@vi_pham = @lich.build_vi_pham
+			@vi_pham.request! if @vi_pham.can_request?
+			@vi_pham.save!
+		end
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		if @lichs.count > 0
+			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
+		else
+			@lichs2 = []
+		end
+		render json: @lichs2, :root => false	
+	end
 	def monitor		
 		@lichs = LichTrinhGiangDay.active.map{|k| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(k))}
 		render json: @lichs, :root => false		
@@ -178,6 +266,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		end
 		render json: @lichs, :root => false
 	end
+
 	def capnhat
 		# update in lich context		
 		@lich = lop.lich_trinh_giang_days.find(params[:id])

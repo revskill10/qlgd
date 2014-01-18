@@ -13,12 +13,17 @@ Qlgd::Application.routes.draw do
     get "/lop/:id" => "dashboard#lop"  
     get "/daotao" => "dashboard#daotao"
     get "/thanhtra" => 'dashboard#thanhtra'
-    namespace :thanhtra do
+    namespace :thanhtra do      
       post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
       post "/lich_trinh_giang_days/dimuon" => 'lich_trinh_giang_days#dimuon'
       post "/lich_trinh_giang_days/vesom" => 'lich_trinh_giang_days#vesom'
       post "/lich_trinh_giang_days/botiet" => 'lich_trinh_giang_days#botiet'
       post "/lich_trinh_giang_days/update" => 'lich_trinh_giang_days#update'
+      post "/lich_trinh_giang_days/report" => 'lich_trinh_giang_days#report'
+      post "/lich_trinh_giang_days/unreport" => 'lich_trinh_giang_days#unreport'
+      post "/lich_trinh_giang_days/remove" => 'lich_trinh_giang_days#remove'
+      post "/lich_trinh_giang_days/confirm" => 'lich_trinh_giang_days#confirm'
+      post "/lich_trinh_giang_days/restore" => 'lich_trinh_giang_days#restore'
     end
     namespace :daotao do 
       get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
@@ -32,7 +37,7 @@ Qlgd::Application.routes.draw do
       post "/move" => 'sinh_viens#move'
       delete "/lop_mon_hocs" => 'sinh_viens#remove'
 
-      get "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
+      post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
       get "/lich_trinh_giang_days/daduyet" => 'lich_trinh_giang_days#daduyet'
       post "/lich_trinh_giang_days/accept" => 'lich_trinh_giang_days#accept'
       post "/lich_trinh_giang_days/drop" => 'lich_trinh_giang_days#drop'
@@ -88,6 +93,10 @@ Qlgd::Application.routes.draw do
       get '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#getcontent'
       post '/lop/:lop_id/lich_trinh_giang_days/content' => 'lich_trinh_giang_days#content'
       get '/lich_trinh_giang_days' => 'lich_trinh_giang_days#home'
+      get "/lich_trinh_giang_days/thanhtra" => 'lich_trinh_giang_days#thanhtra'
+      post "/lich_trinh_giang_days/thanhtraupdate" => 'lich_trinh_giang_days#thanhtraupdate'
+      post "/lich_trinh_giang_days/accept" => 'lich_trinh_giang_days#accept'
+      post "/lich_trinh_giang_days/request" => 'lich_trinh_giang_days#request2'
       get '/monitor' => 'lich_trinh_giang_days#monitor'
     end
   end

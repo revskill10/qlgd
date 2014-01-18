@@ -11,7 +11,7 @@ class ViPham < ActiveRecord::Base
       transition [:reported, :requested] => :accepted, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
     end    
     event :request do 
-      transition [:reported, :requested] => :requested, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
+      transition :reported => :requested, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
     end
     event :remove do
       transition [:pending, :reported, :requested] => :removed, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 

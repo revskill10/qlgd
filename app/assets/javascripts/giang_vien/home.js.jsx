@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-
+//= require ./thanhtra
 
 var hdata = [
 	{tuan: 1, colapse: 'colapseOne', active: false, data: [
@@ -150,3 +150,4 @@ var LopRow = React.createClass({
 });
 React.renderComponent(<Home2 />, document.getElementById('main'));
 React.renderComponent(<LopHome />, document.getElementById('dslop'));
+React.renderComponent(<ThanhTra />, document.getElementById('thanhtra'));
