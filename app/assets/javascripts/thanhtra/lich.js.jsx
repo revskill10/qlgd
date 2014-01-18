@@ -132,7 +132,7 @@ var ThanhTra = React.createClass({
   render: function(){
     var self = this;
     var x = this.state.data.map(function(d, index){
-      return <ThanhTraRow date={self.state.date} onReport={self.handleReport} onUnReport={self.handleUnReport} onRemove={self.handleRmove} onConfirm={self.handleConfirm} onRestore={self.handleRestore} onUpdate={self.handleUpdate} onDiMuon={self.handleDiMuon} onVeSom={self.handleVeSom} onBoTiet={self.handleBoTiet} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
+      return <ThanhTraRow date={self.state.date} onReport={self.handleReport} onUnReport={self.handleUnReport} onRemove={self.handleRemove} onConfirm={self.handleConfirm} onRestore={self.handleRestore} onUpdate={self.handleUpdate} onDiMuon={self.handleDiMuon} onVeSom={self.handleVeSom} onBoTiet={self.handleBoTiet} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
     });
     
     return (
