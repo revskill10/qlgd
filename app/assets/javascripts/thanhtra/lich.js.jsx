@@ -101,10 +101,22 @@ var ThanhTra = React.createClass({
       }.bind(this)
     });
   },
+  handleUpdate: function(d){
+    this.setState({loading: true});
+    $.ajax({
+      url: '/thanhtra/lich_trinh_giang_days/update',
+      type: 'POST',
+      data: d,
+      success: function(data){
+        $('#foo').data('spinner').stop();        
+        this.setState({data: data, loading: false});
+      }.bind(this)
+    });
+  },
   render: function(){
     var self = this;
     var x = this.state.data.map(function(d, index){
-      return <ThanhTraRow date={self.state.date} onDiMuon={self.handleDiMuon} onVeSom={self.handleVeSom} onBoTiet={self.handleBoTiet} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
+      return <ThanhTraRow date={self.state.date} onUpdate={self.handleUpdate} onDiMuon={self.handleDiMuon} onVeSom={self.handleVeSom} onBoTiet={self.handleBoTiet} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
     });
     if (this.state.loading === false){
       return (
@@ -148,7 +160,7 @@ var ThanhTra = React.createClass({
 
 var ThanhTraRow = React.createClass({
   getInitialState: function(){
-    return {edit: false};
+    return {edit: 0};
   },
   onDiMuon: function(){
     this.props.onDiMuon({lich_id: this.props.data.id, date: this.props.date});
@@ -159,6 +171,24 @@ var ThanhTraRow = React.createClass({
   onBoTiet: function(){
     this.props.onBoTiet({lich_id: this.props.data.id, date: this.props.date});
   },
+  onEdit: function(){
+    this.setState({edit: 1});
+  },
+  onCancel: function(){
+    this.setState({edit: 0});
+  },
+  onUpdate: function(){
+    this.setState({edit: 0});
+    var note1 = this.refs.note1.getDOMNode().value;
+    var note3 = this.refs.note3.getDOMNode().value;
+    this.props.onUpdate({lich_id: this.props.data.id, note1: note1, note3: note3, date: this.props.date});
+  },  
+  componentDidUpdate: function(){
+    if (this.state.edit === 1){
+      this.refs.note1.getDOMNode().value = this.props.data.note1;
+      this.refs.note3.getDOMNode().value = this.props.data.note3;
+    }
+  },
   render: function(){
     if (this.state.edit === 0){
       return (      
@@ -166,11 +196,16 @@ var ThanhTraRow = React.createClass({
           <td>{this.props.stt}</td>
           <td><span dangerouslySetInnerHTML={{__html: this.props.data.info}} /></td>
           <td><button onClick={this.onDiMuon} class={this.props.data.di_muon_color} >{this.props.data.di_muon_alias}</button><br/><br/><button onClick={this.onVeSom} class={this.props.data.ve_som_color} >{this.props.data.ve_som_alias}</button><br/><br/><button onClick={this.onBoTiet} class={this.props.data.bo_tiet_color} >{this.props.data.bo_tiet_alias}</button></td>
-          <td>{this.props.data.note1}</td>
-          <td>{this.props.data.note2}</td>
-          <td>{this.props.data.note3}</td>
+          <td><span dangerouslySetInnerHTML={{__html: this.props.data.note1_html}} /></td>
+          <td><span dangerouslySetInnerHTML={{__html: this.props.data.note2_html}} /></td>
+          <td><span dangerouslySetInnerHTML={{__html: this.props.data.note3_html}} /></td>
           <td>
-            <button class="btn btn-sm btn-primary">Sửa</button>
+            <button style={{display: this.props.data.can_thanh_tra_edit === true ? '' : 'none'}} onClick={this.onEdit} class="btn btn-sm btn-success">Edit</button>
+            <button style={{display: this.props.data.can_report === true ? '' : 'none'}} onClick={this.onReport} class="btn btn-sm btn-danger">Report</button>
+            <button style={{display: this.props.data.can_unreport === true ? '' : 'none'}} onClick={this.onUnReport} class="btn btn-sm btn-danger">UnReport</button>
+            <button style={{display: this.props.data.can_remove === true ? '' : 'none'}} onClick={this.onRemove} class="btn btn-sm btn-warning">Remove</button>
+            <button style={{display: this.props.data.can_restore === true ? '' : 'none'}} onClick={this.onRestore} class="btn btn-sm btn-warning">Restore</button>
+            <button style={{display: this.props.data.can_confirm === true ? '' : 'none'}} onClick={this.onConfirm} class="btn btn-sm btn-primary">Confirm</button>
           </td>
         </tr>
       );
@@ -180,12 +215,17 @@ var ThanhTraRow = React.createClass({
           <td>{this.props.stt}</td>
           <td><span dangerouslySetInnerHTML={{__html: this.props.data.info}} /></td>
           <td><button onClick={this.onDiMuon} class={this.props.data.di_muon_color} >{this.props.data.di_muon_alias}</button><br/><br/><button onClick={this.onVeSom} class={this.props.data.ve_som_color} >{this.props.data.ve_som_alias}</button><br/><br/><button onClick={this.onBoTiet} class={this.props.data.bo_tiet_color} >{this.props.data.bo_tiet_alias}</button></td>
-          <td>{this.props.data.note1}</td>
+          <td><textarea ref="note1" style={{width:"100%", height: "200px"}} /></td>
           <td>{this.props.data.note2}</td>
-          <td>{this.props.data.note3}</td>
+          <td><textarea ref="note3" style={{width:"100%", height: "200px"}} /></td>
           <td>
-            <button class="btn btn-sm btn-primary">Cập nhật</button>
-            <button class="btn btn-sm btn-primary">Cập nhật</button>
+            <button onClick={this.onCancel} class="btn btn-sm btn-default">Hủy</button>
+            <button onClick={this.onUpdate} class="btn btn-sm btn-success">Cập nhật</button>
+            <button style={{display: this.props.data.can_report === true ? '' : 'none'}} onClick={this.onReport} class="btn btn-sm btn-danger">Report</button>
+            <button style={{display: this.props.data.can_unreport === true ? '' : 'none'}} onClick={this.onUnReport} class="btn btn-sm btn-danger">UnReport</button>
+            <button style={{display: this.props.data.can_remove === true ? '' : 'none'}} onClick={this.onRemove} class="btn btn-sm btn-warning">Remove</button>
+            <button style={{display: this.props.data.can_restore === true ? '' : 'none'}} onClick={this.onRestore} class="btn btn-sm btn-warning">Restore</button>
+            <button style={{display: this.props.data.can_confirm === true ? '' : 'none'}} onClick={this.onConfirm} class="btn btn-sm btn-primary">Confirm</button>
           </td>
         </tr>
       );

@@ -18,6 +18,7 @@ Qlgd::Application.routes.draw do
       post "/lich_trinh_giang_days/dimuon" => 'lich_trinh_giang_days#dimuon'
       post "/lich_trinh_giang_days/vesom" => 'lich_trinh_giang_days#vesom'
       post "/lich_trinh_giang_days/botiet" => 'lich_trinh_giang_days#botiet'
+      post "/lich_trinh_giang_days/update" => 'lich_trinh_giang_days#update'
     end
     namespace :daotao do 
       get "/lop_hanh_chinhs" => 'ghep_lop#lop_hanh_chinhs'
