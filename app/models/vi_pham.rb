@@ -14,10 +14,10 @@ class ViPham < ActiveRecord::Base
       transition :reported => :requested, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
     end
     event :remove do
-      transition [:pending, :reported, :requested] => :removed, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
+      transition [:pending, :accepted, :reported, :requested] => :removed, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
     end
     event :confirm do
-      transition [:pending, :reported, :requested] => :confirmed, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
+      transition [:pending, :accepted, :reported, :requested] => :confirmed, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) } 
     end
     event :report do 
       transition [:pending, :requested] => :reported, :if => lambda {|vi_pham| ["normal", "bosung"].include?(vi_pham.lich_trinh_giang_day.state) }

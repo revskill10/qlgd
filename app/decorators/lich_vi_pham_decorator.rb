@@ -11,7 +11,7 @@ class LichViPhamDecorator < Draper::Decorator
 		@lich.id
 	end
 	def info
-		return "<table class='table table-condensed'><colgroup><col style='width:30%'/><col style='width:70%'/></colgroup><tbody><tr><td>Thời gian:</td><td>#{@lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")}</td></tr><tr><td>Giảng viên:</td><td>#{@lich.giang_vien.hovaten}</td></tr><tr><td>Phòng:</td><td>#{@lich.phong}, #{@lich.so_tiet_moi} tiết</td></tr><tr><td>Môn:</td><td>#{@lich.lop_mon_hoc.ten_mon_hoc}</td></tr><tr><td>Trạng thái:</td><td>#{@lich.alias_state}</td></tr></tbody></table>"
+		return "<table class='table table-condensed'><colgroup><col style='width:30%'/><col style='width:70%'/></colgroup><tbody><tr><td>Thời gian:</td><td>#{@lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y")}</td></tr><tr><td>Giảng viên:</td><td>#{@lich.giang_vien.hovaten}</td></tr><tr><td>Phòng:</td><td>#{@lich.phong}, #{@lich.so_tiet_moi} tiết</td></tr><tr><td>Môn:</td><td>#{@lich.lop_mon_hoc.ten_mon_hoc}</td></tr><tr><td>Trạng thái:</td><td><strong>#{vipham_state}</strong></td></tr></tbody></table>"
 	end
 	def di_muon?
 		return false unless @lich.vi_pham
@@ -39,6 +39,23 @@ class LichViPhamDecorator < Draper::Decorator
 	end
 	def alias_state
 		return @lich.alias_state
+	end
+	def vipham_state
+		return "Bình thường" unless @lich.vi_pham
+		case @lich.vi_pham.state.to_sym
+		when :accepted
+			"Được chấp nhận"
+		when :requested
+			"Đề nghị xác minh"
+		when :confirmed
+			"Đã xác minh"
+		when :removed
+			"Đã hủy vi phạm"
+		when :pending
+			"Lưu ý"
+		when :reported
+			"Báo lỗi"
+		end
 	end
 	def note1
 		return "" unless  @lich.vi_pham

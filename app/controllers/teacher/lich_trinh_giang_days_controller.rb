@@ -16,7 +16,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		render json: @t, :root => false
 	end
 	def thanhtra						
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? }
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
 		if @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else
@@ -35,7 +35,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@vi_pham = @lich.build_vi_pham(note2: params[:note2])			
 			@vi_pham.save!
 		end
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
 		if @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else
@@ -55,7 +55,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@vi_pham.accept! if @vi_pham.can_accept?
 			@vi_pham.save!
 		end
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
 		if @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else
@@ -75,7 +75,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@vi_pham.accept! if @vi_pham.can_accept?
 			@vi_pham.save!
 		end
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
 		if @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else
@@ -95,7 +95,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@vi_pham.request! if @vi_pham.can_request?
 			@vi_pham.save!
 		end
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? }
+		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
 		if @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else

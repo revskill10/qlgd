@@ -247,6 +247,10 @@ class LichTrinhGiangDay < ActiveRecord::Base
     return self.vi_pham.accepted?
   end
 
+  def requested?
+    return false unless self.vi_pham
+    return self.vi_pham.requested?
+  end
   private
   
   def set_default    
