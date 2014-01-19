@@ -19,7 +19,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
   has_one :du_gio, :dependent => :destroy
   has_one :vi_pham, :dependent => :destroy
-  scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
+  scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.today.to_time + 1.day])
   scope :accepted, where(status: :accepted)
   scope :thanhtra, where(status: ["accepted","completed"])
   scope :accepted_or_dropped, where(status: ["accepted", "dropped"])
