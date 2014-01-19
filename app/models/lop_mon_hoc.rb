@@ -86,6 +86,10 @@ class LopMonHoc < ActiveRecord::Base
     end
   end
   
+  def khoi_luong_du_kien
+    lich_trinh_giang_days.accepted_or_completed.sum(:so_tiet_moi)
+  end
+  
   def tong_so_tiet
     return 0 unless self.settings
     return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0) + (self.settings[:so_tiet_tu_hoc] || 0) + (self.settings[:so_tiet_bai_tap] || 0)

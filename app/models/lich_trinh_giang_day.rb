@@ -24,6 +24,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :thanhtra, where(status: ["accepted","completed"])
   scope :accepted_or_dropped, where(status: ["accepted", "dropped"])
   scope :completed, where(status: :completed)
+  scope :accepted_or_completed, where(status: ["accepted","completed"], state: ["bosung","normal"])
   scope :waiting, where(status: :waiting)
   scope :with_giang_vien, lambda {|giang_vien_id| where(giang_vien_id: giang_vien_id)}
   scope :with_lop, lambda {|lop_mon_hoc_id| where(lop_mon_hoc_id: lop_mon_hoc_id)}

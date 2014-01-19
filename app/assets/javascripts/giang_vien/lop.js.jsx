@@ -50,13 +50,15 @@ var Setting = React.createClass({
 	        <h6>Thông tin lớp học:</h6>        	        
 	        <table class="table table-bordered table-condensed">
 	          <thead>
+	          <tr class="success">
 	            <td>Mã lớp</td>
 	            <td>Tên môn học</td>
 	            <td>Sĩ số</td>
 	            <td>Số tiết lý thuyết</td>
 	            <td>Số tiết thực hành</td>
 	            <td>Ngôn ngữ</td>	            
-	            <td>Trạng thái</td>      
+	            <td>Trạng thái</td>   
+	            </tr>   
 	          </thead>
 	          <tbody>
 	              <td>{this.props.lop.ma_lop}</td>
@@ -77,7 +79,7 @@ var Lop = React.createClass({
 		return (
 			<div>
 				<Setting lop={this.props.data.lop} />
-				<Enrollments enrollments={this.props.data.enrollments} />	
+				<div id="grades2"></div>	
 			</div>
 		);
 	}

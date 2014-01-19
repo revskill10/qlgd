@@ -378,7 +378,8 @@ var Lich = React.createClass({
       data: d,
       success: function(data2) {             
         this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
-        //alert(data.so_tiet_vang);
+        React.unmountAndReleaseReactRootNode(document.getElementById('grades'));
+        React.renderComponent(<Grade2 lop={this.props.lop} />, document.getElementById('grades'));
       }.bind(this)
     });
     return false;
@@ -395,7 +396,7 @@ var Lich = React.createClass({
               type: 'POST',
               data: d,
               success: function(data2) {             
-                  this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
+                this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
                 React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
                 React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
                 React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
@@ -484,8 +485,17 @@ var Lich = React.createClass({
     </div>
     <div id="collapseThree" class="panel-collapse collapse">
       <div class="panel-body">
-        <div id="grades">
-          
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#dct" data-toggle="tab">Điểm chi tiết</a></li>
+          <li><a href="#dn" data-toggle="tab">Điểm nhóm</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="dct">
+            <div id="grades"></div>
+          </div>
+          <div class="tab-pane" id="dn">
+            <div id="grades2"></div>
+          </div>
         </div>
       </div>
     </div>    

@@ -6,10 +6,13 @@ var Grade2 = React.createClass({
 		return {data: [], headers: []}
 	},
 	loadData: function(){
+		
 		$.ajax({
           url: "/teacher/lop/"+this.props.lop+"/submissions2.json" ,
           success: function(data) {                      
             this.setState({data: data.results, headers: data.headers});
+            React.unmountAndReleaseReactRootNode(document.getElementById('grades2'));
+            React.renderComponent(<GroupGrade lop={this.props.lop} />, document.getElementById('grades2'));
           }.bind(this)
         }); 
 	},
@@ -22,6 +25,8 @@ var Grade2 = React.createClass({
                 this.setState({data: data.results, headers: data.headers});               
                 React.unmountAndReleaseReactRootNode(document.getElementById('assignment'));
                 React.renderComponent(<Assignments lop={this.props.lop} />, document.getElementById('assignment'));
+                React.unmountAndReleaseReactRootNode(document.getElementById('grades2'));
+                React.renderComponent(<GroupGrade lop={this.props.lop} />, document.getElementById('grades2'));
             }.bind(this)           
         });
         return false;
@@ -35,21 +40,92 @@ var Grade2 = React.createClass({
 			return <td>{d.assignment_name} ({d.points})</td>
 		});
 		var x = this.state.data.map(function(d){
-			return <GradeRow hovaten={d.hovaten} code={d.code} ma_lop_hanh_chinh={d.ma_lop_hanh_chinh}  onUpdate={self.onUpdate} data={d.submissions} />
+			return <GradeRow hovaten={d.hovaten} code={d.code} ma_lop_hanh_chinh={d.ma_lop_hanh_chinh} diem_qua_trinh={d.diem_qua_trinh} tinhhinh={d.tinhhinh}  onUpdate={self.onUpdate} data={d.submissions} />
 		});
 		return (
+			<div class="table-responsive">
 			<table class="table table-bordered">
 				<thead>
-					<tr class="success"><td>Họ và tên</td>{headers}</tr>
+					<tr class="success"><td>Họ và tên</td>
+					<td>Tình hình đi học</td>
+					{headers}
+					<td>Điểm quá trình</td></tr>
 				</thead>
 				<tbody>
 					{x}
 				</tbody>
 			</table>
+			</div>
 		);
 	}
 });
 
+var GroupGrade = React.createClass({
+	getInitialState: function(){
+		return {data: [], headers: []}
+	},
+	loadData: function(){
+		$.ajax({
+			url: '/teacher/lop/' + this.props.lop + '/group_submissions',
+			success: function(data){
+				this.setState({data: data.results, headers: data.headers});
+			}.bind(this)
+		})
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	render: function(){
+		var headers = this.state.headers.map(function(d){
+			return <td>{d.group_name} ({d.weight}%)</td>
+		});
+		var x = this.state.data.map(function(d){
+			return <GroupGradeRow hovaten={d.hovaten} code={d.code} tinhhinh={d.tinhhinh} ma_lop_hanh_chinh={d.ma_lop_hanh_chinh} diem_qua_trinh={d.diem_qua_trinh} data={d.group_submissions} />
+		});
+		return(
+			<div class="table-responsive">
+			<table class="table table-bordered">
+				<thead>
+					<tr class="success"><td>Họ và tên</td><td>Tình hình đi học</td>{headers}<td>Điểm quá trình</td></tr>
+				</thead>
+				<tbody>
+					{x}
+				</tbody>
+			</table>
+			</div>
+		);
+	}
+});
+
+var GroupGradeRow = React.createClass({
+	render: function(){
+		var x = this.props.data.map(function(d){
+			return <GroupGradeCell data={d} />
+		});
+		return (
+			<tr>
+				<td><div>{this.props.hovaten}<br/>{this.props.code}<br/>{this.props.ma_lop_hanh_chinh}</div></td>
+				<td><div class="progress">
+        <div class="progress-bar progress-bar-success" style={{width: 100 - this.props.tinhhinh +"%"}}>
+          <span>{100 - this.props.tinhhinh +"%"}</span>
+        </div>        
+        <div class="progress-bar progress-bar-danger" style={{width: this.props.tinhhinh + "%"}}>
+          <span>{this.props.tinhhinh +"%"}</span>
+        </div>
+      </div></td>
+				{x}
+				<td>{this.props.diem_qua_trinh}</td>
+			</tr>
+		);
+	}
+});
+var GroupGradeCell = React.createClass({
+	render: function(){
+		return (
+			<td>{this.props.data.grade}</td>
+		);
+	}
+});
 var GradeRow = React.createClass({
 
 	render: function(){
@@ -58,7 +134,19 @@ var GradeRow = React.createClass({
 			return <GradeCell onUpdate={self.props.onUpdate} data={d} />
 		});
 		return (
-			<tr><td>{this.props.hovaten}</td>{x}</tr>
+			<tr>
+				<td><div>{this.props.hovaten}<br/>{this.props.code}<br/>{this.props.ma_lop_hanh_chinh}</div></td>
+				<td><div class="progress">
+        <div class="progress-bar progress-bar-success" style={{width: 100 - this.props.tinhhinh +"%"}}>
+          <span>{100 - this.props.tinhhinh +"%"}</span>
+        </div>        
+        <div class="progress-bar progress-bar-danger" style={{width: this.props.tinhhinh + "%"}}>
+          <span>{this.props.tinhhinh +"%"}</span>
+        </div>
+      </div></td>
+				{x}
+				<td>{this.props.diem_qua_trinh}</td>
+			</tr>
 		);
 	}
 });

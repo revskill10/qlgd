@@ -19,12 +19,13 @@ class Enrollment < ActiveRecord::Base
     attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.so_tiet_moi }
   end
   def diemqt
-    group_submissions.sum(:grade).to_i
+    group_submissions.sum(:grade).round(0).to_i
   end
 
   def tinhhinhvang
-    return 0 if lop_mon_hoc.tong_so_tiet_hoc == 0
-    (tong_vang * 100.0 / (lop_mon_hoc.tong_so_tiet_hoc - so_tiet_thua)).round(2)
+    tmp = lop_mon_hoc.khoi_luong_du_kien if lop_mon_hoc.tong_so_tiet_hoc == 0
+    tmp = lop_mon_hoc.tong_so_tiet_hoc if lop_mon_hoc.tong_so_tiet_hoc > 0
+    (tong_vang * 100.0 / (tmp - (so_tiet_thua || 0))).round(2)
   end
 
 end
