@@ -255,7 +255,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 	end
 	def update		
 		@lich = lop.lich_trinh_giang_days.find(params[:id])
-		authorize @lich, :update?
+		authorize @lich, :update_thongso?
 		if @lich
 			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype], note: params[:note])
 		end
