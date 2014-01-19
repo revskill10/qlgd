@@ -22,6 +22,9 @@ class LichEnrollmentDecorator < Draper::Decorator
   def id
     @object.id
   end
+  def can_edit
+    @lich.thoi_gian.localtime < Time.now
+  end
   def so_tiet_vang
     return 0 unless @at    
     return @at.so_tiet_vang if @at

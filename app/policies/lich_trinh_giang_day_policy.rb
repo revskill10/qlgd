@@ -19,6 +19,9 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
     return true if user.decorate.is_super_admin?
     UserDecorator.new(user).is_thanh_tra?
   end
+  def update_thongso?
+    update? and lich_trinh_giang_day.thoi_gian.localtime < Time.now
+  end
   def update?
     return true if user.decorate.is_super_admin?
     #return false unless Pundit.policy!(user, lich_trinh_giang_day.lop_mon_hoc).update?

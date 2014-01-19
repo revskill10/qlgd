@@ -25,6 +25,7 @@ class LichViPhamDecorator < Draper::Decorator
 		return false unless @lich.vi_pham
 		return @lich.vi_pham.bo_tiet
 	end
+
 	def di_muon_alias
 		return "Không đi muộn" unless @lich.vi_pham
 		return @lich.vi_pham.di_muon ? "Đi muộn" : "Không đi muộn"

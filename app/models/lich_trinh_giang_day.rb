@@ -17,7 +17,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   validates :giang_vien, :presence => true
   validates :so_tiet, :numericality => {:greater_than => 0}
   
-  has_many :du_gios, :dependent => :destroy
+  has_one :du_gio, :dependent => :destroy
   has_one :vi_pham, :dependent => :destroy
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.tomorrow.to_time])
   scope :accepted, where(status: :accepted)

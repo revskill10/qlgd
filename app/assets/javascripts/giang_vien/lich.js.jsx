@@ -292,102 +292,40 @@ var Editor = React.createClass({
 });
 
 var LichSetting = React.createClass({  
-  getInitialState: function(){
-    return {edit: 0};
-  },
-  handleEdit: function(e){
-    this.setState({edit: 1});
-  },
-  handleCancelEdit: function(e){
-    this.setState({edit: 0});
-  },
-  handleCapnhat: function(e){
-    var phong = this.refs.phong.getDOMNode().value;
-    var ltype = this.refs.ltype.getDOMNode().value;
-    var so_tiet = this.refs.so_tiet.getDOMNode().value;
-    this.props.onCapnhat({id: this.props.lich.id, phong: phong, ltype: ltype, so_tiet: so_tiet});
-    this.setState({edit: 0});
-  },
   handleComplete: function(e){
     this.props.onComplete(this.props.lich);
   },
-  handleNghiday: function(e){
-    this.props.onNghiday(this.props.lich);
-  },
-  componentDidUpdate: function(){
-    if (this.state.edit === 1){
-      this.refs.phong.getDOMNode().value = this.props.lich.phong;
-      this.refs.ltype.getDOMNode().value = this.props.lich.ltype;
-      this.refs.so_tiet.getDOMNode().value = this.props.lich.so_tiet;
-    }
-  },
-  render: function(){    
-    if (this.state.edit === 0){              
-      return (        
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead><tr class="success">
-              <td>Phòng</td>
-              <td>Loại</td>
-              <td>Số tiết</td>
-              <td>Số sinh viên có mặt</td>
-              <td>Số sinh viên vắng</td>
-              <td>Giờ học</td>
-              <td>Trạng thái</td>
-              <td>Thao tác</td></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{this.props.lich.phong}</td>
-                <td>{this.props.lich.type_status}</td>
-                <td>{this.props.lich.so_tiet}</td>
-                <td>{this.props.lich.sv_co_mat}</td>
-                <td>{this.props.lich.sv_vang_mat}</td>
-                <td>{this.props.lich.alias_state}</td>
-                <td>{this.props.lich.alias_status}</td>
-                <td>
-                  {this.props.lich.updated ? <div><button onClick={this.handleEdit} class="btn btn-sm btn-success">Sửa</button><button onClick={this.handleComplete} class="btn btn-sm btn-primary curl-top-left" title="" data-placement="left" data-toggle="tooltip" type="button" data-original-title="Nhấn vào hoàn thành để tính buổi dạy này vào khối lượng thực hiện giảng dạy">Hoàn thành</button></div> : '' }                  
-                </td>                            
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );
-    } else {
-      return (
-        <div class="table-responsive">
-          <table class="table table-bordered">
-            <thead><tr class="success">
-              <td>Phòng</td>
-              <td>Loại</td>
-              <td>Số tiết</td>
-              <td>Số sinh viên có mặt</td>
-              <td>Số sinh viên vắng</td>
-              <td>Giờ học</td>
-              <td>Trạng thái</td>
-              <td>Thao tác</td></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><input type="text" ref="phong" /></td>
-                <td><select ref="ltype" class="form-control input-sm">
-                    <option value="lythuyet">Lý thuyết</option>
-                    <option value="thuchanh">Thực hành</option>
-                    <option value="tuhoc">Tự học</option>
-                    <option value="baitap">Bài tập</option>
-                  </select></td>
-                <td><input type="text" ref="so_tiet" /></td>
-                <td>{this.props.lich.sv_co_mat}</td>
-                <td>{this.props.lich.sv_vang_mat}</td>
-                <td>{this.props.lich.alias_state}</td>
-                <td>{this.props.lich.alias_status}</td>
-                <td><button onClick={this.handleCancelEdit} class="btn btn-sm btn-success curl-top-left">Hủy</button><button onClick={this.handleCapnhat} class="btn btn-sm btn-primary curl-top-left">Cập nhật</button></td>                            
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      );    
-    }
+  render: function(){      
+    return (        
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead><tr class="success">
+            <td>Phòng</td>
+            <td>Loại</td>
+            <td>Số tiết</td>
+            <td>Số sinh viên có mặt</td>
+            <td>Số sinh viên vắng</td>
+            <td>Giờ học</td>
+            <td>Trạng thái</td>
+            <td>Thao tác</td></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{this.props.lich.phong}</td>
+              <td>{this.props.lich.type_status}</td>
+              <td>{this.props.lich.so_tiet}</td>
+              <td>{this.props.lich.sv_co_mat}</td>
+              <td>{this.props.lich.sv_vang_mat}</td>
+              <td>{this.props.lich.alias_state}</td>
+              <td>{this.props.lich.alias_status}</td>
+              <td>
+                {this.props.lich.updated ? <div><button onClick={this.handleComplete} class="btn btn-sm btn-primary curl-top-left" title="" data-placement="left" data-toggle="tooltip" type="button" data-original-title="Nhấn vào hoàn thành để tính buổi dạy này vào khối lượng thực hiện giảng dạy">Hoàn thành</button></div> : '' }                  
+              </td>                            
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    );
   }
 });
 
@@ -448,22 +386,6 @@ var Lich = React.createClass({
   handleChangeContent: function(e){
     this.setState({noidung: e.target.value});
     this.state.lich.content = this.state.noidung;
-  },
-  handleCapnhat: function(d){
-    d.giang_vien = this.props.giang_vien;
-    d.lop_id = this.props.lop;
-    $.ajax({
-        url: "/teacher/lop/" + this.props.lop + "/lich_trinh_giang_days/capnhat",
-          type: 'POST',
-          data: d,
-          success: function(data2) {             
-              this.setState({noidung: data2.info.lich.content, data : data2.enrollments, lich: data2.info.lich, lop: data2.info.lop, loading: false}); 
-              React.unmountAndReleaseReactRootNode(document.getElementById('bosung'));
-              React.renderComponent(<Bosung giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('bosung'));
-              React.unmountAndReleaseReactRootNode(document.getElementById('calendar'));
-              React.renderComponent(<Calendar giang_vien={ENV.giang_vien_id} lop={ENV.lop_id} />, document.getElementById('calendar'));
-          }.bind(this)           
-      }); 
   },
   handleComplete: function(d){
     d.giang_vien = this.props.giang_vien;
@@ -526,14 +448,14 @@ var Lich = React.createClass({
           <div class="tab-pane active" id="home2">
             <br />
             <h6>Thông tin buổi học</h6>
-            <LichSetting lich={this.state.lich} onNghiday={this.handleNghiday} onCapnhat={this.handleCapnhat} onComplete={this.handleComplete} />
+            <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
             <br />
-            <Enrollments state={this.state.lich.updated===true && this.state.lop.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
+            <Enrollments state={this.state.lich.updated===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
           </div>                  
           <div class="tab-pane" id="noidung">
             <br />
             <h6>Thông tin buổi học</h6>
-                <LichSetting lich={this.state.lich} onCapnhat={this.handleCapnhat} onNghiday={this.handleNghiday} onComplete={this.handleComplete} />
+                <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
                 <br />
             <div class="row">
               <hr />
