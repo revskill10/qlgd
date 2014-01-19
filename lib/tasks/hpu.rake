@@ -198,6 +198,15 @@ namespace :hpu do
     Sunspot.commit
   end
   
+  #11: update grade
+  task :update_grade => :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    Submission.all.each do |s|
+      s.save!
+    end
+  end
 
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")

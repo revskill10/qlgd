@@ -15,9 +15,5 @@ class AssignmentGroup < ActiveRecord::Base
     return true
   end
 
-  def diem_trung_binh(sinh_vien_id)
-    return 0 if assignments.count == 0
-    sum = assignments.to_a.sum { |a| (a.submissions.where(sinh_vien_id: sinh_vien_id).first.try(:grade) || 0.0 ) * (weight / 10.0) / (a.try(:points) || 1) / assignments.count }    
-    sum.round(0).to_i    
-  end
+  
 end

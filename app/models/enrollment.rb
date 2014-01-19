@@ -8,6 +8,7 @@ class Enrollment < ActiveRecord::Base
   has_many :lich_trinh_giang_days, :through => :lop_mon_hoc
   validates :lop_mon_hoc, :sinh_vien, :presence => true
   has_many :assignment_groups, :through => :lop_mon_hoc, :uniq => true
+  has_many :group_submissions, :dependent => :destroy
   has_many :assignments, :through => :lop_mon_hoc, :uniq => true
   has_many :attendances, :through => :sinh_vien
   has_many :submissions, :dependent => :destroy
@@ -17,8 +18,8 @@ class Enrollment < ActiveRecord::Base
   def so_tiet_thua
     attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.so_tiet_moi }
   end
-  def diem_qua_trinh
-          assignment_groups.to_a.sum {|e| e.diem_trung_binh(sinh_vien.id) }
+  def diemqt
+    group_submissions.sum(:grade).to_i
   end
 
   def tinhhinhvang

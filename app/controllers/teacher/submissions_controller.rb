@@ -12,11 +12,15 @@ where lop.id=#{@lop.id}), a3 as (select a1.id, a1.assignment_id, a1.name, COALES
 left outer join a2 on a1.id = a2.enrollment_id and a1.assignment_id = a2.assignment_id)
 select a3.id as enrollment_id, a3.assignment_id, a3.name, a3.grade, regexp_replace(sv.ho || ' ' || sv.dem || ' ' || sv.ten, '  ',' ') as hovaten, sv.code, sv.ma_lop_hanh_chinh  from a3 inner join enrollments en on en.id = a3.id
 inner join lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
-inner join sinh_viens sv on sv.id = en.sinh_vien_id order by sv.position;"
+inner join sinh_viens sv on sv.id = en.sinh_vien_id
+inner join assignments ai on a3.assignment_id = ai.id
+inner join assignment_groups ag on ag.id = ai.assignment_group_id
+order by sv.position, ag.position, ai.position"
 		results = ActiveRecord::Base.connection.execute(sql).group_by {|k| [k["enrollment_id"],k["hovaten"],k["code"],k["ma_lop_hanh_chinh"]]}.map {|k,v| {:enrollment_id => k[0], :hovaten => k[1], :code => k[2], :ma_lop_hanh_chinh => k[3], :submissions => v}}
 		sql2 = "select ai.id as assignment_id, ai.name, ai.points, ag.name as group_name, ag.weight from assignments ai
 inner join assignment_groups ag on ag.id = ai.assignment_group_id
-where ai.lop_mon_hoc_id=#{@lop.id}"
+where ai.lop_mon_hoc_id=#{@lop.id}
+order by ag.position, ai.position"
 		headers = ActiveRecord::Base.connection.execute(sql2).map {|k| {:assignment_id => k["assignment_id"], :assignment_name => k["name"], :points => k["points"], :group_name => k["group_name"], :weight => k["weight"] }}
 		render json: {:results => results, :headers => headers}, :root => false
 	end
@@ -67,11 +71,15 @@ where lop.id=#{@lop.id}), a3 as (select a1.id, a1.assignment_id, a1.name, COALES
 left outer join a2 on a1.id = a2.enrollment_id and a1.assignment_id = a2.assignment_id)
 select a3.id as enrollment_id, a3.assignment_id, a3.name, a3.grade, regexp_replace(sv.ho || ' ' || sv.dem || ' ' || sv.ten, '  ',' ') as hovaten, sv.code, sv.ma_lop_hanh_chinh  from a3 inner join enrollments en on en.id = a3.id
 inner join lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
-inner join sinh_viens sv on sv.id = en.sinh_vien_id order by sv.position;"
+inner join sinh_viens sv on sv.id = en.sinh_vien_id
+inner join assignments ai on a3.assignment_id = ai.id
+inner join assignment_groups ag on ag.id = ai.assignment_group_id
+order by sv.position, ag.position, ai.position"
 		results = ActiveRecord::Base.connection.execute(sql).group_by {|k| [k["enrollment_id"],k["hovaten"],k["code"],k["ma_lop_hanh_chinh"]]}.map {|k,v| {:enrollment_id => k[0], :hovaten => k[1], :code => k[2], :ma_lop_hanh_chinh => k[3], :submissions => v}}
 		sql2 = "select ai.id as assignment_id, ai.name, ai.points, ag.name as group_name, ag.weight from assignments ai
 inner join assignment_groups ag on ag.id = ai.assignment_group_id
-where ai.lop_mon_hoc_id=#{@lop.id}"
+where ai.lop_mon_hoc_id=#{@lop.id}
+order by ag.position, ai.position"
 		headers = ActiveRecord::Base.connection.execute(sql2).map {|k| {:assignment_id => k["assignment_id"], :assignment_name => k["name"], :points => k["points"], :group_name => k["group_name"], :weight => k["weight"] }}
 		render json: {:results => results, :headers => headers}, :root => false
 	end
