@@ -22,3 +22,4 @@
 /solr/**/index/
 /solr/**/spellchecker/
 /log/*.*
+/config/database.yml
