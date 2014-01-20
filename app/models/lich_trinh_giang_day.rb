@@ -115,6 +115,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   
+
+  
   
   def alias_state
     case self.state

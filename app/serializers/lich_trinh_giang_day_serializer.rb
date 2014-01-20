@@ -12,6 +12,9 @@ class LichTrinhGiangDaySerializer < ActiveModel::Serializer
   def can_edit
     object.can_edit
   end
+  def can_diem_danh
+    object.can_diem_danh
+  end
   def updated_alias
     object.updated_at.localtime.strftime("%Hh%M %d/%m/%Y")
   end

@@ -451,7 +451,7 @@ var Lich = React.createClass({
             <h6>Thông tin buổi học</h6>
             <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
             <br />
-            <Enrollments state={this.state.lich.can_edit===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
+            <Enrollments state={this.state.lich.can_diem_danh===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
           </div>                  
           <div class="tab-pane" id="noidung">
             <br />
