@@ -23,6 +23,9 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
   def can_edit
     object.can_edit?
   end
+  def can_diem_danh
+    updated and Time.now >= object.thoi_gian.localtime
+  end
   def sv_co_mat
   	object.lop_mon_hoc.enrollments.count - sv_vang_mat - object.attendances.where("state = 'idle'").count
   end
