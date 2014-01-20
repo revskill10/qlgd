@@ -33,12 +33,12 @@ class User < ActiveRecord::Base
  
   def lop_chinhs
     if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
-      return self.imageable.lop_mon_hocs.pending_or_started
+      return self.imageable.lop_mon_hocs.started
     end
     []
   end
   def lop_tro_giangs
-    self.lop_mon_hocs.pending_or_started
+    self.lop_mon_hocs.started
   end
   def get_lops
     lop_chinhs + lop_tro_giangs

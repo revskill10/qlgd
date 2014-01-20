@@ -4,7 +4,7 @@ class Calendar < ActiveRecord::Base
   attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id, :phong
   attr_reader :ngay_bat_dau, :ngay_ket_thuc, :schedule
 
-  belongs_to :lop_mon_hoc
+  belongs_to :lop_mon_hoc, :conditions => ['lop_mon_hocs.state = ?', 'started']
   belongs_to :giang_vien
 
   validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :lop_mon_hoc, :giang_vien, :presence => true

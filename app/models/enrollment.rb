@@ -2,7 +2,7 @@ class Enrollment < ActiveRecord::Base
 
   default_scope includes(:sinh_vien).order('sinh_viens.position')
   attr_accessible :sinh_vien_id, :bosung
-  belongs_to :lop_mon_hoc
+  belongs_to :lop_mon_hoc, :conditions => ['lop_mon_hocs.state = ?', 'started']
   belongs_to :sinh_vien
 
   has_many :lich_trinh_giang_days, :through => :lop_mon_hoc

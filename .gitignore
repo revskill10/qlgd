@@ -21,6 +21,10 @@
 /public/assets/*.yml
 /solr/**/index/
 /solr/**/spellchecker/
+/solr/data/development/index/*
+/solr/data/development/spellchecker/*
+/solr/data/test/index/*
+/solr/data/test/spellchecker/*
 /log/*.*
 /config/database.yml
 /config/sunspot.yml

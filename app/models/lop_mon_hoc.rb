@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LopMonHoc < ActiveRecord::Base  
   serialize :settings
-  attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc
+  attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :settings
 
 
   validates :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :presence => true
@@ -17,21 +17,25 @@ class LopMonHoc < ActiveRecord::Base
   has_many :assistants, :dependent => :destroy
   has_many :users, :through => :assistants, :uniq => true
   scope :pending_or_started, where(state: ["pending","started"]) 
-
+  scope :started, where(state: "started")
   FACETS = [:ma_lop, :ten_mon_hoc, :hoc_ky, :nam_hoc]
   searchable do
     text :ma_lop, :ten_mon_hoc, :de_cuong_chi_tiet
     text :lich_trinh_giang_days do
       lich_trinh_giang_days.map { |lich| lich.noi_dung }
-    end
+    end    
     text :giang_viens do 
       giang_viens.map {|gv| gv.hovaten}
     end
-    text :assistants do 
-      assistants.map {|as| as.hovaten}
+    text :assistants do
+      if assistants.count > 0 
+        assistants.map {|as| as.hovaten}
+      end
     end
     text :enrollments do
-      enrollments.map { |enrollment| enrollment.sinh_vien.code + " " + enrollment.sinh_vien.hovaten }
+      if enrollments.count > 0
+        enrollments.map { |enrollment| enrollment.sinh_vien.code + " " + enrollment.sinh_vien.hovaten }
+      end
     end    
     text :de_cuong_chi_tiet do 
       settings["de_cuong_chi_tiet"]
@@ -52,7 +56,7 @@ class LopMonHoc < ActiveRecord::Base
       transition :started => :completed # da ket thuc mon
     end
     event :remove do 
-      transition :pending => :removed # 
+      transition [:pending, :started] => :removed # 
     end
     event :restore do 
       transition :removed => :pending
