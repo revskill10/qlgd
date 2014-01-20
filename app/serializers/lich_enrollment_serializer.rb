@@ -3,7 +3,7 @@ class LichEnrollmentSerializer < ActiveModel::Serializer
   attributes :id, :sinh_vien_id, :dihoc_tinhhinh, :name, :code, :status, :so_tiet_vang, :phep, :max, :phep_status, :note, :tong_vang, :tinhhinh, :idle_status
 
   def dihoc_tinhhinh
-    100 - tinhhinh
+    100 - (tinhhinh || 0)
   end
   def tinhhinh
     object.tinhhinhv

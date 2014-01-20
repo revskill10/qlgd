@@ -37,4 +37,6 @@ class Daotao::LichTrinhGiangDaysController < TenantsController
 		@lichs = LichTrinhGiangDay.daduyet.map {|l| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(l))}
 		render json: @lichs, :root => false
 	end
+
+	
 end
