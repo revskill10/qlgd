@@ -16,8 +16,8 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		render json: @t, :root => false
 	end
 	def thanhtra						
-		@lichs = current_user.get_lichs.select {|l| l.reported? or l.confirmed? or l.accepted? or l.requested? }
-		if @lichs.count > 0
+		@lichs = current_user.get_lichs.select {|l| l and  l.reported? or l.confirmed? or l.accepted? or l.requested? }
+		if @lichs and @lichs.count > 0
 			@lichs2 = @lichs.map {|l| LichViPhamSerializer.new( LichViPhamDecorator.new(l) )}		
 		else
 			@lichs2 = []
