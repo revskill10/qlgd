@@ -231,7 +231,13 @@ namespace :hpu do
     LopMonHoc.all.each do |lop|
       gvs = GiangVien.find(lop.calendars.pluck(:giang_vien_id).uniq)
       gvs.each do |gv|
-        lop.assistants.where(giang_vien_id: gv.id).first_or_create!
+        user = gv.user        
+        as = lop.assistants.where(giang_vien_id: gv.id).first_or_create!
+        if user 
+          as.user = user
+          as.save!
+        end
+
       end
     end
   end
