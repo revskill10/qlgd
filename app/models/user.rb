@@ -32,8 +32,10 @@ class User < ActiveRecord::Base
   end
  
   def lop_chinhs
-    if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
+    if self.imageable.is_a?(GiangVien)
       return self.imageable.lop_mon_hocs.started
+    elsif self.imageable.is_a?(SinhVien)
+      return self.imageable.enrollments.includes(:lop_mon_hoc).map {|en| en.lop_mon_hoc}
     end
     []
   end
@@ -45,9 +47,11 @@ class User < ActiveRecord::Base
   end
   
   def lich_chinhs
-    if self.imageable.is_a?(GiangVien) or self.imageable.is_a?(SinhVien)
+    if self.imageable.is_a?(GiangVien)
       return self.imageable.try(:lich_trinh_giang_days)
-    end
+    elsif self.imageable.is_a?(SinhVien)
+      lop_chinhs.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}
+    end      
     []
   end
   def lich_tro_giangs

@@ -8,7 +8,7 @@ class SinhVien < ActiveRecord::Base
   has_many :attendances, :dependent => :destroy  
   has_many :enrollments, :dependent => :destroy
   has_many :submissions, :through => :enrollments
-  has_many :lop_mon_hocs, :through => :enrollments, :uniq => true
+  #has_many :lop_mon_hocs, :through => :enrollments, :uniq => true
 
   FACETS = [:ten, :ma_lop_hanh_chinh, :nganh, :khoa, :he, :hoc_ky, :nam_hoc]
   searchable do
