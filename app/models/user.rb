@@ -48,7 +48,7 @@ class User < ActiveRecord::Base
   
   
   def get_lichs    
-    get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}        
+    get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}.sort_by {|l| [l.thoi_gian, l.phong]}
   end
   
 
