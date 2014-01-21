@@ -3,9 +3,11 @@ class GiangVien < ActiveRecord::Base
 
   has_one :user, :as => :imageable
   has_many :calendars, :dependent => :destroy
-  has_many :lop_mon_hocs, :through => :calendars, :uniq => true
+  #has_many :lop_mon_hocs, :through => :calendars, :uniq => true
   has_many :lich_trinh_giang_days, :dependent => :destroy
   validates :code, :ho, :ten, :presence => true
+  has_many :assistants, :dependent => :destroy
+  has_many :lop_mon_hocs, :through => :assistants, :uniq => true
   def hovaten
   	return trans(ho) + trans(dem) + ten
   end

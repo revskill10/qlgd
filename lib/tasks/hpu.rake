@@ -91,6 +91,7 @@ namespace :hpu do
       lop = LopMonHoc.where(ma_lop: l[:ma_lop].strip.upcase, ma_mon_hoc: l[:ma_mon_hoc].strip.upcase).first
       calendar = lop.calendars.where(:so_tiet => l[:so_tiet], :so_tuan => l[:so_tuan_hoc], :thu => l[:thu], :tiet_bat_dau => l[:tiet_bat_dau], :tuan_hoc_bat_dau => l[:tuan_hoc_bat_dau], :giang_vien_id => gv.id).first_or_create!
       calendar.update_attributes(phong: (l[:ma_phong_hoc].strip if l.has_key?(:ma_phong_hoc) and l[:ma_phong_hoc].is_a?(String)))
+      lop.assistants.where(giang_vien_id: gv.id).first_or_create!
     end
   end
   # 5
@@ -109,22 +110,25 @@ namespace :hpu do
     ls = ls[:sinh_vien_dang_hoc]
     puts "loading ... sinh viens"
     ls.each do |l|
-      tmp = titleize(l[:hodem].strip.downcase).split(" ")
-      ho = tmp[0]
-      dem = tmp[1..-1].join(" ")
-      SinhVien.create!(
-        gioi_tinh: (l[:gioi_tinh] ? 1 : 0),
-        ho: ho,
-        dem: dem,
-        ma_lop_hanh_chinh: (l[:lop].strip.upcase if l[:lop] and l[:lop].is_a?(String) ) ,
-        he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
-        khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) ,
-        code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]),
-        ngay_sinh: (l[:ngay_sinh].to_time if l[:ngay_sinh]),
-        ten: ( titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String) ),
-        nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ),
-        tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false )
-      )
+      sv = SinhVien.where(code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]) ).first
+      unless sv
+        tmp = titleize(l[:hodem].strip.downcase).split(" ")
+        ho = tmp[0]
+        dem = tmp[1..-1].join(" ")
+        SinhVien.create!(
+          gioi_tinh: (l[:gioi_tinh] ? 1 : 0),
+          ho: ho,
+          dem: dem,
+          ma_lop_hanh_chinh: (l[:lop].strip.upcase if l[:lop] and l[:lop].is_a?(String) ) ,
+          he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
+          khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) ,
+          code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]),
+          ngay_sinh: (l[:ngay_sinh].to_time if l[:ngay_sinh]),
+          ten: ( titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String) ),
+          nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ),
+          tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false )
+        )
+      end
     end
   end 
   # 6
@@ -216,6 +220,19 @@ namespace :hpu do
     Enrollment.all.each do |en|
       en.tinhhinh = en.tinhhinhvang
       en.save!
+    end
+  end
+
+  #13: update assistant
+  task update_assistant: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    LopMonHoc.all.each do |lop|
+      gvs = GiangVien.find(lop.calendars.pluck(:giang_vien_id).uniq)
+      gvs.each do |gv|
+        lop.assistants.where(giang_vien_id: gv.id).first_or_create!
+      end
     end
   end
 

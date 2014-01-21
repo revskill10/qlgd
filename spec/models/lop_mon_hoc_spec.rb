@@ -22,14 +22,20 @@ describe LopMonHoc do
   end
   it "should create calendar" do 
     @gv = GiangVien.create(code: 'gv1', ten: 'name')
+    so_tiet = 3
     thu = 2
     tiet_bat_dau = 1
     tuan_hoc_bat_dau = 23
     so_tuan = 3    
     @calendar = @lop.calendars.where(thu: thu, so_tuan: so_tuan, tiet_bat_dau: tiet_bat_dau, tuan_hoc_bat_dau: tuan_hoc_bat_dau, giang_vien_id: @gv.id).first_or_create!
+    @lop.start!
+    @lop.assignments.count.should == 5
     @calendar.schedule.count.should > 0
     @calendar2 = @lop.calendars.where(thu: thu, so_tuan: so_tuan, tiet_bat_dau: tiet_bat_dau, tuan_hoc_bat_dau: tuan_hoc_bat_dau, giang_vien_id: @gv.id).first_or_create!
     @calendar.should == @calendar2
+    @calendar2 = @lop.calendars.where(thu: thu+1, so_tuan: so_tuan, tiet_bat_dau: tiet_bat_dau, tuan_hoc_bat_dau: tuan_hoc_bat_dau, giang_vien_id: @gv.id).first_or_create!
+    @lop.start!
+    @lop.assignments.count.should == 5
     #:thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id
   end
 

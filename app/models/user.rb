@@ -24,49 +24,33 @@ class User < ActiveRecord::Base
           sv = SinhVien.where(code: value.upcase).first
           self.imageable = sv if sv
           gv = GiangVien.where(code: value.upcase).first
-          self.imageable = gv if gv      
+          if gv      
+            self.imageable = gv 
+            assistants = gv.assistants
+            if assistants.count > 0
+              assistants.update_all(user_id: self.id)
+            end
+          end
         end
       end
       self.email = self.username
     end
   end
  
-  def lop_chinhs
+  def get_lops
     if self.imageable.is_a?(GiangVien)
-      return self.imageable.lop_mon_hocs.started
+      return self.imageable.lop_mon_hocs.select {|l| l.started? }.uniq
     elsif self.imageable.is_a?(SinhVien)
-      return self.imageable.enrollments.includes(:lop_mon_hoc).map {|en| en.lop_mon_hoc}
+      return self.imageable.enrollments.map {|en| en.lop_mon_hoc }.uniq
     end
     []
-  end
-  def lop_tro_giangs
-    self.lop_mon_hocs.started
-  end
-  def get_lops
-    lop_chinhs + lop_tro_giangs
+  end  
+  
+  
+  def get_lichs    
+    get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}        
   end
   
-  def lich_chinhs
-    if self.imageable.is_a?(GiangVien)
-      return self.imageable.try(:lich_trinh_giang_days)
-    elsif self.imageable.is_a?(SinhVien)
-      lop_chinhs.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}
-    end      
-    []
-  end
-  def lich_tro_giangs
-    tmp2 = []
-    tmp = self.assistants
-    if tmp.count > 0    
-      tmp.each do |as|
-        tmp2 += as.get_lichs.uniq
-      end
-    end
-    tmp2
-  end
-  def get_lichs
-    lich_chinhs + lich_tro_giangs
-  end
 
   def hovaten
     if imageable != nil
@@ -78,7 +62,7 @@ class User < ActiveRecord::Base
 
   def giang_vien(lop)
     return nil if self.imageable.is_a?(SinhVien)
-    gv = self.imageable if self.lop_chinhs.include?(lop)   
+    gv = self.imageable if self.get_lops.include?(lop)   
     assistant = lop.assistants.where(:user_id => self.id).first
     gv2 = assistant.giang_vien if assistant
     gv || gv2
