@@ -21,4 +21,5 @@
 //= require summernote
 //= require spinner
 //= require jquery.spin
-//= require jquery.dynatable
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap3

@@ -6,4 +6,4 @@
 
  React.renderComponent(<GhepLop />, document.getElementById('gheplop'));
  React.renderComponent(<DuyetDangKy />, document.getElementById('duyetdangky'));
- React.renderComponent(<LopMonHoc />, document.getElementById('lop'));
+ React.renderComponent(<LopMonHoc />, document.getElementById('lop2'));
