@@ -29,7 +29,7 @@ class LopMonHoc < ActiveRecord::Base
     end
     text :assistants do
       if assistants.count > 0 
-        assistants.map {|as| as.hovaten}
+        assistants.map {|as| as.giang_vien.hovaten}
       end
     end
     text :enrollments do

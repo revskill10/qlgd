@@ -13,9 +13,7 @@ class DashboardController < TenantsController
     @lop = @lich.lop_mon_hoc
     respond_to do |format|     
       if current_user and Pundit.policy!(current_user, @lich).update?                         
-        format.html {render "dashboard/teacher/lich"}    
-      elsif current_user and Pundit.policy!(current_user, @lich).thanhtra?
-        format.html {render "dashboard/thanhtra/lich"}    
+        format.html {render "dashboard/teacher/lich"}          
       else
         @attendances = @lich.attendances.vang_hoac_tre
         @lich = @lich.decorate

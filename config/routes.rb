@@ -42,6 +42,8 @@ Qlgd::Application.routes.draw do
       post "/lich_trinh_giang_days/accept" => 'lich_trinh_giang_days#accept'
       post "/lich_trinh_giang_days/drop" => 'lich_trinh_giang_days#drop'
       post "/lich_trinh_giang_days/check" => 'lich_trinh_giang_days#check'
+
+      get '/lop_mon_hocs/:lop_id/calendars' => 'calendars#index'
     end
     namespace :teacher do 
      

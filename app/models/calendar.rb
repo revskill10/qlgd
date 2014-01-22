@@ -1,16 +1,16 @@
 #encoding: utf-8
 class Calendar < ActiveRecord::Base
   include IceCube
-  attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id, :phong
+  attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id, :phong, :lop_mon_hoc_id
   attr_reader :ngay_bat_dau, :ngay_ket_thuc, :schedule
 
   belongs_to :lop_mon_hoc, :conditions => ['lop_mon_hocs.state = ?', 'started']
   belongs_to :giang_vien
 
-  validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :lop_mon_hoc, :giang_vien, :presence => true
+  validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :lop_mon_hoc_id, :giang_vien_id, :presence => true
 
-  validates :lop_mon_hoc, :presence => true
-  validates :giang_vien, :presence => true
+  #validates :lop_mon_hoc, :presence => true
+  #validates :giang_vien, :presence => true
   validates :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, numericality: {only_integer: true, greater_than: 0}
 
   TIET = {1 => [6,30], 2 => [7,20], 3 => [8,10],

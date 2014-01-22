@@ -99,8 +99,8 @@ namespace :hpu do
     Apartment::Database.switch('public')
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)    
-    SinhVien.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('sinh_viens')
+    #SinhVien.delete_all
+    #ActiveRecord::Base.connection.reset_pk_sequence!('sinh_viens')
     # attr_accessible :gioi_tinh, :ho_dem, :lop_hc, :ma_he_dao_tao, :ma_khoa_hoc, :ma_nganh, :ma_sinh_vien, :ngay_sinh, :ten, :trang_thai, :ten_nganh
 
     @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
