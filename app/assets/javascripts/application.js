@@ -21,3 +21,4 @@
 //= require summernote
 //= require spinner
 //= require jquery.spin
+//= require jquery.dynatable

@@ -22,7 +22,8 @@ class LopMonHocSerializer < ActiveModel::Serializer
     object.decorate.de_cuong_chi_tiet
   end
   def khoi_luong_du_kien
-    so_tiet_ly_thuyet + so_tiet_thuc_hanh
+    #so_tiet_ly_thuyet + so_tiet_thuc_hanh
+    object.khoi_luong_du_kien
   end
   def updated
     object.decorate.updated

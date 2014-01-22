@@ -1,8 +1,8 @@
 class Daotao::LopMonHocsController < TenantsController
 	def index
-		 raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
-		 @lops = LopMonHoc.all.map {|lop| LopMonHocSerializer.new(lop)}
-		 render json: @lops
+		 #raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
+		@lops = LopMonHoc.all
+		render json: {count: @lops.count, lops: @lops}
 	end
 	def create
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		

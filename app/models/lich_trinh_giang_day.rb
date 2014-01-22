@@ -36,7 +36,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :normal_or_bosung, where(state: ["bosung","normal"]) 
   scope :daduyet, accepted_or_dropped.where(state: ["bosung", "nghiday"])
   before_create :set_default
-  
+  after_save :set_tuhoc
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
     [9,5] => 4, [9,55] => 5, [10, 45] => 6,
     [12,30] => 7, [13,20] => 8, [14,10] => 9,
@@ -261,7 +261,16 @@ class LichTrinhGiangDay < ActiveRecord::Base
     self.tiet_bat_dau = self.get_tiet_bat_dau
     self.so_tiet_moi = self.so_tiet    
   end
-  # tim tuan va trung lich
+  def set_tuhoc
+    if self.ltype == "tuhoc"
+      self.enrollments.each do |e|
+        at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
+        at.turn_idle
+        at.save!
+      end
+    end
+  end
+  # tim tuan va trung lich  
   def check_thoi_gian
     unless load_tuan
       errors[:tuan] << 'nonexists'

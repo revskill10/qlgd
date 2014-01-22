@@ -31,7 +31,7 @@ Qlgd::Application.routes.draw do
       get "/sinh_viens" => 'ghep_lop#sinh_viens'
 
       post "/lop_hanh_chinhs" => 'sinh_viens#lop_hanh_chinhs'
-      post "/lop_mon_hocs" => 'sinh_viens#lop_mon_hocs'
+      post "/lop_mon_hocs" => 'sinh_viens#lop_mon_hocs'      
       post "/sinh_viens" => 'sinh_viens#sinh_viens'
 
       post "/move" => 'sinh_viens#move'
@@ -44,6 +44,7 @@ Qlgd::Application.routes.draw do
       post "/lich_trinh_giang_days/check" => 'lich_trinh_giang_days#check'
 
       get '/lop_mon_hocs/:lop_id/calendars' => 'calendars#index'
+      get '/lops' => 'lop_mon_hocs#index'
     end
     namespace :teacher do 
      
