@@ -1,5 +1,49 @@
  /** @jsx React.DOM */
 
+var TaoLop = React.createClass({
+	getInitialState: function(){
+		return {giang_viens: []}
+	},
+	loadData: function(){
+		$.ajax({
+			url: '/daotao/giang_viens',
+			success: function(data){
+				this.setState({giang_viens: data});
+			}.bind(this)
+		})
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	componentDidMount: function(){
+		//React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));
+		var self = this;
+		React.renderComponent(<LopMonHoc />, document.getElementById('lop3'));		
+		$("#gv").select2({
+			data: self.state.giang_viens
+		});
+	},
+	componentDidUpdate: function(){
+		var self = this;
+		$("#gv").select2({
+			data: self.state.giang_viens
+		});
+	},
+	render: function(){
+		return (
+			<div>
+				<hr />
+				<input type="text" ref="ma_lop" placeholder="Mã lớp" />
+				<input type="text" ref="ma_lop" placeholder="Mã môn học" />
+				<input type="text" ref="ma_lop" placeholder="Tên môn học" />
+				<input type="hidden" id="gv" style={{width:"500px"}} class="input-xlarge" />
+				<button class="btn btn-success" >Tạo lớp</button>
+				<hr />
+				<div id="lop3"></div>
+			</div>
+		);
+	}
+});
  var LopMonHoc = React.createClass({
  	getInitialState: function(){
  		return {data: []}
