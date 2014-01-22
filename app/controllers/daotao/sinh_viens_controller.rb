@@ -8,7 +8,7 @@ class Daotao::SinhViensController < TenantsController
 	def lop_mon_hocs
 		@lop = LopMonHoc.find(params[:lop_id])
 		authorize @lop, :daotao?
-		@enrollments = @lop.enrollments.order("enrollments.created_at")
+		@enrollments = @lop.enrollments
 		render json: @enrollments.map {|en| LopEnrollmentSerializer.new(en)}, :root => false
 	end
 
