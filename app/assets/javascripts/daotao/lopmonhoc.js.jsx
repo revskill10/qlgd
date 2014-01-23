@@ -18,7 +18,7 @@ var TaoLop = React.createClass({
 	componentDidMount: function(){
 		//React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));
 		var self = this;
-		React.renderComponent(<LopMonHoc />, document.getElementById('lop3'));		
+		React.renderComponent(<LopMonHoc2 />, document.getElementById('lop3'));		
 		$("#gv").select2({
 			data: self.state.giang_viens
 		});
@@ -28,15 +28,17 @@ var TaoLop = React.createClass({
 		$("#gv").select2({
 			data: self.state.giang_viens
 		});
+		$("#mm").select2({
+			data: self.state.ma_mons
+		});
 	},
 	render: function(){
 		return (
 			<div>
 				<hr />
-				<input type="text" ref="ma_lop" placeholder="Mã lớp" />
-				<input type="text" ref="ma_lop" placeholder="Mã môn học" />
-				<input type="text" ref="ma_lop" placeholder="Tên môn học" />
-				<input type="hidden" id="gv" style={{width:"500px"}} class="input-xlarge" />
+				<input type="text" ref="ma_lop" placeholder="Mã lớp" /><br />
+				<input type="hidden" id="mm" placeholder="Môn học" style={{width:"500px"}} /><br />
+				<input type="hidden" id="gv" placeholder="Giảng viên" style={{width:"500px"}} class="input-xlarge" />
 				<button class="btn btn-success" >Tạo lớp</button>
 				<hr />
 				<div id="lop3"></div>
@@ -44,7 +46,7 @@ var TaoLop = React.createClass({
 		);
 	}
 });
- var LopMonHoc = React.createClass({
+ var LopMonHoc2 = React.createClass({
  	getInitialState: function(){
  		return {data: []}
  	},

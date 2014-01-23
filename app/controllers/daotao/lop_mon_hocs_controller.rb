@@ -4,6 +4,7 @@ class Daotao::LopMonHocsController < TenantsController
 		@lops = LopMonHoc.all
 		render json: {count: @lops.count, lops: @lops}
 	end
+
 	def create
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 	end
