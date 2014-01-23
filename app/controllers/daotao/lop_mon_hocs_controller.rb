@@ -2,7 +2,8 @@ class Daotao::LopMonHocsController < TenantsController
 	def index
 		 #raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
-		render json: {count: @lops.count, lops: @lops}
+		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
+		render json: {count: @lops.count, lops: @lops, t: @t}
 	end
 
 	def create
@@ -18,25 +19,28 @@ class Daotao::LopMonHocsController < TenantsController
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 		@lop = LopMonHoc.find(params[:id])
 		authorize @lop, :daotao?
-		@lop.start!
+		@lop.start! if @lop.can_start?
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
-		render json: {count: @lops.count, lops: @lops}
+		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
+		render json: {count: @lops.count, lops: @lops, t: @t}
 	end
 	def restore
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 		@lop = LopMonHoc.find(params[:id])
 		authorize @lop, :daotao?
-		@lop.restore!
+		@lop.restore! if @lop.can_restore?
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
-		render json: {count: @lops.count, lops: @lops}
+		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
+		render json: {count: @lops.count, lops: @lops, t: @t}
 	end
 	def remove
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 		@lop = LopMonHoc.find(params[:id])
 		authorize @lop, :daotao?
-		@lop.remove!
+		@lop.remove! if @lop.can_remove?
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
-		render json: {count: @lops.count, lops: @lops}
+		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
+		render json: {count: @lops.count, lops: @lops, t: @t}
 	end
 	def update
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
@@ -44,6 +48,7 @@ class Daotao::LopMonHocsController < TenantsController
 		authorize @lop, :daotao?
 		@lop.update_attributes(ma_lop: params[:ma_lop])
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
-		render json: {count: @lops.count, lops: @lops}
+		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
+		render json: {count: @lops.count, lops: @lops, t: @t}
 	end
 end

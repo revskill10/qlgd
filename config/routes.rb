@@ -51,6 +51,10 @@ Qlgd::Application.routes.draw do
       post '/lop_mon_hocs/restore' => 'lop_mon_hocs#restore'
       post '/lop_mon_hocs/update' => 'lop_mon_hocs#update'
       
+      get '/lop_mon_hocs/:lop_id/assistants' => 'assistants#index'
+      post '/lop_mon_hocs/:lop_id/assistants/delete' => 'assistants#delete'
+      post '/lop_mon_hocs/:lop_id/assistants/create' => 'assistants#create'
+
       get '/giang_viens' => 'giang_viens#index'
     end
     namespace :teacher do 

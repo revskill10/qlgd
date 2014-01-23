@@ -9,20 +9,13 @@ var TaoLop = React.createClass({
 			url: '/daotao/giang_viens',
 			success: function(data){
 				this.setState({giang_viens: data.giang_viens, ma_mons: data.ma_mons, ten_mon_hocs: data.ten_mon_hocs});
+				React.renderComponent(<LopMonHoc2 giang_viens={this.state.giang_viens} />, document.getElementById('lop3'));
 			}.bind(this)
 		})
 	},
 	componentWillMount: function(){
 		this.loadData();
-	},
-	componentDidMount: function(){
-		//React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));
-	//	var self = this;
-		React.renderComponent(<LopMonHoc2 />, document.getElementById('lop3'));		
-		//$("#gv").select2({
-	//		data: self.state.giang_viens
-	//	});
-	},
+	},	
 	onCreate: function(){
 		//alert($("#gv").val()+$("#mm").val()+this.refs.ma_lop.getDOMNode().value);
 		var giang_vien_id = $('#gv').val();
@@ -42,8 +35,9 @@ var TaoLop = React.createClass({
 			success: function(data){
 				if (data.error != null) { alert(data.error);}				
 				React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));		
-				React.renderComponent(<LopMonHoc2 />, document.getElementById('lop3'));	
-			}
+				React.renderComponent(<LopMonHoc2 giang_viens={this.state.giang_viens} />, document.getElementById('lop3'));	
+				console.log(this.state.giang_viens);
+			}.bind(this)
 		})
 	},
 	componentDidUpdate: function(){
@@ -75,13 +69,13 @@ var TaoLop = React.createClass({
 });
  var LopMonHoc2 = React.createClass({
  	getInitialState: function(){
- 		return {data: []}
+ 		return {data: [], t: []}
  	},
  	loadData: function(){
  		$.ajax({
  			url: '/daotao/lops',
- 			success: function(data){
- 				this.setState({data: data.lops});
+ 			success: function(data){ 				
+ 				this.setState({data: data.lops, t: data.t});
  			}.bind(this)
  		})
  	},
@@ -90,6 +84,7 @@ var TaoLop = React.createClass({
  	}, 	
  	componentDidMount: function(){
  		var self = this;
+ 		
  		$('#mytable').dataTable({
 		  "sPaginationType": "bootstrap",
 		  "bAutoWidth": false,
@@ -97,18 +92,18 @@ var TaoLop = React.createClass({
 		  "fnDrawCallback": function() {		  		
             	self.forceUpdate();        	
           }, 
-		});		
-		$("#timlop").select2({
-			data: self.state.data
-		});
+		});				
  	},
  	componentDidUpdate: function(){
+ 		var self = this;
  		$('#mytable').dataTable({
 		  "sPaginationType": "bootstrap",
 		  "bAutoWidth": false,
 		  "bDestroy": true,	
 		});
-		
+		$("#timlop").select2({
+			data: self.state.t
+		});
  	},
  	handleStart: function(d){
  		$.ajax({
@@ -116,7 +111,7 @@ var TaoLop = React.createClass({
  			type: 'POST',
  			data: d,
  			success: function(data){
- 				this.setState({data: data.lops});
+ 				this.setState({data: data.lops, t: data.t});
  			}.bind(this)
  		});
  	},
@@ -126,7 +121,7 @@ var TaoLop = React.createClass({
  			type: 'POST',
  			data: d,
  			success: function(data){
- 				this.setState({data: data.lops});
+ 				this.setState({data: data.lops, t: data.t});
  			}.bind(this)
  		});
  	},
@@ -136,7 +131,7 @@ var TaoLop = React.createClass({
  			type: 'POST',
  			data: d,
  			success: function(data){
- 				this.setState({data: data.lops});
+ 				this.setState({data: data.lops, t: data.t});
  			}.bind(this)
  		});
  	},
@@ -146,9 +141,14 @@ var TaoLop = React.createClass({
  			type: 'POST',
  			data: d,
  			success: function(data){
- 				this.setState({data: data.lops});
+ 				this.setState({data: data.lops, t: data.t});
  			}.bind(this)
  		});
+ 	},
+ 	onSearch: function(){ 		
+ 		var lop = $('#timlop').val();
+ 		React.unmountAndReleaseReactRootNode(document.getElementById('assistant'));		
+		React.renderComponent(<Assistant giang_viens={this.props.giang_viens} lop={lop} />, document.getElementById('assistant'));	
  	},
  	render: function(){
  		var self = this;
@@ -157,9 +157,10 @@ var TaoLop = React.createClass({
  		});
 		return (
 			<div>
-				<h4>Hello</h4>
+				<h4>Tìm lớp</h4>
 				<input type="hidden" id="timlop" placeholder="Lớp môn học" style={{width:"500px"}} class="input-xlarge" />
 				<button class="btn btn-success" onClick={this.onSearch}>Tìm lớp</button>
+				<div id="assistant"></div>
 				<hr />
 			<div class="table-responsive">				
 				<table class="table table-bordered" id="mytable">
@@ -236,5 +237,94 @@ var TaoLop = React.createClass({
 	 			);
  		}
  		
+ 	}
+ });
+
+ var Assistant = React.createClass({
+ 	getInitialState: function(){
+ 		return {data: []}
+ 	},
+ 	loadData: function(){
+ 		$.ajax({
+ 			url: '/daotao/lop_mon_hocs/' + this.props.lop + '/assistants',
+ 			success: function(data){
+ 				this.setState({data: data});
+ 			}.bind(this)
+ 		})
+ 	},
+ 	componentWillMount: function(){
+ 		this.loadData();
+ 	}, 	
+ 	componentDidUpdate: function(){
+ 		var self = this;
+		$("#ast").select2({
+			data: self.props.giang_viens
+		});
+ 	},
+ 	handleDelete: function(d){
+ 		$.ajax({
+ 			url: '/daotao/lop_mon_hocs/' + this.props.lop + '/assistants/delete',
+ 			type: 'POST',
+ 			data: d,
+ 			success: function(data){
+ 				this.setState({data: data});
+ 			}.bind(this)
+ 		})
+ 	},
+ 	handleAdd: function(){
+ 		var giang_vien_id = $('#ast').val();
+ 		$.ajax({
+ 			url: '/daotao/lop_mon_hocs/' + this.props.lop + '/assistants/create',
+ 			type: 'POST',
+ 			data: {giang_vien_id: giang_vien_id},
+ 			success: function(data){
+ 				this.setState({data: data});
+ 			}.bind(this)		
+ 		});
+ 	},
+ 	render: function(){
+ 		var self = this;
+ 		var x = this.state.data.map(function(d, index){
+ 			return <AssistantRow onDelete={self.handleDelete} stt={index+1} data={d} />
+ 		});
+ 		return (
+ 			<div>
+ 				<h4>Giảng viên:</h4>
+ 				<input type="hidden" id="ast" placeholder="Chọn giảng viên" style={{width:"500px"}} class="input-xlarge" />
+				<button class="btn btn-success" onClick={this.handleAdd}>Thêm giảng viên</button>
+	 			<div class="table-responsive">
+	 				<table class="table table-bordered">
+	 					<thead>
+	 						<tr class="success">
+	 							<td>Stt</td>
+	 							<td>Username</td>
+	 							<td>Giảng viên</td>
+	 							<td>Mã giảng viên</td>
+	 							<td>Thao tác</td>
+	 						</tr>
+	 					</thead>	
+	 					<tbody>
+	 						{x}
+	 					</tbody>
+	 				</table>
+	 			</div>
+ 			</div>
+ 		);
+ 	}
+ });
+ var AssistantRow = React.createClass({
+ 	onDelete: function(){
+ 		this.props.onDelete(this.props.data);
+ 	},
+ 	render: function(){
+ 		return (
+ 			<tr>
+ 				<td>{this.props.stt}</td>
+ 				<td>{this.props.data.username}</td>
+ 				<td>{this.props.data.hovaten}</td>
+ 				<td>{this.props.data.code}</td>
+ 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button></td>
+ 			</tr>
+ 		);
  	}
  });
