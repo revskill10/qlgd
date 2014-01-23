@@ -45,7 +45,12 @@ Qlgd::Application.routes.draw do
 
       get '/lop_mon_hocs/:lop_id/calendars' => 'calendars#index'
       get '/lops' => 'lop_mon_hocs#index'
-
+      post '/lop_mon_hocs/create' => 'lop_mon_hocs#create'
+      post '/lop_mon_hocs/start' => 'lop_mon_hocs#start'
+      post '/lop_mon_hocs/remove' => 'lop_mon_hocs#remove'
+      post '/lop_mon_hocs/restore' => 'lop_mon_hocs#restore'
+      post '/lop_mon_hocs/update' => 'lop_mon_hocs#update'
+      
       get '/giang_viens' => 'giang_viens#index'
     end
     namespace :teacher do 

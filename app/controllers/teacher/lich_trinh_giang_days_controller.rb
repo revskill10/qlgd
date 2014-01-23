@@ -280,9 +280,9 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 	end
 	def getcontent		
 		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.normal_or_bosung.accepted.with_giang_vien(giang_vien.id).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
+			@lichs = lop.lich_trinh_giang_days.accepted_or_completed.with_giang_vien(giang_vien.id).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
 		else
-			@lichs = lop.lich_trinh_giang_days.normal_or_bosung.accepted.map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
+			@lichs = lop.lich_trinh_giang_days.accepted_or_completed.map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
 		end
 		render json: @lichs, :root => false
 	end

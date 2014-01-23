@@ -38,7 +38,7 @@ class LopMonHoc < ActiveRecord::Base
       end
     end    
     text :de_cuong_chi_tiet do 
-      settings["de_cuong_chi_tiet"]
+      settings["de_cuong_chi_tiet"] if settings
     end    
     text :hoc_ky do 
       Tenant.first.hoc_ky
