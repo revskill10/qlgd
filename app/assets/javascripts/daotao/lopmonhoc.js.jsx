@@ -8,7 +8,7 @@ var TaoLop = React.createClass({
 		$.ajax({
 			url: '/daotao/giang_viens',
 			success: function(data){
-				this.setState({giang_viens: data});
+				this.setState({giang_viens: data.giang_viens, ma_mons: data.ma_mons});
 			}.bind(this)
 		})
 	},

@@ -17,7 +17,7 @@ var ThongSo = React.createClass({
     	var tuhoc = this.refs.tuhoc.getDOMNode().value.trim();
     	var bt = this.refs.bt.getDOMNode().value.trim();
     	var lang = this.refs.lang.getDOMNode().value;
-    	var lichtrinh = this.refs.ltdk.getDOMNode().value.trim();
+    	var lichtrinh = $('#ltdk').code();
     	var decuong = $('#dcct').code();
     	if  (!lt || !th) {
     	  alert("Bạn cần nhập số tiết lý thuyết và số tiết thực hành");
@@ -61,14 +61,17 @@ var ThongSo = React.createClass({
 		});
 	},
 	componentDidUpdate: function(){		
-		$('#dcct').summernote();
+		if (this.state.edit === 1){
+			$('#dcct').summernote({height: 150});
+			$('#ltdk').summernote({height: 150});
+			$('#ltdk').code(this.state.data.lich_trinh_du_kien_html);		
+			$('#dcct').code(this.state.data.de_cuong_chi_tiet_html);
+		}		
 		$('#lang').val(this.state.data.language);
 		$('#lt').val(this.state.data.so_tiet_ly_thuyet);
 		$('#th').val(this.state.data.so_tiet_thuc_hanh);
 		$('#tuhoc').val(this.state.data.so_tiet_tu_hoc);
-		$('#bt').val(this.state.data.so_tiet_bai_tap);
-		$('#ltdk').val(this.state.data.lich_trinh_du_kien);		
-		$('#dcct').code(this.state.data.de_cuong_chi_tiet);
+		$('#bt').val(this.state.data.so_tiet_bai_tap);		
 	},
 	render: function(){
 
@@ -101,7 +104,7 @@ var ThongSo = React.createClass({
 						  </select>
 
 		            </td></tr>
-		            <tr><td>Lịch trình dự kiến</td><td><textarea id="ltdk" ref="ltdk" style={{"width":"80%"}} /></td></tr>		            
+		            <tr><td>Lịch trình dự kiến</td><td><div id="ltdk" ref="ltdk" style={{"width":"80%"}} /></td></tr>		            
 		            <tr><td>Đề cương chi tiết</td><td><div id="dcct" ref="dcct" style={{"width":"80%"}} /></td></tr>		            
 		          </tbody>           
 		        </table> 
