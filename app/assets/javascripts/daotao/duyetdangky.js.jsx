@@ -65,7 +65,7 @@ var ldata = [
  				<table class="table table-bordered table-striped">
  					<thead>
  						<tr class="success">
- 							<td>Tuần</td><td>Thời gian</td><td>Giảng viên</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Lí do</td><td>Thao tác</td>
+ 							<td>Tuần</td><td>Thời gian</td><td>Thông tin</td><td>Phòng</td><td>Số tiết</td><td>Loại</td><td>Giờ học</td><td>Lí do</td><td>Thao tác</td>
  						</tr>
  					</thead>
  					<tbody>
@@ -106,7 +106,7 @@ var ldata = [
  			<tr class={this.props.active === this.props.data.id ? 'default' : this.props.color}>
  				<td>{this.props.data.tuan}</td>
  				<td>{this.props.data.thoi_gian}</td>
- 				<td>{this.props.data.giang_vien}</td>
+ 				<td>{this.props.data.giang_vien}<br/>{this.props.data.ma_lop}<br/>{this.props.data.ten_mon_hoc}</td>
  				<td>{this.props.data.alias_state === 'Bổ sung' ? <input type="text" ref="phong" /> : this.props.data.phong }</td>
  				<td>{this.props.data.so_tiet}</td>
  				<td>{this.props.data.alias_state}</td>

@@ -27,16 +27,52 @@ class Calendar < ActiveRecord::Base
     event :generate do 
       transition :pending => :generated # da hoan thanh gio hoc
     end    
+    event :remove do 
+      transition all => :removed
+    end
+    event :restore do 
+      transition :removed => :pending
+    end
   end
-
+  def remove
+    if self.lop_mon_hoc
+      sch = self.schedule.map {|s| s.to_time}
+      if sch.count > 0
+        lichs = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: sch)
+        if lichs.count > 0
+          lichs.each do |l|
+            l.remove! if l.can_remove?
+          end
+        end
+      end
+    end
+    super
+  end
+  def restore
+    if self.lop_mon_hoc
+      sch = self.schedule.map {|s| s.to_time}
+      if sch.count > 0
+        lichs = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: sch)
+        if lichs.count > 0
+          lichs.each do |l|
+            l.restore! if l.can_restore?
+          end
+        end
+      end
+    end
+    super
+  end
   def generate    
     if self.lop_mon_hoc
       sch = self.schedule
       if sch.count > 0
         sch.each do |s|
           begin
-            lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, ltype: "lythuyet")
-            lich.accept!          
+            lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong).first
+            unless lich 
+              lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create!(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, ltype: "lythuyet")              
+              lich.accept! if lich.can_accept?     
+            end
           rescue Exception => e
             puts e
           end
