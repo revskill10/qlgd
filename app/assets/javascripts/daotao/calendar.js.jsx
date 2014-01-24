@@ -43,18 +43,55 @@ var tdata = {
 	headers: [23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38]	
 };
 var CalendarComponent = React.createClass({
+	getInitialState: function(){
+		return {tuans: [], headers: [], calendars: []}
+	},
+	loadData: function(){
+		$.ajax({
+			url: '/daotao/lop_mon_hocs/' + this.props.lop_id + '/calendars',
+			success: function(data){
+				this.setState({tuans: data.tuans, headers: data.headers, calendars: data.calendars});
+			}.bind(this)
+		})
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
 	render: function(){
-		var headers = tdata.headers.map(function(d){
+		var self = this;
+		var headers = this.state.headers.map(function(d){
 			return <td>{d}</td>
 		});		
-		var data = tdata.headers.map(function(d){
-			if (tdata.tuans.indexOf(d) >= 0){
+		var data = this.state.headers.map(function(d){
+			if (self.state.tuans.indexOf(d) >= 0){
 				return <td class="danger">x</td>
 			} else {
 				return <td>_</td>
 			}
 		});
+		var calendars = this.state.calendars.map(function(d){
+			return <DaotaoCalendarRow data={d} />
+		});
 		return (
+			<div>
+			<h4>Thời khóa biểu</h4>
+			<div class="table-responsive">
+				<table class="table tabled-bordered">
+					<thead>
+						<tr class="success">
+							<td>Tuần học bắt đầu</td>
+							<td>Số tuần</td>
+							<td>Thứ</td>
+							<td>Tiết bắt đầu</td>
+							<td>Số tiết</td>
+						</tr>
+					</thead>
+					<tbody>
+						{calendars}
+					</tbody>
+				</table>
+			</div>
+			<hr />
 			<div class="table-responsive">
 				<table class="table tabled-bordered">
 					<thead>
@@ -65,6 +102,16 @@ var CalendarComponent = React.createClass({
 					</tbody>
 				</table>
 			</div>
+			</div>
 		)
+	}
+});
+var DaotaoCalendarRow = React.createClass({
+	render: function(){
+		return (
+			<tr>
+				<td>{}
+			</tr>
+		);
 	}
 });
