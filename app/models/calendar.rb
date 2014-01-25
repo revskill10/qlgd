@@ -1,6 +1,7 @@
 #encoding: utf-8
 class Calendar < ActiveRecord::Base
   include IceCube
+  
   attr_accessible :so_tiet, :so_tuan, :thu, :tiet_bat_dau, :tuan_hoc_bat_dau, :giang_vien_id, :phong, :lop_mon_hoc_id
   attr_reader :ngay_bat_dau, :ngay_ket_thuc, :schedule
 
@@ -70,9 +71,9 @@ class Calendar < ActiveRecord::Base
           begin
             lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong).first
             unless lich 
-              lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create!(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, ltype: "lythuyet")              
-              lich.accept! if lich.can_accept?     
+              lich = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).normal.create!(thoi_gian: s.to_time, so_tiet: self.so_tiet, phong: self.phong, ltype: "lythuyet")                            
             end
+            lich.accept! if lich.can_accept?     
           rescue Exception => e
             puts e
           end
