@@ -42,7 +42,7 @@ var TaoLop = React.createClass({
 	},
 	componentDidUpdate: function(){
 		var self = this;
-		$("#gv").select2({
+		$("#gv4").select2({
 			data: self.state.giang_viens
 		});
 		$("#mm").select2({
@@ -56,10 +56,11 @@ var TaoLop = React.createClass({
 		return (
 			<div>
 				<hr />
+				<h4>Tạo lớp</h4>
 				<input type="text" ref="ma_lop" placeholder="Mã lớp" /><br />
 				<input type="hidden" id="mm" placeholder="Mã môn học" style={{width:"500px"}} /><br />
 				<input type="hidden" id="tenmonhoc" placeholder="Tên môn học" style={{width:"500px"}} /><br />
-				<input type="hidden" id="gv" placeholder="Giảng viên" style={{width:"500px"}} class="input-xlarge" />
+				<input type="hidden" id="gv4" placeholder="Giảng viên" style={{width:"500px"}} class="input-xlarge" />
 				<button class="btn btn-success" onClick={this.onCreate}>Tạo lớp</button>
 				<hr />
 				<div id="lop3"></div>

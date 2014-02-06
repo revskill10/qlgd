@@ -6,7 +6,7 @@
       li
         a href="#gl" data-toggle="tab" Ghép lớp
       li
-        a href="#lop" data-toggle="tab" Lớp môn học
+        a href="#lopx" data-toggle="tab" Lớp môn học
       li
         a href="#calendar" data-toggle="tab" Thời khóa biểu
     - if user_signed_in? and current_user.decorate.is_dao_tao_duyet?
@@ -17,7 +17,7 @@
     - if user_signed_in? and current_user.decorate.is_dao_tao?
       #gl.tab-pane.active
         #gheplop
-      #lop.tab-pane
+      #lopx.tab-pane
         #lop2
       #calendar.tab-pane
         #calendar2

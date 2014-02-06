@@ -70,13 +70,19 @@ class LichTrinhGiangDay < ActiveRecord::Base
     event :restore do 
       transition :removed => :waiting, :if => lambda {|lich| ["nghiday","normal", "bosung"].include?(lich.state) } # khong duoc xet duyet
     end
+    event :dtremove do
+      transition all => :dtremoved
+    end
+    event :dtrestore do 
+      transition :dtremoved => :waiting
+    end
     event :uncomplete do 
       transition :completed => :accepted, :if => lambda {|lich| lich.state == "normal" or lich.state == "bosung"}
     end
   end
 
   def accept
-    if self.ltype == "tuhoc"
+    if self.ltype == "tuhoc"      
       self.enrollments.each do |e|
         at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
         at.turn_idle

@@ -5,7 +5,8 @@ class Daotao::CalendarsController < TenantsController
 		calendars = @lop.calendars.order(:tuan_hoc_bat_dau)
 		@tuans = calendars.order('tuan_hoc_bat_dau, thu, tiet_bat_dau, giang_vien_id').group_by {|t| [t.tuan_hoc_bat_dau, t.so_tuan]}.keys.map{|t| (t[0]..t[0]+t[1]-1).to_a}
 		@c = calendars.map {|ca| Daotao::CalendarSerializer.new(ca)}
-		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c}
+		@teachers = @lop.assistants.map {|t| {:id => t.giang_vien_id, :text => t.giang_vien.hovaten} }
+		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers}
 	end
 
 	def remove
@@ -18,7 +19,8 @@ class Daotao::CalendarsController < TenantsController
 		calendars = @lop.calendars.order(:tuan_hoc_bat_dau)
 		@tuans = calendars.order('tuan_hoc_bat_dau, thu, tiet_bat_dau, giang_vien_id').group_by {|t| [t.tuan_hoc_bat_dau, t.so_tuan]}.keys.map{|t| (t[0]..t[0]+t[1]-1).to_a}
 		@c = calendars.map {|ca| Daotao::CalendarSerializer.new(ca)}
-		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c}
+		@teachers = @lop.assistants.map {|t| {:id => t.giang_vien_id, :text => t.giang_vien.hovaten} }
+		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers}
 	end
 
 	def restore
@@ -31,7 +33,8 @@ class Daotao::CalendarsController < TenantsController
 		calendars = @lop.calendars.order(:tuan_hoc_bat_dau)
 		@tuans = calendars.order('tuan_hoc_bat_dau, thu, tiet_bat_dau, giang_vien_id').group_by {|t| [t.tuan_hoc_bat_dau, t.so_tuan]}.keys.map{|t| (t[0]..t[0]+t[1]-1).to_a}
 		@c = calendars.map {|ca| Daotao::CalendarSerializer.new(ca)}
-		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c}
+		@teachers = @lop.assistants.map {|t| {:id => t.giang_vien_id, :text => t.giang_vien.hovaten} }
+		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers}
 	end
 
 	def generate
@@ -44,6 +47,7 @@ class Daotao::CalendarsController < TenantsController
 		calendars = @lop.calendars.order(:tuan_hoc_bat_dau)
 		@tuans = calendars.order('tuan_hoc_bat_dau, thu, tiet_bat_dau, giang_vien_id').group_by {|t| [t.tuan_hoc_bat_dau, t.so_tuan]}.keys.map{|t| (t[0]..t[0]+t[1]-1).to_a}
 		@c = calendars.map {|ca| Daotao::CalendarSerializer.new(ca)}
-		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c}
+		@teachers = @lop.assistants.map {|t| {:id => t.giang_vien_id, :text => t.giang_vien.hovaten} }
+		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers}
 	end
 end

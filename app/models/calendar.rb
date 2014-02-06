@@ -42,7 +42,7 @@ class Calendar < ActiveRecord::Base
         lichs = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: sch)
         if lichs.count > 0
           lichs.each do |l|
-            l.remove! if l.can_remove?
+            l.dtremove! if l.can_dtremove?
           end
         end
       end
@@ -56,7 +56,7 @@ class Calendar < ActiveRecord::Base
         lichs = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: sch)
         if lichs.count > 0
           lichs.each do |l|
-            l.restore! if l.can_restore?
+            l.dtrestore! if l.can_dtrestore?
           end
         end
       end
