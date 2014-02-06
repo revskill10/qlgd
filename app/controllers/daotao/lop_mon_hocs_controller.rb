@@ -37,7 +37,7 @@ class Daotao::LopMonHocsController < TenantsController
 		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
 		@lop = LopMonHoc.find(params[:id])
 		authorize @lop, :daotao?
-		@lop.remove! if @lop.can_remove?
+		@lop.remove! if @lop.can_remove?		
 		@lops = LopMonHoc.all.map {|lop| Daotao::LopMonHocSerializer.new(lop)}
 		@t = @lops.map {|lop| {:id => lop.id, :text => lop.text}}
 		render json: {count: @lops.count, lops: @lops, t: @t}

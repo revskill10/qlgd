@@ -16,6 +16,8 @@ class LopMonHoc < ActiveRecord::Base
   has_many :submissions, :through => :assignments
   has_many :assistants, :dependent => :destroy
   has_many :users, :through => :assistants, :uniq => true
+
+  scope :normal, where(state: ["pending","started","completed"]) 
   scope :pending_or_started, where(state: ["pending","started"]) 
   scope :started, where(state: "started")
   FACETS = [:ma_lop, :ten_mon_hoc, :hoc_ky, :nam_hoc]
@@ -78,6 +80,20 @@ class LopMonHoc < ActiveRecord::Base
     super
   end
   
+  def remove
+    self.calendars.each do |calendar|
+      calendar.remove! if calendar.can_remove?
+    end
+    super
+  end
+
+  def restore
+    self.calendars.each do |calendar|
+      calendar.restore! if calendar.can_restore?
+    end
+    super
+  end
+
   def khoi_luong_thuc_hien
     lich_trinh_giang_days.completed.sum(:so_tiet_moi)
   end

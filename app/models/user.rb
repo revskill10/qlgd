@@ -24,23 +24,19 @@ class User < ActiveRecord::Base
           sv = SinhVien.where(code: value.upcase).first
           self.imageable = sv if sv
           gv = GiangVien.where(code: value.upcase).first
-          if gv      
-            self.imageable = gv 
-            Assistant.where(giang_vien_id: gv.id).update_all({:user_id => self.id})             
-          end
+          self.imageable = gv if gv          
         end
       end
       self.email = self.username
     end
   end
  
-  def get_lops
-    if self.imageable.is_a?(GiangVien)
-      return self.imageable.lop_mon_hocs.select {|l| l.started? }.uniq
-    elsif self.imageable.is_a?(SinhVien)
+  def get_lops    
+    if self.imageable.is_a?(SinhVien)
       return self.imageable.enrollments.map {|en| en.lop_mon_hoc }.uniq
+    else      
+      self.assistants.map {|as| as.lop_mon_hoc if !as.lop_mon_hoc.removed? }.uniq
     end
-    []
   end  
   
   

@@ -11,4 +11,9 @@ class Assistant < ActiveRecord::Base
   def get_lichs
   	lop_mon_hoc.lich_trinh_giang_days.includes(:vi_pham).with_giang_vien(giang_vien.id)
   end
+
+  def destroy
+  	
+  	super
+  end
 end

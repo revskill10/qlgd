@@ -203,8 +203,8 @@ var TaoLop = React.createClass({
  	onCancel: function(){
  		this.setState({edit: 0});
  	},
- 	onUpdate: function(){ 		 		
- 		var ma_lop = this.refs.ma_lop.getDOMNode().value;
+ 	onUpdate: function(){  				 	
+ 		var ma_lop = this.refs.ma_lop.getDOMNode().value; 		
  		this.props.onUpdate({id: this.props.data.id, ma_lop: ma_lop});
  		this.setState({edit: 0});
  	},
@@ -289,9 +289,7 @@ var TaoLop = React.createClass({
  			}.bind(this)		
  		});
  	},
- 	handleUpdate: function(d){
- 		alert(d.username);
- 		/*
+ 	handleUpdate: function(d){ 		 		
  		$.ajax({
  			url: '/daotao/lop_mon_hocs/' + this.props.lop + '/assistants/update',
  			type: 'POST',
@@ -299,7 +297,7 @@ var TaoLop = React.createClass({
  			success: function(data){
  				this.setState({data: data});
  			}.bind(this)
- 		}) */
+ 		})
  	},
  	render: function(){
  		var self = this;
@@ -341,10 +339,9 @@ var TaoLop = React.createClass({
  	onCancel: function(){
  		this.setState({add: 0});
  	},
- 	onUpdate: function(){
- 		var username = this.refs.username.getDOMNode().value;
- 		var id = this.props.data.id;
- 		alert(username);
+ 	onUpdate: function(){ 		
+ 		var username = $('#username').val();
+ 		var id = this.props.data.id; 		
  		this.props.onUpdate({username: username, id: id}); 		
  	},
  	onDelete: function(){
