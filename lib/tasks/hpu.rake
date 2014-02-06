@@ -242,6 +242,21 @@ namespace :hpu do
     end
   end
 
+  #14: update phong
+  task update_phong: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+    response = @client.call(:phong_hoc)
+    res_hash = response.body.to_hash
+    ls = res_hash[:phong_hoc_response][:phong_hoc_result][:diffgram][:document_element]
+    ls = ls[:phong_hoc]    
+    ls.each do |l|        
+      Phong.create(ma_phong: l[:ma_phong_hoc].strip, toa_nha: l[:ma_toa_nha].strip, tang: l[:chi_so_tang].to_i, suc_chua_toi_da: l[:so_ban].to_i * l[:he_so_hoc].to_i, loai: l[:kieu_phong])
+    end
+  end
+
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end

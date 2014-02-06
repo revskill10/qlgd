@@ -26,10 +26,7 @@ class User < ActiveRecord::Base
           gv = GiangVien.where(code: value.upcase).first
           if gv      
             self.imageable = gv 
-            assistants = gv.assistants
-            if assistants.count > 0
-              assistants.update_all(user_id: self.id)
-            end
+            Assistant.where(giang_vien_id: gv.id).update_all({:user_id => self.id})             
           end
         end
       end

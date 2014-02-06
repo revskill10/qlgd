@@ -86,24 +86,19 @@ var CalendarComponent = React.createClass({
 			}.bind(this)
 		})
 	},
-	handleAdd: function(d){
-		alert(d.tuan_hoc_bat_dau);
-		/*$.ajax({
+	handleAdd: function(d){		
+		$.ajax({
 			url: '/daotao/lop_mon_hocs/' + this.props.lop_id + '/calendars/add',
 			type: 'POST',
 			data: d,
 			success: function(data){
-				this.setState({tuans: data.tuans, headers: data.headers, calendars: data.calendars, giang_viens: data.giang_viens});
+				this.setState({tuans: data.tuans, headers: data.headers, calendars: data.calendars, giang_viens: data.giang_viens, phongs: data.phongs});
 			}.bind(this)
-		}) */
+		})
 	},
 	componentDidUpdate: function(){
 		React.unmountAndReleaseReactRootNode(document.getElementById('tc'));		
-		React.renderComponent(<TaoCalendar onAdd={this.handleAdd} />, document.getElementById('tc'));	
-		var self = this;
-		$("#gv").select2({
-			data: self.state.giang_viens
-		});
+		React.renderComponent(<TaoCalendar giang_viens={this.state.giang_viens} phongs={this.state.phongs} onAdd={this.handleAdd} />, document.getElementById('tc'));		
 	},
 	render: function(){
 		var self = this;
@@ -118,7 +113,7 @@ var CalendarComponent = React.createClass({
 			}
 		});
 		var calendars = this.state.calendars.map(function(d){
-			return <DaotaoCalendarRow onDelete={self.handleDelete} data={d} />
+			return <DaotaoCalendarRow onDelete={self.handleDelete} onGenerate={self.handleGenerate} onRestore={self.handleRestore} data={d} />
 		});
 		return (
 			<div>
@@ -176,7 +171,7 @@ var TaoCalendar = React.createClass({
 		var tiet_bat_dau = this.refs.tiet_bat_dau.getDOMNode().value;
 		var so_tiet = this.refs.so_tiet.getDOMNode().value;
 		var phong = this.refs.phong.getDOMNode().value;
-		var giang_vien_id = this.refs.giang_vien_id.getDOMNode().value;
+		var giang_vien_id = this.refs.giang_vien.getDOMNode().value;
 		var data = {			
 			tuan_hoc_bat_dau: tuan_hoc_bat_dau,
 			so_tuan: so_tuan,
@@ -186,12 +181,12 @@ var TaoCalendar = React.createClass({
 			phong: phong,
 			giang_vien_id: giang_vien_id
 		}
-		this.props.onAdd(this.props.data);
+		this.props.onAdd(data);
 	},		
 	render: function(){
 		var tuans = this.range(23, 42);
 		var sotuans = this.range(1, 16);
-		var sotiets = this.range(1,5);
+		var sotiets = this.range(1, 6);
 		var ttuans = tuans.map(function(d){
 			return <option value={d}>{d}</option>
 		});
@@ -200,7 +195,13 @@ var TaoCalendar = React.createClass({
 		});
 		var tsotiets = sotiets.map(function(d){
 			return <option value={d}>{d}</option>
-		})
+		});
+		var giang_viens = this.props.giang_viens.map(function(d){
+			return <option value={d.id}>{d.text}</option>
+		});
+		var phongs = this.props.phongs.map(function(d){
+			return <option value={d.id}>{d.text}</option>
+		});
 		return (
 			<div class="table-responsive">
 				<table class="table tabled-bordered">
@@ -264,10 +265,14 @@ var TaoCalendar = React.createClass({
 								</select>
 							</td>
 							<td>
-								<input type="text" placeholder="Phòng" ref="phong" />
+								<select ref="phong" class="form-control input-sm">
+									{phongs}
+								</select>
 							</td>
-							<td>
-								<input type="hidden" id="gv" placeholder="Giảng viên" ref="giang_vien" />
+							<td>								
+								<select ref="giang_vien" class="form-control input-sm">
+									{giang_viens}
+								</select>
 							</td>							
 						</tr>
 					</tbody>
@@ -299,7 +304,7 @@ var DaotaoCalendarRow = React.createClass({
 				<td>{this.props.data.giang_vien}</td>
 				<td>{this.props.data.state}</td>
 				<td>
-					<button style={{"display": this.props.data.can_generate === true ? '' : 'none'}} class="btn btn-sm btn-success" onClick={this.onGenerate}>Duyệt thực hiện</button>
+					<button style={{"display": this.props.data.can_generate === true ? '' : 'none'}} class="btn btn-sm btn-primary" onClick={this.onGenerate}>Duyệt thực hiện</button>
 					<button style={{"display": this.props.data.can_remove === true ? '' : 'none'}} class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
 					<button style={{"display": this.props.data.can_restore === true ? '' : 'none'}} class="btn btn-sm btn-default" onClick={this.onRestore}>Phục hồi</button>					
 				</td>

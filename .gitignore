@@ -11,20 +11,10 @@
 /db/*.sqlite3
 
 # Ignore all logfiles and tempfiles.
-/log/*.log
-/tmp
-/public
-/tmp
-/public/system
-/public/assets
-/public/assets/fonts/*
-/public/assets/*.yml
-/solr/**/index/
-/solr/**/spellchecker/
-/solr/data/development/index/
-/solr/data/development/spellchecker/
-/solr/data/test/index/*
-/solr/data/test/spellchecker/*
-/log/*.*
+
+tmp/
+public/
+solr/
+log/
 /config/database.yml
 /config/sunspot.yml

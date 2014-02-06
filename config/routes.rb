@@ -44,6 +44,11 @@ Qlgd::Application.routes.draw do
       post "/lich_trinh_giang_days/check" => 'lich_trinh_giang_days#check'
 
       get '/lop_mon_hocs/:lop_id/calendars' => 'calendars#index'
+      post '/lop_mon_hocs/:lop_id/calendars/delete' => 'calendars#remove'
+      post '/lop_mon_hocs/:lop_id/calendars/generate' => 'calendars#generate'
+      post '/lop_mon_hocs/:lop_id/calendars/restore' => 'calendars#restore'
+      post '/lop_mon_hocs/:lop_id/calendars/add' => 'calendars#create'
+
       get '/lops' => 'lop_mon_hocs#index'
       post '/lop_mon_hocs/create' => 'lop_mon_hocs#create'
       post '/lop_mon_hocs/start' => 'lop_mon_hocs#start'
@@ -54,8 +59,11 @@ Qlgd::Application.routes.draw do
       get '/lop_mon_hocs/:lop_id/assistants' => 'assistants#index'
       post '/lop_mon_hocs/:lop_id/assistants/delete' => 'assistants#delete'
       post '/lop_mon_hocs/:lop_id/assistants/create' => 'assistants#create'
+      post '/lop_mon_hocs/:lop_id/assistants/update' => 'assistants#update'
 
       get '/giang_viens' => 'giang_viens#index'
+
+      get '/users' => 'users#index'
     end
     namespace :teacher do 
      

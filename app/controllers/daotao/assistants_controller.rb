@@ -22,4 +22,13 @@ class Daotao::AssistantsController < TenantsController
 		@assistants = @lop.assistants.map {|as| Daotao::AssistantSerializer.new(as)}
 		render json: @assistants, :root => false
 	end
+
+	def update
+		@lop = LopMonHoc.find(params[:lop_id])
+		authorize @lop, :daotao?
+		@assistant = @lop.assistants.find(params[:id])	
+		@assistant.update_attributes(username: params[:username])
+		@assistants = @lop.assistants.map {|as| Daotao::AssistantSerializer.new(as)}
+		render json: @assistants, :root => false
+	end
 end

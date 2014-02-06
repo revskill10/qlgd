@@ -243,7 +243,7 @@ var TaoLop = React.createClass({
 
  var Assistant = React.createClass({
  	getInitialState: function(){
- 		return {data: []}
+ 		return {data: [], users: []}
  	},
  	loadData: function(){
  		$.ajax({
@@ -251,7 +251,13 @@ var TaoLop = React.createClass({
  			success: function(data){
  				this.setState({data: data});
  			}.bind(this)
- 		})
+ 		});
+ 		$.ajax({
+ 			url: '/daotao/users',
+ 			success: function(data){
+ 				this.setState({users: data});
+ 			}.bind(this)
+ 		});
  	},
  	componentWillMount: function(){
  		this.loadData();
@@ -283,14 +289,26 @@ var TaoLop = React.createClass({
  			}.bind(this)		
  		});
  	},
+ 	handleUpdate: function(d){
+ 		alert(d.username);
+ 		/*
+ 		$.ajax({
+ 			url: '/daotao/lop_mon_hocs/' + this.props.lop + '/assistants/update',
+ 			type: 'POST',
+ 			data: d,
+ 			success: function(data){
+ 				this.setState({data: data});
+ 			}.bind(this)
+ 		}) */
+ 	},
  	render: function(){
  		var self = this;
  		var x = this.state.data.map(function(d, index){
- 			return <AssistantRow onDelete={self.handleDelete} stt={index+1} data={d} />
+ 			return <AssistantRow onDelete={self.handleDelete} onUpdate={self.handleUpdate} users={self.state.users} stt={index+1} data={d} />
  		});
  		return (
  			<div>
- 				<h4>Giảng viên:</h4>
+ 				<h4>Thêm giảng viên:</h4>
  				<input type="hidden" id="ast" placeholder="Chọn giảng viên" style={{width:"500px"}} class="input-xlarge" />
 				<button class="btn btn-success" onClick={this.handleAdd}>Thêm giảng viên</button>
 	 			<div class="table-responsive">
@@ -314,18 +332,62 @@ var TaoLop = React.createClass({
  	}
  });
  var AssistantRow = React.createClass({
+ 	getInitialState: function(){
+ 		return {add: 0}
+ 	},
+ 	onEdit: function(){
+ 		this.setState({add: 1}); 		
+ 	},
+ 	onCancel: function(){
+ 		this.setState({add: 0});
+ 	},
+ 	onUpdate: function(){
+ 		var username = this.refs.username.getDOMNode().value;
+ 		var id = this.props.data.id;
+ 		alert(username);
+ 		this.props.onUpdate({username: username, id: id}); 		
+ 	},
  	onDelete: function(){
  		this.props.onDelete(this.props.data);
  	},
+ 	componentDidUpdate: function(){
+ 		if (this.state.add === 1){
+ 			var self = this;
+			$("#username").select2({
+				data: self.props.users
+			});
+			$('#username').val(this.props.data.username);
+ 		}
+ 	},
  	render: function(){
- 		return (
- 			<tr>
- 				<td>{this.props.stt}</td>
- 				<td>{this.props.data.username}</td>
- 				<td>{this.props.data.hovaten}</td>
- 				<td>{this.props.data.code}</td>
- 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button></td>
- 			</tr>
- 		);
+ 		if (this.state.add === 0){
+ 			return (
+	 			<tr>
+	 				<td>{this.props.stt}</td>
+	 				<td>{this.props.data.username}</td>
+	 				<td>{this.props.data.hovaten}</td>
+	 				<td>{this.props.data.code}</td>
+	 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
+	 				<button class="btn btn-sm" onClick={this.onEdit}>Sửa</button>
+	 				</td>	 				
+	 			</tr>
+	 		);
+ 		} else {
+ 			return (
+ 				<tr>
+	 				<td>{this.props.stt}</td>
+	 				<td>
+	 					<input type="hidden" id="username" placeholder="email" />
+	 				</td>
+	 				<td>{this.props.data.hovaten}</td>
+	 				<td>{this.props.data.code}</td>
+	 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
+	 					<button class="btn btn-sm btn-primary" onClick={this.onUpdate}>Cập nhật</button>
+	 					<button class="btn btn-sm btn-warning" onClick={this.onCancel}>Hủy</button>
+	 				</td>
+	 			</tr>
+ 			);
+ 		}
+ 		
  	}
  });
