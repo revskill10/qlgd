@@ -5,7 +5,7 @@ class Assistant < ActiveRecord::Base
   belongs_to :lop_mon_hoc
   belongs_to :giang_vien
   
-  scope :giang_vien_chinh, where("trogiang IS NULL or tro_giang = FALSE") 
+  scope :giang_vien_chinh, where("trogiang IS NULL or trogiang = FALSE") 
 
   validates :giang_vien, :lop_mon_hoc, :presence => true
 
