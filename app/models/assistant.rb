@@ -13,7 +13,10 @@ class Assistant < ActiveRecord::Base
   end
 
   def destroy
-  	
+  	calendars = self.lop_mon_hoc.calendars.where(giang_vien_id: self.giang_vien_id)
+    calendars.each do |c|
+      c.destroy
+    end
   	super
   end
 end

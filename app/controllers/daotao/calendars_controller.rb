@@ -10,6 +10,21 @@ class Daotao::CalendarsController < TenantsController
 		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers, :phongs => @phongs}
 	end
 
+	def destroy
+		@lop = LopMonHoc.find(params[:lop_id])
+		@calendar = @lop.calendars.find(params[:id])
+		authorize @lop, :daotao?
+		@calendar.destroy
+
+		@headers = Tuan.pluck(:stt).uniq
+		calendars = @lop.calendars.order(:tuan_hoc_bat_dau)
+		@tuans = calendars.generated.order('tuan_hoc_bat_dau, thu, tiet_bat_dau, giang_vien_id').group_by {|t| [t.tuan_hoc_bat_dau, t.so_tuan]}.keys.map{|t| (t[0]..t[0]+t[1]-1).to_a}
+		@c = calendars.map {|ca| Daotao::CalendarSerializer.new(ca)}
+		@teachers = @lop.assistants.map {|t| {:id => t.giang_vien_id, :text => t.giang_vien.hovaten} }
+		@phongs = Phong.all.map {|p| {:id => p.ma_phong, :text => p.ma_phong}}
+		render json: {:tuans => @tuans.flatten, :headers => @headers, :calendars => @c, :giang_viens => @teachers, :phongs => @phongs}
+	end
+
 	def remove
 		@lop = LopMonHoc.find(params[:lop_id])
 		@calendar = @lop.calendars.find(params[:id])

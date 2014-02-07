@@ -35,6 +35,20 @@ class Calendar < ActiveRecord::Base
       transition :removed => :pending
     end
   end
+
+  def destroy
+    if self.lop_mon_hoc
+      sch = self.schedule.map {|s| s.to_time}
+      if sch.count > 0
+        lichs = self.lop_mon_hoc.lich_trinh_giang_days.with_giang_vien(self.giang_vien.id).where(thoi_gian: sch)
+        if lichs.count > 0
+          LichTrinhGiangDay.destroy_all(["id IN (?) ", lichs.map(&:id)]) 
+        end
+      end
+    end
+    super
+  end
+
   def remove
     if self.lop_mon_hoc
       sch = self.schedule.map {|s| s.to_time}

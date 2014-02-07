@@ -2,13 +2,13 @@
 
 var TaoLop = React.createClass({
 	getInitialState: function(){
-		return {giang_viens: [], ma_mons: [], ten_mon_hocs: []}
+		return {giang_viens: [], mon_hocs: []}
 	},
 	loadData: function(){
 		$.ajax({
 			url: '/daotao/giang_viens',
 			success: function(data){
-				this.setState({giang_viens: data.giang_viens, ma_mons: data.ma_mons, ten_mon_hocs: data.ten_mon_hocs});
+				this.setState({giang_viens: data.giang_viens, mon_hocs: data.mon_hocs});
 				React.renderComponent(<LopMonHoc2 giang_viens={this.state.giang_viens} />, document.getElementById('lop3'));
 			}.bind(this)
 		})
@@ -16,16 +16,30 @@ var TaoLop = React.createClass({
 	componentWillMount: function(){
 		this.loadData();
 	},	
+	onCreateMon: function(){
+		var ma_mon_hoc = this.refs.ma_mon_hoc.getDOMNode().value;
+		var ten_mon_hoc = this.refs.ten_mon_hoc.getDOMNode().value;
+		var data = {
+			ma_mon_hoc: ma_mon_hoc,
+			ten_mon_hoc: ten_mon_hoc
+		}
+		$.ajax({
+			url: '/daotao/mon_hocs/create',
+			type: 'POST',
+			data: data,
+			success: function(data){
+				this.setState({giang_viens: data.giang_viens, mon_hocs: data.mon_hocs});
+			}.bind(this)
+		})
+	},
 	onCreate: function(){
 		//alert($("#gv").val()+$("#mm").val()+this.refs.ma_lop.getDOMNode().value);
-		var giang_vien_id = $('#gv').val();
+		var giang_vien_id = $('#gv4').val();
 		var ma_mon_hoc = $('#mm').val();
-		var ma_lop = this.refs.ma_lop.getDOMNode().value;
-		var ten_mon_hoc = $('#tenmonhoc').val();
+		var ma_lop = this.refs.ma_lop.getDOMNode().value;		
 		var data = {
 			giang_vien_id: giang_vien_id,
-			ma_mon_hoc: ma_mon_hoc,
-			ten_mon_hoc: ten_mon_hoc,
+			mon_hoc: ma_mon_hoc,			
 			ma_lop: ma_lop
 		}
 		$.ajax({
@@ -34,9 +48,12 @@ var TaoLop = React.createClass({
 			data: data,
 			success: function(data){
 				if (data.error != null) { alert(data.error);}				
-				React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));		
-				React.renderComponent(<LopMonHoc2 giang_viens={this.state.giang_viens} />, document.getElementById('lop3'));	
-				console.log(this.state.giang_viens);
+				React.unmountAndReleaseReactRootNode(document.getElementById('lop3'));	
+				React.renderComponent(<LopMonHoc2 giang_viens={this.state.giang_viens} />, document.getElementById('lop3'));
+				React.unmountAndReleaseReactRootNode(document.getElementById('gheplop'));	
+				React.renderComponent(<GhepLop />, document.getElementById('gheplop')); 
+				React.unmountAndReleaseReactRootNode(document.getElementById('calendar2'));	
+ 				React.renderComponent(<DaotaoCalendar />, document.getElementById('calendar2'));
 			}.bind(this)
 		})
 	},
@@ -46,22 +63,56 @@ var TaoLop = React.createClass({
 			data: self.state.giang_viens
 		});
 		$("#mm").select2({
-			data: self.state.ma_mons
-		});
-		$("#tenmonhoc").select2({
-			data: self.state.ten_mon_hocs
-		});
+			data: self.state.mon_hocs
+		});		
 	},
 	render: function(){
 		return (
 			<div>
 				<hr />
+				<h4>Thêm môn học</h4>
+				<table class="table table-bordered">
+					<thead>
+						<tr class="success">
+							<td>Mã môn học</td>
+							<td>Tên môn học</td>
+							<td>Thao tác</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="danger">
+							<td>
+								<input type="text" ref="ma_mon_hoc" placeholder="Mã môn học" style={{width: "100%"}} /><br />
+							</td>
+							<td>
+								<input type="text" ref="ten_mon_hoc" placeholder="Tên môn học" style={{width: "100%"}} /><br />
+							</td>
+							<td>
+								<button class="btn btn-success" onClick={this.onCreateMon}>Thêm môn</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr />
 				<h4>Tạo lớp</h4>
-				<input type="text" ref="ma_lop" placeholder="Mã lớp" /><br />
-				<input type="hidden" id="mm" placeholder="Mã môn học" style={{width:"500px"}} /><br />
-				<input type="hidden" id="tenmonhoc" placeholder="Tên môn học" style={{width:"500px"}} /><br />
-				<input type="hidden" id="gv4" placeholder="Giảng viên" style={{width:"500px"}} class="input-xlarge" />
-				<button class="btn btn-success" onClick={this.onCreate}>Tạo lớp</button>
+				<table class="table table-bordered">
+					<thead>
+						<tr class="success">
+							<td>Mã lớp</td>
+							<td>Môn học</td>
+							<td>Giảng viên</td>
+							<td>Thao tác</td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="danger">
+							<td><input type="text" ref="ma_lop" placeholder="Mã lớp" style={{width: "100%"}} /></td>
+							<td><input type="hidden" id="mm" placeholder="Môn học" style={{width:"100%"}} /></td>
+							<td><input type="hidden" id="gv4" placeholder="Giảng viên" style={{width:"100%"}} class="input-xlarge" /></td>
+							<td><button class="btn btn-success" onClick={this.onCreate}>Tạo lớp</button></td>
+						</tr>
+					</tbody>
+				</table>				
 				<hr />
 				<div id="lop3"></div>
 			</div>
@@ -163,6 +214,7 @@ var TaoLop = React.createClass({
 				<button class="btn btn-success" onClick={this.onSearch}>Tìm lớp</button>
 				<div id="assistant"></div>
 				<hr />
+				<h4>Danh sách các lớp trong kỳ</h4>
 			<div class="table-responsive">				
 				<table class="table table-bordered" id="mytable">
 					<thead>
@@ -314,7 +366,7 @@ var TaoLop = React.createClass({
 	 					<thead>
 	 						<tr class="success">
 	 							<td>Stt</td>
-	 							<td>Username</td>
+	 							<td>Sử dụng tài khoản</td>
 	 							<td>Giảng viên</td>
 	 							<td>Mã giảng viên</td>
 	 							<td>Thao tác</td>
@@ -340,8 +392,9 @@ var TaoLop = React.createClass({
  		this.setState({add: 0});
  	},
  	onUpdate: function(){ 		
- 		var username = $('#username').val();
- 		var id = this.props.data.id; 		
+ 		var username = $('#username').select2('data').text;
+ 		var id = this.props.data.id; 	
+ 		this.setState({add: 0});	
  		this.props.onUpdate({username: username, id: id}); 		
  	},
  	onDelete: function(){
@@ -353,19 +406,19 @@ var TaoLop = React.createClass({
 			$("#username").select2({
 				data: self.props.users
 			});
-			$('#username').val(this.props.data.username);
+			$('#username').select2('data',{id:this.props.data.username, text: this.props.data.username});
  		}
  	},
  	render: function(){
  		if (this.state.add === 0){
  			return (
-	 			<tr>
+	 			<tr class="danger">
 	 				<td>{this.props.stt}</td>
 	 				<td>{this.props.data.username}</td>
 	 				<td>{this.props.data.hovaten}</td>
 	 				<td>{this.props.data.code}</td>
 	 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
-	 				<button class="btn btn-sm" onClick={this.onEdit}>Sửa</button>
+	 				<button class="btn btn-sm btn-primary" onClick={this.onEdit}>Sửa</button>
 	 				</td>	 				
 	 			</tr>
 	 		);
@@ -374,7 +427,7 @@ var TaoLop = React.createClass({
  				<tr>
 	 				<td>{this.props.stt}</td>
 	 				<td>
-	 					<input type="hidden" id="username" placeholder="email" />
+	 					<input ref="username" type="hidden" id="username" style={{width:"100%"}} placeholder="email" />
 	 				</td>
 	 				<td>{this.props.data.hovaten}</td>
 	 				<td>{this.props.data.code}</td>

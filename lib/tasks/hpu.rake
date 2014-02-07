@@ -35,21 +35,21 @@ namespace :hpu do
     Apartment::Database.switch('public')
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)
-    GiangVien.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('giang_viens') 
+    #GiangVien.delete_all
+    #ActiveRecord::Base.connection.reset_pk_sequence!('giang_viens') 
   	@client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:tkb_theo_giai_doan)         
+    response = @client.call(:danh_sach_can_bo_giang_vien)         
     res_hash = response.body.to_hash                
-    ls = res_hash[:tkb_theo_giai_doan_response][:tkb_theo_giai_doan_result][:diffgram][:document_element]
-    ls = ls[:tkb_theo_giai_doan]
+    ls = res_hash[:danh_sach_can_bo_giang_vien_response][:danh_sach_can_bo_giang_vien_result][:diffgram][:document_element]
+    ls = ls[:danh_sach_can_bo_giang_vien]
     puts "loading... giang_vien"
-    ls.each_with_index do |l,i|
-      puts l.inspect
-      tmp = titleize(l[:ten_giao_vien].strip.downcase).split(" ")          
+    ls.each_with_index do |l,i|     
+      tmp = titleize(l[:ho_dem].strip.downcase).split(" ")          
       ho = tmp[0]
-      dem = tmp[1..-2].join(" ")
-      ten = tmp[-1]
-      GiangVien.where(:ho => ho, :dem => dem, :ten => ten, :code => l[:ma_giao_vien].strip.upcase).first_or_create!
+      dem = tmp[1..-1].join(" ")
+      ten = l[:ten].strip
+      gv = GiangVien.where(:ho => ho, :dem => dem, :ten => ten, :code => l[:ma_giao_vien].strip.upcase).first_or_create!
+      gv.update_attributes(ten_khoa: l[:ten_khoa].strip)
     end
   end
   #3
@@ -256,6 +256,22 @@ namespace :hpu do
       Phong.create(ma_phong: l[:ma_phong_hoc].strip, toa_nha: l[:ma_toa_nha].strip, tang: l[:chi_so_tang].to_i, suc_chua_toi_da: l[:so_ban].to_i * l[:he_so_hoc].to_i, loai: l[:kieu_phong])
     end
   end
+
+  #15: Danh muc mon hoc
+  task update_mon_hoc: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+    response = @client.call(:danh_muc_mon_hoc)
+    res_hash = response.body.to_hash
+    ls = res_hash[:danh_muc_mon_hoc_response][:danh_muc_mon_hoc_result][:diffgram][:document_element]
+    ls = ls[:danh_muc_mon_hoc]    
+    ls.each do |l|        
+      MonHoc.where(ma_mon_hoc: l[:ma_mon_hoc].strip.upcase, ten_mon_hoc: l[:ten_mon_hoc].strip).first_or_create!
+    end
+  end
+  
 
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")

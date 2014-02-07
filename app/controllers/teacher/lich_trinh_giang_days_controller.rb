@@ -8,10 +8,12 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		render json: LichTrinhGiangDaySerializer.new(lich.decorate), :root => false
 	end
 	def home
+		@tuans = Tuan.all
+		@active_tuan = Tuan.active.first.try(:stt)
 		@lichs = current_user.get_lichs
 		if @lichs.count > 0
-			@lichs2 = @lichs.map{|k| LichTrinhGiangDaySerializer.new(LichTrinhGiangDayDecorator.new(k))}.group_by {|g| g.tuan}
-			@t = @lichs2.keys.inject([]) {|res, elem| res << {:tuan => TuanSerializer.new(Tuan.where(stt: elem).first.decorate), :colapse => "tuan#{elem}" , :active => (Tuan.active.first.try(:stt) == elem), :data => @lichs2[elem]}}		
+			@lichs2 = @lichs.map{|k| Daotao::LichTrinhGiangDaySerializer.new(Daotao::LichTrinhGiangDayDecorator.new(k))}.group_by {|g| g.tuan}
+			@t = @lichs2.keys.inject([]) {|res, elem| res << {:tuan => TuanSerializer.new(@tuans.select {|t| t.stt == elem}.first.decorate), :colapse => "tuan#{elem}" , :active => (@active_tuan == elem), :data => @lichs2[elem]}}		
 		end
 		render json: @t, :root => false
 	end

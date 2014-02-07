@@ -1,3 +1,4 @@
+- @ud = UserDecorator.new(current_user)
 .navbar.navbar-default.navbar-static-top role="navigation"
   .container
     .navbar-header
@@ -10,17 +11,17 @@
     .collapse.navbar-collapse
       ul.nav.navbar-nav         
         li= link_to "Hướng dẫn sử dụng", '/huongdan.htm'          
-        - if user_signed_in? and current_user.decorate.is_dao_tao?
+        - if user_signed_in? and @ud.is_dao_tao?
           li= link_to "Đào tạo", '/daotao'
-        - if user_signed_in? and current_user.decorate.is_quan_ly_sinh_vien?
+        - if user_signed_in? and @ud.is_quan_ly_sinh_vien?
           li= link_to "Quản lý sinh viên", '/quan_ly_sinh_vien'
-        - if user_signed_in? and current_user.decorate.is_thanh_tra?
+        - if user_signed_in? and @ud.is_thanh_tra?
           li= link_to "Thanh tra", '/thanhtra'
-        - if user_signed_in? and current_user.decorate.is_kiem_dinh?
+        - if user_signed_in? and @ud.is_kiem_dinh?
           li= link_to "Kiểm định", '/kiemdinh'
-        - if user_signed_in? and current_user.decorate.is_super_admin?
+        - if user_signed_in? and @ud.is_super_admin?
           li= link_to "Superadmin", '/superadmin'
-        - if user_signed_in? and current_user.decorate.is_admin?
+        - if user_signed_in? and @ud.is_admin?
           li= link_to "Admin", '/admin'        
       ul.nav.navbar-nav.navbar-right
         - if user_signed_in?

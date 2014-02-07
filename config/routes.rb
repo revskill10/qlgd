@@ -48,6 +48,7 @@ Qlgd::Application.routes.draw do
       post '/lop_mon_hocs/:lop_id/calendars/generate' => 'calendars#generate'
       post '/lop_mon_hocs/:lop_id/calendars/restore' => 'calendars#restore'
       post '/lop_mon_hocs/:lop_id/calendars/add' => 'calendars#create'
+      post '/lop_mon_hocs/:lop_id/calendars/destroy' => 'calendars#destroy'
 
       get '/lops' => 'lop_mon_hocs#index'
       post '/lop_mon_hocs/create' => 'lop_mon_hocs#create'
@@ -62,6 +63,7 @@ Qlgd::Application.routes.draw do
       post '/lop_mon_hocs/:lop_id/assistants/update' => 'assistants#update'
 
       get '/giang_viens' => 'giang_viens#index'
+      post '/mon_hocs/create' => 'mon_hocs#create'
 
       get '/users' => 'users#index'
     end

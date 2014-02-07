@@ -7,11 +7,10 @@ class Daotao::LopMonHocsController < TenantsController
 	end
 
 	def create
-		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?		
-		@lop = LopMonHoc.where(ma_lop: params[:ma_lop].strip.upcase, ma_mon_hoc: params[:ma_mon_hoc]).first
-		unless @lop
-			@lop = LopMonHoc.create!(ma_lop: params[:ma_lop].strip.upcase, ma_mon_hoc: params[:ma_mon_hoc], ten_mon_hoc: params[:ten_mon_hoc])			
-		end
+		raise "not authorized" unless LopMonHocPolicy.new(current_user, LopMonHoc).daotao?
+		@mon_hoc = MonHoc.find(params[:mon_hoc])			
+		@lop = LopMonHoc.where(ma_lop: params[:ma_lop].strip.upcase, ma_mon_hoc: @mon_hoc.ma_mon_hoc, ten_mon_hoc: @mon_hoc.ten_mon_hoc).first_or_create!		
+		@lop.start!		
 		@assistant = @lop.assistants.where(giang_vien_id: params[:giang_vien_id]).first_or_create!
 		render json: {"result" => "OK"}
 	end

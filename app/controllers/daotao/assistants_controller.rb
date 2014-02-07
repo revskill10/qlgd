@@ -9,8 +9,8 @@ class Daotao::AssistantsController < TenantsController
 	def delete
 		@lop = LopMonHoc.find(params[:lop_id])
 		authorize @lop, :daotao?
-		@assistant = @lop.assistants.find(params[:id])
-		@assistant.destroy
+		@assistant = @lop.assistants.find(params[:id])		
+		@assistant.destroy		
 		@assistants = @lop.assistants.map {|as| Daotao::AssistantSerializer.new(as)}
 		render json: @assistants, :root => false
 	end
@@ -18,7 +18,10 @@ class Daotao::AssistantsController < TenantsController
 	def create
 		@lop = LopMonHoc.find(params[:lop_id])
 		authorize @lop, :daotao?
-		@lop.assistants.where(giang_vien_id: params[:giang_vien_id]).first_or_create!		
+		@giang_vien = GiangVien.find(params[:giang_vien_id])
+		#@user = @giang_vien.user
+		@assistant = @lop.assistants.create(giang_vien_id: @giang_vien.id)
+		#@assistant.update_attributes(user_id: @user.id) if @user
 		@assistants = @lop.assistants.map {|as| Daotao::AssistantSerializer.new(as)}
 		render json: @assistants, :root => false
 	end
@@ -27,7 +30,8 @@ class Daotao::AssistantsController < TenantsController
 		@lop = LopMonHoc.find(params[:lop_id])
 		authorize @lop, :daotao?
 		@assistant = @lop.assistants.find(params[:id])	
-		@assistant.update_attributes(user_id: params[:username])
+		@user = User.where(username: params[:username]).first
+		@assistant.update_attributes(user_id: @user.id)
 		@assistants = @lop.assistants.map {|as| Daotao::AssistantSerializer.new(as)}
 		render json: @assistants, :root => false
 	end

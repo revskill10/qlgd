@@ -17,6 +17,7 @@ class User < ActiveRecord::Base
   has_many :lop_mon_hocs, :through => :assistants, :uniq => true
 
   def cas_extra_attributes=(extra_attributes)
+    
     extra_attributes.each do |name, value|
       case name.to_sym
       when :masinhvien
@@ -24,7 +25,10 @@ class User < ActiveRecord::Base
           sv = SinhVien.where(code: value.upcase).first
           self.imageable = sv if sv
           gv = GiangVien.where(code: value.upcase).first
-          self.imageable = gv if gv          
+          if gv
+            self.imageable = gv            
+            gv.assistants.update_all(user_id: self.id)       
+          end          
         end
       end
       self.email = self.username
@@ -41,7 +45,13 @@ class User < ActiveRecord::Base
   
   
   def get_lichs    
-    get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}.sort_by {|l| [l.thoi_gian, l.phong]}
+    #get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}.sort_by {|l| [l.thoi_gian, l.phong]}
+    if self.imageable.is_a?(SinhVien)
+      get_lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days}.sort_by {|l| [l.thoi_gian, l.phong]}
+    else
+      ids = self.assistants.map(&:giang_vien_id)
+      LichTrinhGiangDay.where(giang_vien_id: ids).includes(:lop_mon_hoc).includes(:vi_pham).sort_by {|l| [l.thoi_gian, l.phong]}
+    end
   end
   
 

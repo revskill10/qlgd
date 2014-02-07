@@ -2,7 +2,12 @@
 class UserDecorator < Draper::Decorator
 	delegate_all
 
-
+	def initialize(user)
+		@user = User.where(id: user.id).includes(:groups).first
+	end
+	def object
+		@user
+	end
 	def is_giang_vien?
 		object.imageable and object.imageable.is_a?(GiangVien)
 	end

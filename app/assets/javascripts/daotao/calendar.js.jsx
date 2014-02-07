@@ -96,6 +96,16 @@ var CalendarComponent = React.createClass({
 			}.bind(this)
 		})
 	},
+	handleDestroy: function(d){
+		$.ajax({
+			url: '/daotao/lop_mon_hocs/' + this.props.lop_id + '/calendars/destroy',
+			type: 'POST',
+			data: d,
+			success: function(data){
+				this.setState({tuans: data.tuans, headers: data.headers, calendars: data.calendars, giang_viens: data.giang_viens, phongs: data.phongs});
+			}.bind(this)
+		})
+	},
 	componentDidUpdate: function(){
 		React.unmountAndReleaseReactRootNode(document.getElementById('tc'));		
 		React.renderComponent(<TaoCalendar giang_viens={this.state.giang_viens} phongs={this.state.phongs} onAdd={this.handleAdd} />, document.getElementById('tc'));		
@@ -113,7 +123,7 @@ var CalendarComponent = React.createClass({
 			}
 		});
 		var calendars = this.state.calendars.map(function(d){
-			return <DaotaoCalendarRow onDelete={self.handleDelete} onGenerate={self.handleGenerate} onRestore={self.handleRestore} data={d} />
+			return <DaotaoCalendarRow onDestroy={self.handleDestroy} onDelete={self.handleDelete} onGenerate={self.handleGenerate} onRestore={self.handleRestore} data={d} />
 		});
 		return (
 			<div>
@@ -292,6 +302,9 @@ var DaotaoCalendarRow = React.createClass({
 	onRestore: function(){
 		this.props.onRestore(this.props.data);
 	},
+	onDestroy: function(){
+		this.props.onDestroy(this.props.data);
+	},
 	render: function(){
 		return (
 			<tr>
@@ -305,8 +318,9 @@ var DaotaoCalendarRow = React.createClass({
 				<td>{this.props.data.state}</td>
 				<td>
 					<button style={{"display": this.props.data.can_generate === true ? '' : 'none'}} class="btn btn-sm btn-primary" onClick={this.onGenerate}>Duyệt thực hiện</button>
-					<button style={{"display": this.props.data.can_remove === true ? '' : 'none'}} class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
-					<button style={{"display": this.props.data.can_restore === true ? '' : 'none'}} class="btn btn-sm btn-default" onClick={this.onRestore}>Phục hồi</button>					
+					<button style={{"display": this.props.data.can_remove === true ? '' : 'none'}} class="btn btn-sm btn-warning" onClick={this.onDelete}>Xóa</button>
+					<button style={{"display": this.props.data.can_restore === true ? '' : 'none'}} class="btn btn-sm btn-default" onClick={this.onRestore}>Phục hồi</button>
+					<button class="btn btn-sm btn-danger" onClick={this.onDestroy}>Xóa vĩnh viễn</button>					
 				</td>
 			</tr>
 		);

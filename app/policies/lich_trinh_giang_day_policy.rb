@@ -11,13 +11,17 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
       end
     end
   end
-  def daotao?
-    return true if user.decorate.is_super_admin?
-    UserDecorator.new(user).is_dao_tao? or UserDecorator.new(user).is_dao_tao_duyet?
+  def ud
+    @ud ||= UserDecorator.new(user)
+    @ud
+  end
+  def daotao?    
+    return true if ud.is_super_admin?
+    ud.is_dao_tao? or ud.is_dao_tao_duyet?
   end
   def thanhtra?
-    return true if user.decorate.is_super_admin?
-    UserDecorator.new(user).is_thanh_tra?
+    return true if ud.is_super_admin?
+    ud.is_thanh_tra?
   end
   def update_thongso?
     update? and lich_trinh_giang_day.thoi_gian.localtime < Time.now
