@@ -163,7 +163,7 @@
 		        <label>
 		          <input id={'svs' + d.code} value={d.id} type="checkbox">Chọn</input>
 		        </label>
-		      </div>
+		    </div>
  			</td></tr>
  		});
  		return (

@@ -1,6 +1,6 @@
 class Daotao::AssistantSerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :username, :hovaten, :code
+  attributes :id, :username, :hovaten, :code, :trogiang
 
   def username
     "" unless object.user

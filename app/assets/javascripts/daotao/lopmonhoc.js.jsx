@@ -369,6 +369,7 @@ var TaoLop = React.createClass({
 	 							<td>Sử dụng tài khoản</td>
 	 							<td>Giảng viên</td>
 	 							<td>Mã giảng viên</td>
+	 							<td>Trợ giảng?</td>
 	 							<td>Thao tác</td>
 	 						</tr>
 	 					</thead>	
@@ -394,8 +395,9 @@ var TaoLop = React.createClass({
  	onUpdate: function(){ 		
  		var username = $('#username').select2('data').text;
  		var id = this.props.data.id; 	
+ 		var trogiang = this.refs.trogiang.getDOMNode().checked;
  		this.setState({add: 0});	
- 		this.props.onUpdate({username: username, id: id}); 		
+ 		this.props.onUpdate({username: username, id: id, trogiang: trogiang}); 		
  	},
  	onDelete: function(){
  		this.props.onDelete(this.props.data);
@@ -417,6 +419,7 @@ var TaoLop = React.createClass({
 	 				<td>{this.props.data.username}</td>
 	 				<td>{this.props.data.hovaten}</td>
 	 				<td>{this.props.data.code}</td>
+	 				<td>{this.props.data.trogiang === true ? "Trợ giảng" : "Giảng viên chính"}</td>
 	 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
 	 				<button class="btn btn-sm btn-primary" onClick={this.onEdit}>Sửa</button>
 	 				</td>	 				
@@ -431,6 +434,13 @@ var TaoLop = React.createClass({
 	 				</td>
 	 				<td>{this.props.data.hovaten}</td>
 	 				<td>{this.props.data.code}</td>
+	 				<td>
+	 					<div class="checkbox">
+					        <label>
+					          <input ref="trogiang" value={this.props.trogiang} type="checkbox">Trợ giảng</input>
+					        </label>
+					    </div>
+	 				</td>
 	 				<td><button class="btn btn-sm btn-danger" onClick={this.onDelete}>Xóa</button>
 	 					<button class="btn btn-sm btn-primary" onClick={this.onUpdate}>Cập nhật</button>
 	 					<button class="btn btn-sm btn-warning" onClick={this.onCancel}>Hủy</button>

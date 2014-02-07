@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
           gv = GiangVien.where(code: value.upcase).first
           if gv
             self.imageable = gv            
-            gv.assistants.update_all(user_id: self.id)       
+            gv.assistants.giang_vien_chinh.update_all(user_id: self.id)       
           end          
         end
       end
