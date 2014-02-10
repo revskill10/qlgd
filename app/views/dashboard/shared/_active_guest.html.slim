@@ -22,7 +22,8 @@
               td= lich.so_tiet_moi
               td= lich.phong
               td= lich.giang_vien.hovaten
-              td= lich.lop_mon_hoc.ma_lop
+              td
+                = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
               td= lich.lop_mon_hoc.ten_mon_hoc
               td= lich.alias_state
               td= lich.type_status
