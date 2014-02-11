@@ -16,7 +16,7 @@ class Enrollment < ActiveRecord::Base
     attendances.where(lich_trinh_giang_day_id: lich_trinh_giang_days.not_tuhoc.map(&:id)).not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
   end
   def so_tiet_thua
-    attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.not_tuhoc.so_tiet_moi }
+    attendances.idle.inject(0) {|res, at| res + at.lich_trinh_giang_day.so_tiet_moi if at.lich_trinh_giang_day.ltype != "tuhoc"}
   end
   def diemqt
     group_submissions.sum(:grade).round(0).to_i
