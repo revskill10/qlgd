@@ -170,11 +170,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		if @lich and @lich.can_restore?
 			@lich.restore!
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end	
 	def nghiday		
@@ -185,11 +181,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@lich.nghiday!
 			@lich.save!
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
 	def unnghiday		
@@ -199,11 +191,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 			@lich.unnghiday!
 			@lich.save!
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
 	def complete		
@@ -235,11 +223,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		if @lich and @lich.can_remove?
 			@lich.remove!
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
 	def restore	
@@ -248,11 +232,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		if @lich and @lich.can_restore?
 			@lich.restore!
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
 	def update		
@@ -261,11 +241,7 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		if @lich
 			@lich.update_attributes(phong: params[:phong], so_tiet: params[:so_tiet].to_i, ltype: params[:ltype], note: params[:note])
 		end
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		else
-			@lichs = lop.lich_trinh_giang_days.map { |l| LopLichTrinhGiangDaySerializer.new(l)}
-		end
+		@lichs = policy_scope(@lop.lich_trinh_giang_days).map { |l| LopLichTrinhGiangDaySerializer.new(l)}
 		render json: @lichs, :root => false
 	end
 
@@ -280,29 +256,25 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
       	results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
       	render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
 	end
-	def getcontent		
-		if giang_vien
-			@lichs = lop.lich_trinh_giang_days.accepted_or_completed.with_giang_vien(giang_vien.id).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
-		else
-			@lichs = lop.lich_trinh_giang_days.accepted_or_completed.map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
-		end
+	def getcontent				
+		@lichs = policy_scope(@lop.lich_trinh_giang_days.accepted_or_completed).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
 		render json: @lichs, :root => false
 	end
 	def content		
 		if giang_vien
-			@lich = lop.lich_trinh_giang_days.with_giang_vien(giang_vien.id).find(params[:id])
+			@lich = lop.lich_trinh_giang_days.find(params[:id])
 			authorize @lich, :update?
 			if @lich 
 				@lich.update_attributes(noi_dung: params[:content])
 			end
-			@lichs = lop.lich_trinh_giang_days.normal_or_bosung.accepted.with_giang_vien(giang_vien.id).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
+			@lichs = policy_scope(@lop.lich_trinh_giang_days.accepted_or_completed).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}		
 		else
 			@lich = lop.lich_trinh_giang_days.find(params[:id])
 			authorize @lich, :update?
 			if @lich 
 				@lich.update_attributes(noi_dung: params[:content])
 			end
-			@lichs = lop.lich_trinh_giang_days.normal_or_bosung.accepted.map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
+			@lichs = policy_scope(@lop.lich_trinh_giang_days.accepted_or_completed).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}		
 		end
 		render json: @lichs, :root => false
 	end

@@ -24,7 +24,7 @@ LichTrinhGiangDayPolicy = Struct.new(:user, :lich_trinh_giang_day) do
     ud.is_thanh_tra?
   end
   def update_thongso?
-    update? and lich_trinh_giang_day.thoi_gian.localtime < Time.now
+    update? and (lich_trinh_giang_day.thoi_gian.localtime + lich_trinh_giang_day.so_tiet_moi * 50.minutes >= Time.now)
   end
   def update?
     return false unless user.giang_vien(lich_trinh_giang_day.lop_mon_hoc)

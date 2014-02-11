@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LopLichTrinhGiangDaySerializer < ActiveModel::Serializer
   self.root = false
-  attributes :id, :color_status, :active, :color, :tuan, :thoi_gian, :note, :tiet_bat_dau, :so_tiet, :phong, :ltype, :type_status, :alias_status, :alias_state, :can_remove, :can_restore, :can_edit, :can_nghiday, :can_unnghiday, :can_uncomplete
+  attributes :id, :color_status, :active, :color, :tuan, :thoi_gian, :note, :tiet_bat_dau, :so_tiet, :phong, :ltype, :type_status, :alias_status, :alias_state, :can_remove, :can_restore, :can_edit, :can_nghiday, :can_unnghiday, :can_uncomplete, :can_edit_content
 
   def thoi_gian
     object.thoi_gian.localtime.strftime("%d/%m/%Y")
@@ -38,6 +38,10 @@ class LopLichTrinhGiangDaySerializer < ActiveModel::Serializer
 
   def can_edit
     object.can_edit?
+  end
+
+  def can_edit_content
+    object.can_edit_content?
   end
 
   def can_nghiday

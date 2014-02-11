@@ -118,9 +118,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   def can_edit?
+    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) ) and self.thoi_gian.localtime + 50.minutes >= Time.now
+  end
+  def can_edit_content?
     ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) )
   end
-
   
 
   
@@ -269,13 +271,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
     self.so_tiet_moi = self.so_tiet    
   end
   def set_tuhoc
-    if self.ltype == "tuhoc"
-      self.enrollments.each do |e|
-        at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
-        at.turn_idle
-        at.save!
-      end
-    end
+    
   end
   # tim tuan va trung lich  
   def check_thoi_gian
