@@ -9,7 +9,8 @@
           td Phòng
           td Giảng viên
           td Mã lớp
-          td Môn          
+          td Môn
+          td Sĩ số          
           td Nội dung
       tbody
         - if @lichs.count > 0
@@ -25,5 +26,6 @@
               td= lich.giang_vien.hovaten
               td
                 = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
-              td= lich.lop_mon_hoc.ten_mon_hoc + " (" +  comat.to_s + "/" + siso.to_s + ")"
+              td= lich.lop_mon_hoc.ten_mon_hoc
+              td= comat.to_s + "/" + siso.to_s
               td= lich.summary
