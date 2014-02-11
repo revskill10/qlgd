@@ -19,6 +19,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   
   has_one :du_gio, :dependent => :destroy
   has_one :vi_pham, :dependent => :destroy
+  scope :not_tuhoc, where("ltype != 'tuhoc'")
   scope :active, where(["thoi_gian > ? and thoi_gian < ?", Date.today.to_time, Date.today.to_time + 1.day])
   scope :accepted, where(status: :accepted)
   scope :thanhtra, where(status: ["accepted","completed"])
@@ -117,7 +118,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   def can_edit?
-    ( (self.state == "bosung" and self.status == "waiting") or (self.thoi_gian.localtime >= Time.now and self.state == "normal" and ["waiting", "accepted"].include?(self.status)) )
+    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) )
   end
 
   
