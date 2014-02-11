@@ -9,21 +9,21 @@
           td Phòng
           td Giảng viên
           td Mã lớp
-          td Môn
-          td Loại
-          td Giờ học
-          td Trạng thái
+          td Môn          
+          td Nội dung
       tbody
         - if @lichs.count > 0
-          - @lichs.each_with_index do |lich, index|
+          - @lichs.each_with_index do |lich, index|            
+            - su = lich.summary
+            - siso = lich.lop_mon_hoc.si_so
+            - comat = siso - lich.sv_vang
             tr class="#{index % 2 == 0 ? 'warning' : 'danger'}"
               td
-                = link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/lich/#{lich.id}"
+                = link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{lich.id}"
               td= lich.so_tiet_moi
-              td= lich.phong
+              td= (lich.phong || '') + "#{su.length > 0 ? '*' : ''}"
               td= lich.giang_vien.hovaten
-              td= lich.lop_mon_hoc.ma_lop
-              td= lich.lop_mon_hoc.ten_mon_hoc
-              td= lich.alias_state
-              td= lich.type_status
-              td= lich.alias_status
+              td
+                = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
+              td= lich.lop_mon_hoc.ten_mon_hoc + " (" +  comat.to_s + "/" + siso.to_s + ")"
+              td= lich.summary

@@ -120,6 +120,10 @@ class LopMonHoc < ActiveRecord::Base
     return (self.settings[:so_tiet_ly_thuyet] || 0) + (self.settings[:so_tiet_thuc_hanh] || 0) + (self.settings[:so_tiet_bai_tap] || 0)
   end
 
+  def si_so
+    self.enrollments.count
+  end
+
   def generate_assignments
 #    return nil unless self.started?
     return nil unless self.settings.present?

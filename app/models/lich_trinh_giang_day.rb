@@ -124,7 +124,10 @@ class LichTrinhGiangDay < ActiveRecord::Base
     ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) )
   end
   
-
+  def summary
+    return "" unless self.noi_dung
+    return self.noi_dung[0..20]
+  end
   
   
   def alias_state
@@ -263,6 +266,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
     return false unless self.vi_pham
     return self.vi_pham.requested?
   end
+
+  def sv_vang
+    self.attendances.where("state = 'absent'").count
+  end
+
   private
   
   def set_default    

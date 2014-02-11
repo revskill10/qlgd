@@ -1,7 +1,7 @@
 class DashboardController < TenantsController
   
   def index    
-    @lichs = LichTrinhGiangDay.active.order('thoi_gian, phong')
+    @lichs = LichTrinhGiangDay.includes(:attendances).includes(:lop_mon_hoc => :enrollments).active.order('thoi_gian, phong')
   	respond_to do |format|
       format.html {render "index"} 
   	end
