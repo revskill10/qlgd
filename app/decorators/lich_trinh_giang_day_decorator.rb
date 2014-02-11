@@ -18,7 +18,7 @@ class LichTrinhGiangDayDecorator < Draper::Decorator
     content.gsub(/\n/,'<br/>')
   end
   def updated
-  	object.state.to_sym != :nghile and object.state.to_sym != :nghiday and object.status.to_sym == :accepted #and object.thoi_gian.localtime <= Time.now
+  	object.state.to_sym != :nghile and object.state.to_sym != :nghiday and object.status.to_sym == :accepted or object.status.to_sym == :completed #and object.thoi_gian.localtime <= Time.now
   end
   def can_edit
     object.can_edit?

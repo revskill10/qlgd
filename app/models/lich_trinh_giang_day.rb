@@ -118,15 +118,15 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
 
   def can_edit?
-    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) ) and self.thoi_gian.localtime + 50.minutes >= Time.now
+    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted", "completed"].include?(self.status)) ) and self.thoi_gian.localtime + 50.minutes >= Time.now
   end
   def can_edit_content?
-    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted"].include?(self.status)) )
+    ( (self.state == "bosung" and self.status == "waiting") or (self.state == "normal" and ["waiting", "accepted", "completed"].include?(self.status)) )
   end
   
   def summary
     return "" unless self.noi_dung
-    return self.noi_dung[0..20]
+    return self.noi_dung[0..20] + " ..."
   end
   
   
