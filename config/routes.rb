@@ -7,6 +7,7 @@ Qlgd::Application.routes.draw do
   scope '(tenants/:tenant_id)' do
     
     get "/" => "dashboard#index"
+    get "/search" => 'dashboard#search'
     get '/active' => 'dashboard#monitor'
     get "calendar" => "dashboard#calendar", :as => :calendar
     get "/lich/:id" => "dashboard#lich", :as => :lich

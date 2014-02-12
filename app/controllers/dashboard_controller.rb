@@ -47,4 +47,16 @@ class DashboardController < TenantsController
         format.html {render "thanhtra/index"}
     end
   end
+
+  def search
+
+    respond_to do |format|
+      if params[:query].present?
+        @query = params[:query]
+        format.html {render "dashboard/search/query"}
+      else
+        format.html {render "dashboard/search/non_query"}
+      end
+    end
+  end
 end

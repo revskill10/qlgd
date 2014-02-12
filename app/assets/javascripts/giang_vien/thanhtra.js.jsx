@@ -48,7 +48,8 @@ var ThanhTra = React.createClass({
   },
   render: function(){
     var self = this;
-    var x = this.state.data.map(function(d, index){
+    if (this.state.data.length > 0) {
+      var x = this.state.data.map(function(d, index){
       return <ThanhTraRow date={self.state.date} onAccept={self.handleAccept} onRequest={self.handleRequest} onUpdate={self.handleUpdate} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
     });    
     return (
@@ -77,6 +78,7 @@ var ThanhTra = React.createClass({
         </div>
       </div>
     );        
+    }    
   }
 });
 

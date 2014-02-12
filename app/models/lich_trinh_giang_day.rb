@@ -52,9 +52,29 @@ class LichTrinhGiangDay < ActiveRecord::Base
   CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
   
 
-  
+  FACETS = [:ma_lop, :ten_mon_hoc, :giang_vien, :phong, :tuan, :hoc_ky, :nam_hoc]
+  searchable do
+    text :noi_dung, :phong, :tuan, :hoc_ky, :nam_hoc, :ma_lop, :ten_mon_hoc, :giang_vien
+    string :ma_lop do
+      self.lop_mon_hoc.ma_lop
+    end
+    string :ten_mon_hoc do 
+      self.lop_mon_hoc.ten_mon_hoc
+    end    
+    string :giang_vien do 
+      self.giang_vien.hovaten
+    end    
+    string :hoc_ky      
+    string :nam_hoc      
+  end
+  def hoc_ky
+    Tenant.first.hoc_ky
+  end
+  def nam_hoc
+    Tenant.first.nam_hoc
+  end
   # state [normal, nghiday, nghile, bosung]  
-
+  
   state_machine :status, :initial => :waiting do     
     event :accept do 
       transition :waiting => :accepted, :if => lambda {|lich| ["nghile", "normal", "bosung", "nghiday"].include?(lich.state) } # khong duoc xet duyet # duoc chap nhan thuc hien
