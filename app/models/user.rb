@@ -37,9 +37,9 @@ class User < ActiveRecord::Base
  
   def get_lops    
     if self.imageable.is_a?(SinhVien)
-      return self.imageable.enrollments.map {|en| en.lop_mon_hoc if !en.lop_mon_hoc.removed? }.select {|l| !l.nil? }.uniq
+      return self.imageable.enrollments.map {|en| en.lop_mon_hoc if en.lop_mon_hoc and !en.lop_mon_hoc.removed? }.select {|l| !l.nil? }.uniq
     else      
-      self.assistants.map {|as| as.lop_mon_hoc if !as.lop_mon_hoc.removed? }.select {|l| !l.nil? }.uniq
+      self.assistants.map {|as| as.lop_mon_hoc if as.lop_mon_hoc and !as.lop_mon_hoc.removed? }.select {|l| !l.nil? }.uniq
     end
   end  
   
