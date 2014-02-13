@@ -24,6 +24,12 @@ class SinhVien < ActiveRecord::Base
       Tenant.first.nam_hoc
     end
     string :tenant
+    string :so_lop_mon do
+      enrollments.count
+    end
+    string :so_tiet_vang do 
+      attendances.tvang.sum(:so_tiet_vang)
+    end
   end
   def tenant
     Tenant.first.id.to_s

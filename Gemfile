@@ -88,3 +88,4 @@ group :production do
   gem 'rails_12factor', '0.0.2'
 end
 gem 'sitemap_generator'
+gem 'will_paginate-bootstrap'

@@ -54,16 +54,10 @@ class LichTrinhGiangDay < ActiveRecord::Base
 
   FACETS = [:ma_lop, :ten_mon_hoc, :giang_vien, :phong, :tuan, :hoc_ky, :nam_hoc]
   searchable do
-    text :noi_dung, :phong, :tuan, :hoc_ky, :nam_hoc, :ma_lop, :ten_mon_hoc, :giang_vien
-    string :ma_lop do
-      self.lop_mon_hoc.ma_lop
-    end
-    string :ten_mon_hoc do 
-      self.lop_mon_hoc.ten_mon_hoc
-    end    
-    string :giang_vien do 
-      self.giang_vien.hovaten
-    end    
+    text :noi_dung, :phong, :tuan, :hoc_ky, :nam_hoc, :ma_lop, :ten_mon_hoc, :ten_giang_vien
+    string :ma_lop
+    string :ten_mon_hoc
+    string :ten_giang_vien
     string :hoc_ky      
     string :nam_hoc     
     string :tenant 
@@ -73,6 +67,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
   end
   def ten_mon_hoc
     self.lop_mon_hoc.ten_mon_hoc
+  end
+  def ten_giang_vien
+    self.giang_vien.hovaten
   end
   def tenant
     Tenant.first.id.to_s

@@ -49,14 +49,39 @@ class DashboardController < TenantsController
   end
 
   def search
-
+    @page = params[:page] || 1
+    @type = params[:mtype] || 1
+    @query = params[:query]
     respond_to do |format|
-      if params[:query].present?
-        @query = params[:query]
-        format.html {render "dashboard/search/query"}
-      else
-        format.html {render "dashboard/search/non_query"}
+      if params[:query]
+        if params[:mtype].to_i == 1          
+          @search = Sunspot.search(SinhVien) do      
+            fulltext params[:query]
+            paginate(:page => params[:page] || 1, :per_page => 50)
+          end
+          @results = @search.results
+          @ids = @results.map(&:id)
+          @sinhviens2 = SinhVien.includes(:enrollments).find(@ids)
+          @sinhviens = @sinhviens2.map {|res| SinhVienDecorator.new(res)}
+        elsif  params[:mtype].to_i == 2
+          @search = Sunspot.search(LopMonHoc) do      
+            fulltext params[:query]
+            paginate(:page => params[:page] || 1, :per_page => 50)
+          end
+          @results = @search.results
+          @ids = @results.map(&:id)
+          @lop_mon_hocs = LopMonHoc.includes(:assistants).includes(:enrollments).find(@ids).map {|res| SearchLopMonHocDecorator.new(res)}          
+        elsif  params[:mtype].to_i == 3
+          @search = Sunspot.search(LichTrinhGiangDay) do      
+            fulltext params[:query]
+            paginate(:page => params[:page] || 1, :per_page => 50)
+          end
+          @results = @search.results
+          @ids = @results.map(&:id)
+          @lichs = LichTrinhGiangDay.includes(:lop_mon_hoc).includes(:giang_vien).find(@ids)
+        end            
       end
+      format.html {render "dashboard/search/non_query"}
     end
   end
 end

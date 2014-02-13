@@ -1,0 +1,19 @@
+.container
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Số lớp môn          
+      tbody
+        - @sinhviens.each_with_index do |res, index|
+          tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
+            td= (index + (@page.to_i-1)*50 + 1).to_s
+            td= res.hovaten
+            td= res.code
+            td= res.ma_lop_hanh_chinh
+            td= res.so_lop_mon
+= will_paginate @results

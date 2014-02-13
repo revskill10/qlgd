@@ -1,0 +1,24 @@
+.container
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Thời gian
+          td Số tiết
+          td Phòng
+          td Mã lớp
+          td Tên môn học
+          td Giảng viên  
+                          
+      tbody
+        - @lichs.each_with_index do |res, index|
+          tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
+            td= (index + (@page.to_i-1)*50 + 1).to_s
+            td= res.thoi_gian.strftime("%Hh%M %d/%M/%Y")
+            td= res.so_tiet_moi
+            td= res.phong
+            td= res.lop_mon_hoc.ma_lop
+            td= res.lop_mon_hoc.ten_mon_hoc
+            td= res.giang_vien.hovaten            
+= will_paginate @results

@@ -15,6 +15,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :assignments
   has_many :submissions, :through => :assignments
   has_many :assistants, :dependent => :destroy
+  has_many :giang_viens, :through => :assistants, :uniq => true
   has_many :users, :through => :assistants, :uniq => true
 
   scope :normal, where(state: ["pending","started","completed"]) 
