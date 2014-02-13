@@ -23,7 +23,11 @@ class SinhVien < ActiveRecord::Base
     text :nam_hoc do 
       Tenant.first.nam_hoc
     end
+    string :tenant
   end
+  def tenant
+    Tenant.first.id.to_s
+  end  
   def lich_trinh_giang_days    
     return []if lop_mon_hocs.count == 0
     tmp = []

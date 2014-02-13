@@ -40,15 +40,22 @@ class LopMonHoc < ActiveRecord::Base
       end
     end    
     text :de_cuong_chi_tiet do 
-      settings["de_cuong_chi_tiet"] if settings
+      settings["de_cuong_chi_tiet"] if settings and settings[:de_cuong_chi_tiet]
     end    
+    text :lich_trinh_du_kien do 
+      settings["lich_trinh_du_kien"] if settings and settings[:lich_trinh_du_kien]
+    end
     text :hoc_ky do 
       Tenant.first.hoc_ky
     end
     text :nam_hoc do 
       Tenant.first.nam_hoc
     end
+    string :tenant
   end
+  def tenant
+    Tenant.first.id.to_s
+  end  
 
   state_machine :state, :initial => :pending do  
     event :start do # da thiet lap thong so

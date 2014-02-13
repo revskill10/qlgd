@@ -199,6 +199,7 @@ namespace :hpu do
     Apartment::Database.switch(tenant.name)    
     SinhVien.reindex
     LopMonHoc.reindex    
+    LichTrinhGiangDay.reindex
     Sunspot.commit
   end
   
@@ -272,6 +273,13 @@ namespace :hpu do
     end
   end
   
+  #16: Generate sitemap
+  task generate_sitemap: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    
+  end
 
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")

@@ -65,13 +65,17 @@ class LichTrinhGiangDay < ActiveRecord::Base
       self.giang_vien.hovaten
     end    
     string :hoc_ky      
-    string :nam_hoc      
+    string :nam_hoc     
+    string :tenant 
   end
   def ma_lop
     self.lop_mon_hoc.ma_lop
   end
   def ten_mon_hoc
     self.lop_mon_hoc.ten_mon_hoc
+  end
+  def tenant
+    Tenant.first.id.to_s
   end  
   def hoc_ky
     Tenant.first.hoc_ky

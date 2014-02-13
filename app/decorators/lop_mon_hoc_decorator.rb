@@ -21,16 +21,19 @@ class LopMonHocDecorator < Draper::Decorator
   def lich_trinh_du_kien
     return '' if object.pending?
     return '' unless object.settings
-    object.settings[:lich_trinh_du_kien]
+    object.settings[:lich_trinh_du_kien]#.gsub(/[<br>]+/, "<br>") if object.settings[:lich_trinh_du_kien]
+    
   end
   def de_cuong_chi_tiet
     return '' if object.pending?
     return '' unless object.settings
-    object.settings[:de_cuong_chi_tiet]
+    object.settings[:de_cuong_chi_tiet]#.gsub(/[<br>]+/, "<br>") if object.settings[:de_cuong_chi_tiet]
+    
   end
   def de_cuong_chi_tiet_html
     return '' if de_cuong_chi_tiet.try(:length) == 0 or de_cuong_chi_tiet.nil?
-    de_cuong_chi_tiet.gsub(/\n/,'<br/>')
+    de_cuong_chi_tiet
+    # gsub!(/[\n]+/, "\n")
   end
   def so_tiet_thuc_hanh
   	return 0 if object.pending?

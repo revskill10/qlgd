@@ -64,8 +64,8 @@ var ThongSo = React.createClass({
 		if (this.state.edit === 1){
 			$('#dcct').summernote({height: 150});
 			$('#ltdk').summernote({height: 150});
-			$('#ltdk').code(this.state.data.lich_trinh_du_kien_html);		
-			$('#dcct').code(this.state.data.de_cuong_chi_tiet_html);
+			$('#ltdk').code(this.state.data.lich_trinh_du_kien);		
+			$('#dcct').code(this.state.data.de_cuong_chi_tiet);
 		}		
 		$('#lang').val(this.state.data.language);
 		$('#lt').val(this.state.data.so_tiet_ly_thuyet);
@@ -137,7 +137,7 @@ var ThongSo = React.createClass({
 				            <td>Lịch trình dự kiến</td>
 				            <td>
 				            	<p>
-				            	<span dangerouslySetInnerHTML={{__html: this.state.data.lich_trinh_du_kien_html }} />				            		
+				            	<span dangerouslySetInnerHTML={{__html: this.state.data.lich_trinh_du_kien}} />				            		
 				            	</p>
 				            </td>
 			            </tr>	
@@ -145,7 +145,7 @@ var ThongSo = React.createClass({
 				            <td>Đề cương chi tiết</td>
 				            <td>
 				            	<p>
-				            	<span dangerouslySetInnerHTML={{__html: this.state.data.de_cuong_chi_tiet_html }} />				            		
+				            	<span dangerouslySetInnerHTML={{__html: this.state.data.de_cuong_chi_tiet}} />				            		
 				            	</p>
 				            </td>
 			            </tr>		            	            
