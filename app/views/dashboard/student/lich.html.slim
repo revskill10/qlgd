@@ -67,8 +67,10 @@
               td= at.sinh_vien.ma_lop_hanh_chinh
               td
                 .progress
-                  .progress-bar.progress-bar-success style="width: #{enrollment.tinhhinhvang}%"
-                    span.sr-only= "#{enrollment.tinhhinhvang}"
+                  .progress-bar.progress-bar-danger style="width: #{enrollment.tinhhinhvang}%"
+                    span.sr-only= "#{enrollment.tinhhinhvang}%"
+                  .progress-bar.progress-bar-success style="width: #{100 - enrollment.tinhhinhvang}%"
+                    span.sr-only= "#{100 - enrollment.tinhhinhvang}%"
               td= at.so_tiet_vang
               td= at.note
 

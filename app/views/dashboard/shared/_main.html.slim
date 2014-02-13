@@ -1,4 +1,5 @@
 .container
+  = render 'dashboard/shared/search_form'
   - if user_signed_in?    
     p Chào bạn #{current_user.username}
   hr

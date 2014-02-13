@@ -1,0 +1,10 @@
+form role="form" class="form-horizontal" method="GET" action="/search"
+  .form-group
+    .col-sm-2
+      select.form-control name="mtype"
+        option value="1" Sinh Viên
+        option value="2" Lớp môn học
+        option value="3" Lịch trình giảng dạy
+    .col-sm-6
+      input type="text" class="form-control" placeholder="Thông tin tra cứu" name="query" value="#{@query}"    
+    button type="submit" class="btn btn-primary btn-default" Tra cứu

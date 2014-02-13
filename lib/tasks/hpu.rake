@@ -48,8 +48,8 @@ namespace :hpu do
       ho = tmp[0]
       dem = tmp[1..-1].join(" ")
       ten = l[:ten].strip
-      gv = GiangVien.where(:ho => ho, :dem => dem, :ten => ten, :code => l[:ma_giao_vien].strip.upcase).first_or_create!
-      gv.update_attributes(ten_khoa: l[:ten_khoa].strip)
+      gv = GiangVien.where(:code => l[:ma_giao_vien].strip.upcase).first_or_create!
+      gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip)
     end
   end
   #3

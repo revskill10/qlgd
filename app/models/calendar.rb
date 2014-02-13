@@ -26,7 +26,7 @@ class Calendar < ActiveRecord::Base
 
   state_machine :state, :initial => :pending do  
     event :generate do 
-      transition :pending => :generated # da hoan thanh gio hoc
+      transition [:pending, :generated] => :generated # da hoan thanh gio hoc
     end    
     event :remove do 
       transition all => :removed

@@ -108,7 +108,7 @@ class LopMonHoc < ActiveRecord::Base
   def generate_calendars
     if calendars.count > 0 
       calendars.each do |calendar|
-        calendar.generate unless calendar.generated?
+        calendar.generate! if calendar.can_generate?
       end
     end
   end
