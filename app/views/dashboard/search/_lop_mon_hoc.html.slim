@@ -12,7 +12,7 @@
         - @lop_mon_hocs.each_with_index do |res, index|
           tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
             td= (index + (@page.to_i-1)*50 + 1).to_s
-            td= res.ma_lop
+            td= link_to res.ma_lop, "/tenants/#{current_tenant.id}/lop/#{res.id}"
             td= res.ten_mon_hoc
             td= res.giang_viens
             td= res.siso
