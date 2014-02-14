@@ -286,7 +286,15 @@ namespace :hpu do
     Apartment::Database.switch(tenant.name)
     
   end
-
+  #17: Update so tiet vang
+  task update_tong_vang: :environment do 
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    Enrollment.all.each do |en|
+      en.update_attributes(tong_tiet_vang: en.tong_vang)
+    end
+  end
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end

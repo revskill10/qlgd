@@ -18,7 +18,7 @@
             td= link_to res.thoi_gian.strftime("%Hh%M %d/%M/%Y"), "/tenants/#{current_tenant.id}/lich/#{res.id}"
             td= res.so_tiet_moi
             td= res.phong
-            td= res.lop_mon_hoc.ma_lop
+            td= link_to res.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{res.lop_mon_hoc.id}"
             td= res.lop_mon_hoc.ten_mon_hoc
             td= link_to res.giang_vien.hovaten, "/tenants/#{current_tenant.id}/giang_viens/#{res.giang_vien.id}"
 = will_paginate @results

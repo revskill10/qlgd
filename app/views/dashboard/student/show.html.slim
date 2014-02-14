@@ -46,7 +46,7 @@
           - @enrollments.each_with_index do |en, index|
             tr class=(index % 2 == 0 ? 'danger' : 'warning')          
               td= (index+1).to_s
-              td= en.lop_mon_hoc.ma_lop
+              td= link_to en.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{en.lop_mon_hoc.id}"
               td= en.lop_mon_hoc.ten_mon_hoc
               td= en.lop_mon_hoc.teachers
               td= en.lop_mon_hoc.si_so

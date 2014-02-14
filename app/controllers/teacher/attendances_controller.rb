@@ -50,6 +50,7 @@ class Teacher::AttendancesController < TenantsController
       @attendance.save!  
       @en = @lich.lop_mon_hoc.enrollments.where(sinh_vien_id: @sv.id).first
       @en.tinhhinh = @en.tinhhinhvang
+      @en.tong_tiet_vang = @en.tong_vang
       @en.save!
       #attendance.mark_absent(false)
       #lich = LichTrinhGiangDay.find(params[:lich_id])

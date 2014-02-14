@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140207085734) do
+ActiveRecord::Schema.define(:version => 20140214072042) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -99,6 +99,7 @@ ActiveRecord::Schema.define(:version => 20140207085734) do
     t.decimal  "tinhhinh"
     t.boolean  "bosung"
     t.integer  "diem_qua_trinh"
+    t.integer  "tong_tiet_vang"
   end
 
   add_index "enrollments", ["lop_mon_hoc_id", "sinh_vien_id"], :name => "index_enrollments_on_lop_mon_hoc_id_and_sinh_vien_id"
