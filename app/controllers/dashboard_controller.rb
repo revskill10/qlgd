@@ -59,10 +59,9 @@ class DashboardController < TenantsController
   end
 
   def giang_vien
-    @giang_vien = GiangVien.find(params[:giang_vien_id])
-    @assistants = @giang_vien.assistants.includes(:lop_mon_hoc => :lich_trinh_giang_days)
-    @lops = @assistants.map {|as| as.lop_mon_hoc if as.lop_mon_hoc and !as.lop_mon_hoc.removed?}.select {|l| !l.nil? }.uniq
-    @lichs = @lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
+    @giang_vien = GiangVien.includes(:assistants).find(params[:giang_vien_id])
+    @assistants = @giang_vien.assistants.includes(:lop_mon_hoc)    
+    @lichs = @assistants.select {|as| as if as.lop_mon_hoc and !as.lop_mon_hoc.removed? }.uniq.inject([]) {|res, elem| res + elem.lop_mon_hoc.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
     respond_to do |format|
       format.html {render "dashboard/teacher/show"}
     end   

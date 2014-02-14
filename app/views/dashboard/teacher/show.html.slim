@@ -40,7 +40,7 @@
               td= en.khoi_luong_thuc_hien
               td= en.khoi_luong_du_kien
 
-  h3 Các buổi đã học/vắng
+  h3 Các buổi giảng dạy
   .table-responsive
     table.table.table-bordered
       thead
@@ -52,7 +52,8 @@
           td Thông tin lớp
           td Giảng viên
           td Nội dung
-          td Vắng
+          td Sinh viên vắng
+          td Trạng thái
       tbody
         - if @lichs and @lichs.count > 0
           - @lichs.each_with_index do |lich, index|
@@ -74,4 +75,4 @@
                   - lich.danh_sach_vangs.each_with_index do |at, i|
                     = link_to "#{at.sinh_vien.hovaten} (#{at.so_tiet_vang}t)", "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
                     br
-
+              td= lich.alias_status
