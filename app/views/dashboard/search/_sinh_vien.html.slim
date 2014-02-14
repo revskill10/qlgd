@@ -7,7 +7,8 @@
           td Họ và tên
           td Mã sinh viên
           td Lớp hành chính
-          td Số lớp môn          
+          td Số lớp môn
+          td Số tiết vắng          
       tbody
         - @sinhviens.each_with_index do |res, index|
           tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
@@ -16,4 +17,5 @@
             td= res.code
             td= res.ma_lop_hanh_chinh
             td= res.so_lop_mon
+            td= res.so_tiet_vang
 = will_paginate @results
