@@ -154,7 +154,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
     return self.noi_dung[0..20] + " ..."
   end
   
-  
+  def set_tuhoc
+
+  end
   def alias_state
     case self.state
     when "normal"
