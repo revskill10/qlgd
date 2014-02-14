@@ -53,7 +53,7 @@
               td= en.tong_vang
               td= en.diemqt.to_s
 
-  h3 Các buổi đã học/vắng
+  h3 Các buổi giảng dạy
   .table-responsive
     table.table.table-bordered
       thead
@@ -66,6 +66,7 @@
           td Giảng viên
           td Nội dung
           td Vắng
+          td Trạng thái
       tbody
         - if @lichs and @lichs.count > 0
           - @lichs.each_with_index do |lich, index|
@@ -87,4 +88,5 @@
                   - lich.danh_sach_vangs.each_with_index do |at, i|
                     = link_to "#{at.sinh_vien.hovaten} (#{at.so_tiet_vang}t)", "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
                     br
+              td= lich.alias_status
 
