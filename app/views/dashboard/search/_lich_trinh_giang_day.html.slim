@@ -16,7 +16,7 @@
         - @lichs.each_with_index do |res, index|
           tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
             td= (index + (@page.to_i-1)*50 + 1).to_s
-            td= link_to res.thoi_gian.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{res.id}"
+            td= link_to res.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{res.id}"
             td= res.so_tiet_moi
             td= res.phong
             td= link_to res.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{res.lop_mon_hoc.id}"

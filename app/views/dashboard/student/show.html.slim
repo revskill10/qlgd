@@ -73,7 +73,7 @@
             - tm = 'default' if lich.thoi_gian.localtime > Time.now
             tr class="#{tm}"
               td= (index+1).to_s
-              td= link_to lich.thoi_gian.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{lich.id}"
+              td= link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{lich.id}"
               td= lich.phong
               td= lich.so_tiet_moi
               td
