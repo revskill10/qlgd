@@ -2,7 +2,7 @@
 
 .container
   = render 'dashboard/shared/search_form'
-  - if params[:query].length > 0
+  - if params[:query]
   	- if params[:mtype].to_i == 1
   	  = render 'dashboard/search/sinh_vien'
   	- if params[:mtype].to_i == 2
