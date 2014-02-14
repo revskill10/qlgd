@@ -129,6 +129,12 @@ namespace :hpu do
           tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false )
         )
       end
+      if sv
+        if sv.ma_lop_hanh_chinh != l[:lop].strip.upcase
+          sv.update_attributes(ma_lop_hanh_chinh: l[:lop].strip.upcase, he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
+          khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) , nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ))
+        end
+      end
     end
   end 
   # 6

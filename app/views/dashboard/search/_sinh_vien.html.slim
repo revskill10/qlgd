@@ -14,7 +14,7 @@
           tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
             td= (index + (@page.to_i-1)*50 + 1).to_s
             td= res.hovaten
-            td= res.code
+            td= link_to res.code, "/tenants/#{current_tenant.id}/sinh_viens/#{res.id}"
             td= res.ma_lop_hanh_chinh
             td= res.so_lop_mon
             td= res.so_tiet_vang

@@ -60,8 +60,13 @@ class LichTrinhGiangDay < ActiveRecord::Base
     string :ten_giang_vien
     string :hoc_ky      
     string :nam_hoc     
-    string :tenant 
-  end
+    string :tenant     
+    text :attendances do
+      if danh_sach_vangs.count > 0 
+        danh_sach_vangs.map {|at| at.sinh_vien.hovaten + " " + at.sinh_vien.code}
+      end
+    end
+  end  
   def ma_lop
     self.lop_mon_hoc.ma_lop
   end
@@ -297,7 +302,9 @@ class LichTrinhGiangDay < ActiveRecord::Base
   def sv_vang
     self.attendances.where("state = 'absent'").count
   end
-
+  def danh_sach_vangs
+    self.attendances.includes(:sinh_vien).where("state = 'absent' or state = 'late'")
+  end
   private
   
   def set_default    

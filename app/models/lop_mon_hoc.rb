@@ -131,7 +131,10 @@ class LopMonHoc < ActiveRecord::Base
   def si_so
     self.enrollments.count
   end
-
+  def teachers
+    self.giang_viens.inject("") {|res, elem| res + "  " + elem.hovaten}
+  end
+  
   def generate_assignments
 #    return nil unless self.started?
     return nil unless self.settings.present?

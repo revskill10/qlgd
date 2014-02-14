@@ -14,6 +14,8 @@ Qlgd::Application.routes.draw do
     get "/lop/:id" => "dashboard#lop"  
     get "/daotao" => "dashboard#daotao"
     get "/thanhtra" => 'dashboard#thanhtra'
+    get "/sinh_viens/:sinh_vien_id" => 'dashboard#sinh_vien'
+    get "/giang_viens/:giang_vien_id" => 'dashboard#giang_vien'
     namespace :thanhtra do      
       post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'
       post "/lich_trinh_giang_days/dimuon" => 'lich_trinh_giang_days#dimuon'

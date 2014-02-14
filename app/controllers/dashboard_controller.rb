@@ -48,6 +48,26 @@ class DashboardController < TenantsController
     end
   end
 
+  def sinh_vien
+    @sinh_vien = SinhVien.find(params[:sinh_vien_id]) 
+    @enrollments = @sinh_vien.enrollments.includes(:lop_mon_hoc).select {|en| !en.lop_mon_hoc.nil?} 
+    @lops = @enrollments.map {|en| en.lop_mon_hoc if en.lop_mon_hoc and !en.lop_mon_hoc.removed? }.select {|l| !l.nil? }.uniq
+    @lichs = @lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
+    respond_to do |format|
+      format.html {render "dashboard/student/show"}
+    end   
+  end
+
+  def giang_vien
+    @giang_vien = GiangVien.find(params[:giang_vien_id])
+    @assistants = @giang_vien.assistants.includes(:lop_mon_hoc => :lich_trinh_giang_days)
+    @lops = @assistants.map {|as| as.lop_mon_hoc if as.lop_mon_hoc and !as.lop_mon_hoc.removed?}.select {|l| !l.nil? }.uniq
+    @lichs = @lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
+    respond_to do |format|
+      format.html {render "dashboard/teacher/show"}
+    end   
+  end
+
   def search
     @page = params[:page] || 1
     @type = params[:mtype] || 1
