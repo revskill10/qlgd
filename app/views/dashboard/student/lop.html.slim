@@ -37,8 +37,8 @@
         - @results.each_with_index do |res, index|
           tr(class="#{index % 2 == 0 ? 'danger' : 'warning'}")
             td= (index+1).to_s
-            td= link_to res[:hovaten], "tenants/#{current_tenant.id}/sinh_viens/#{res[:sinh_vien_id]}"
-            td= res[:code]
+            td= res[:hovaten]
+            td= link_to res[:code], "/tenants/#{current_tenant.id}/sinh_viens/#{res[:sinh_vien_id]}"
             td= res[:ma_lop_hanh_chinh]            
             td
               - res[:tinhhinh] ||= 0

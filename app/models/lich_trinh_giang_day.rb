@@ -114,16 +114,6 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end
   end
 
-  def accept
-    if self.ltype == "tuhoc"      
-      self.enrollments.each do |e|
-        at = self.attendances.where(sinh_vien_id: e.sinh_vien.id).first_or_create!
-        at.turn_idle
-        at.save!
-      end
-    end
-    super
-  end
 
   def complete
     self.completed_at = Time.now
@@ -312,9 +302,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
     self.tiet_bat_dau = self.get_tiet_bat_dau
     self.so_tiet_moi = self.so_tiet    
   end
-  def set_tuhoc
-    
-  end
+  
   # tim tuan va trung lich  
   def check_thoi_gian
     unless load_tuan
