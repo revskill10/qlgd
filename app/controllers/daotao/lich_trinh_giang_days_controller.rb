@@ -18,7 +18,7 @@ class Daotao::LichTrinhGiangDaysController < TenantsController
 		@lich = LichTrinhGiangDay.find(params[:id])
 		authorize @lich, :daotao?		
 		if @lich.state == "nghiday"
-			@lich.update_attributes(state: "lythuyet")
+			@lich.update_attributes(state: "normal")
 			@lich.accept!
 		else
 			@lich.drop! if @lich.can_drop?
