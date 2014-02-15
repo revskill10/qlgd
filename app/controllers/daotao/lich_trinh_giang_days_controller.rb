@@ -16,8 +16,13 @@ class Daotao::LichTrinhGiangDaysController < TenantsController
 
 	def drop
 		@lich = LichTrinhGiangDay.find(params[:id])
-		authorize @lich, :daotao?
-		@lich.drop!
+		authorize @lich, :daotao?		
+		if @lich.state == "nghiday"
+			@lich.update_attributes(state: "lythuyet")
+			@lich.accept!
+		else
+			@lich.drop! if @lich.can_drop?
+		end
 		@lichs = LichTrinhGiangDay.waiting.map {|l| Daotao::LichTrinhGiangDaySerializer.new(Daotao::LichTrinhGiangDayDecorator.new(l))}
 		render json: @lichs, :root => false
 	end
