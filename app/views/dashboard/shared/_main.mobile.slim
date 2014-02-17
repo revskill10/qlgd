@@ -1,0 +1,27 @@
+.container
+  = render 'dashboard/shared/search_form'
+  - if user_signed_in?    
+    p Chào bạn #{current_user.username}
+  hr
+  ul.nav.nav-pills
+    li.active
+      a href="#tkb" data-toggle="tab" Thời khóa biểu
+    li
+      a href="#dsl" data-toggle="tab" Danh sách lớp
+    li
+      a href="#tt" data-toggle="tab" Lưu ý
+    
+
+  .tab-content
+    #tkb.tab-pane.fade.in.active
+      br
+      #main
+    #dsl.tab-pane
+      br
+      #dslop
+    #tt.tab-pane
+      br
+      #thanhtra
+    
+
+script src="/assets/giang_vien/home.js" type="text/javascript"

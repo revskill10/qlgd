@@ -4,6 +4,8 @@ class DashboardController < TenantsController
     @lichs = LichTrinhGiangDay.includes(:attendances).includes(:lop_mon_hoc => :enrollments).active.order('thoi_gian, phong')
   	respond_to do |format|
       format.html {render "index"} 
+      format.mobile {render "index"}
+      format.tablet {render "index"}
   	end
   end
 
@@ -13,7 +15,11 @@ class DashboardController < TenantsController
     @lop = @lich.lop_mon_hoc
     respond_to do |format|     
       if current_user and Pundit.policy!(current_user, @lich).update?                         
-        format.html {render "dashboard/teacher/lich"}          
+        format.html {render "dashboard/teacher/lich"}
+        if is_mobile_device? or is_tablet_device?
+          format.mobile {render "dashboard/teacher/lich"}
+          format.tablet {render "dashboard/teacher/lich"}
+        end          
       else
         @attendances = @lich.attendances.vang_hoac_tre
         @lich = @lich.decorate

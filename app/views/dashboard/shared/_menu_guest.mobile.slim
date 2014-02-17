@@ -1,0 +1,17 @@
+.navbar.navbar-default.navbar-static-top role="navigation"
+  .container
+    .navbar-header
+      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar            
+        span.icon-bar
+      = link_to "QLGD", '/', {class:"navbar-brand"}
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav         
+        li= link_to "Hướng dẫn sử dụng", '/huongdan.htm'                         
+      ul.nav.navbar-nav.navbar-right
+        - if user_signed_in?
+          li= link_to "Đăng xuất", destroy_user_session_path
+        - else
+          li= link_to "Đăng nhập", new_user_session_path
