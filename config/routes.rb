@@ -126,6 +126,8 @@ Qlgd::Application.routes.draw do
       post "/lich_trinh_giang_days/thanhtraupdate" => 'lich_trinh_giang_days#thanhtraupdate'
       post "/lich_trinh_giang_days/accept" => 'lich_trinh_giang_days#accept'
       post "/lich_trinh_giang_days/request" => 'lich_trinh_giang_days#request2'
+      get '/lich_trinh_giang_days/:lich_id/mobile_content' => 'lich_trinh_giang_days#get_mobile_content'
+      post '/lich_trinh_giang_days/mobile_content' => 'lich_trinh_giang_days#mobile_content'
       get '/monitor' => 'lich_trinh_giang_days#monitor'
     end
   end

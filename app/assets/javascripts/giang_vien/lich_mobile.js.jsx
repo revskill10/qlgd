@@ -79,7 +79,7 @@ var Enrollments = React.createClass({
     }); 
     return (
       <div>          
-        <h6>Thông tin điểm danh:</h6>
+        <h4>Thông tin điểm danh:</h4>
         <div class="table-responsive">
           <table class="table table-bordered table-condensed table-striped">
             <colgroup>              
@@ -157,8 +157,10 @@ var Lich = React.createClass({
   render: function(){      
     
     return (    
-    <div><h6>Thông tin buổi học</h6>
+    <div><h4>Thông tin buổi học</h4>
             <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
+            <hr/>
+            <Editor lich_id={this.props.lich} />
             <hr/>
           <Enrollments state={this.state.lich.can_diem_danh===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
           </div>
@@ -203,6 +205,67 @@ var LichSetting = React.createClass({
     );
   }
 });
+
+var Editor = React.createClass({
+  getInitialState: function(){
+    return {edit: 0, data: ""}
+  },
+  loadContent: function(){
+    $.ajax({
+      url: '/teacher/lich_trinh_giang_days/' + this.props.lich_id + '/mobile_content',
+      success: function(data){
+        this.setState({edit: 0, data: data})
+      }.bind(this)
+    })
+  },
+  onEdit: function(){
+    this.setState({edit: 1});
+  },
+  onCancel: function(){
+    this.setState({edit: 0});
+  },
+  onUpdate: function(){
+    var content = this.refs.noidung.getDOMNode().value;
+    $.ajax({
+      url: '/teacher/lich_trinh_giang_days/mobile_content',
+      type: 'POST',
+      data: {lich_id: this.props.lich_id, content: content},
+      success: function(data){
+        this.setState({edit: 0, data: data})
+      }.bind(this)
+    })
+  },
+  componentWillMount: function(){
+    this.loadContent();
+  },
+  componentDidUpdate: function(){
+    if (this.state.edit === 1) {
+      this.refs.noidung.getDOMNode().value = this.state.data.content
+    }    
+  },
+  render: function(){
+    if (this.state.edit === 0){
+      return (
+        <div>
+          <h4>Nội dung giảng dạy</h4>
+          <span dangerouslySetInnerHTML={{__html: this.state.data.content_html }} />
+          <br/>
+          <button onClick={this.onEdit} class="btn btn-sm btn-success">Sửa nội dung</button>
+        </div>
+      )
+    } else {
+      return (      
+        <div>
+          <h4>Nội dung giảng dạy</h4>
+          <textarea style={{width:"100%"}} ref="noidung" />
+          <br/>
+          <button onClick={this.onCancel} class="btn btn-sm btn-warning">Hủy</button>
+          <button onClick={this.onUpdate} class="btn btn-sm btn-primary">Cập nhật</button>
+        </div>
+      )
+    }    
+  }
+})
 
 React.renderComponent(  
   <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,

@@ -1,6 +1,6 @@
 class Teacher::LichTrinhGiangDaysController < TenantsController
 
-	before_filter :get_lop, :except => [:info, :thanhtra, :thanhtraupdate, :accept, :request2, :home, :monitor, :index, :index_bosung]
+	before_filter :get_lop, :except => [:info, :thanhtra, :thanhtraupdate, :accept, :request2, :home, :monitor, :index, :index_bosung, :mobile_content, :get_mobile_content]
 
 	
 	def info
@@ -255,6 +255,15 @@ class Teacher::LichTrinhGiangDaysController < TenantsController
 		enrollments = @lich.lop_mon_hoc.enrollments    
       	results = enrollments.map {|en| LichEnrollmentDecorator.new(en,@lich) }.map {|e| LichEnrollmentSerializer.new(e)}
       	render json: {info: {lop: LopMonHocSerializer.new(@lich.lop_mon_hoc),  lich: LichTrinhGiangDaySerializer.new(@lich.decorate)}, enrollments: results}.to_json
+	end
+	def get_mobile_content
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		render json: LichTrinhGiangDaySerializer.new(@lich.decorate), :root => false
+	end
+	def mobile_content
+		@lich = LichTrinhGiangDay.find(params[:lich_id])
+		@lich.update_attributes(noi_dung: params[:content])
+		render json: LichTrinhGiangDaySerializer.new(@lich.decorate), :root => false
 	end
 	def getcontent				
 		@lichs = policy_scope(@lop.lich_trinh_giang_days.accepted_or_completed).map { |l| LichTrinhGiangDaySerializer.new(l.decorate)}
