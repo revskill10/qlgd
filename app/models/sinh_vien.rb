@@ -1,6 +1,7 @@
 #encoding: utf-8
 class SinhVien < ActiveRecord::Base
-  acts_as_list
+  #acts_as_list
+  default_scope order('encoded_position')
   include Comparable
   attr_accessible :code, :dem, :ho, :ma_lop_hanh_chinh, :ngay_sinh, :ten, :gioi_tinh, :he, :khoa, :nganh, :tin_chi, :position, :encoded_position
 

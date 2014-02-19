@@ -14,7 +14,7 @@ select a3.id as enrollment_id, a3.assignment_group_id, a3.name, a3.grade, regexp
 inner join t2.lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
 inner join t2.sinh_viens sv on sv.id = en.sinh_vien_id
 inner join t2.assignment_groups ai on a3.assignment_group_id = ai.id
-order by sv.position, ai.position
+order by sv.encoded_position, ai.position
 "
 		results = ActiveRecord::Base.connection.execute(sql).group_by {|k| [k["enrollment_id"],k["hovaten"],k["code"],k["ma_lop_hanh_chinh"],k["diem_qua_trinh"], k["tinhhinh"]]}.map {|k,v| {:enrollment_group_id => k[0], :hovaten => k[1], :code => k[2], :ma_lop_hanh_chinh => k[3], :diem_qua_trinh => k[4], :tinhhinh => k[5], :group_submissions => v}}
 		sql2 = "select ag.id as assignment_group_id, ag.name as group_name, ag.weight from assignment_groups ag
