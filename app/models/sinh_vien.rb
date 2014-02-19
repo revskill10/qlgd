@@ -2,7 +2,7 @@
 class SinhVien < ActiveRecord::Base
   acts_as_list
   include Comparable
-  attr_accessible :code, :dem, :ho, :ma_lop_hanh_chinh, :ngay_sinh, :ten, :gioi_tinh, :he, :khoa, :nganh, :tin_chi, :position
+  attr_accessible :code, :dem, :ho, :ma_lop_hanh_chinh, :ngay_sinh, :ten, :gioi_tinh, :he, :khoa, :nganh, :tin_chi, :position, :encoded_position
 
   has_one :user, :as => :imageable
   has_many :attendances, :dependent => :destroy  

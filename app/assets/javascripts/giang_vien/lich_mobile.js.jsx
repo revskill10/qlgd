@@ -92,7 +92,7 @@ var Enrollments = React.createClass({
               <td>Sinh viên</td>                        
               <td>Vắng</td>                      
               <td>Phép</td>  
-              <td>Bắt buộc tham dự</td></tr>           
+              <td>Bắt buộc</td></tr>           
             </thead>
             <tbody>
               {enrollments}
@@ -180,8 +180,8 @@ var LichSetting = React.createClass({
             <td>Phòng</td>
             <td>Loại</td>
             <td>Số tiết</td>
-            <td>Số sinh viên có mặt</td>
-            <td>Số sinh viên vắng</td>
+            <td>Số có mặt</td>
+            <td>Số vắng</td>
             <td>Giờ học</td>
             <td>Trạng thái</td>
             <td>Thao tác</td></tr>

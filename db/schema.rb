@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140214072042) do
+ActiveRecord::Schema.define(:version => 20140219070554) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -218,6 +218,7 @@ ActiveRecord::Schema.define(:version => 20140214072042) do
     t.string   "nganh"
     t.integer  "gioi_tinh"
     t.integer  "position"
+    t.string   "encoded_position"
   end
 
   create_table "submissions", :force => true do |t|
