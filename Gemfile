@@ -90,4 +90,3 @@ end
 gem 'sitemap_generator'
 gem 'will_paginate-bootstrap'
 gem 'mobile-fu'
-gem "sunspot-queue"
