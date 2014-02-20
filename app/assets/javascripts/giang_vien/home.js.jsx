@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-
+//= require react
 //= require ./thanhtra
 
 var hdata = [

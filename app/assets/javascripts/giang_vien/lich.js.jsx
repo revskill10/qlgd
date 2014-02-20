@@ -1,5 +1,5 @@
 /** @jsx React.DOM */
-
+//= require react
 //= require ./grade2
 //= require ./calendar
 //= require ./lopsetting
@@ -517,6 +517,7 @@ $.ajax({
       }
 });    
 */
+React.initializeTouchEvents(true);
 React.renderComponent(  
   <Lich lich={ENV.lich_id} lop={ENV.lop_id} giang_vien={ENV.giang_vien_id} />,
   document.getElementById('main')

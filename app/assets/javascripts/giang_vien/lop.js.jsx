@@ -1,4 +1,5 @@
 /** @jsx React.DOM */
+//= require react
 //= require ./thongso
 //= require ./assignments
 //= require ./grade2

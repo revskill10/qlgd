@@ -154,7 +154,8 @@ var GradeRow = React.createClass({
 var DisabledGradeCell = React.createClass({
 	render: function(){
 		return (
-			<td><div onClick={this.props.onEdit} >{this.props.data.grade}</div></td>
+			<td><div>{this.props.data.grade}</div>
+			 <button class="btn btn-sm btn-primary" onClick={this.props.onEdit}>Sửa</button> </td>
 		)
 	}
 });
@@ -167,8 +168,8 @@ var LiveGradeCell = React.createClass({
 		return (
 			<td>
 				<input type="text" ref="grade" id="grade" />
-				<button class="btn btn-danger curl-top-left" onClick={this.props.onCancel}>Hủy</button>
-				<button class="btn btn-success curl-top-left" onClick={this.onUpdate}>Cập nhật</button>
+				<button class="btn btn-danger" onClick={this.props.onCancel}>Hủy</button>
+				<button class="btn btn-success" onClick={this.onUpdate}>Cập nhật</button>
 			</td>
 		);
 	}

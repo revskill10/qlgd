@@ -1,10 +1,17 @@
 require 'set'
 class Graph
 	
-	def initialize(edge = nil, ver = nil, color = nil)
+	def initialize(edge, ver, color, svs, max)
+		@max = max
 		@g = edge || Hash.new
-		@v = ver || Set.new
+		@v = ver || Set.new		
 		@color = color || Hash.new
+		@svs = svs || Hash.new
+		@tmp ||= Hash.new
+		@tmp[-1] = Set.new		
+		@v.count.times do |t|
+			@tmp[t] = Set.new
+		end
 	end
 	def get_edge
 		@g
@@ -33,25 +40,30 @@ class Graph
 	def color!
 		k = 1
 		mU = @v
-		u1 = get_u1(mU)
-		u2 = get_u2(mU)
+		u1 = get_u1(mU, k)
+		u2 = get_u2(mU, k)
 		vi1 = max_item_degree(u2, u1)
 		assign_color(vi1, k)
-		@v.count.times do |t1|
-			while !get_u1(mU).empty?
+		while get_colored_nodes(@v).count < @v.count
+			while !get_u1(mU, k).empty?  or tmpColor(k) <= @max
 				al(mU, k)
 			end
 			k = k + 1
-			mU = get_uncolored_nodes(mU)
+			mU = get_uncolored_nodes(mU, k)
 		end
 	end
 	private
+	def tmpColor(k)
+		@color.select {|key,v| v == k}.count
+	end
 	def al(mU, k)
-		u1 = get_u1(mU)
-		u2 = get_u2(mU)
-		unless u1.empty?
+		u1 = get_u1(mU, k)
+		u2 = get_u2(mU, k)
+		if !u1.empty?
 			vi1 = max_item_degree(u2, u1)
 			assign_color(vi1, k)
+			@tmp[k] ||= Set.new
+			@tmp[k].add(@svs[vi1])
 		end	
 	end
 	def assign_color(v, k)
@@ -79,26 +91,29 @@ class Graph
 		end
 		max_item
 	end
-	def get_u1(mU)
-		t = get_uncolored_nodes(mU)
+	def get_u1(mU, k)
+		t = get_uncolored_nodes(mU, k)
 		t2 = get_colored_nodes(mU)
 		Set.new(t.select {|i| !adjacent?(t2, i)})
 	end
-	def get_u2(mU)
-		t = get_uncolored_nodes(mU)
+	def get_u2(mU, k)
+		t = get_uncolored_nodes(mU, k)
 		t2 = get_colored_nodes(mU)
 		Set.new(t.select {|i| adjacent?(t2, i)})
 	end
 
+	def tmpU(mU, k)
+		Set.new(get_colored_nodes(mU)) - ((@tmp[k-2] || Set.new) + (@tmp[k-1] || Set.new))
+	end
 	
 	def get_colored_nodes(mU)
-		mU.select {|v| @color[v] != nil}
+		Set.new(mU.select {|v| @color[v] != nil}		)
 	end
-	def get_uncolored_nodes(mU)
-		mU.select {|v| @color[v].nil? }
+	def get_uncolored_nodes(mU, k)
+		Set.new(mU.select {|v| @color[v].nil? }) - tmpU(mU, k)
 	end
 end
-	
+
 =begin
 def test
 	graph = Graph.new
