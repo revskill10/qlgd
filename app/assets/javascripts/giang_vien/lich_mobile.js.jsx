@@ -1,17 +1,16 @@
 /** @jsx React.DOM */
 
+//= require react
+//= require ./grade_mobile
 
 var DisabledEnrollment = React.createClass({
   render: function(){
     return (
       <tr class={this.props.stt % 2 == 0 ? 'danger' : 'default'}>
-        <td>{this.props.stt}</td>
-        <td>{this.props.enrollment.name} ({this.props.enrollment.code})</td>       
+        <td>{this.props.stt}.{this.props.enrollment.name} <br/>({this.props.enrollment.code})</td>       
         <td>x</td>        
         <td>x</td>
-        <td>x</td>
-        <td>x</td>
-        <td>x</td>
+        <td>x</td>        
       </tr>
     );
   }
@@ -154,16 +153,32 @@ var Lich = React.createClass({
     });
     return false;
   },    
-  render: function(){      
-    
+  render: function(){          
     return (    
-    <div><h4>Thông tin buổi học</h4>
-            <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
-            <hr/>
-            <Editor lich_id={this.props.lich} />
-            <hr/>
+    <div>
+      <ul class="nav nav-pills">
+        <li class="active">
+          <a href="#tt" data-toggle="tab">Thông tin buổi học</a>
+        </li>
+        <li>
+          <a href="#diem" data-toggle="tab">Điểm</a>   
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div id="tt" class="tab-pane fade in active">
+          <hr/>
+          <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
+          <hr/>
+          <Editor lich_id={this.props.lich} />
+          <hr/>
           <Enrollments state={this.state.lich.can_diem_danh===true} data={this.state.data} on_vang={this.handleVang} loading={this.state.loading}/>
-          </div>
+        </div>
+        <div id="diem" class="tab-pane">
+          <hr/>
+          <Grade2 lop={this.props.lop} />
+        </div>
+      </div>
+    </div>
     );    
   }
 });

@@ -63,7 +63,9 @@ class Graph
 			vi1 = max_item_degree(u2, u1)
 			assign_color(vi1, k)
 			@tmp[k] ||= Set.new
-			@tmp[k].add(@svs[vi1])
+			@svs[vi1].each do |sv|
+				@tmp[k].add(sv)
+			end
 		end	
 	end
 	def assign_color(v, k)
@@ -92,18 +94,20 @@ class Graph
 		max_item
 	end
 	def get_u1(mU, k)
-		t = get_uncolored_nodes(mU, k)
+		t = common_nodes(mU, k)
 		t2 = get_colored_nodes(mU)
 		Set.new(t.select {|i| !adjacent?(t2, i)})
 	end
 	def get_u2(mU, k)
-		t = get_uncolored_nodes(mU, k)
+		t = common_nodes(mU, k)
 		t2 = get_colored_nodes(mU)
 		Set.new(t.select {|i| adjacent?(t2, i)})
 	end
-
+	def common_nodes(mU, k)
+		get_uncolored_nodes(mU, k).select {|s| (Set.new(@svs[s]) & @tmp[k-1] & @tmp[k-2]).empty?}
+	end
 	def tmpU(mU, k)
-		Set.new(get_colored_nodes(mU)) - ((@tmp[k-2] || Set.new) + (@tmp[k-1] || Set.new))
+		((@tmp[k-2] || Set.new) + (@tmp[k-1] || Set.new))
 	end
 	
 	def get_colored_nodes(mU)

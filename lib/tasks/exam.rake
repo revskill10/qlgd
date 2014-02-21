@@ -41,7 +41,7 @@ namespace :hpu do
     allkeys = alledges2.collect {|k,v| k}.flatten.uniq
     vertice = JSON.parse(File.read('E:/v.json')).select {|k| allkeys.include?(k)}
     edges = alledges2.select {|k,v| vertice.include?(k[0]) and vertice.include?(k[1])}
-    graph = Graph.new(edges, vertice, nil, svs, 3)
+    graph = Graph.new(edges, vertice, nil, svs, 28)
     File.open('E:/v1.json','w') {|file| file.write(vertice.to_json)}
     File.open('E:/edges1.json','w') {|file| file.write(edges.to_json)}
     graph.color!
