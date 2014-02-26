@@ -88,6 +88,8 @@ order by ag.position"
     @lichs = @lops.inject([]) {|res, elem| res + elem.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
     respond_to do |format|
       format.html {render "dashboard/student/show"}
+      format.mobile {render "dashboard/student/show"}
+      format.tablet {render "dashboard/student/show"}
     end   
   end
 
@@ -97,6 +99,8 @@ order by ag.position"
     @lichs = @assistants.select {|as| as if as.lop_mon_hoc and !as.lop_mon_hoc.removed? }.uniq.inject([]) {|res, elem| res + elem.lop_mon_hoc.lich_trinh_giang_days.includes(:attendances)}.sort_by {|l| [l.thoi_gian, l.phong]}
     respond_to do |format|
       format.html {render "dashboard/teacher/show"}
+      format.mobile {render "dashboard/teacher/show"}
+      format.tablet {render "dashboard/teacher/show"}
     end   
   end
 
@@ -134,6 +138,8 @@ order by ag.position"
         end            
       end
       format.html {render "dashboard/search/non_query"}
+      format.mobile {render "dashboard/search/non_query"}
+      format.tablet {render "dashboard/search/non_query"}
     end
   end
 end
