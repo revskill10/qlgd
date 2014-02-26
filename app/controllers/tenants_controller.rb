@@ -21,7 +21,7 @@ class TenantsController < ApplicationController
 	end
 	helper_method :current_tenant
 	def login_required
-		if is_mobile_device? or is_tablet_device?
+		if !user_signed_in? and (is_mobile_device? or is_tablet_device?)
 			redirect_to new_user_session_path
 		end
 	end
