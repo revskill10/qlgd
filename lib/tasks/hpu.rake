@@ -116,6 +116,9 @@ namespace :hpu do
         tmp = titleize(l[:hodem].strip.downcase).split(" ")
         ho = tmp[0]
         dem = tmp[1..-1].join(" ")
+        ns = l[:ngay_sinh].to_time if l[:ngay_sinh]
+        ten =  titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String)
+        ep = convert(ten) + convert(dem)+ convert(ho)+ ns.strftime("%d%m%Y")
         SinhVien.create!(
           gioi_tinh: (l[:gioi_tinh] ? 1 : 0),
           ho: ho,
@@ -124,10 +127,11 @@ namespace :hpu do
           he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
           khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) ,
           code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]),
-          ngay_sinh: (l[:ngay_sinh].to_time if l[:ngay_sinh]),
-          ten: ( titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String) ),
+          ngay_sinh: ns,
+          ten: ten,
           nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ),
-          tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false )
+          tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false ),
+          encoded_position: ep
         )
       end
       if sv
