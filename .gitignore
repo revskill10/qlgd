@@ -14,7 +14,7 @@
 
 tmp/
 public/
-solr/*
+solr/
 log/
 /config/database.yml
 /config/sunspot.yml

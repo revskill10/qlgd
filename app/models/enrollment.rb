@@ -12,6 +12,8 @@ class Enrollment < ActiveRecord::Base
   has_many :assignments, :through => :lop_mon_hoc, :uniq => true
   has_many :attendances, :through => :sinh_vien
   has_many :submissions, :dependent => :destroy
+  before_destroy :delete_attendances
+
   def tong_vang    
     attendances.where(lich_trinh_giang_day_id: lich_trinh_giang_days.not_tuhoc.map(&:id)).not_idle.where('phep is NULL or phep=false').sum(:so_tiet_vang)
   end
@@ -27,5 +29,8 @@ class Enrollment < ActiveRecord::Base
     tmp = lop_mon_hoc.tong_so_tiet_hoc if lop_mon_hoc.tong_so_tiet_hoc > 0
     (tong_vang * 100.0 / (tmp - (so_tiet_thua || 0))).round(2)
   end
-
+  private
+  def delete_attendances
+    Attendance.delete_all(id: attendances.map(&:id))
+  end
 end
