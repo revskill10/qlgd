@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery  
   include Pundit
   before_filter :current_tenant
+  before_filter :login_required
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def routing
@@ -23,6 +24,11 @@ class ApplicationController < ActionController::Base
       tenant = Tenant.last
       Apartment::Database.switch(tenant.name)
       return tenant
+    end
+  end
+  def login_required
+    if !user_signed_in? and (is_mobile_device? or is_tablet_device?)
+      redirect_to new_user_session_path
     end
   end
   def user_not_authorized

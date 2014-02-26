@@ -1,6 +1,5 @@
 class TenantsController < ApplicationController
-	before_filter :current_tenant
-	before_filter :login_required
+	before_filter :current_tenant	
 
 	
 	include Pundit
@@ -20,9 +19,5 @@ class TenantsController < ApplicationController
 		end
 	end
 	helper_method :current_tenant
-	def login_required
-		if !user_signed_in? and (is_mobile_device? or is_tablet_device?)
-			redirect_to new_user_session_path
-		end
-	end
+	
 end
