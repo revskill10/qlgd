@@ -24,6 +24,10 @@ class DashboardController < TenantsController
         @attendances = @lich.attendances.vang_hoac_tre
         @lich = @lich.decorate
         format.html {render "dashboard/student/lich"}
+        if is_mobile_device? or is_tablet_device?
+          format.mobile {render "dashboard/student/lich"}
+          format.tablet {render "dashboard/student/lich"}
+        end
       end
     end
   end  
@@ -54,6 +58,10 @@ where ag.lop_mon_hoc_id=#{@lop.id}
 order by ag.position"
     @headers = ActiveRecord::Base.connection.execute(sql2).map {|k| {:assignment_group_id => k["assignment_group_id"], :group_name => k["group_name"], :weight => k["weight"] }}
         format.html {render "dashboard/student/lop"}
+        if is_mobile_device? or is_tablet_device?
+          format.mobile {render "dashboard/student/lop"}
+          format.tablet {render "dashboard/student/lop"}
+        end
       end
     end
 
