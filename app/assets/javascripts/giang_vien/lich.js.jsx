@@ -222,7 +222,7 @@ var Lop = React.createClass({
 var DisabledEditor = React.createClass({
   render: function(){
     return (
-        <div style={{'border-right': '2px solid blue'}}>
+        <div>
         <div id='content-header' >
           <p><span dangerouslySetInnerHTML={{__html: this.props.lich.content_html}} /></p>         
         </div>        
@@ -276,7 +276,7 @@ var Editor = React.createClass({
   render: function() {
     if (this.state.edit === 0){
       return (
-        <div style={{'border-right': '2px solid blue'}}>
+        <div>
        
         <LichGiangDay giang_vien={this.props.giang_vien} lop={this.props.lop} />
         </div>
@@ -442,7 +442,13 @@ var Lich = React.createClass({
           </li>
           <li>
             <a href="#noidung" data-toggle="tab">Nội dung giảng dạy</a>
-          </li>          
+          </li>    
+          <li>
+            <a href="#ltdk1" data-toggle="tab">Lịch trình dự kiến</a>
+          </li>
+          <li>
+            <a href="#dcdk1" data-toggle="tab">Đề cương dự kiến</a>
+          </li>
         </ul>
     
         <div class="tab-content">
@@ -459,17 +465,19 @@ var Lich = React.createClass({
                 <LichSetting lich={this.state.lich} onComplete={this.handleComplete} />
                 <br />
             <div class="row">
-              <hr />
-              <div class="col-sm-6">
+              <hr />              
                 <p class="text-center"><h3>Lịch trình thực hiện</h3> </p>
-                <div id="editor"></div>
-              </div>
-              <div class="col-sm-6">
-                <p class="text-center"><h3>Lịch trình dự kiến</h3></p>
-                <span dangerouslySetInnerHTML={{__html: this.state.lop.lich_trinh_du_kien_html }} />
-              </div>
+                <div id="editor"></div>                                                          
             </div>
-          </div>                
+          </div> 
+          <div class="tab-pane" id="ltdk1">
+              <p class="text-center"><h3>Lịch trình dự kiến</h3></p>
+              <span dangerouslySetInnerHTML={{__html: this.state.lop.lich_trinh_du_kien }} />
+          </div>
+          <div class="tab-pane" id="dcdk1">
+              <p class="text-center"><h3>Đề cương chi tiết</h3></p>
+              <span dangerouslySetInnerHTML={{__html: this.state.lop.de_cuong_chi_tiet }} />
+          </div>               
         </div>
        </div>
     </div>
