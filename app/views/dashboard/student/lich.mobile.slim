@@ -1,0 +1,84 @@
+= render 'dashboard/shared/menu'     
+
+.container
+  = render 'dashboard/shared/search_form'
+  h3 Thông tin lớp học
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Mã lớp
+          td Môn
+          td Tổng số tiết
+          td Ngôn ngữ
+      tbody
+        tr
+          td= link_to @lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{@lich.lop_mon_hoc.id}"
+          td= @lich.lop_mon_hoc.ten_mon_hoc
+          td= @lich.lop_mon_hoc.khoi_luong_du_kien
+          td= @lich.lop_mon_hoc.decorate.language
+
+  
+  hr
+  h3 Thông tin giờ học
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Giảng viên
+          td Phòng
+          td Loại
+          td Số tiết
+          td Số sinh viên có mặt
+          td Số sinh viên vắng
+          td Giờ học
+          td Trạng thái
+      tbody
+        tr
+          td= link_to @lich.giang_vien.hovaten, "/tenants/#{current_tenant.id}/giang_viens/#{@lich.giang_vien.id}"
+          td= @lich.phong
+          td= @lich.type_status
+          td= @lich.so_tiet_moi
+          td= @lich.sv_co_mat
+          td= @lich.sv_vang_mat
+          td= @lich.alias_state
+          td= @lich.alias_status
+  hr
+  h3 Sinh viên vắng mặt
+  .table-responsive
+    table.table.table-bordered.table-striped
+      thead
+        tr.success
+          td Stt
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Tình hình đi học
+          td Số tiết vắng
+          td Ghi chú
+      tbody
+        - if @attendances.count > 0
+          - @attendances.each_with_index do |at,index|
+            - enrollment = at.enrollment
+            tr
+              td= "#{index+1}"
+              td= at.sinh_vien.hovaten
+              td= link_to at.sinh_vien.code, "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
+              td= at.sinh_vien.ma_lop_hanh_chinh
+              td
+                .progress
+                  .progress-bar.progress-bar-danger style="width: #{enrollment.tinhhinhvang}%"
+                    span.sr-only= "#{enrollment.tinhhinhvang}%"
+                  .progress-bar.progress-bar-success style="width: #{100 - enrollment.tinhhinhvang}%"
+                    span.sr-only= "#{100 - enrollment.tinhhinhvang}%"
+              td= at.so_tiet_vang
+              td= at.note
+
+  h3 Nội dung buổi học
+  span= raw @lich.decorate.content_html    
+
+  h4 Đề cương chi tiết
+  .row
+    .col-sm-offset-1
+      span= raw @lich.lop_mon_hoc.decorate.de_cuong_chi_tiet
+
