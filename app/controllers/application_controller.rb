@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery  
   include Pundit
   before_filter :current_tenant
-  before_filter :login_required
+  
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   
   def routing
@@ -26,11 +26,7 @@ class ApplicationController < ActionController::Base
       return tenant
     end
   end
-  def login_required
-    if !user_signed_in? and (is_mobile_device? or is_tablet_device?)
-      redirect_to new_user_session_path
-    end
-  end
+  
   def user_not_authorized
     flash[:error] = "You are not authorized to perform this action."
     redirect_to request.headers["Referer"] || "/"
