@@ -1,0 +1,11 @@
+= render 'dashboard/shared/menu'     
+
+.container
+  = render 'dashboard/shared/search_form'
+  - if params[:query]
+  	- if params[:mtype].to_i == 1
+  	  = render 'dashboard/search/sinh_vien'
+  	- if params[:mtype].to_i == 2
+  	  = render 'dashboard/search/lop_mon_hoc'
+  	- if params[:mtype].to_i == 3
+  	  = render 'dashboard/search/lich_trinh_giang_day'

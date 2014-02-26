@@ -1,0 +1,90 @@
+= render 'dashboard/shared/menu'     
+
+.container  
+  = render 'dashboard/shared/search_form'
+  h3 Thông tin sinh viên
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Ngày sinh
+          td Giới tính
+          td Tín chỉ ?
+          td Khóa
+          td Hệ 
+          td Ngành
+      tbody
+        tr.danger
+          td= @sinh_vien.hovaten
+          td= @sinh_vien.code
+          td= @sinh_vien.ma_lop_hanh_chinh
+          td= @sinh_vien.ngay_sinh.strftime("%d/%m/%Y")
+          td= (@sinh_vien.gioi_tinh == 0 ? "Nữ" : "Nam")
+          td= (@sinh_vien.tin_chi == false ? "Niên chế" : "Tín chỉ")
+          td= @sinh_vien.khoa
+          td= @sinh_vien.he
+          td= @sinh_vien.nganh
+
+
+  h3 Danh sách lớp môn
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Mã lớp
+          td Môn
+          td Giảng viên
+          td Sĩ số          
+          td Số tiết vắng
+          td Điểm quá trình
+      tbody
+        - if @enrollments and @enrollments.count > 0
+          - @enrollments.each_with_index do |en, index|
+            tr class=(index % 2 == 0 ? 'danger' : 'warning')          
+              td= (index+1).to_s
+              td= link_to en.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{en.lop_mon_hoc.id}"
+              td= en.lop_mon_hoc.ten_mon_hoc
+              td= en.lop_mon_hoc.teachers
+              td= en.lop_mon_hoc.si_so
+              td= en.tong_vang
+              td= en.diemqt.to_s
+
+  h3 Các buổi đã học/vắng
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Thời gian
+          td Phòng
+          td Số tiết
+          td Thông tin lớp
+          td Giảng viên
+          td Nội dung
+          td Sinh viên vắng          
+      tbody
+        - if @lichs and @lichs.count > 0
+          - @lichs.each_with_index do |lich, index|
+            - tm = (index % 2 == 0 ? 'danger': 'warning')
+            - tm = 'default' if lich.thoi_gian.localtime > Time.now
+            tr class="#{tm}"
+              td= (index+1).to_s
+              td= link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y"), "/tenants/#{current_tenant.id}/lich/#{lich.id}"
+              td= lich.phong
+              td= lich.so_tiet_moi
+              td
+                = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
+                br
+                = lich.lop_mon_hoc.ten_mon_hoc
+              td= link_to lich.giang_vien.hovaten, "/tenants/#{current_tenant.id}/giang_viens/#{lich.giang_vien.id}"
+              td= lich.summary
+              td
+                - if lich.danh_sach_vangs.count > 0
+                  - lich.danh_sach_vangs.each_with_index do |at, i|
+                    = link_to "#{at.sinh_vien.hovaten} (#{at.so_tiet_vang}t)", "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
+                    br              
+
