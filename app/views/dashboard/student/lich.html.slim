@@ -60,19 +60,20 @@
         - if @attendances.count > 0
           - @attendances.each_with_index do |at,index|
             - enrollment = at.enrollment
-            tr
-              td= "#{index+1}"
-              td= at.sinh_vien.hovaten
-              td= link_to at.sinh_vien.code, "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
-              td= at.sinh_vien.ma_lop_hanh_chinh
-              td
-                .progress
-                  .progress-bar.progress-bar-danger style="width: #{enrollment.tinhhinhvang}%"
-                    span.sr-only= "#{enrollment.tinhhinhvang}%"
-                  .progress-bar.progress-bar-success style="width: #{100 - enrollment.tinhhinhvang}%"
-                    span.sr-only= "#{100 - enrollment.tinhhinhvang}%"
-              td= at.so_tiet_vang
-              td= at.note
+            - if enrollment
+              tr
+                td= "#{index+1}"
+                td= at.sinh_vien.hovaten
+                td= link_to at.sinh_vien.code, "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
+                td= at.sinh_vien.ma_lop_hanh_chinh
+                td
+                  .progress
+                    .progress-bar.progress-bar-danger style="width: #{enrollment.tinhhinhvang}%"
+                      span.sr-only= "#{enrollment.tinhhinhvang}%"
+                    .progress-bar.progress-bar-success style="width: #{100 - enrollment.tinhhinhvang}%"
+                      span.sr-only= "#{100 - enrollment.tinhhinhvang}%"
+                td= at.so_tiet_vang
+                td= at.note
 
   h3 Nội dung buổi học
   span= raw @lich.decorate.content_html    
