@@ -50,35 +50,39 @@ var ThanhTra = React.createClass({
     var self = this;
     if (this.state.data.length > 0) {
       var x = this.state.data.map(function(d, index){
-      return <ThanhTraRow date={self.state.date} onAccept={self.handleAccept} onRequest={self.handleRequest} onUpdate={self.handleUpdate} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
-    });    
-    return (
-      <div>          
-        <hr />
-        <div class="table-responsive">      
-          <table class="table table-bordered">
-            <colgroup>
-              <col style={{width: "5%"}} />
-              <col style={{width: "30%"}} />
-              <col style={{width: "10%"}} />
-              <col style={{width: "15%"}} />
-              <col style={{width: "15%"}} />
-              <col style={{width: "15%"}} />
-              <col style={{width: "10%"}} />
-            </colgroup>
-            <thead>
-              <tr class="success">
-                <td>Stt</td><td>Giờ học</td><td>Báo lỗi</td><td>Note 1</td><td>Note 2</td><td>Note 3</td><td>Thao tác</td>
-              </tr>
-            </thead>
-            <tbody>
-              {x}
-            </tbody>
-          </table>
+        return <ThanhTraRow date={self.state.date} onAccept={self.handleAccept} onRequest={self.handleRequest} onUpdate={self.handleUpdate} data={d} stt={index+1} color={index % 2 === 0 ? 'danger' : 'warning'} />
+      });    
+      return (
+        <div>          
+          <hr />
+          <div class="table-responsive">      
+            <table class="table table-bordered">
+              <colgroup>
+                <col style={{width: "5%"}} />
+                <col style={{width: "30%"}} />
+                <col style={{width: "10%"}} />
+                <col style={{width: "15%"}} />
+                <col style={{width: "15%"}} />
+                <col style={{width: "15%"}} />
+                <col style={{width: "10%"}} />
+              </colgroup>
+              <thead>
+                <tr class="success">
+                  <td>Stt</td><td>Giờ học</td><td>Báo lỗi</td><td>Note 1</td><td>Note 2</td><td>Note 3</td><td>Thao tác</td>
+                </tr>
+              </thead>
+              <tbody>
+                {x}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
-    );        
-    }    
+      );        
+    }   else {
+      return (
+        <div></div>
+      )
+    } 
   }
 });
 
