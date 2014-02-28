@@ -8,6 +8,6 @@ class Truongkhoa::GiangVienSerializer < ActiveModel::Serializer
   	object.hovaten
   end
   def data
-  	object.lop_mon_hocs.map {|lop| Truongkhoa::LopMonHocSerializer.new(lop)}
+  	object.lop_mon_hocs.map {|lop| Truongkhoa::LopMonHoc2Serializer.new(lop)}
   end
 end
