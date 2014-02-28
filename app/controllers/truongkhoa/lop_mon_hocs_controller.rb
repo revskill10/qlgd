@@ -4,6 +4,14 @@ class Truongkhoa::LopMonHocsController < TenantsController
 		@result = Truongkhoa::LopMonHocSerializer.new(@lop)
 		render json: @result
 	end
+	def lichtrinh
+		@lop = LopMonHoc.find(params[:lop_id])
+		@lichs = @lop.lich_trinh_giang_days.where('thoi_gian < ?', Time.now)
+		render json: @lichs
+	end
+	def tinhhinh
+
+	end
 	def update
 		@lop = LopMonHoc.find(params[:lop_id])
 		case params[:type]
