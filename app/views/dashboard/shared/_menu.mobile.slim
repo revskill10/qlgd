@@ -13,6 +13,8 @@
         li= link_to "Hướng dẫn sử dụng", '/huongdan.htm'          
         - if user_signed_in? and @ud.is_dao_tao?
           li= link_to "Đào tạo", '/daotao'
+        - if user_signed_in? and @ud.is_truong_khoa?
+          li= link_to "Khoa/Bộ môn", '/khoa'
         - if user_signed_in? and @ud.is_quan_ly_sinh_vien?
           li= link_to "Quản lý sinh viên", '/quan_ly_sinh_vien'
         - if user_signed_in? and @ud.is_thanh_tra?

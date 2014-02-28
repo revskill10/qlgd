@@ -1,13 +1,8 @@
-class Truongkhoa::GiangViensController < TenantsController
-	def lop
-		
-		respond_to do |format|
-			format.html { render 'truongkhoa/lop' }
-		end
-	end
+class Truongkhoa::GiangViensController < TenantsController	
 	def index
 		@khoa = Khoa.find(params[:khoa_id])
-		@gvs = GiangVien.where(ten_khoa: khoa.ten_khoa).includes(:assistants)	
-		render json: {:giang_viens => @gvs}, :root => false
+		@gvs = GiangVien.where(ten_khoa: @khoa.ten_khoa).includes(:assistants)
+		@results = @gvs.map {|gv| Truongkhoa::GiangVienSerializer.new(gv)}	
+		render json: @results, :root => false
 	end
 end

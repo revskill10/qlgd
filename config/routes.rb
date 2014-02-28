@@ -18,7 +18,9 @@ Qlgd::Application.routes.draw do
     get "/sinh_viens/:sinh_vien_id" => 'dashboard#sinh_vien'
     get "/giang_viens/:giang_vien_id" => 'dashboard#giang_vien'
     namespace :truongkhoa do 
-
+      get "/:khoa_id" => 'giang_viens#index'
+      get "/lop/:lop_id" => 'lop_mon_hocs#show'
+      post "/update" => 'lop_mon_hocs#update'
     end
     namespace :thanhtra do      
       post "/lich_trinh_giang_days" => 'lich_trinh_giang_days#index'

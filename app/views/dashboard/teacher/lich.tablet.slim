@@ -1,0 +1,11 @@
+
+= render 'dashboard/shared/menu'     
+
+.container
+  = render 'dashboard/shared/search_form'
+  #main
+               
+    
+javascript:
+  var ENV = {lich_id: #{raw @lich.id}, lop_id: #{raw @lop.id}, giang_vien_id: #{raw @giang_vien.id}};  
+script src="/assets/giang_vien/lich.js" type="text/javascript"

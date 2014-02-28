@@ -11,7 +11,9 @@ class UserDecorator < Draper::Decorator
 	def is_giang_vien?
 		object.imageable and object.imageable.is_a?(GiangVien)
 	end
-
+	def is_truong_khoa?
+		is_dao_tao? or (is_giang_vien? and object.imageable.khoas.count > 0)
+	end
 	def is_sinh_vien?
 		object.imageable and object.imageable.is_a?(SinhVien)
 	end

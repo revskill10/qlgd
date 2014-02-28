@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140227031646) do
+ActiveRecord::Schema.define(:version => 20140228082018) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -170,10 +170,13 @@ ActiveRecord::Schema.define(:version => 20140227031646) do
     t.string   "ma_mon_hoc"
     t.text     "settings"
     t.string   "state"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
     t.integer  "giang_vien_id"
     t.string   "ten_mon_hoc"
+    t.boolean  "duyet_thong_so"
+    t.boolean  "duyet_lich_trinh"
+    t.boolean  "duyet_tinh_hinh"
   end
 
   add_index "lop_mon_hocs", ["giang_vien_id"], :name => "index_lop_mon_hocs_on_giang_vien_id"

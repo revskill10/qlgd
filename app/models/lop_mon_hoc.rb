@@ -1,7 +1,7 @@
 #encoding: utf-8
 class LopMonHoc < ActiveRecord::Base  
   serialize :settings
-  attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :settings
+  attr_accessible :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :settings, :duyet_thong_so, :duyet_lich_trinh, :duyet_tinh_hinh
 
 
   validates :ma_lop, :ma_mon_hoc, :ten_mon_hoc, :presence => true
