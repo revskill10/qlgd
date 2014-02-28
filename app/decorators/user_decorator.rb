@@ -21,7 +21,7 @@ class UserDecorator < Draper::Decorator
 	end
 
 	def is_super_admin?
-		object.groups.pluck(:name).include?("superadmin") or object.username='trungth@hpu.edu.vn' or object.username == 'dungth@hpu.edu.vn'
+		object.groups.pluck(:name).include?("superadmin") or object.username=='trungth@hpu.edu.vn' or object.username == 'dungth@hpu.edu.vn'
 	end
 
 	def is_admin?

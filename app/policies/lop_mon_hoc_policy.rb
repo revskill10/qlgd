@@ -8,12 +8,14 @@ LopMonHocPolicy  = Struct.new(:user, :lop_mon_hoc) do
         lop_mon_hoc_scope.where(:id => lop_ids)
       end
     end
-  end 
-
+  end   
   def daotao?
     UserDecorator.new(user).is_dao_tao?
   end
-    
+  def duyet?
+    return true if daotao?    
+    return true if Set.new(lop_mon_hoc.giang_viens.map(&:id)).subset?(Set.new(user.imageable.khoas.map(&:id)))
+  end
   def update?    
     user and user.get_lops.map(&:id).include?(lop_mon_hoc.id) and !lop_mon_hoc.completed? and !lop_mon_hoc.removed? and !user.giang_vien(lop_mon_hoc).nil?
   end

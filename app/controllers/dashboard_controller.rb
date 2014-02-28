@@ -35,9 +35,12 @@ class DashboardController < TenantsController
   def lop
     @lop = LopMonHoc.find(params[:id])
     respond_to do |format|
-      if current_user and Pundit.policy!(current_user, @lop).update?
+      if  current_user and Pundit.policy!(current_user, @lop).duyet?
+        @khoa = current_user.imageable.khoas.first                
+        format.html {render "truongkhoa/lop"}
+      elsif current_user and Pundit.policy!(current_user, @lop).update?
         @giang_vien = current_user.giang_vien(@lop)      
-        format.html {render "dashboard/teacher/lop"}
+        format.html {render "dashboard/teacher/lop"}      
       else
         sql = "with a1 as (select en.id, ai.id as assignment_group_id, ai.name from t2.enrollments en
 inner join t2.assignment_groups ai on ai.lop_mon_hoc_id = en.lop_mon_hoc_id
@@ -67,6 +70,16 @@ order by ag.position"
 
   end
   
+  def truongkhoa    
+    
+    if current_user and Pundit.policy!(current_user, GiangVien).truongkhoa?
+      @khoa = current_user.imageable.khoas.first                
+    end
+    respond_to do |format|
+      format.html {render "truongkhoa/index"}
+    end
+  end
+
   def daotao
 
     respond_to do |format|

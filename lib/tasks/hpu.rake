@@ -51,6 +51,11 @@ namespace :hpu do
       ten = l[:ten].strip
       gv = GiangVien.where(:code => l[:ma_giao_vien].strip.upcase).first_or_create!
       gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip)
+      khoa = Khoa.where(ten_khoa: l[:ten_khoa].strip).first_or_create!
+      if l[:quyen_duyet] == true
+        khoa.giang_vien = gv
+        khoa.save!
+      end
     end
   end
   #3
