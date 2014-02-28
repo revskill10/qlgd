@@ -15,7 +15,7 @@ LopMonHocPolicy  = Struct.new(:user, :lop_mon_hoc) do
   def duyet?
     return false unless user.imageable.is_a?(GiangVien)    
     #return true if daotao?    
-    return true if Set.new(lop_mon_hoc.giang_viens.map(&:id)).subset?(Set.new(user.imageable.khoas.map(&:id)))
+    return true if Set.new(lop_mon_hoc.giang_viens.map(&:id)).subset?(Set.new(user.imageable.khoas.map(&:giang_vien_id)))
     false
   end
   def update?    
