@@ -36,8 +36,10 @@ class DashboardController < TenantsController
     @lop = LopMonHoc.find(params[:id])
     respond_to do |format|
       if  current_user  and Pundit.policy!(current_user, @lop).duyet?
-        @khoa = current_user.imageable.khoas.first if current_user.imageable.is_a?(GiangVien)
-        format.html {render "truongkhoa/lop"}
+        @khoa = current_user.imageable.khoas.first if current_user.imageable.is_a?(GiangVien)              
+        if @khoa 
+          format.html {render "truongkhoa/lop"}
+        end
       elsif current_user and Pundit.policy!(current_user, @lop).update?
         @giang_vien = current_user.giang_vien(@lop)      
         format.html {render "dashboard/teacher/lop"}      
