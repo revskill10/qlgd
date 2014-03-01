@@ -85,6 +85,6 @@
               td
                 - if lich.danh_sach_vangs.count > 0
                   - lich.danh_sach_vangs.each_with_index do |at, i|
-                    = link_to "#{at.sinh_vien.hovaten} (#{at.so_tiet_vang}t)", "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
+                    = link_to "#{at.sinh_vien.hovaten} (#{at.so_tiet_vang}t, #{at.phep})", "/tenants/#{current_tenant.id}/sinh_viens/#{at.sinh_vien.id}"
                     br              
 
