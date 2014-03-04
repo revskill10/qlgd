@@ -223,6 +223,18 @@ class LichTrinhGiangDay < ActiveRecord::Base
     end
   end
 
+  def type_abbr
+    case self.ltype 
+    when "lythuyet"
+      "LT"
+    when "thuchanh"
+      "TH"
+    when "tuhoc"
+      "TU"
+    when "baitap"
+      "BT"
+    end
+  end
   
   def get_tiet_bat_dau
     hour = thoi_gian.localtime.hour

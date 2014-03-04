@@ -12,7 +12,7 @@ class Truongkhoa::LopMonHocsController < TenantsController
 			.order('tuan, thoi_gian')
 			.map {|lich| Truongkhoa::LichTrinhGiangDaysSerializer.new(lich)}.group_by {|l| l.tuan}
 			.map {|k,v| 
-				{:tuan => k, :noi_dung => v.inject("") {|res, elem| res + (elem.noi_dung || "") + "\n"}, :so_tiet => v.inject(0) {|res, elem| res + elem.so_tiet_moi}, :thoi_gian => v.inject("") {|res, elem| res + elem.thoi_gian.localtime.strftime("%H:%M %d/%m/%Y") + "\n"}
+				{:tuan => k, :noi_dung => v.inject("") {|res, elem| res + (elem.noi_dung || "") + "\n"}, :so_tiet => v.inject(0) {|res, elem| res + elem.so_tiet_moi}, :thoi_gian => v.inject("") {|res, elem| res + elem.thoi_gian.localtime.strftime("%H:%M %d/%m/%Y") + "(" + elem.type_abbr + ")\n"}
 				}		
 			}
 		render json: @lichs, :root => false
@@ -23,14 +23,14 @@ class Truongkhoa::LopMonHocsController < TenantsController
 		if Tenant.first.hoc_ky == '2'
 			x = (23..41)
 		end
-		headers = x.inject([]){|res, elem| res << {tuan: "Tuần #{elem}"} }		
+		headers = x.inject([]){|res, elem| res << {tuan: "T#{elem}"} }		
 		str1 = ""
 		x.each do |t|
-			str1 += ",sum(case when tuan=#{t} then stv else 0 end) as \"Tuần #{t}\""
+			str1 += ",sum(case when tuan=#{t} then stv else 0 end) as \"T#{t}\""
 		end
 		str2 = ""
 		x.each do |t|
-			str2 += ", 0 as \"Tuần #{t}\""
+			str2 += ", 0 as \"T#{t}\""
 		end
 		sql = "select hovaten, code, ma_lop_hanh_chinh, enrollment_id, encoded_position #{str1}
 from (
@@ -57,7 +57,7 @@ order by encoded_position"
 		@results = @results.map do |item|
 			tmp = []
 			item.each do |k,v|				
-				if k =~ /Tuần/
+				if k =~ /T/
 					tmp << v
 				end				
 			end
