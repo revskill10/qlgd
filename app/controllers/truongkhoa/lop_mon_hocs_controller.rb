@@ -13,7 +13,7 @@ class Truongkhoa::LopMonHocsController < TenantsController
 			.order('tuan, thoi_gian')
 			.map {|lich| Truongkhoa::LichTrinhGiangDaysSerializer.new(lich)}.group_by {|l| l.tuan}
 			.map {|k,v| 
-				{:tuan => k, :noi_dung => v.inject("") {|res, elem| res + (elem.noi_dung || "") + "\n"}, :so_tiet => v.inject(0) {|res, elem| res + elem.so_tiet_moi}, :thoi_gian => v.inject("") {|res, elem| res + elem.thoi_gian.localtime.strftime("%H:%M %d/%m/%Y") + "(" + elem.type_abbr + ")\n"}
+				{:tuan => k, :noi_dung => v.inject("") {|res, elem| res + (elem.noi_dung || "") + "<br/>"}, :so_tiet => v.inject(0) {|res, elem| res + elem.so_tiet_moi}, :thoi_gian => v.inject("") {|res, elem| res + elem.thoi_gian.localtime.strftime("%H:%M %d/%m/%Y") + "(" + elem.type_abbr + ")<br/>"}
 				}		
 			}
 		render json: @lichs, :root => false

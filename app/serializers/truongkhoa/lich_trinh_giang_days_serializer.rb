@@ -22,4 +22,8 @@ class Truongkhoa::LichTrinhGiangDaysSerializer < ActiveModel::Serializer
 		object.type_status
 	end
 
+	def noi_dung
+		return "" unless object.noi_dung
+		object.noi_dung.gsub(/\n/,'<br/>')
+	end
 end
