@@ -8,6 +8,7 @@ class Truongkhoa::LopMonHocsController < TenantsController
 	def lichtrinh
 		@lop = LopMonHoc.find(params[:lop_id])
 		@lichs = @lop.lich_trinh_giang_days
+			.completed
 			.where('thoi_gian < ?', Time.now)
 			.order('tuan, thoi_gian')
 			.map {|lich| Truongkhoa::LichTrinhGiangDaysSerializer.new(lich)}.group_by {|l| l.tuan}
