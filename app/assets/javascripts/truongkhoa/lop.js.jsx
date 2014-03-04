@@ -1,5 +1,54 @@
 /** @jsx React.DOM */
 
+var TKTinhHinh = React.createClass({
+	getInitialState: function(){
+		return {headers: [], data: []}
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	loadData: function(){
+		$.ajax({
+			url: '/truongkhoa/lop/' + this.props.lop_id + '/tinhhinh',
+			method: 'GET',
+			success: function(data){
+				this.setState({headers: data.headers, data: data.data});
+			}.bind(this)
+		});
+	},
+	render: function(){
+		var headers = this.state.headers.map(function(d){
+			return <td>{d.tuan}</td>
+		});
+		var x = this.state.data.map(function(d, index){
+			var y = d.data.map(function(d2){
+				return <td>{d2}</td>
+			});
+			return <tr class={index % 2 === 0 ? 'danger' : 'warning'}>
+				<td>{index+1}</td>
+				<td>{d.hovaten}<br/>{d.code}<br/>{d.ma_lop_hanh_chinh}</td>				
+				{y}
+			</tr>
+		});
+		return (
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr class="success">
+							<td>Stt</td>
+							<td>Sinh viên</td>							
+							{headers}
+						</tr>
+					</thead>
+					<tbody>
+						{x}
+					</tbody>
+				</table>
+			</div>
+		)
+	}
+});
+
 var TKLichTrinh = React.createClass({
 	getInitialState: function(){
 		return {data: []}
@@ -167,7 +216,7 @@ var Lop = React.createClass({
 						      		<button class="btn btn-sm btn-primary" style={{display: this.state.data.can_approve_tinh_hinh === false ?  'none' : ''}} onClick={this.onApproveTinhHinh}>Duyệt</button>
 									<button class="btn btn-sm btn-warning" style={{display: this.state.data.can_reject_tinh_hinh === false ?  'none' : ''}} onClick={this.onRejectTinhHinh}>Không duyệt</button>
 									<hr/>
-									Tình hình học tập
+									<TKTinhHinh lop_id={this.props.lop_id} />		
 						      </div>
 					    </div>
 					</div>

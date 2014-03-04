@@ -21,6 +21,7 @@ Qlgd::Application.routes.draw do
       get "/:khoa_id" => 'giang_viens#index'
       get "/lop/:lop_id" => 'lop_mon_hocs#show'
       get "/lop/:lop_id/lichtrinh" => 'lop_mon_hocs#lichtrinh'
+      get "/lop/:lop_id/tinhhinh" => 'lop_mon_hocs#tinhhinh'
       post "/update" => 'lop_mon_hocs#update'
     end
     namespace :thanhtra do      
