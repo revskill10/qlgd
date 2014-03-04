@@ -6,8 +6,15 @@ class Truongkhoa::LopMonHocsController < TenantsController
 	end
 	def lichtrinh
 		@lop = LopMonHoc.find(params[:lop_id])
-		@lichs = @lop.lich_trinh_giang_days.where('thoi_gian < ?', Time.now)
-		render json: @lichs
+		@lichs = @lop.lich_trinh_giang_days
+			.where('thoi_gian < ?', Time.now)
+			.order('tuan, thoi_gian')
+			.map {|lich| Truongkhoa::LichTrinhGiangDaysSerializer.new(lich)}.group_by {|l| l.tuan}
+			.map {|k,v| 
+				{:tuan => k, :noi_dung => v.inject("") {|res, elem| res + (elem.noi_dung || "") + "\n"}, :so_tiet => v.inject(0) {|res, elem| res + elem.so_tiet_moi}, :thoi_gian => v.inject("") {|res, elem| res + elem.thoi_gian.localtime.strftime("%H:%M %d/%m/%Y") + "\n"}
+				}		
+			}
+		render json: @lichs, :root => false
 	end
 	def tinhhinh
 

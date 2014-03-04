@@ -1,8 +1,54 @@
 /** @jsx React.DOM */
 
+var TKLichTrinh = React.createClass({
+	getInitialState: function(){
+		return {data: []}
+	},
+	loadData: function(){
+		$.ajax({
+			url: '/truongkhoa/lop/' + this.props.lop_id + '/lichtrinh',
+			method: 'GET',
+			success: function(data){
+				this.setState({data: data});
+			}.bind(this)
+		});
+	},
+	componentWillMount: function(){
+		this.loadData();
+	},
+	render: function(){
+		var self = this;
+		var x = this.state.data.map(function(d, index){
+			return <tr class={index % 2 === 0 ? 'danger' : 'warning'}>
+				<td>{d.tuan}</td>
+				<td>{d.noi_dung}</td>
+				<td>{d.so_tiet}</td>
+				<td>{d.thoi_gian}</td>
+			</tr>
+		});
+		return (
+			<div class="table-responsive">
+				<table class="table table-bordered">
+					<thead>
+						<tr class="success">
+							<td>Tuần</td>						
+							<td>Nội dung</td>
+							<td>Số tiết</td>						
+							<td>Thời gian</td>
+						</tr>
+					</thead>
+					<tbody>
+						{x}
+					</tbody>
+				</table>
+			</div>
+		)
+	}
+});
+
 var Lop = React.createClass({
 	getInitialState: function(){
-		return {data: {}}
+		return {data: {}, lichtrinhs: []}
 	},
 	loadData: function(){
 		$.ajax({
@@ -11,10 +57,10 @@ var Lop = React.createClass({
 			success: function(data){
 				this.setState({data: data})
 			}.bind(this)
-		})
+		});		
 	},
 	componentWillMount: function(){
-		this.loadData();		
+		this.loadData();				
 	},
 	updateInfo: function(type, action){
 		// 1: thong so, 2: lich trinh, 3: tinh hinh
@@ -24,7 +70,7 @@ var Lop = React.createClass({
 			method: 'POST',
 			data: {lop_id: this.props.lop_id, type: type, maction: action},
 			success: function(data){
-				this.setState({data: data})
+				this.setState({data: data});				
 			}.bind(this)
 		})
 	},
@@ -104,7 +150,7 @@ var Lop = React.createClass({
 						      	<button class="btn btn-sm btn-primary" style={{display: this.state.data.can_approve_lich_trinh === false ?  'none' : ''}} onClick={this.onApproveLichTrinh}>Duyệt</button>
 								<button class="btn btn-sm btn-warning" style={{display: this.state.data.can_reject_lich_trinh === false ?  'none' : ''}} onClick={this.onRejectLichTrinh}>Không duyệt</button>
 								<hr/>
-								Lịch Trình thực hiện
+								<TKLichTrinh lop_id={this.props.lop_id} />							
 						      </div>
 					    </div>
 					</div>
