@@ -55,6 +55,8 @@
           td Lớp hành chính
           td Tình hình đi học
           td Số tiết vắng
+          td Phép
+          td Trạng thái
           td Ghi chú
       tbody
         - if @attendances.count > 0
@@ -72,6 +74,8 @@
                   .progress-bar.progress-bar-success style="width: #{100 - enrollment.tinhhinhvang}%"
                     span.sr-only= "#{100 - enrollment.tinhhinhvang}%"
               td= at.so_tiet_vang
+              td= (at.phep == true ? 'Có phép' : 'Không phép')
+              td= at.state
               td= at.note
 
   h3 Nội dung buổi học
