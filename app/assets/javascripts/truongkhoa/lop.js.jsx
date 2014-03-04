@@ -70,9 +70,9 @@ var TKLichTrinh = React.createClass({
 		var x = this.state.data.map(function(d, index){
 			return <tr class={index % 2 === 0 ? 'danger' : 'warning'}>
 				<td>{d.tuan}</td>
-				<td>{d.noi_dung}</td>
+				<td><span dangerouslySetInnerHTML={{__html: d.noi_dung }} /></td>
 				<td>{d.so_tiet}</td>
-				<td>{d.thoi_gian}</td>
+				<td><span dangerouslySetInnerHTML={{__html: d.thoi_gian }} /></td>
 			</tr>
 		});
 		return (
