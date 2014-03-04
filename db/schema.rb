@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140228082018) do
+ActiveRecord::Schema.define(:version => 20140304075446) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -110,8 +110,9 @@ ActiveRecord::Schema.define(:version => 20140228082018) do
     t.string   "ten"
     t.string   "code"
     t.string   "ten_khoa"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "encoded_position"
   end
 
   add_index "giang_viens", ["code"], :name => "index_giang_viens_on_code"
