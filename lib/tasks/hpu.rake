@@ -49,8 +49,9 @@ namespace :hpu do
       ho = tmp[0]
       dem = tmp[1..-1].join(" ")
       ten = l[:ten].strip
+      ep = convert(ten) + convert(dem)+ convert(ho)
       gv = GiangVien.where(:code => l[:ma_giao_vien].strip.upcase).first_or_create!
-      gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip)
+      gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip, encoded_position: ep)
       khoa = Khoa.where(ten_khoa: l[:ten_khoa].strip).first_or_create!
       if l[:quyen_duyet] == true
         khoa.giang_vien = gv

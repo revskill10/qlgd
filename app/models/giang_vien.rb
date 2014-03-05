@@ -1,5 +1,5 @@
 class GiangVien < ActiveRecord::Base
-  attr_accessible :code, :dem, :ho, :ten, :ten_khoa
+  attr_accessible :code, :dem, :ho, :ten, :ten_khoa, :encoded_position
 
   has_one :user, :as => :imageable
   has_many :calendars, :dependent => :destroy
