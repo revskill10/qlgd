@@ -64,8 +64,8 @@ namespace :hpu do
     Apartment::Database.switch('public')
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)
-    LopMonHoc.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('lop_mon_hocs') 
+    #LopMonHoc.delete_all
+    #ActiveRecord::Base.connection.reset_pk_sequence!('lop_mon_hocs') 
     @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
     response = @client.call(:tkb_theo_giai_doan)         
     res_hash = response.body.to_hash                
@@ -74,6 +74,32 @@ namespace :hpu do
     puts "loading... lop mon hoc"
     ls.each_with_index do |l,i|       
       lop = LopMonHoc.where(:ma_lop => l[:ma_lop].strip.upcase, :ma_mon_hoc => l[:ma_mon_hoc].strip.upcase, :ten_mon_hoc => titleize(l[:ten_mon_hoc].strip.downcase) ).first_or_create!      
+      #lop.start!
+    end
+  end
+  #31
+  task load_lop_mon_hoc_phan_cong: :environment do
+    Apartment::Database.switch('public')
+    tenant = Tenant.last
+    Apartment::Database.switch(tenant.name)
+    #LopMonHoc.delete_all
+    #ActiveRecord::Base.connection.reset_pk_sequence!('lop_mon_hocs') 
+    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+    response = @client.call(:phan_mon_cua_sinh_vien_theo_ky_hien_tai)         
+    res_hash = response.body.to_hash                
+    ls = res_hash[:phan_mon_cua_sinh_vien_theo_ky_hien_tai_response][:phan_mon_cua_sinh_vien_theo_ky_hien_tai_result][:diffgram][:document_element]
+    ls = ls[:phan_mon_cua_sinh_vien_theo_ky_hien_tai]
+    puts "loading... lop mon hoc"
+    ls.each_with_index do |l,i|       
+      lop = LopMonHoc.where(:ma_lop => l[:ma_lop_mon_hoc].strip.upcase, :ma_mon_hoc => l[:ma_mon_hoc].strip.upcase, :ten_mon_hoc => titleize(l[:ten_mon_hoc].strip.downcase) ).first_or_create!      
+      mon = MonHoc.where(:ma_mon_hoc => l[:ma_mon_hoc].strip.upcase).first_or_create!
+      mon.ten_mon_hoc = titleize(l[:ten_mon_hoc].strip.downcase)
+      sv = SinhVien.where(code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]) ).first      
+      if sv
+        lmhsv = lop.enrollments.where(sinh_vien_id: sv.id).first_or_create!
+      else
+        puts "#{l[:ma_sinh_vien]}"
+      end
       #lop.start!
     end
   end

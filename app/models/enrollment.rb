@@ -6,7 +6,7 @@ class Enrollment < ActiveRecord::Base
   belongs_to :sinh_vien
 
   has_many :lich_trinh_giang_days, :through => :lop_mon_hoc
-  validates :lop_mon_hoc, :sinh_vien, :presence => true
+  #validates :lop_mon_hoc, :sinh_vien, :presence => true
   has_many :assignment_groups, :through => :lop_mon_hoc, :uniq => true
   has_many :group_submissions, :dependent => :destroy
   has_many :assignments, :through => :lop_mon_hoc, :uniq => true
