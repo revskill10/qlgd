@@ -9,8 +9,7 @@ class LopMonHoc < ActiveRecord::Base
   has_many :calendars, :dependent => :destroy
   has_many :lich_trinh_giang_days, :dependent => :destroy
   has_many :giang_viens, :through => :calendars, :uniq => true
-  has_many :enrollments, :dependent => :destroy
-  has_many :results, :dependent => :destroy
+  has_many :enrollments, :dependent => :destroy  
   has_many :assignment_groups, :dependent => :destroy, :order => 'position'
   has_many :assignments
   has_many :submissions, :through => :assignments
@@ -21,6 +20,7 @@ class LopMonHoc < ActiveRecord::Base
   scope :normal, where(state: ["pending","started","completed"]) 
   scope :pending_or_started, where(state: ["pending","started"]) 
   scope :started, where(state: "started")
+  scope :select_all, select('id, ma_lop, ma_mon_hoc, ten_mon_hoc, state')
   FACETS = [:ma_lop, :ten_mon_hoc, :hoc_ky, :nam_hoc]
   searchable do
     text :ma_lop, :ten_mon_hoc, :de_cuong_chi_tiet
@@ -64,6 +64,9 @@ class LopMonHoc < ActiveRecord::Base
     end 
     event :complete do 
       transition :started => :completed # da ket thuc mon
+    end
+    event :uncomplete do 
+      transition :completed => :started
     end
     event :remove do 
       transition [:pending, :started] => :removed # 

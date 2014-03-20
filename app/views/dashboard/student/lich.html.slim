@@ -82,7 +82,5 @@
   span= raw @lich.decorate.content_html    
 
   h4 Đề cương chi tiết
-  .row
-    .col-sm-offset-1
-      span= raw @lich.lop_mon_hoc.decorate.de_cuong_chi_tiet
-
+  - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}&embedded=true"  
+  iframe src="#{url}" width="100%" height="780" style="border: none;"
