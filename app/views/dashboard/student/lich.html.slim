@@ -81,6 +81,15 @@
   h3 Nội dung buổi học
   span= raw @lich.decorate.content_html    
 
-  h4 Đề cương chi tiết
-  - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}&embedded=true"  
-  iframe src="#{url}" width="100%" height="780" style="border: none;"
+  h3 Lịch trình kế hoạch
+  span= raw (@lop.settings["lich_trinh_du_kien"] || "")
+  hr
+  button(class='btn btn-primary') Đề cương chi tiết
+  - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}.pdf&embedded=true"  
+  iframe id="myiFrame" data-src="#{url}" width="100%" height="780" style="border: none;"
+
+javascript:
+  $("button").click(function(){
+    var iframe = $("#myiFrame");
+    iframe.attr("src", iframe.data("src")); 
+  });  

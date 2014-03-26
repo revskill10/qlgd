@@ -342,6 +342,10 @@ namespace :hpu do
     end
   end
 
+
+  #19: Xep lich truc nhat
+  
+  
   def titleize(str)
     str.split(" ").map(&:capitalize).join(" ").gsub("Ii","II")
   end
