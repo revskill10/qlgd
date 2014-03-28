@@ -49,8 +49,8 @@ class LichTrinhGiangDay < ActiveRecord::Base
     7 => [12,30], 8 => [13,20], 9 => [14,10],
     10 => [15, 5], 11 => [15, 55], 12 => [16, 45],
     13 => [18, 0], 14 => [18, 50], 15 => [19,40], 16 => [20,30]}
-  CA = {1 => [6,30], 2 => [9,5], 3 => [12,30], 4 => [15,5], 5 => [18,0], 6 => [20,30]}
-  
+  CA = {1 => Time.strptime('6:29','%H:%M'), 2 => Time.strptime('9:04','%H:%M'), 3 => Time.strptime('12:29','%H:%M'), 4 => Time.strptime('15:04','%H:%M'), 5 => Time.strptime('17:59','%H:%M'), 6 => Time.strptime('20:29','%H:%M')}
+  CA2 = {1 => (CA[1]..CA[2]), 2 => (CA[2]..CA[3]), 3 => (CA[3]..CA[4]), 4 => (CA[4]..CA[5]), 5 => (CA[5]..CA[6])}
 
   FACETS = [:ma_lop, :ten_mon_hoc, :giang_vien, :phong, :tuan, :hoc_ky, :nam_hoc]
   searchable do
@@ -70,6 +70,11 @@ class LichTrinhGiangDay < ActiveRecord::Base
       end
     end
   end  
+
+  def ca    
+    temp = LichTrinhGiangDay::CA2.detect {|k,v| v.cover?(Time.strptime("#{thoi_gian.localtime.hour}:#{thoi_gian.localtime.min}","%H:%M"))}
+    temp[0]
+  end
   def ma_lop
     self.lop_mon_hoc.ma_lop
   end

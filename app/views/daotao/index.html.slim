@@ -12,6 +12,8 @@
     - if user_signed_in? and ud.is_dao_tao_duyet?
       li
         a href="#ddk" data-toggle="tab" Duyệt đăng ký
+      li
+        a href="#pt" data-toggle="tab" Phòng trống  
 
   .tab-content
     - if user_signed_in? and ud.is_dao_tao?
@@ -24,6 +26,8 @@
     - if user_signed_in? and ud.is_dao_tao_duyet?
       #ddk.tab-pane
         #duyetdangky
+      #pt.tab-pane
+        #phongtrong
 
 - if user_signed_in? and ud.is_dao_tao_duyet?
   script src="/assets/daotao/index.js" type="text/javascript"

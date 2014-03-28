@@ -1,6 +1,18 @@
 #encoding: utf-8
 require 'hpu'
 namespace :hpu do    
+  task find_index: :environment do 
+    Apartment::Database.switch('t2')
+    c = ActiveRecord::Base.connection
+      c.tables.collect do |t|
+      columns = c.columns(t).collect(&:name).select {|x| x.ends_with?("_id" || x.ends_with("_type"))}
+      indexed_columns = c.indexes(t).collect(&:columns).flatten.uniq
+      unindexed = columns - indexed_columns
+      unless unindexed.empty?
+        puts "#{t}: #{unindexed.join(", ")}"
+      end
+    end
+  end
   task sort_sv:  :environment do 
     Apartment::Database.switch('public')
     tenant = Tenant.last

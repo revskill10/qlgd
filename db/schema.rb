@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140304075446) do
+ActiveRecord::Schema.define(:version => 20140328020237) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -91,6 +91,9 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.datetime "updated_at",              :null => false
   end
 
+  add_index "du_gios", ["lich_trinh_giang_day_id"], :name => "index_du_gios_on_lich_trinh_giang_day_id"
+  add_index "du_gios", ["user_id"], :name => "index_du_gios_on_user_id"
+
   create_table "enrollments", :force => true do |t|
     t.integer  "lop_mon_hoc_id"
     t.integer  "sinh_vien_id"
@@ -125,6 +128,9 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.datetime "updated_at",          :null => false
   end
 
+  add_index "group_submissions", ["assignment_group_id"], :name => "index_group_submissions_on_assignment_group_id"
+  add_index "group_submissions", ["enrollment_id"], :name => "index_group_submissions_on_enrollment_id"
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.text     "description"
@@ -138,6 +144,8 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
   end
+
+  add_index "khoas", ["giang_vien_id"], :name => "index_khoas_on_giang_vien_id"
 
   create_table "lich_trinh_giang_days", :force => true do |t|
     t.datetime "thoi_gian"
@@ -163,8 +171,13 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
   end
 
   add_index "lich_trinh_giang_days", ["giang_vien_id", "lop_mon_hoc_id"], :name => "index_lich_trinh_giang_days_on_giang_vien_id_and_lop_mon_hoc_id"
+  add_index "lich_trinh_giang_days", ["giang_vien_id"], :name => "index_lich_trinh_giang_days_on_giang_vien_id"
   add_index "lich_trinh_giang_days", ["lop_mon_hoc_id", "giang_vien_id"], :name => "index_lich_trinh_giang_days_on_lop_mon_hoc_id_and_giang_vien_id"
+  add_index "lich_trinh_giang_days", ["moderator_id"], :name => "index_lich_trinh_giang_days_on_moderator_id"
+  add_index "lich_trinh_giang_days", ["phong"], :name => "index_lich_trinh_giang_days_on_phong"
   add_index "lich_trinh_giang_days", ["thoi_gian"], :name => "index_lich_trinh_giang_days_on_thoi_gian"
+  add_index "lich_trinh_giang_days", ["tuan"], :name => "index_lich_trinh_giang_days_on_tuan"
+  add_index "lich_trinh_giang_days", ["user_id"], :name => "index_lich_trinh_giang_days_on_user_id"
 
   create_table "lop_mon_hocs", :force => true do |t|
     t.string   "ma_lop"
@@ -240,6 +253,9 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.integer  "enrollment_id"
   end
 
+  add_index "submissions", ["assignment_id"], :name => "index_submissions_on_assignment_id"
+  add_index "submissions", ["enrollment_id"], :name => "index_submissions_on_enrollment_id"
+
   create_table "surveys", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
@@ -271,6 +287,9 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "user_groups", ["group_id"], :name => "index_user_groups_on_group_id"
+  add_index "user_groups", ["user_id"], :name => "index_user_groups_on_user_id"
+
   create_table "users", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
     t.string   "encrypted_password",     :default => "", :null => false
@@ -290,6 +309,7 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
+  add_index "users", ["imageable_id"], :name => "index_users_on_imageable_id"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
   create_table "vi_phams", :force => true do |t|
@@ -306,5 +326,8 @@ ActiveRecord::Schema.define(:version => 20140304075446) do
     t.integer  "user_id"
     t.boolean  "public"
   end
+
+  add_index "vi_phams", ["lich_trinh_giang_day_id"], :name => "index_vi_phams_on_lich_trinh_giang_day_id"
+  add_index "vi_phams", ["user_id"], :name => "index_vi_phams_on_user_id"
 
 end

@@ -21,7 +21,7 @@
           td= @lop.decorate.language
   h3 Tình hình học tập
   .table-responsive
-    table.table.table-bordered
+    table.table.table-bordered.datatable
       thead
         tr.success
           td Stt
@@ -51,7 +51,7 @@
             - res[:group_submissions].each do |g|
               td= g[:grade]
             td= res[:diem_qua_trinh]
-
+  hr
   button(class='btn btn-primary') Đề cương chi tiết
   - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}.pdf&embedded=true"  
   iframe id="myiFrame" data-src="#{url}" width="100%" height="780" style="border: none;"

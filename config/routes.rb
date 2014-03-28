@@ -44,7 +44,8 @@ Qlgd::Application.routes.draw do
       post "/lop_hanh_chinhs" => 'sinh_viens#lop_hanh_chinhs'
       post "/lop_mon_hocs" => 'sinh_viens#lop_mon_hocs'      
       post "/sinh_viens" => 'sinh_viens#sinh_viens'
-
+      get "/phongtrong/:date" => 'rooms#idle'
+      post "/phongtrong" => 'rooms#idle'
       post "/move" => 'sinh_viens#move'
       delete "/lop_mon_hocs" => 'sinh_viens#remove'
 
