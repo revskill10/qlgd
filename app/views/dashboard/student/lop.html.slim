@@ -52,6 +52,9 @@
               td= g[:grade]
             td= res[:diem_qua_trinh]
   hr
+  h3 Lịch trình dự kiến
+  span= raw (@lop.settings[:lich_trinh_du_kien] || "")            
+  hr
   button(class='btn btn-primary') Đề cương chi tiết
   - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}.pdf&embedded=true"  
   iframe id="myiFrame" data-src="#{url}" width="100%" height="780" style="border: none;"

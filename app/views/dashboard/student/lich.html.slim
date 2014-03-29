@@ -82,7 +82,7 @@
   span= raw @lich.decorate.content_html    
 
   h3 Lịch trình kế hoạch
-  span= raw (@lop.settings["lich_trinh_du_kien"] || "")
+  span= raw (@lop.settings[:lich_trinh_du_kien] || "")
   hr
   button(class='btn btn-primary') Đề cương chi tiết
   - url = "http://docs.google.com/viewer?url=http%3A%2F%2Fdecuong.hpu.edu.vn%2Fde_cuong_chi_tiet%2F#{@lop.ma_mon_hoc}.pdf&embedded=true"  
