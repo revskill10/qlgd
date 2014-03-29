@@ -62,6 +62,7 @@ order by sv.position, ai.position
 where ag.lop_mon_hoc_id=#{@lop.id}
 order by ag.position"
     @headers = ActiveRecord::Base.connection.execute(sql2).map {|k| {:assignment_group_id => k["assignment_group_id"], :group_name => k["group_name"], :weight => k["weight"] }}
+    @lichs = @lop.lich_trinh_giang_days.completed
         format.html {render "dashboard/student/lop"}
         if is_mobile_device? or is_tablet_device?
           format.mobile {render "dashboard/student/lop"}
