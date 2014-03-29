@@ -80,7 +80,8 @@
                 br
                 = lich.lop_mon_hoc.ten_mon_hoc
               td= link_to lich.giang_vien.hovaten, "/tenants/#{current_tenant.id}/giang_viens/#{lich.giang_vien.id}"
-              td= (lich.noi_dung || '')
+              td
+                span= raw (lich.noi_dung || '')
               td
                 - if lich.danh_sach_vangs.count > 0
                   - lich.danh_sach_vangs.each_with_index do |at, i|
