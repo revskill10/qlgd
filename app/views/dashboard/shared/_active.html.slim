@@ -39,6 +39,7 @@
               td= lich.giang_vien.hovaten
               td
                 = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
-              td= lich.lop_mon_hoc.ten_mon_hoc
+              td
+                = link_to lich.lop_mon_hoc.ten_mon_hoc, "http://decuong.hpu.edu.vn/show/#{lich.lop_mon_hoc.ma_mon_hoc}"
               td(style="text-align: center;")= comat.to_s + "/" + siso.to_s
               td= lich.summary
