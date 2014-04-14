@@ -24,6 +24,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :accepted, where(status: :accepted)
   scope :thanhtra, where(status: ["accepted","completed"])
   scope :accepted_or_dropped, where(status: ["accepted", "dropped"])
+  scope :accepted_or_dropped_or_completed, where(status: ["accepted", "dropped", "completed"])
   scope :completed, where(status: :completed)
   scope :accepted_or_completed, where(status: ["accepted","completed"], state: ["bosung","normal"])
   scope :waiting, where(status: :waiting)
@@ -35,7 +36,7 @@ class LichTrinhGiangDay < ActiveRecord::Base
   scope :nghile, where(state: "nghile")
   scope :normal, where(state: "normal") 
   scope :normal_or_bosung, where(state: ["bosung","normal"]) 
-  scope :daduyet, accepted_or_dropped.where(state: ["bosung", "nghiday"])
+  scope :daduyet, accepted_or_dropped_or_completed.where(state: ["bosung", "nghiday"])
   before_create :set_default
   after_save :set_tuhoc
   TIET = {[6,30] => 1, [7,20] => 2, [8,10] => 3,
