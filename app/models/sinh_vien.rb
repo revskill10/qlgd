@@ -44,7 +44,7 @@ class SinhVien < ActiveRecord::Base
     tmp
   end
   def hovaten
-  	return trans(ho) + trans(dem) + ten
+  	return (trans(ho) || "") + (trans(dem) || "") + (ten || "")
   end
 
   def <=> other
