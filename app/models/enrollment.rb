@@ -23,7 +23,19 @@ class Enrollment < ActiveRecord::Base
   def diemqt
     group_submissions.sum(:grade).round(0).to_i
   end
-
+  def diem_chuyen_can
+    thv = tinhhinhvang.to_i
+    case thv
+    when 0
+      10
+    when 1..10
+      5
+    when 11..20
+      2.5
+    else
+      0
+    end      
+  end
   def tinhhinhvang
     tmp = lop_mon_hoc.khoi_luong_du_kien if lop_mon_hoc.tong_so_tiet_hoc == 0
     tmp = lop_mon_hoc.tong_so_tiet_hoc if lop_mon_hoc.tong_so_tiet_hoc > 0

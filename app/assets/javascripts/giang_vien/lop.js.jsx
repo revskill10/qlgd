@@ -2,7 +2,7 @@
 //= require react
 //= require ./thongso
 //= require ./assignments
-//= require ./grade2
+//= require ./grade3
 //= require ./dangkybosung
 //= require ./calendar
 var Enrollment = React.createClass({

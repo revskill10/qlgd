@@ -109,6 +109,7 @@ Qlgd::Application.routes.draw do
 
       get '/lop/:id/submissions2' => 'submissions#index2'
       get '/lop/:id/submissions' => 'submissions#index'
+      post '/lop/:id/submissions/diem_chuyen_can' => 'submissions#diem_chuyen_can'
       post '/lop/:id/submissions' => 'submissions#update'
       post '/lop/:lop_id/submissions2' => 'submissions#update2'
 

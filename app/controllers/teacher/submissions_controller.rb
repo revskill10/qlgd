@@ -1,5 +1,42 @@
 #encoding: utf-8
 class Teacher::SubmissionsController < TenantsController	
+	def diem_chuyen_can
+		@lop = LopMonHoc.find(params[:id])
+		authorize @lop, :update?
+		@as= @lop.assignment_groups.where(position: 1).first.assignments.where(position: 1).first
+		ens = @lop.enrollments
+		if ens.count > 0
+			ens.each do |en|
+				@sub = @as.submissions.where(enrollment_id: en.id).first
+				if @sub
+					@sub.grade = en.diem_chuyen_can
+					@sub.save!
+				else
+					@sub = @as.submissions.create(enrollment_id: en.id, grade: en.diem_chuyen_can)
+				end
+			end
+		end
+		sql = "with a1 as (select en.id, ai.id as assignment_id, ai.name from enrollments en
+inner join assignments ai on ai.lop_mon_hoc_id = en.lop_mon_hoc_id
+where en.lop_mon_hoc_id=#{@lop.id}), a2 as (select su.enrollment_id, su.grade, ai.id as assignment_id, ai.name from submissions su
+inner join assignments ai on su.assignment_id=ai.id
+inner join lop_mon_hocs lop on ai.lop_mon_hoc_id = lop.id
+where lop.id=#{@lop.id}), a3 as (select a1.id, a1.assignment_id, a1.name, COALESCE(a2.grade,0) as grade from a1
+left outer join a2 on a1.id = a2.enrollment_id and a1.assignment_id = a2.assignment_id)
+select a3.id as enrollment_id, a3.assignment_id, a3.name, a3.grade, regexp_replace(sv.ho || ' ' || sv.dem || ' ' || sv.ten, '  ',' ') as hovaten, sv.code, sv.ma_lop_hanh_chinh, en.diem_qua_trinh, en.tinhhinh  from a3 inner join enrollments en on en.id = a3.id
+inner join lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
+inner join sinh_viens sv on sv.id = en.sinh_vien_id
+inner join assignments ai on a3.assignment_id = ai.id
+inner join assignment_groups ag on ag.id = ai.assignment_group_id
+order by sv.encoded_position, ag.position, ai.position"
+		results = ActiveRecord::Base.connection.execute(sql).group_by {|k| [k["enrollment_id"],k["hovaten"],k["code"],k["ma_lop_hanh_chinh"], k["diem_qua_trinh"],k["tinhhinh"]]}.map {|k,v| {:enrollment_id => k[0], :hovaten => k[1], :code => k[2], :ma_lop_hanh_chinh => k[3], :diem_qua_trinh => k[4], :tinhhinh => k[5], :submissions => v}}
+		sql2 = "select ai.id as assignment_id, ai.name, ai.points, ag.name as group_name, ag.weight from assignments ai
+inner join assignment_groups ag on ag.id = ai.assignment_group_id
+where ai.lop_mon_hoc_id=#{@lop.id}
+order by ag.position, ai.position"
+		headers = ActiveRecord::Base.connection.execute(sql2).map {|k| {:assignment_id => k["assignment_id"], :assignment_name => k["name"], :points => k["points"], :group_name => k["group_name"], :weight => k["weight"] }}
+		render json: {:results => results, :headers => headers}, :root => false
+	end
 	def index2
 		@lop = LopMonHoc.find(params[:id])
 		

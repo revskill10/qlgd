@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 //= require react
-//= require ./grade2
+//= require ./grade3
 //= require ./calendar
 //= require ./lopsetting
 //= require ./assignments
