@@ -194,7 +194,7 @@ namespace :qtm do
     tenant = Tenant.last
     Apartment::Database.switch(tenant.name)    
     LopMonHoc.all.each do |lop|
-      lop.start! unless lop.started?
+      lop.start!
     end
   end  
   
