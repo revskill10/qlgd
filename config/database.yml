@@ -9,7 +9,7 @@ test:
   port: 5432
   username: dungth
   password: dungth123654
-  database: sdb_test
+  database: master_test
   pool: 5
   timeout: 5000
 
@@ -22,7 +22,7 @@ development:
   port: 5432
   username: dungth
   password: dungth123654
-  database: sdb_development
+  database: master
   pool: 5
   timeout: 5000
 
@@ -32,6 +32,6 @@ production:
   port: 5432
   username: dungth
   password: dungth123654
-  database: sdb_production
+  database: master_production
   pool: 5
   timeout: 5000

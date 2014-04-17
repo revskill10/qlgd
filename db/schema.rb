@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140328020237) do
+ActiveRecord::Schema.define(:version => 20140417092110) do
 
   create_table "assignment_groups", :force => true do |t|
     t.string   "name"
@@ -270,6 +270,12 @@ ActiveRecord::Schema.define(:version => 20140328020237) do
     t.string   "name"
     t.datetime "created_at",    :null => false
     t.datetime "updated_at",    :null => false
+    t.string   "host"
+    t.string   "adapter"
+    t.string   "database"
+    t.string   "username"
+    t.string   "password"
+    t.string   "port"
   end
 
   create_table "tuans", :force => true do |t|

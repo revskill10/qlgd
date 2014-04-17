@@ -13,133 +13,131 @@ namespace :qtm do
   end
 	#0 prepare tenant
   task create_tenant: :environment do 
-    Tenant.where(hoc_ky: '2', nam_hoc: '2013-2014', name: 't2').first_or_create!
-    Tenant.all.each do |t|
-      Apartment::Database.create(t.name)
-      Apartment::Database.switch(t.name)
-      Tenant.where(hoc_ky: t.hoc_ky, nam_hoc: t.nam_hoc, name: t.name).first_or_create!
-    end
+    tenant = Tenant.last
+    Octopus.using(tenant.database) do             
+        Tenant.where(hoc_ky: tenant.hoc_ky, nam_hoc: tenant.nam_hoc, name: tenant.name).first_or_create!
+    end    
   end
 	#1 Load tuan
   task load_tuan: :environment do 
-    Apartment::Database.switch('public')
+    #Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
-    Tuan.delete_all
-    ActiveRecord::Base.connection.reset_pk_sequence!('tuans') 
-    d = Date.new(2014, 1, 13)
-    (0..20).each do |t|
-        Tuan.where(:stt => t+23, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
-    end 
+    Octopus.using(tenant.database) do 
+      Tuan.delete_all
+      ActiveRecord::Base.connection.reset_pk_sequence!('tuans') 
+      d = Date.new(2014, 1, 13)
+      (0..20).each do |t|
+          Tuan.where(:stt => t+23, :tu_ngay => d + t.weeks, :den_ngay => d + t.weeks + 6.day).first_or_create!
+      end 
+    end
   end
   #12: update phong
   task load_phong: :environment do 
-    Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
-    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:phong_hoc)
-    res_hash = response.body.to_hash
-    ls = res_hash[:phong_hoc_response][:phong_hoc_result][:diffgram][:document_element]
-    ls = ls[:phong_hoc]    
-    ls.each do |l|        
-      Phong.create(ma_phong: l[:ma_phong_hoc].strip, toa_nha: l[:ma_toa_nha].strip, tang: l[:chi_so_tang].to_i, suc_chua_toi_da: l[:so_ban].to_i * l[:he_so_hoc].to_i, loai: l[:kieu_phong])
+    Octopus.using(tenant.database) do 
+      @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+      response = @client.call(:phong_hoc)
+      res_hash = response.body.to_hash
+      ls = res_hash[:phong_hoc_response][:phong_hoc_result][:diffgram][:document_element]
+      ls = ls[:phong_hoc]    
+      ls.each do |l|        
+        Phong.create(ma_phong: l[:ma_phong_hoc].strip, toa_nha: l[:ma_toa_nha].strip, tang: l[:chi_so_tang].to_i, suc_chua_toi_da: l[:so_ban].to_i * l[:he_so_hoc].to_i, loai: l[:kieu_phong])
+      end
     end
   end
 
   #13: Danh muc mon hoc
   task load_mon_hoc: :environment do 
-    Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
-    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:danh_muc_mon_hoc)
-    res_hash = response.body.to_hash
-    ls = res_hash[:danh_muc_mon_hoc_response][:danh_muc_mon_hoc_result][:diffgram][:document_element]
-    ls = ls[:danh_muc_mon_hoc]    
-    ls.each do |l|        
-      MonHoc.where(ma_mon_hoc: l[:ma_mon_hoc].strip.upcase, ten_mon_hoc: l[:ten_mon_hoc].strip).first_or_create!
+    Octopus.using(tenant.database) do 
+      @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+      response = @client.call(:danh_muc_mon_hoc)
+      res_hash = response.body.to_hash
+      ls = res_hash[:danh_muc_mon_hoc_response][:danh_muc_mon_hoc_result][:diffgram][:document_element]
+      ls = ls[:danh_muc_mon_hoc]    
+      ls.each do |l|        
+        MonHoc.where(ma_mon_hoc: l[:ma_mon_hoc].strip.upcase, ten_mon_hoc: l[:ten_mon_hoc].strip).first_or_create!
+      end
     end
   end
   #2 load giang vien  and sinh vien
   task :load_sinh_vien => :environment do
-    Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)    
+    Octopus.using(tenant.database) do 
     #SinhVien.delete_all
     #ActiveRecord::Base.connection.reset_pk_sequence!('sinh_viens')
     # attr_accessible :gioi_tinh, :ho_dem, :lop_hc, :ma_he_dao_tao, :ma_khoa_hoc, :ma_nganh, :ma_sinh_vien, :ngay_sinh, :ten, :trang_thai, :ten_nganh
 
-    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:sinh_vien_dang_hoc)
-    res_hash = response.body.to_hash
-    ls = res_hash[:sinh_vien_dang_hoc_response][:sinh_vien_dang_hoc_result][:diffgram][:document_element]
-    ls = ls[:sinh_vien_dang_hoc]
-    puts "loading ... sinh viens"
-    ls.each do |l|
-      sv = SinhVien.where(code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]) ).first
-      unless sv
-        tmp = titleize(l[:hodem].strip.downcase).split(" ")
-        ho = tmp[0]
-        dem = tmp[1..-1].join(" ")
-        ns = l[:ngay_sinh].to_time if l[:ngay_sinh]
-        ten =  titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String)
-        ep = convert(ten) + convert(dem)+ convert(ho)+ ns.strftime("%d%m%Y")
-        SinhVien.create!(
-          gioi_tinh: (l[:gioi_tinh] ? 1 : 0),
-          ho: ho,
-          dem: dem,
-          ma_lop_hanh_chinh: (l[:lop].strip.upcase if l[:lop] and l[:lop].is_a?(String) ) ,
-          he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
-          khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) ,
-          code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]),
-          ngay_sinh: ns,
-          ten: ten,
-          nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ),
-          tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false ),
-          encoded_position: ep
-        )
-      end
-      if sv
-        if sv.ma_lop_hanh_chinh != l[:lop].strip.upcase
-          sv.update_attributes(ma_lop_hanh_chinh: l[:lop].strip.upcase, he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
-          khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) , nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ))
+      @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+      response = @client.call(:sinh_vien_dang_hoc)
+      res_hash = response.body.to_hash
+      ls = res_hash[:sinh_vien_dang_hoc_response][:sinh_vien_dang_hoc_result][:diffgram][:document_element]
+      ls = ls[:sinh_vien_dang_hoc]
+      puts "loading ... sinh viens"
+      ls.each do |l|
+        sv = SinhVien.where(code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]) ).first
+        unless sv
+          tmp = titleize(l[:hodem].strip.downcase).split(" ")
+          ho = tmp[0]
+          dem = tmp[1..-1].join(" ")
+          ns = l[:ngay_sinh].to_time if l[:ngay_sinh]
+          ten =  titleize(l[:ten].strip.downcase) if l[:ten] and l[:ten].is_a?(String)
+          ep = convert(ten) + convert(dem)+ convert(ho)+ ns.strftime("%d%m%Y")
+          SinhVien.create!(
+            gioi_tinh: (l[:gioi_tinh] ? 1 : 0),
+            ho: ho,
+            dem: dem,
+            ma_lop_hanh_chinh: (l[:lop].strip.upcase if l[:lop] and l[:lop].is_a?(String) ) ,
+            he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
+            khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) ,
+            code: (l[:ma_sinh_vien].strip.upcase if l[:ma_sinh_vien]),
+            ngay_sinh: ns,
+            ten: ten,
+            nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ),
+            tin_chi: ( l[:dao_tao_theo_tin_chi] ? true : false ),
+            encoded_position: ep
+          )
+        end
+        if sv
+          if sv.ma_lop_hanh_chinh != l[:lop].strip.upcase
+            sv.update_attributes(ma_lop_hanh_chinh: l[:lop].strip.upcase, he: ( titleize(l[:ten_he_dao_tao].strip.downcase) if l[:ten_he_dao_tao] and l[:ten_he_dao_tao].is_a?(String) ),
+            khoa: ( titleize(l[:ten_khoa_hoc].strip.downcase) if l[:ten_khoa_hoc] and l[:ten_khoa_hoc].is_a?(String) ) , nganh: ( titleize(l[:ten_nganh].strip.downcase) if l[:ten_nganh] and l[:ten_nganh].is_a?(String) ))
+          end
         end
       end
     end
   end 
   task load_giang_vien: :environment do
-    Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
+    Octopus.using(tenant.database) do 
     #GiangVien.delete_all
     #ActiveRecord::Base.connection.reset_pk_sequence!('giang_viens') 
-    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:danh_sach_can_bo_giang_vien)         
-    res_hash = response.body.to_hash                
-    ls = res_hash[:danh_sach_can_bo_giang_vien_response][:danh_sach_can_bo_giang_vien_result][:diffgram][:document_element]
-    ls = ls[:danh_sach_can_bo_giang_vien]
-    puts "loading... giang_vien"
-    ls.each_with_index do |l,i|     
-      tmp = titleize(l[:ho_dem].strip.downcase).split(" ")          
-      ho = tmp[0]
-      dem = tmp[1..-1].join(" ")
-      ten = l[:ten].strip
-      ep = convert(ten) + convert(dem)+ convert(ho)
-      gv = GiangVien.where(:code => l[:ma_giao_vien].strip.upcase).first_or_create!
-      gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip, encoded_position: ep)
-      khoa = Khoa.where(ten_khoa: l[:ten_khoa].strip).first_or_create!
-      if l[:quyen_duyet] == true
-        khoa.giang_vien = gv
-        khoa.save!
+      @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+      response = @client.call(:danh_sach_can_bo_giang_vien)         
+      res_hash = response.body.to_hash                
+      ls = res_hash[:danh_sach_can_bo_giang_vien_response][:danh_sach_can_bo_giang_vien_result][:diffgram][:document_element]
+      ls = ls[:danh_sach_can_bo_giang_vien]
+      puts "loading... giang_vien"
+      ls.each_with_index do |l,i|     
+        tmp = titleize(l[:ho_dem].strip.downcase).split(" ")          
+        ho = tmp[0]
+        dem = tmp[1..-1].join(" ")
+        ten = l[:ten].strip
+        ep = convert(ten) + convert(dem)+ convert(ho)
+        gv = GiangVien.where(:code => l[:ma_giao_vien].strip.upcase).first_or_create!
+        gv.update_attributes(:ho => ho, :dem => dem, :ten => ten, ten_khoa: l[:ten_khoa].strip, encoded_position: ep)
+        khoa = Khoa.where(ten_khoa: l[:ten_khoa].strip).first_or_create!
+        if l[:quyen_duyet] == true
+          khoa.giang_vien = gv
+          khoa.save!
+        end
       end
     end
   end
   #3 load lop phan cong va lop mon hoc
   task load_lop_mon_hoc_phan_cong: :environment do
-      Apartment::Database.switch('public')
-      tenant = Tenant.last
-      Apartment::Database.switch(tenant.name)
+    tenant = Tenant.last
+    Octopus.using(tenant.database) do 
       #LopMonHoc.delete_all
       #ActiveRecord::Base.connection.reset_pk_sequence!('lop_mon_hocs') 
       @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
@@ -161,40 +159,40 @@ namespace :qtm do
         #lop.start!
       end
     end
-
-    #4 Them thoi khoa bieu va giang vien chinh
-    task load_calendar: :environment do
-    Apartment::Database.switch('public')
+  end
+  #4 Them thoi khoa bieu va giang vien chinh
+  task load_calendar: :environment do
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)
+    Octopus.using(tenant.database) do 
     #LichTrinhGiangDay.delete_all
     #ActiveRecord::Base.connection.reset_pk_sequence!('lich_trinh_giang_days') 
     #Calendar.delete_all
     #ActiveRecord::Base.connection.reset_pk_sequence!('calendars') 
-    @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
-    response = @client.call(:tkb_theo_giai_doan)         
-    res_hash = response.body.to_hash                
-    ls = res_hash[:tkb_theo_giai_doan_response][:tkb_theo_giai_doan_result][:diffgram][:document_element]
-    ls = ls[:tkb_theo_giai_doan]
-    
-    ls.each_with_index do |l,i| 
-      puts l.inspect
-      gv = GiangVien.where(code: l[:ma_giao_vien].strip.upcase).first
-      lop = LopMonHoc.where(ma_lop: l[:ma_lop].strip.upcase, ma_mon_hoc: l[:ma_mon_hoc].strip.upcase).first
-      if lop
-        calendar = lop.calendars.where(:so_tiet => l[:so_tiet], :so_tuan => l[:so_tuan_hoc], :thu => l[:thu], :tiet_bat_dau => l[:tiet_bat_dau], :tuan_hoc_bat_dau => l[:tuan_hoc_bat_dau], :giang_vien_id => gv.id).first_or_create!
-        calendar.update_attributes(phong: (l[:ma_phong_hoc].strip if l.has_key?(:ma_phong_hoc) and l[:ma_phong_hoc].is_a?(String)))
-        lop.assistants.where(giang_vien_id: gv.id).first_or_create!
+      @client = Savon.client(wsdl: "http://10.1.0.238:8082/HPUWebService.asmx?wsdl")
+      response = @client.call(:tkb_theo_giai_doan)         
+      res_hash = response.body.to_hash                
+      ls = res_hash[:tkb_theo_giai_doan_response][:tkb_theo_giai_doan_result][:diffgram][:document_element]
+      ls = ls[:tkb_theo_giai_doan]
+      
+      ls.each_with_index do |l,i| 
+        puts l.inspect
+        gv = GiangVien.where(code: l[:ma_giao_vien].strip.upcase).first
+        lop = LopMonHoc.where(ma_lop: l[:ma_lop].strip.upcase, ma_mon_hoc: l[:ma_mon_hoc].strip.upcase).first
+        if lop
+          calendar = lop.calendars.where(:so_tiet => l[:so_tiet], :so_tuan => l[:so_tuan_hoc], :thu => l[:thu], :tiet_bat_dau => l[:tiet_bat_dau], :tuan_hoc_bat_dau => l[:tuan_hoc_bat_dau], :giang_vien_id => gv.id).first_or_create!
+          calendar.update_attributes(phong: (l[:ma_phong_hoc].strip if l.has_key?(:ma_phong_hoc) and l[:ma_phong_hoc].is_a?(String)))
+          lop.assistants.where(giang_vien_id: gv.id).first_or_create!
+        end
       end
     end
   end
   # 5: start lop  
   task :start_lop => :environment do
-    Apartment::Database.switch('public')
     tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)    
-    LopMonHoc.all.each do |lop|
-      lop.start!
+    Octopus.using(tenant.database) do  
+      LopMonHoc.all.each do |lop|
+        lop.start!
+      end
     end
   end  
   

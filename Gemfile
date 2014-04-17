@@ -73,7 +73,7 @@ gem 'strong_parameters'
 gem "statsd-ruby"
 gem "lograge"
 gem 'sinatra', require: false
-gem 'apartment'
+#gem 'apartment'
 gem 'savon'
 gem "redis-store"
 gem 'redis-rails'
@@ -90,3 +90,4 @@ end
 gem 'sitemap_generator'
 gem 'will_paginate-bootstrap'
 gem 'mobile-fu'
+gem 'ar-octopus'

@@ -1,0 +1,2 @@
+octopus:
+  default_migration_group: my_shards
