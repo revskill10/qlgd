@@ -77,6 +77,7 @@ class LopMonHoc < ActiveRecord::Base
   end
   
   def start
+    self.generate_calendars
     self.settings ||= {}
     self.settings[:generated] = false unless self.settings[:generated]
     self.settings[:so_tiet_ly_thuyet] ||= 0
@@ -86,8 +87,7 @@ class LopMonHoc < ActiveRecord::Base
     self.settings[:lich_trinh_du_kien] ||= ""
     self.settings[:de_cuong_chi_tiet] ||= ""
     self.settings[:language] ||= "vietnamese"
-    self.generate_assignments
-    self.generate_calendars
+    self.generate_assignments    
     super
   end
   

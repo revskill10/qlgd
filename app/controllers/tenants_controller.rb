@@ -9,14 +9,18 @@ class TenantsController < ApplicationController
 
   def select_shard(&block)
     if params[:tenant_id].present?
-      tenant = Tenant.find(params[:tenant_id])
+      tenant = Tenant.find(params[:tenant_id]) || Tenant.last
       if tenant
         Octopus.using(tenant.database, &block)  
       else
         yield
       end
-    else      
-      yield
+    else
+      if tenant      
+        Octopus.using(tenant.database, &block)
+      else
+        yield
+      end
     end
   end
 

@@ -130,6 +130,7 @@ order by ag.position"
           @search = Sunspot.search(SinhVien) do      
             fulltext params[:query]
             paginate(:page => params[:page] || 1, :per_page => 50)
+            with(:tenant, current_tenant.id.to_s) if current_tenant
           end
           @results = @search.results
           @ids = @results.map(&:id)
@@ -139,6 +140,7 @@ order by ag.position"
           @search = Sunspot.search(LopMonHoc) do      
             fulltext params[:query]
             paginate(:page => params[:page] || 1, :per_page => 50)
+            with(:tenant, current_tenant.id.to_s) if current_tenant
           end
           @results = @search.results
           @ids = @results.map(&:id)
@@ -147,6 +149,7 @@ order by ag.position"
           @search = Sunspot.search(LichTrinhGiangDay) do      
             fulltext params[:query]
             paginate(:page => params[:page] || 1, :per_page => 50)
+            with(:tenant, current_tenant.id.to_s) if current_tenant
           end
           @results = @search.results
           @ids = @results.map(&:id)

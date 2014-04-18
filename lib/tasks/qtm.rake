@@ -3,13 +3,14 @@ require 'hpu'
 namespace :qtm do    
   #10
   task reindex:  :environment do
-    Apartment::Database.switch('public')
-    tenant = Tenant.last
-    Apartment::Database.switch(tenant.name)    
-    SinhVien.reindex
-    LopMonHoc.reindex    
-    LichTrinhGiangDay.reindex
-    Sunspot.commit
+    Tenant.all.each do |tenant|    
+      Octopus.using(tenant.database) do 
+        SinhVien.reindex
+        LopMonHoc.reindex    
+        LichTrinhGiangDay.reindex
+        Sunspot.commit
+      end
+    end
   end
 	#0 prepare tenant
   task create_tenant: :environment do 
@@ -192,6 +193,7 @@ namespace :qtm do
     Octopus.using(tenant.database) do  
       LopMonHoc.all.each do |lop|
         lop.start!
+        lop.generate_calendars
       end
     end
   end  
