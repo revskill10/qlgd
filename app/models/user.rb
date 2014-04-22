@@ -17,7 +17,6 @@ class User < ActiveRecord::Base
   has_many :lop_mon_hocs, :through => :assistants, :uniq => true
 
   def cas_extra_attributes=(extra_attributes)
-    
     extra_attributes.each do |name, value|
       case name.to_sym
       when :masinhvien

@@ -44,17 +44,17 @@ class DashboardController < TenantsController
         @giang_vien = current_user.giang_vien(@lop)      
         format.html {render "dashboard/teacher/lop"}      
       else
-        sql = "with a1 as (select en.id, ai.id as assignment_group_id, ai.name from t2.enrollments en
-inner join t2.assignment_groups ai on ai.lop_mon_hoc_id = en.lop_mon_hoc_id
-where en.lop_mon_hoc_id=#{@lop.id}),a2 as (select su.enrollment_id, su.grade, ai.id as assignment_group_id, ai.name from t2.group_submissions su
-inner join t2.assignment_groups ai on su.assignment_group_id=ai.id
-inner join t2.lop_mon_hocs lop on ai.lop_mon_hoc_id = lop.id
+        sql = "with a1 as (select en.id, ai.id as assignment_group_id, ai.name from enrollments en
+inner join assignment_groups ai on ai.lop_mon_hoc_id = en.lop_mon_hoc_id
+where en.lop_mon_hoc_id=#{@lop.id}),a2 as (select su.enrollment_id, su.grade, ai.id as assignment_group_id, ai.name from group_submissions su
+inner join assignment_groups ai on su.assignment_group_id=ai.id
+inner join lop_mon_hocs lop on ai.lop_mon_hoc_id = lop.id
 where lop.id=#{@lop.id}),a3 as (select a1.id, a1.assignment_group_id, a1.name, COALESCE(a2.grade,0) as grade from a1
 left outer join a2 on a1.id = a2.enrollment_id and a1.assignment_group_id = a2.assignment_group_id)
-select lop.id as lop_id, a3.id as enrollment_id, a3.assignment_group_id, a3.name, a3.grade, regexp_replace(sv.ho || ' ' || sv.dem || ' ' || sv.ten, '  ',' ') as hovaten, sv.id as sinh_vien_id, en.tong_tiet_vang as tong_tiet_vang, sv.code, sv.ma_lop_hanh_chinh, COALESCE(en.diem_qua_trinh,0) as diem_qua_trinh, en.tinhhinh  from a3 inner join t2.enrollments en on en.id = a3.id
-inner join t2.lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
-inner join t2.sinh_viens sv on sv.id = en.sinh_vien_id
-inner join t2.assignment_groups ai on a3.assignment_group_id = ai.id
+select lop.id as lop_id, a3.id as enrollment_id, a3.assignment_group_id, a3.name, a3.grade, regexp_replace(sv.ho || ' ' || sv.dem || ' ' || sv.ten, '  ',' ') as hovaten, sv.id as sinh_vien_id, en.tong_tiet_vang as tong_tiet_vang, sv.code, sv.ma_lop_hanh_chinh, COALESCE(en.diem_qua_trinh,0) as diem_qua_trinh, en.tinhhinh  from a3 inner join enrollments en on en.id = a3.id
+inner join lop_mon_hocs lop on lop.id = en.lop_mon_hoc_id 
+inner join sinh_viens sv on sv.id = en.sinh_vien_id
+inner join assignment_groups ai on a3.assignment_group_id = ai.id
 order by sv.position, ai.position
 "
     @results = ActiveRecord::Base.connection.execute(sql).group_by {|k| [ k["enrollment_id"],k["hovaten"],k["code"],k["ma_lop_hanh_chinh"],k["diem_qua_trinh"], k["tinhhinh"], k["tong_tiet_vang"], k["sinh_vien_id"]]}.map {|k,v| {:enrollment_group_id => k[0], :hovaten => k[1], :code => k[2], :ma_lop_hanh_chinh => k[3], :diem_qua_trinh => k[4], :tinhhinh => k[5], :tong_tiet_vang => k[6], :sinh_vien_id => k[7], :group_submissions => v}}
