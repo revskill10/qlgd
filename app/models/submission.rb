@@ -15,6 +15,6 @@ class Submission < ActiveRecord::Base
   def set_group_submission
   	gs = enrollment.group_submissions.where(assignment_group_id: assignment.assignment_group.id).first_or_create!
 	  gs.grade = gs.diem_trung_binh
-	  gs.save!
+	  gs.save!    
   end
 end

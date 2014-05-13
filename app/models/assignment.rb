@@ -12,6 +12,7 @@ class Assignment < ActiveRecord::Base
   validates :assignment_group, :presence => true
   validates :points, numericality: {only_integer: true}
   def can_destroy?
-  	submissions.to_a.sum { |e| e.grade.to_i } == 0
+  	#submissions.to_a.sum { |e| e.grade.to_i } == 0
+    true
   end
 end

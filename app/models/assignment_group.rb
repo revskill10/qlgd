@@ -3,6 +3,7 @@ class AssignmentGroup < ActiveRecord::Base
 
   belongs_to :lop_mon_hoc
   has_many :assignments, :dependent => :destroy, :order => "position, updated_at"
+  has_many :group_submissions, :dependent => :destroy
   acts_as_list scope: :lop_mon_hoc
 
   validates :name, :weight, :presence => true

@@ -64,6 +64,6 @@ class LichEnrollmentDecorator < Draper::Decorator
     return (@object.tinhhinh || 0)
   end
   def dihoc_tinhhinh
-    return (100 - tinhhinhv).round(2)
+    return (100 - tinhhinh).round(2)
   end
 end

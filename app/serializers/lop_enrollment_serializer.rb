@@ -21,7 +21,7 @@ class LopEnrollmentSerializer < ActiveModel::Serializer
   end
   def tinhhinh
     return 0 if (tong_so_tiet == 0)
-    (tong_vang * 100.0 / tong_so_tiet).round(2)
+    (tong_vang * 100.0 / tong_so_tiet.to_f).round(2)
   end
   def dihoc_tinhhinh
     return (100 - tinhhinh).round(2)
@@ -32,11 +32,11 @@ class LopEnrollmentSerializer < ActiveModel::Serializer
     when 100
       4
     when 90..99
-      3
-    when 80..89
       2
-    when 70..79
+    when 80..89
       1
+    when 70..79
+      0
     else
       0
     end
