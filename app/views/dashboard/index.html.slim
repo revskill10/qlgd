@@ -1,0 +1,11 @@
+
+
+- if user_signed_in? and current_user.get_lops.count > 0
+  = render 'dashboard/shared/menu'
+  = render 'dashboard/shared/main'
+- elsif user_signed_in? and current_user.get_lops.count == 0
+  = render 'dashboard/shared/menu'
+  = render 'dashboard/shared/active'
+- else
+  = render 'dashboard/shared/menu_guest'
+  = render 'dashboard/shared/active_guest'

@@ -1,0 +1,35 @@
+
+
+= render 'dashboard/shared/menu'
+.container   
+  = render 'dashboard/shared/search_form'
+  ul.nav.nav-tabs
+    li.active
+      a href="#home" data-toggle="tab" Thông tin chung
+    li
+      a href="#thongso" data-toggle="tab" Thiết lập thông số
+    li
+      a href="#assignments" data-toggle="tab" Thiết lập nhóm điểm
+    li
+      a href="#grades" data-toggle="tab" Điểm
+    li
+      a href="#dangkybosung" data-toggle="tab" Đăng ký bổ sung
+    li
+      a href="#cld" data-toggle="tab" Thời khóa biểu
+  div.tab-content
+    div.tab-pane.active#home
+      #main
+    div.tab-pane#thongso
+      #setting
+    div.tab-pane#assignments
+      #assignment
+    div.tab-pane#grades
+      #grade
+    div.tab-pane#dangkybosung
+      #bosung
+    div.tab-pane#cld
+      #calendar
+      
+javascript:
+  var ENV = {lop_id: #{raw @lop.id}, giang_vien_id: #{raw @giang_vien.id} };  
+script src="/assets/giang_vien/lop.js" type="text/javascript"

@@ -1,0 +1,55 @@
+= render 'dashboard/shared/menu'     
+
+.container
+  = render 'dashboard/shared/search_form'
+  h3 Thông tin lớp học
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Mã lớp
+          td Môn
+          td Giảng viên
+          td Tổng số tiết
+          td Ngôn ngữ
+      tbody
+        tr
+          td= @lop.ma_lop
+          td= @lop.ten_mon_hoc
+          td= @lop.giang_viens.inject("") {|res, gv| res + " " + gv.hovaten}
+          td= @lop.tong_so_tiet
+          td= @lop.decorate.language
+  h3 Tình hình học tập
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Tình hình đi học
+          td Tống tiết vắng
+          - @headers.each do |header|
+            td= header[:group_name]
+          td Điểm quá trình
+      tbody
+        - @results.each_with_index do |res, index|
+          tr(class="#{index % 2 == 0 ? 'danger' : 'warning'}")
+            td= (index+1).to_s
+            td= res[:hovaten]
+            td= link_to res[:code], "/tenants/#{current_tenant.id}/sinh_viens/#{res[:sinh_vien_id]}"
+            td= res[:ma_lop_hanh_chinh]            
+            td
+              - res[:tinhhinh] ||= 0
+              .progress
+                .progress-bar.progress-bar-danger style="width: #{res[:tinhhinh]}%"
+                  span.sr-only= "#{res[:tinhhinh]}%"
+                .progress-bar.progress-bar-success style="width: #{100 - res[:tinhhinh].to_f}%"
+                  span.sr-only= "#{100 - res[:tinhhinh].to_f}%"
+            td= res[:tong_tiet_vang]
+            - res[:group_submissions].each do |g|
+              td= g[:grade]
+            td= res[:diem_qua_trinh]
+
+

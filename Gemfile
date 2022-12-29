@@ -1,4 +1,4 @@
-source 'https://rubygems.org'
+source 'http://rubygems.org'
 
 gem 'rails', '3.2.13'
 
@@ -6,7 +6,6 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -29,10 +28,13 @@ group :development, :test do
   gem 'guard-brakeman'
   gem 'forgery'
   gem 'database_cleaner'
+  gem 'win32console'
+  gem 'konacha'
+  gem "bullet"
+  gem 'sunspot_solr'
 end
 group :test do
   gem 'rb-notifu'
-  gem 'win32console'
   gem 'wdm'
   gem 'selenium-webdriver'
   gem 'capybara'
@@ -60,9 +62,31 @@ gem "slim-rails"
 gem "thin"
 gem 'devise'
 gem 'devise_cas_authenticatable'
-gem 'state_machine'
-gem 'activerecord-postgres-hstore'
+gem "ice_cube"
+gem 'draper', '~> 1.3'
+gem "pundit"
+gem 'react-rails'
+gem "active_model_serializers"
+gem 'acts_as_list'
+gem 'sidekiq'
+gem 'strong_parameters'
+gem "statsd-ruby"
+gem "lograge"
+gem 'sinatra', require: false
+gem 'apartment'
+gem 'savon'
+gem "redis-store"
+gem 'redis-rails'
+gem "redis-rack-cache"
+gem 'will_paginate', '~> 3.0'
+gem "select2-rails"
+gem 'sunspot_rails', '~> 1.3.0'
+gem "font-awesome-rails"
+gem 'jquery-datatables-rails'
 group :production do
   gem 'pg', '0.15.1'
   gem 'rails_12factor', '0.0.2'
 end
+gem 'sitemap_generator'
+gem 'will_paginate-bootstrap'
+gem 'mobile-fu'

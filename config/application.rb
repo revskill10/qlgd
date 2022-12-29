@@ -1,7 +1,7 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-
+require 'apartment/elevators/generic'
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
   Bundler.require(*Rails.groups(:assets => %w(development test)))
@@ -17,6 +17,8 @@ module Qlgd
 
     # Custom directories with classes and modules you want to be autoloadable.
     config.autoload_paths += %W(#{config.root}/lib)
+    
+   # config.middleware.use 'Apartment::Elevators::Generic', Proc.new { |request| request[:tenant_id].present? ? Tenant.find(request[:tenant_id]).name : Tenant.last.name }
 
     # Only load the plugins named here, in the order given (default is alphabetical).
     # :all can be used as a placeholder for all plugins not explicitly named.
@@ -59,5 +61,11 @@ module Qlgd
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
+    config.assets.precompile << Proc.new { |path|
+      if path =~ /\.(eot|svg|ttf|woff)\z/
+        true
+      end
+    }
+    config.assets.precompile += %w(giang_vien/* sinh_vien/* daotao/* thanhtra/* truongkhoa/*)
   end
 end

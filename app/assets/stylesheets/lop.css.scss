@@ -1,0 +1,32 @@
+
+		.sortable-ghost {
+			opacity: .2;
+		}
+
+
+		
+ul
+{
+    list-style-type: none;
+}
+
+		.tile {
+				
+			
+				
+			background-color: #fff;
+				
+		}
+			.tile__name {
+				cursor: move;				
+				border-bottom: 1px solid #FF7373;
+			}
+				
+
+				.tile__list div {
+					cursor: move;
+					margin-bottom: 10px;
+					border-radius: 100%;
+				}
+
+

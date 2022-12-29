@@ -1,0 +1,109 @@
+
+
+body, button{
+  font-family: 'Helvetica Neue', arial, sans-serif;
+}
+
+.controls{
+  padding: 2%;
+  background: #333;
+  color: #eee;
+  margin: 2%;
+}
+
+label{
+  font-weight: 300;
+  margin: 0 .4em 0 0;
+}
+
+button{
+  display: inline-block;
+  padding: .4em .8em;
+  background: #666;
+  border: 0;
+  color: #ddd;
+  font-size: 16px;
+  font-weight: 300;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button.active{
+  background: #68b8c4;
+}
+
+button:focus{
+  outline: 0 none;
+}
+
+button + label{
+  margin: 1em;
+}
+.ctn{
+  padding: 2% 2% 2% 2%;
+  text-align: justify;
+  font-size: 0.1px;
+  background: #68b8c4;
+  
+  -webkit-backface-visibility: hidden;
+}
+
+.ctn:after{
+  content: '';
+  display: inline-block;
+  width: 100%;
+}
+
+.ctn .mix,
+.ctn .gap{
+  display: inline-block;
+  width: 49%;
+}
+
+.ctn .mix{
+  text-align: left;
+  background: #03899c;
+  margin: 1.5px;
+  display: none;
+}
+
+.ctn .mix.A{
+  border-top: 2px solid limegreen;
+}
+
+.ctn .mix.B{
+  border-top: 2px solid yellow;
+}
+
+.ctn .mix.C{
+  border-top: 2px solid green;
+}
+.ctn .mix:after{
+  content: attr(data-myorder);
+  color: white;
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: top;
+  padding: 4% 6%;
+  font-weight: 700;
+}
+
+.ctn .mix:before{
+  content: '';
+  display: inline-block;
+  padding-top: 60%;
+}
+
+@media all and (min-width: 420px){
+  .ctn .mix,
+  .ctn .gap{
+    width: 32%;
+  }
+}
+
+@media all and (min-width: 640px){
+  .ctn .mix,
+  .ctn .gap{
+    width: 23.5%;
+  }
+}

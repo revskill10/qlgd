@@ -1,0 +1,33 @@
+= render 'dashboard/shared/menu'
+- ud = UserDecorator.new(current_user)
+.container
+  ul.nav.nav-tabs
+    - if user_signed_in? and ud.is_dao_tao?
+      li
+        a href="#gl" data-toggle="tab" Ghép lớp
+      li
+        a href="#lopx" data-toggle="tab" Lớp môn học
+      li
+        a href="#calendar" data-toggle="tab" Thời khóa biểu
+    - if user_signed_in? and ud.is_dao_tao_duyet?
+      li
+        a href="#ddk" data-toggle="tab" Duyệt đăng ký
+      li
+        a href="#pt" data-toggle="tab" Phòng trống  
+
+  .tab-content
+    - if user_signed_in? and ud.is_dao_tao?
+      #gl.tab-pane.active
+        #gheplop
+      #lopx.tab-pane
+        #lop2
+      #calendar.tab-pane
+        #calendar2
+    - if user_signed_in? and ud.is_dao_tao_duyet?
+      #ddk.tab-pane
+        #duyetdangky
+      #pt.tab-pane
+        #phongtrong
+
+- if user_signed_in? and ud.is_dao_tao_duyet?
+  script src="/assets/daotao/index.js" type="text/javascript"

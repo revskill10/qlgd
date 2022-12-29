@@ -13,5 +13,18 @@
 //= require jquery
 //= require jquery_ujs
 //= require bootstrap
-//= require todo
-//= require_tree .
+//= require sortable.min
+//= require bootstrap-datepicker
+//= require bootstrap-datepicker.vi
+//= require react
+//= require select2
+//= require summernote
+//= require spinner
+//= require jquery.spin
+//= require jquery.mixitup.min
+//= require dataTables/jquery.dataTables
+//= require dataTables/jquery.dataTables.bootstrap3
+
+$(document).ready(function(){	
+	$('.datatable').dataTable({"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>","sPaginationType": "bootstrap","bStateSave":true,"bAutoWidth":true,"sScrollY": "600px","iDisplayLength": 50});
+});

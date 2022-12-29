@@ -1,0 +1,32 @@
+- @ud = UserDecorator.new(current_user) if user_signed_in?
+.navbar.navbar-default.navbar-static-top role="navigation"
+  .container
+    .navbar-header
+      button.navbar-toggle type="button" data-toggle="collapse" data-target=".navbar-collapse"
+        span.sr-only Toggle navigation
+        span.icon-bar
+        span.icon-bar            
+        span.icon-bar
+      = link_to "QLGD", '/', {class:"navbar-brand"}
+    .collapse.navbar-collapse
+      ul.nav.navbar-nav         
+        li= link_to "Hướng dẫn sử dụng", '/huongdan.htm'          
+        - if user_signed_in? and @ud.is_dao_tao?
+          li= link_to "Đào tạo", '/daotao'
+        - if user_signed_in? and @ud.is_truong_khoa?
+          li= link_to "Khoa/Bộ môn", '/khoa'
+        - if user_signed_in? and @ud.is_quan_ly_sinh_vien?
+          li= link_to "Quản lý sinh viên", '/quan_ly_sinh_vien'
+        - if user_signed_in? and @ud.is_thanh_tra?
+          li= link_to "Thanh tra", '/thanhtra'
+        - if user_signed_in? and @ud.is_kiem_dinh?
+          li= link_to "Kiểm định", '/kiemdinh'
+        - if user_signed_in? and @ud.is_super_admin?
+          li= link_to "Superadmin", '/superadmin'
+        - if user_signed_in? and @ud.is_admin?
+          li= link_to "Admin", '/admin'        
+      ul.nav.navbar-nav.navbar-right
+        - if user_signed_in?
+          li= link_to "Đăng xuất", destroy_user_session_path
+        - else
+          li= link_to "Đăng nhập", new_user_session_path

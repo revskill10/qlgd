@@ -1,0 +1,21 @@
+.container
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr.success
+          td Stt
+          td Họ và tên
+          td Mã sinh viên
+          td Lớp hành chính
+          td Số lớp môn
+          td Số tiết vắng          
+      tbody
+        - @sinhviens.each_with_index do |res, index|
+          tr(class=(index % 2 == 0 ? 'danger' : 'warning'))
+            td= (index + (@page.to_i-1)*50 + 1).to_s
+            td= res.hovaten
+            td= link_to res.code, "/tenants/#{current_tenant.id}/sinh_viens/#{res.id}"
+            td= res.ma_lop_hanh_chinh
+            td= res.so_lop_mon
+            td= res.so_tiet_vang
+= will_paginate @results

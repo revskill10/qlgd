@@ -1,0 +1,45 @@
+.container
+  = render 'dashboard/shared/search_form'
+  h4 Lịch học trong ngày
+  .table-responsive
+    table.table.table-bordered.table-striped.datatable
+      colgroup
+        col width="10%"
+        col width="5%"
+        col width="10%"
+        col width="17%"
+        col width="3%"
+        col width="22%"
+        col width="10%"
+        col width="23%"        
+      thead
+        tr.success
+          td Thời gian
+          td Số tiết
+          td Phòng
+          td Giảng viên
+          td Mã lớp
+          td Môn
+          td Sĩ số          
+          td Nội dung
+      tbody
+        - if @lichs.count > 0
+          - @lichs.each_with_index do |lich, index|            
+            - su = lich.summary
+            - siso = lich.lop_mon_hoc.si_so
+            - comat = siso - lich.sv_vang
+            tr class="#{index % 2 == 0 ? 'warning' : 'danger'}"
+              td
+                = link_to lich.thoi_gian.localtime.strftime("%Hh%M %d/%m/%Y") + "#{lich.state == 'bosung' ? 'BS' : ''}", "/tenants/#{current_tenant.id}/lich/#{lich.id}"
+              td(style="text-align: center;")= lich.so_tiet_moi
+              td
+                = link_to (lich.phong || '') + "#{su.length > 0 ? '*' : ''}", "/search?mtype=3&query=#{lich.phong || ''}" 
+                br
+                = "#{lich.type_status}" 
+              td= lich.giang_vien.hovaten
+              td
+                = link_to lich.lop_mon_hoc.ma_lop, "/tenants/#{current_tenant.id}/lop/#{lich.lop_mon_hoc.id}"
+              td
+                = link_to lich.lop_mon_hoc.ten_mon_hoc, "http://decuong.hpu.edu.vn/show/#{lich.lop_mon_hoc.ma_mon_hoc}"
+              td(style="text-align: center;")= comat.to_s + "/" + siso.to_s
+              td= lich.summary

@@ -1,0 +1,9 @@
+= render 'dashboard/shared/menu'
+
+
+.container  
+  #tkmain
+
+javascript:
+  var ENV = {khoa_id: #{raw @khoa.id}, lop_id: #{raw @lop.id}};  
+script src="/assets/truongkhoa/lop.js" type="text/javascript"

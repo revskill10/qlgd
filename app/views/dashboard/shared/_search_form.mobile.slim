@@ -1,0 +1,7 @@
+form role="form" class="form-horizontal" method="GET" action="/search"
+  .form-group
+    .col-sm-2
+      = select_tag("mtype", "<option value='1' #{('selected' if @type=='1')}>Sinh viên</option><option value='2' #{('selected' if @type=='2')}>Lớp môn học</option><option value='3' #{('selected' if @type == '3')}>Lịch trình</option>".html_safe, :class => "form-control")
+    .col-sm-6
+      input type="text" class="form-control" placeholder="Thông tin tra cứu" name="query" value="#{@query}"    
+    button type="submit" class="btn btn-primary btn-default" Tra cứu
