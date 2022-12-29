@@ -12,9 +12,7 @@
 
 # Ignore all logfiles and tempfiles.
 
-tmp/
-public/
-solr/
-log/
+/log/*.log
+/tmp
 /config/database.yml
-/config/sunspot.yml
+=======
